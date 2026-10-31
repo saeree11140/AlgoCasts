@@ -1,0 +1,24 @@
+{
+  "name": "algocasts-typescript",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AlgoCasts exercises and solutions in TypeScript",
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "test": "npm run test:completed --",
+    "test:completed": "npm run build && jest --config jest.completed.json --runInBand",
+    "test:exercises": "npm run build && jest --config jest.exercises.json --runInBand",
+    "test:all": "npm run build && jest --config jest.all.json --runInBand"
+  },
+  "devDependencies": {
+    "@types/jest": "30.0.0",
+    "@types/node": "22.20.5",
+    "jest": "30.5.2",
+    "typescript": "7.0.2"
+  }
+}

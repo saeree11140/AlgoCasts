@@ -1,0 +1,5 @@
+{
+  "testEnvironment": "node",
+  "testMatch": ["<rootDir>/dist/completed_exercises/**/test.js", "<rootDir>/dist/exercises/**/test.js"],
+  "watchman": false
+}

@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "strict": true,
+    "useDefineForClassFields": false,
+    "types": ["node", "jest"],
+    "rootDir": ".",
+    "outDir": "dist",
+    "sourceMap": true,
+    "declaration": true,
+    "noEmitOnError": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["completed_exercises/**/*.ts", "exercises/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
