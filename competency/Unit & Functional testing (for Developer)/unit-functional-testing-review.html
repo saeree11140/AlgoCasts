@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit &amp; Functional Testing (for Developer) — เนื้อหาติวสอบและแนวข้อสอบ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg1:#f8fbff; --bg2:#eef3fb;
+  --surface:#ffffff; --surface-2:#f5f8fd;
+  --ink:#172345; --ink-2:#2d3a5c; --muted:#6b7591; --line:#dde5f1;
+  --blue:#1f6fe5;
+  --c1:#1f6fe5; --c1bg:#eef4fd; --c1bd:#d6e4fa;
+  --c2:#dc3545; --c2bg:#fdeef0; --c2bd:#f8d3d8;
+  --c3:#1e9e55; --c3bg:#e9f6ee; --c3bd:#cbeAd7;
+  --c4:#f0a91b; --c4bg:#fff4dc; --c4bd:#fbe3ae; --c4ink:#8a5a00;
+  --c5:#7a45e0; --c5bg:#f2ecfd; --c5bd:#e0d3fa;
+  --c6:#1c7fd6; --c6bg:#e8f2fb; --c6bd:#cfe3f6;
+  --c7:#13899b; --c7bg:#e6f4f7; --c7bd:#c8e6ec;
+  --c8:#22a547; --c8bg:#e8f7ea; --c8bd:#c9ecd0;
+  --code-bg:#172345; --code-ink:#e6ecfa;
+  --ok:#1e9e55; --okbg:#e9f6ee; --bad:#dc3545; --badbg:#fdeef0;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme: dark;
+    --bg1:#0f1628; --bg2:#121b31;
+    --surface:#18223b; --surface-2:#1d2844;
+    --ink:#eef2fb; --ink-2:#cdd5e8; --muted:#97a2bf; --line:#2b3757;
+    --blue:#6ea3ff;
+    --c1:#6ea3ff; --c1bg:#1b2a4a; --c1bd:#2a3e66;
+    --c2:#ff7a86; --c2bg:#3a1f28; --c2bd:#55303b;
+    --c3:#52c985; --c3bg:#173326; --c3bd:#24503a;
+    --c4:#f5bf4f; --c4bg:#3a2f15; --c4bd:#574620; --c4ink:#f5cf7a;
+    --c5:#a988ff; --c5bg:#2a2147; --c5bd:#3d3166;
+    --c6:#5fb0f5; --c6bg:#18304a; --c6bd:#24476a;
+    --c7:#4ec3d3; --c7bg:#143439; --c7bd:#1f4c53;
+    --c8:#5ad57c; --c8bg:#173523; --c8bd:#245236;
+    --code-bg:#0b1120; --code-ink:#dfe7f8;
+    --ok:#52c985; --okbg:#173326; --bad:#ff7a86; --badbg:#3a1f28;
+  }
+}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+body{
+  margin:0; font-family:"Prompt", "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif;
+  color:var(--ink); background-color:var(--bg2); background-image:linear-gradient(180deg,var(--bg1),var(--bg2)); background-repeat:no-repeat; background-size:100% 1000px;
+  font-size:16.5px; line-height:1.75; font-weight:400;
+}
+a{color:var(--blue)}
+code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em;background:var(--surface-2);border:1px solid var(--line);padding:.05em .4em;border-radius:6px}
+pre{background:var(--code-bg);color:var(--code-ink);padding:16px 18px;border-radius:14px;overflow-x:auto;font-size:13.5px;line-height:1.6;margin:14px 0}
+
+:not(pre) > code{overflow-wrap:anywhere}
+.qt,.opt,.exp,td,th,li,p{overflow-wrap:break-word}
+.qt,.opt,.exp{overflow-wrap:anywhere}
+summary code{white-space:normal}
+pre code{background:none;border:0;padding:0;color:inherit;font-size:inherit}
+.cm{color:#8ea0c8}.kw{color:#7fb2ff}.st{color:#8fe3a8}
+
+/* HERO */
+.hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 20px 40px}
+.hero h1{font-weight:800;font-size:clamp(2.3rem,6.4vw,4.6rem);line-height:1.08;letter-spacing:.005em;margin:0 0 6px}
+.hero h1 .b{color:var(--blue)}
+.hero .sub2{font-weight:700;font-size:clamp(1.3rem,3vw,2rem);color:var(--ink);margin:0 0 22px}
+.hero .flow{font-weight:500;font-size:clamp(1rem,2.1vw,1.3rem);color:var(--ink-2);margin:0 0 8px}
+.hero .quote{font-style:italic;font-weight:300;color:var(--muted);font-size:clamp(.95rem,1.8vw,1.15rem);margin:0 0 40px}
+.steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;width:min(100%,1080px)}
+.step{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px 14px;border-radius:14px;border:1px solid;text-decoration:none;font-weight:600;font-size:.98rem;line-height:1.3;transition:transform .15s ease, box-shadow .15s ease}
+.step:hover,.step:focus-visible{transform:translateY(-2px);box-shadow:0 6px 18px rgba(23,35,69,.08)}
+.step .n{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:.95rem}
+.step small{font-weight:400;font-size:.78rem;opacity:.85}
+.hero .meta{margin-top:30px;color:var(--muted);font-size:.92rem;max-width:640px}
+
+.k1{background:var(--c1bg);border-color:var(--c1bd);color:var(--c1)} .k1 .n{background:var(--c1)}
+.k2{background:var(--c2bg);border-color:var(--c2bd);color:var(--c2)} .k2 .n{background:var(--c2)}
+.k3{background:var(--c3bg);border-color:var(--c3bd);color:var(--c3)} .k3 .n{background:var(--c3)}
+.k4{background:var(--c4bg);border-color:var(--c4bd);color:var(--c4ink)} .k4 .n{background:var(--c4);color:#3a2700}
+.k5{background:var(--c5bg);border-color:var(--c5bd);color:var(--c5)} .k5 .n{background:var(--c5)}
+.k6{background:var(--c6bg);border-color:var(--c6bd);color:var(--c6)} .k6 .n{background:var(--c6)}
+.k7{background:var(--c7bg);border-color:var(--c7bd);color:var(--c7)} .k7 .n{background:var(--c7)}
+.k8{background:var(--c8bg);border-color:var(--c8bd);color:var(--c8)} .k8 .n{background:var(--c8)}
+
+/* STICKY NAV */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+.topnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);box-shadow:0 1px 0 var(--line)}
+.topnav .inner{display:flex;gap:8px;overflow-x:auto;padding:10px 16px;max-width:1240px;margin:0 auto;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:5px 12px 5px 6px;border-radius:999px;border:1px solid;text-decoration:none;font-weight:500;font-size:.85rem;white-space:nowrap}
+.chip .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:.72rem;font-weight:700}
+.chip.active{box-shadow:0 0 0 2px currentColor inset}
+
+/* LAYOUT */
+main{max-width:860px;margin:0 auto;padding:24px 20px 80px}
+.level-head{margin:72px 0 8px;padding:26px 28px;border-radius:20px;border:1px solid}
+.level-head h2{margin:0;font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:700;line-height:1.25}
+.level-head p{margin:6px 0 0;color:var(--ink-2)}
+.level-head .roles{margin-top:10px;font-size:.9rem;color:var(--muted)}
+
+section.topic{margin:44px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:30px clamp(18px,4vw,38px) 34px}
+.t-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:6px}
+.t-head .n{flex:0 0 auto;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:1.1rem}
+.t-head h3{margin:2px 0 0;font-size:clamp(1.25rem,2.8vw,1.6rem);line-height:1.3;font-weight:700}
+.t-head .lv{display:inline-block;margin-top:4px;font-size:.8rem;font-weight:500;padding:1px 10px;border-radius:999px;border:1px solid}
+.compet{margin:14px 0 20px;padding:12px 16px;border-left:4px solid var(--blue);background:var(--surface-2);border-radius:0 12px 12px 0;font-style:italic;font-weight:300;color:var(--ink-2);font-size:.95rem}
+section.topic h4{font-size:1.12rem;font-weight:600;margin:28px 0 6px;color:var(--ink)}
+section.topic p{margin:8px 0}
+section.topic ul,section.topic ol{padding-left:1.3em;margin:8px 0}
+section.topic li{margin:3px 0}
+.tbl{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:520px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--surface-2);font-weight:600}
+tr:last-child td{border-bottom:0}
+.note{margin:18px 0;padding:14px 18px;border-radius:14px;border:1px solid}
+.note b.t{display:block;font-weight:600;margin-bottom:2px}
+.note.tip{background:var(--c4bg);border-color:var(--c4bd)} .note.tip b.t{color:var(--c4ink)}
+.note.key{background:var(--c1bg);border-color:var(--c1bd)} .note.key b.t{color:var(--c1)}
+.note.warn{background:var(--c2bg);border-color:var(--c2bd)} .note.warn b.t{color:var(--c2)}
+
+/* QUIZ */
+.quiz{margin-top:30px;border-top:1px dashed var(--line);padding-top:22px}
+.quiz-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.quiz-h h4{margin:0!important}
+.score{font-weight:600;font-size:.92rem;padding:3px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line)}
+.q{margin:16px 0;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2)}
+.q .qt{font-weight:500;margin-bottom:10px}
+.q .qt .qn{color:var(--blue);font-weight:700;margin-right:6px}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;font-size:.95rem;text-align:left;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;line-height:1.5;display:flex;gap:10px}
+.opt .l{font-weight:600;color:var(--muted);flex:0 0 auto}
+.opt:hover:not(:disabled){border-color:var(--blue)}
+.opt:focus-visible,.btn:focus-visible,.chip:focus-visible,.step:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.opt:disabled{cursor:default}
+.opt.correct{background:var(--okbg);border-color:var(--ok);color:var(--ink)}
+.opt.correct .l{color:var(--ok)}
+.opt.wrong{background:var(--badbg);border-color:var(--bad)}
+.opt.wrong .l{color:var(--bad)}
+.opt.picked{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue) inset}
+.exp{display:none;margin-top:10px;font-size:.92rem;padding:10px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);color:var(--ink-2)}
+.exp.show{display:block}
+.exp b{color:var(--ink)}
+.btn{font:inherit;font-weight:600;font-size:.92rem;padding:9px 18px;border-radius:12px;border:1px solid var(--c1bd);background:var(--c1bg);color:var(--c1);cursor:pointer}
+.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+/* FINAL */
+.final{margin-top:72px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:30px clamp(18px,4vw,38px)}
+.final h2{margin:0 0 4px;font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800}
+.final h2 .b{color:var(--blue)}
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.seg button{font:inherit;font-size:.88rem;font-weight:500;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.progress{height:8px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;margin:12px 0}
+.progress > i{display:block;height:100%;width:0;background:var(--blue);transition:width .25s ease}
+.result{display:none;margin:18px 0;padding:22px;border-radius:18px;border:1px solid var(--c1bd);background:var(--c1bg)}
+.result.show{display:block}
+.result .big{font-size:2.6rem;font-weight:800;color:var(--blue);line-height:1.1}
+.result ul{margin:8px 0 0;padding-left:1.2em}
+.tag{display:inline-block;font-size:.75rem;font-weight:500;padding:0 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);margin-left:6px;vertical-align:middle}
+.cheat{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.cheat div{padding:14px 16px;border-radius:14px;border:1px solid;font-size:.92rem}
+.cheat div b{display:block;font-weight:600;margin-bottom:2px}
+
+.kd{background:var(--c7bg);border-color:var(--c7bd);color:var(--c7)} .kd .n{background:var(--c7)}
+.t-head .lv{margin-right:4px}
+details.sol{margin:12px 0;border:1px solid var(--line);border-radius:14px;background:var(--surface-2);overflow:hidden}
+details.sol > summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;gap:10px;align-items:flex-start}
+details.sol > summary::-webkit-details-marker{display:none}
+details.sol > summary::before{content:"+";flex:0 0 22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;font-weight:700;font-size:.9rem;line-height:1}
+details.sol[open] > summary::before{content:"−"}
+details.sol > *:not(summary){margin-left:16px;margin-right:16px}
+details.sol > :last-child{margin-bottom:14px}
+details.sol summary:focus-visible{outline:3px solid var(--blue);outline-offset:-3px}
+p.ans{margin:6px 0 14px;padding:8px 14px;border-radius:10px;background:var(--okbg);border:1px solid var(--c3bd);font-weight:500}
+h4.deep{margin-top:34px!important;padding-top:20px;border-top:1px dashed var(--line);color:var(--blue)!important}
+.exam-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:10px 0 0}
+.timer{font-weight:700;font-size:1.5rem;font-variant-numeric:tabular-nums;padding:2px 14px;border-radius:12px;background:var(--c1bg);color:var(--c1);border:1px solid var(--c1bd)}
+.timer.low{background:var(--c2bg);color:var(--c2);border-color:var(--c2bd)}
+.muted{color:var(--muted);font-size:.9rem}
+pre.qcode{margin:8px 0 2px;font-size:13px;line-height:1.7;white-space:pre;overflow-x:auto}
+.final h4{font-size:1.12rem}
+.final p{margin:8px 0}
+.final ol,.final ul{padding-left:1.3em}
+.toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:22px 0 0;width:min(100%,1080px);text-align:left}
+.toc a{display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);text-decoration:none;color:var(--ink);font-size:.92rem;font-weight:500}
+.toc a .n{flex:0 0 26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:.78rem;font-weight:700}
+.toc a:hover{border-color:var(--blue)}
+.checklist{list-style:none;padding-left:0!important;display:grid;gap:6px}
+.checklist label{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);cursor:pointer}
+.checklist input{margin-top:6px;width:18px;height:18px;accent-color:var(--blue);flex:0 0 auto}
+.checklist input:checked + *, .checklist label:has(input:checked){border-color:var(--c3bd);background:var(--okbg)}
+.tag.multi{border-color:var(--c4bd);background:var(--c4bg);color:var(--c4ink)}
+.hint{margin:4px 0 8px;font-size:.85rem;color:var(--muted)}
+.btn.check{margin-top:8px}
+.btn.check:disabled{opacity:.45;cursor:not-allowed}
+.opt[aria-pressed="true"]{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue) inset}
+.qt .lv{margin:0 6px 0 0;vertical-align:middle;font-size:.78rem}
+.qcheck-row{align-items:center;margin-top:10px}
+.qres{font-size:.9rem;font-weight:600}
+.qres.ok{color:var(--ok)} .qres.bad{color:var(--bad)}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:30px 20px 50px}
+@media (max-width:900px){.steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))} .hero{min-height:auto;padding-top:56px}}
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1><span class="b">Unit &amp; Functional</span> Testing</h1>
+  <p class="sub2">(for Developer)</p>
+  <p class="flow">AAA &amp; Assertion → Test Double → Functional → Coverage &amp; SonarQube → Mock / Stub → Strategy → Metrics → Culture</p>
+  <p class="quote">“coverage บอกได้แค่ว่าโค้ดถูกรัน ไม่ได้บอกว่ามีใครตรวจผลลัพธ์หรือเปล่า”</p>
+  <nav class="steps" aria-label="ส่วนของเนื้อหา">
+    <a class="step k1" href="#lv-b"><span class="n">B</span>Beginner<small>หัวข้อ 1–4</small></a>
+    <a class="step k5" href="#lv-i"><span class="n">I</span>Intermediate<small>หัวข้อ 5–8</small></a>
+    <a class="step k2" href="#lv-a"><span class="n">A</span>Advance<small>หัวข้อ 9–13</small></a>
+    <a class="step k4" href="#code"><span class="n">C</span>Coding Lab<small>หัวข้อ 14</small></a>
+    <a class="step kd" href="#deloitte"><span class="n">D</span>Deloitte / HackerRank<small>จับเวลา 30 นาที</small></a>
+    <a class="step k3" href="#final"><span class="n">✓</span>ข้อสอบรวม<small>สุ่ม 40 ข้อ และสรุป 1 หน้า</small></a>
+  </nav>
+  <p class="meta">นิยามทักษะที่ใช้เป็นโครงคือ “Planning, designing and conducting tests to verify that systems, components and products meet specified requirements and quality standards” ตัวอย่างโค้ด JavaScript (Jest 30.5.2 บน Node 22) และ Python (pytest 9.1.1 บน Python 3.13) รันผ่านจริงก่อนนำมาใส่ ส่วนตัวอย่าง Java เป็นการยก API มาให้ดูและไม่ได้รันในชุดนี้ ข้อสอบทุกข้อ (<span data-total></span> ข้อ) เป็นข้อสอบจำลอง ผมหาข้อสอบจริงของทักษะนี้ที่ Deloitte หรือ HackerRank เปิดเผยไว้ไม่เจอ จึงออกแบบจากโครงของทักษะและชนิดคำถามที่ HackerRank ระบุไว้ในเอกสารของเขา</p>
+  <div class="toc" id="toc"></div>
+</header>
+
+<nav class="topnav" aria-label="หัวข้อ">
+  <div class="inner" id="chipbar"></div>
+</nav>
+
+<main>
+
+
+<div class="level-head k1" id="lv-b">
+  <h2>ระดับ Beginner</h2>
+  <p>ระดับนี้อยากเห็นว่าเราเขียน unit test ให้โค้ดของตัวเองได้ด้วย framework มาตรฐาน ออกแบบ test case ง่าย ๆ ได้ว่าฟังก์ชันควรให้ผลอะไร และรู้จัก assertion กับ mocking พอจะแยกโค้ดที่ทดสอบออกจากสิ่งรอบตัวได้</p>
+  <p class="roles">ทักษะที่คาดหวัง: เขียน unit test ด้วย framework มาตรฐาน · ออกแบบและรัน test case ง่าย ๆ · ใช้ assertion และ mocking พื้นฐาน</p>
+</div>
+
+<!-- ===== 1 ===== -->
+<section class="topic" id="t1" data-c="1">
+  <div class="t-head"><span class="n" style="background:var(--c1)">1</span><div><h3>Unit test คืออะไร และโครงของ test ที่อ่านรู้เรื่อง</h3><span class="lv k1">Beginner</span></div></div>
+  <p class="compet">Write unit tests for own modules using standard frameworks</p>
+
+  <h4>เริ่มจากปัญหาจริง</h4>
+  <p>สมมติมีฟังก์ชัน <code>calculateTotal</code> คิดยอดตะกร้าสินค้า รอบแรกมีแค่ราคารวม พอฝ่ายการตลาดขอคูปอง SAVE10 ต่อมาขอคูปองอีกใบที่ต้องซื้อขั้นต่ำ 1,000 บาท ทุกครั้งที่แก้ เรามีทางเดียวที่จะรู้ว่าของเดิมยังไม่พัง คือเปิดหน้าเว็บมากดเอง unit test คือการเขียนโค้ดไปตรวจโค้ดแทนการกดเอง และรันได้ในเวลาไม่กี่วินาทีทุกครั้งที่แก้</p>
+
+  <h4>“Unit” คือหน่วยแค่ไหน</h4>
+  <p>ไม่มีนิยามตายตัว ส่วนใหญ่หมายถึง function, method หรือ class ที่มีพฤติกรรมชัดเจน ทีมส่วนใหญ่ตกลงกันว่า unit test ควรรันเร็วระดับมิลลิวินาที ไม่แตะ network, database หรือ file system จริง และไม่ขึ้นกับเวลาปัจจุบันหรือค่าสุ่ม ถ้าข้อใดข้อหนึ่งหลุด test นั้นกลายเป็น integration test ไปแล้ว ซึ่งไม่ได้ผิดอะไร แต่ต้องรู้ตัว เพราะความเร็ว ความเสถียร และวิธีไล่หาสาเหตุเวลาพังไม่เหมือนกัน</p>
+  <p>มีสองสำนักที่ตีความคำว่า unit ต่างกัน สำนัก solitary แยก class ออกจาก collaborator ทุกตัวด้วย test double ส่วนสำนัก sociable ยอมให้ class คุยกับ collaborator จริงที่เป็นโค้ดล้วน ๆ ในหน่วยความจำ ทั้งสองแบบใช้ได้ ต่างกันที่ trade-off คือแบบแรกชี้จุดที่พังได้แม่นกว่าแต่ test ผูกกับโครงสร้างภายในมากกว่า</p>
+
+  <div class="tbl"><table>
+    <tr><th>ระดับ</th><th>ทดสอบอะไร</th><th>dependency</th><th>ความเร็ว</th><th>เจอปัญหาแบบไหน</th></tr>
+    <tr><td>Unit</td><td>function / class ตัวเดียว</td><td>ใช้ test double แทน</td><td>มิลลิวินาที</td><td>logic ผิด, edge case หลุด</td></tr>
+    <tr><td>Integration</td><td>หลาย component ต่อกัน เช่น service + database</td><td>จริงบางส่วน</td><td>วินาที</td><td>SQL ผิด, mapping ผิด, config ผิด</td></tr>
+    <tr><td>Functional / API</td><td>พฤติกรรมตาม requirement ผ่านช่องทางที่ client เห็น เช่น HTTP endpoint</td><td>แล้วแต่การออกแบบ</td><td>วินาที</td><td>status/format ผิด, requirement ไม่ครบ</td></tr>
+    <tr><td>End-to-End</td><td>ทั้งระบบผ่าน UI หรือ API ภายนอก</td><td>จริงทั้งหมด</td><td>วินาทีถึงนาที</td><td>flow ข้ามระบบพัง, deploy หรือ config ผิด</td></tr>
+  </table></div>
+
+  <div class="note key"><b class="t">คำว่า “functional testing” มีสองความหมาย</b>ความหมายแรกคือการทดสอบว่าระบบทำงานตาม functional requirement (ทำอะไรได้) ตรงข้ามกับ non-functional ที่ว่าด้วย performance, security, usability ความหมายที่สองคือบางทีมใช้เรียก test ที่ยิงเข้า API หรือ component ทั้งก้อนแบบ black-box ในข้อสอบให้ดูบริบทของโจทย์ว่าถามความหมายไหน</div>
+
+  <h4>ทำไมถึงเป็นรูปปิรามิด</h4>
+  <p>แนวคิด test pyramid (Mike Cohn) บอกว่าควรมี unit test จำนวนมากที่ฐาน มี integration/functional test รองลงมา และมี end-to-end น้อยที่สุดที่ยอดปิรามิด เหตุผลคือยิ่งขึ้นไปข้างบน test ยิ่งช้า ยิ่งแพงต่อการดูแล และยิ่งพังเองง่ายโดยโค้ดไม่ได้ผิด แต่นี่ไม่ใช่กฎตายตัว งาน frontend หรือ service ที่เป็นแค่ตัวต่อระหว่างระบบอื่น หลายทีมเลือกลงน้ำหนักที่ integration test มากกว่า (เรียกกันว่า testing trophy) เพราะ bug ส่วนใหญ่อยู่ตรงรอยต่อ ไม่ได้อยู่ในฟังก์ชันเดี่ยว ๆ วิธีเลือกคือดูว่า bug ที่เคยหลุดไปถึง production ของระบบเราเกิดที่ชั้นไหน</p>
+
+  <h4>โครง Arrange – Act – Assert</h4>
+  <p>test ที่อ่านง่ายแบ่งเป็นสามช่วง ตั้งข้อมูล (Arrange) เรียกสิ่งที่ทดสอบ (Act) แล้วตรวจผล (Assert) ลองดูตัวอย่างนี้ ซึ่งรันผ่านบน Jest 30.5.2</p>
+<pre><code>const { calculateTotal } = require('../src/pricing');
+
+test('SAVE10 ลด 10% และปัดทศนิยม 2 ตำแหน่ง', () =&gt; {
+  <span class="cm">// Arrange</span>
+  const items = [{ price: 199.5, qty: 2 }, { price: 50, qty: 1 }];
+
+  <span class="cm">// Act</span>
+  const total = calculateTotal(items, 'SAVE10');
+
+  <span class="cm">// Assert: subtotal 449 × 0.9 = 404.1</span>
+  expect(total).toBeCloseTo(404.1, 2);
+});</code></pre>
+  <p>ช่วง Act ควรเป็นบรรทัดเดียว ถ้าต้องเรียกสองสามบรรทัดเพื่อทดสอบเรื่องเดียว มักเป็นสัญญาณว่า API ของโค้ดใช้ยาก หรือ test กำลังตรวจหลายเรื่องพร้อมกัน ส่วนชื่อ test ให้เขียนเป็น behavior ที่คาดหวังพร้อมเงื่อนไข เช่น “ตะกร้าว่างต้อง throw” แทนที่จะเป็น <code>testCalculateTotal1</code> เพราะตอน test ล้มใน CI ชื่อคือสิ่งเดียวที่คนเห็นก่อนจะเปิดโค้ด</p>
+
+  <h4>F.I.R.S.T. ลักษณะของ unit test ที่ดี</h4>
+  <p><b>Fast</b> รันเร็วจนไม่มีใครขี้เกียจรัน <b>Independent</b> แต่ละ test ไม่พึ่งผลของ test อื่น สลับลำดับแล้วต้องผ่านเหมือนเดิม <b>Repeatable</b> รันกี่ครั้งในเครื่องไหนก็ได้ผลเดิม จึงห้ามพึ่งเวลาจริงหรือข้อมูลที่เหลือจากรอบก่อน <b>Self-validating</b> ผ่านหรือไม่ผ่านชัดเจนโดยไม่ต้องให้คนอ่าน log แล้วตีความ <b>Timely</b> เขียนใกล้เวลาที่เขียนโค้ด ไม่ใช่ทิ้งไปเขียนตอนใกล้ปล่อย</p>
+
+  <h4>ข้อผิดพลาดที่เจอบ่อยตอนเริ่มเขียน</h4>
+  <p>แบบแรกคือ test ที่ไม่มี assertion เลย รันผ่านและทำให้ coverage ขึ้น แต่ไม่ได้ตรวจอะไร แบบที่สองคือใส่หลายเรื่องไว้ใน test เดียว พอล้มก็ไม่รู้ว่าเรื่องไหนพัง แบบที่สามคือคำนวณค่าที่คาดหวังด้วยสูตรเดียวกับโค้ดจริง เช่น <code>expect(total).toBe(subtotal * 0.9)</code> ถ้าสูตรในโค้ดผิด สูตรใน test ก็ผิดตามกัน test จึงผ่านอย่างสบายใจ วิธีที่ปลอดภัยกว่าคือคำนวณค่าที่คาดหวังจาก requirement แล้วเขียนเป็นตัวเลขตรง ๆ</p>
+
+  <div class="quiz" data-topic="t1"></div>
+</section>
+
+<!-- ===== 2 ===== -->
+<section class="topic" id="t2" data-c="2">
+  <div class="t-head"><span class="n" style="background:var(--c2)">2</span><div><h3>Framework, Assertion และการออกแบบ test case</h3><span class="lv k1">Beginner</span></div></div>
+  <p class="compet">Design and execute simple test cases to validate expected outcomes of functions and methods</p>
+
+  <h4>เลือก framework ตามภาษา แต่หลักการเหมือนกัน</h4>
+  <p>ฝั่ง JavaScript/TypeScript ที่ใช้กันมากคือ Jest, Vitest และ Mocha ฝั่ง Python คือ pytest กับ unittest (อยู่ใน standard library) ฝั่ง Java คือ JUnit ซึ่งขึ้น major version เป็น 6 แล้ว (6.0.0 ออกวันที่ 30 กันยายน 2025 ต้องใช้ Java 17 ขึ้นไป และเลขเวอร์ชันของ Platform, Jupiter, Vintage ใช้ตัวเดียวกัน) annotation ที่ใช้เขียน test ทั่วไปอย่าง <code>@Test</code> และ <code>@BeforeEach</code> ยังเหมือนกับ JUnit 5 ส่วนฝั่ง .NET มี xUnit และ NUnit ทุกตัวมีของสามอย่างเหมือนกัน คือวิธีประกาศ test, assertion และ setup/teardown</p>
+
+  <h4>Assertion ที่ต้องแยกให้ออก</h4>
+  <p>ข้อสอบชอบถามว่า assertion ตัวไหนเทียบอะไรแบบไหน ตารางนี้ตรวจกับ Jest 30.5.2 และ pytest 9.1.1 แล้ว</p>
+  <div class="tbl"><table>
+    <tr><th>สิ่งที่ต้องตรวจ</th><th>Jest</th><th>pytest</th><th>ข้อควรระวัง</th></tr>
+    <tr><td>ค่าเดียว / reference เดียวกัน</td><td><code>toBe</code> (ใช้ <code>Object.is</code>)</td><td><code>assert a == b</code>, <code>is</code></td><td><code>expect([1,2]).toBe([1,2])</code> ล้ม เพราะเป็นคนละ array</td></tr>
+    <tr><td>เทียบโครงสร้างของ object / array</td><td><code>toEqual</code></td><td><code>assert a == b</code></td><td><code>toEqual</code> มองข้าม property ที่เป็น <code>undefined</code></td></tr>
+    <tr><td>เทียบเข้มกว่า <code>toEqual</code></td><td><code>toStrictEqual</code></td><td>—</td><td>ตรวจ property ที่เป็น undefined และชนิดของ class ด้วย</td></tr>
+    <tr><td>ทศนิยม</td><td><code>toBeCloseTo(x, digits)</code></td><td><code>pytest.approx(x)</code></td><td><code>0.1 + 0.2</code> ไม่เท่ากับ <code>0.3</code> เป๊ะ</td></tr>
+    <tr><td>ต้องเกิด exception</td><td><code>expect(() =&gt; f()).toThrow()</code></td><td><code>with pytest.raises(E, match=...)</code></td><td>ใน Jest ต้องห่อด้วยฟังก์ชัน ถ้าเรียก <code>f()</code> ตรง ๆ error จะหลุดก่อน <code>expect</code> ทำงาน</td></tr>
+    <tr><td>Promise</td><td><code>await expect(p).resolves / rejects</code></td><td>test แบบ async ต้องมี plugin เช่น pytest-asyncio แล้วใช้ <code>await</code> ภายใน test</td><td>ลืม <code>await</code> หรือ <code>return</code> แล้ว assertion อาจทำงานหลัง test จบ</td></tr>
+  </table></div>
+  <p>เรื่อง Promise มีของจริงให้ดู ผมลองเขียน <code>expect(Promise.resolve(1)).resolves.toBe(2)</code> โดยไม่ใส่ <code>await</code> ใน Jest 30.5.2 บน Node 22 ผลคือ assertion ล้มหลัง test จบ แล้วหลุดออกมาเป็น unhandled rejection จนโปรเซสของ Jest ล่ม ไม่ได้แสดงเป็น test ที่ fail ตามปกติ พฤติกรรมตรงนี้ขึ้นกับเวอร์ชันของ Jest และ Node บางสภาพแวดล้อมอาจรายงานว่าผ่านโดยไม่เห็น error จึงเป็นเหตุผลที่ต้อง <code>await</code> ทุกครั้ง</p>
+
+  <h4>Setup, teardown และการแยก state ระหว่าง test</h4>
+  <p>ใช้ <code>beforeEach</code> / <code>afterEach</code> (Jest) หรือ fixture (pytest) เพื่อสร้างของใหม่ให้ทุก test ปัญหาคลาสสิกคือประกาศ array หรือ object ไว้ระดับไฟล์แล้วให้ test หลายตัวแก้ค่าร่วมกัน ผลคือ test ผ่านเมื่อรันทีละตัวแต่ล้มเมื่อรันทั้งชุด หรือล้มเมื่อสลับลำดับ ถ้าต้องแชร์ของที่สร้างแพง เช่น connection ให้แชร์เฉพาะของที่ไม่เปลี่ยนค่า (read-only) และล้างข้อมูลหลังจบแต่ละ test</p>
+
+  <h4>ออกแบบ test case ด้วย equivalence partitioning และ boundary value</h4>
+  <p>เราทดสอบทุก input ไม่ได้ จึงแบ่ง input เป็นกลุ่มที่โค้ดน่าจะปฏิบัติเหมือนกัน (equivalence partition) แล้วเลือกตัวแทนมาหนึ่งค่าต่อกลุ่ม จากนั้นเพิ่มค่ารอบ ๆ รอยต่อระหว่างกลุ่ม (boundary value) เพราะ bug ชอบอยู่ตรง <code>&gt;</code> กับ <code>&gt;=</code> ลองดูกับกติกา “คูปอง FREE100 ลด 100 บาท เมื่อยอดรวมตั้งแต่ 1,000 บาทขึ้นไป”</p>
+  <div class="tbl"><table>
+    <tr><th>กลุ่ม</th><th>ค่าที่ควรลอง</th><th>ผลที่คาดหวัง</th></tr>
+    <tr><td>ต่ำกว่าเกณฑ์</td><td>999.99</td><td>ไม่ลด คืน 999.99</td></tr>
+    <tr><td>พอดีเกณฑ์ (boundary)</td><td>1000</td><td>ลด 100 คืน 900</td></tr>
+    <tr><td>เกินเกณฑ์นิดเดียว</td><td>1000.01</td><td>ลด 100 คืน 900.01</td></tr>
+    <tr><td>input ผิดปกติ</td><td>ตะกร้าว่าง, ราคาติดลบ, จำนวนเป็น 0</td><td>throw error ตามที่กำหนด</td></tr>
+  </table></div>
+  <p>เขียนเป็น test แบบ parameterized จะไม่ต้องก๊อปปี้ test สามชุด ตัวอย่างนี้รันผ่านแล้ว</p>
+<pre><code>test.each([
+  [999.99, 999.99],
+  [1000, 900],
+  [1000.01, 900.01],
+])('FREE100 ต้อง subtotal &gt;= 1000 (subtotal=%p → %p)', (subtotal, expected) =&gt; {
+  expect(calculateTotal([{ price: subtotal, qty: 1 }], 'FREE100')).toBe(expected);
+});</code></pre>
+  <p>เวอร์ชัน Python หน้าตาแบบเดียวกัน ใช้ <code>@pytest.mark.parametrize</code> และ <code>pytest.approx</code> ตอนเทียบทศนิยม</p>
+<pre><code>@pytest.mark.parametrize(
+    "total, tier, expected",
+    [(1000, "basic", 1000.0), (1000, "silver", 950.0), (1000, "gold", 900.0), (99.99, "silver", 94.99)],
+)
+def test_member_discount(total, tier, expected):
+    assert member_discount(total, tier) == pytest.approx(expected)</code></pre>
+
+  <div class="quiz" data-topic="t2"></div>
+</section>
+
+<!-- ===== 3 ===== -->
+<section class="topic" id="t3" data-c="3">
+  <div class="t-head"><span class="n" style="background:var(--c3)">3</span><div><h3>Test double: Stub, Mock, Spy, Fake และการแยกโค้ดที่ทดสอบ</h3><span class="lv k1">Beginner</span></div></div>
+  <p class="compet">Apply basic assertions and mocking to isolate code under test</p>
+
+  <h4>ทำไมต้องแยกโค้ดออกจากของรอบตัว</h4>
+  <p>ฟังก์ชัน <code>checkout</code> ต้องเรียก payment gateway แล้วบันทึกออเดอร์ลง database ถ้า unit test ของมันยิงไปที่ gateway จริง เราเจอปัญหาสามอย่างทันที คือช้า ผลไม่แน่นอน (เน็ตหลุดก็ fail) และอาจตัดเงินจริง สิ่งที่เราอยากตรวจคือ logic ของ <code>checkout</code> เช่น จ่ายไม่ผ่านแล้วต้องไม่บันทึกออเดอร์ การแทนของจริงด้วยของปลอมที่เราควบคุมได้เรียกว่า test double</p>
+
+  <h4>Test double มี 5 แบบ</h4>
+  <p>ชื่อชุดนี้มาจากหนังสือ xUnit Test Patterns ของ Gerard Meszaros ใช้กันแพร่หลาย แต่ library แต่ละตัวเรียกชื่อไม่ตรงกันเป๊ะ ตารางนี้ใช้ความหมายแบบดั้งเดิม</p>
+  <div class="tbl"><table>
+    <tr><th>ชนิด</th><th>หน้าที่</th><th>ตัวอย่างการใช้</th></tr>
+    <tr><td>Dummy</td><td>ส่งไปให้ครบ parameter แต่ไม่ถูกใช้จริง</td><td>ส่ง logger เปล่า ๆ เข้า constructor ที่บังคับให้ใส่</td></tr>
+    <tr><td>Stub</td><td>ตอบค่าที่กำหนดไว้ล่วงหน้า เพื่อให้โค้ดเดินไปในเส้นทางที่ต้องการ</td><td><code>payment.charge</code> คืน <code>{ ok: false }</code> เพื่อทดสอบเส้นทางจ่ายไม่ผ่าน</td></tr>
+    <tr><td>Spy</td><td>ของจริงหรือ stub ที่แอบจดไว้ว่าถูกเรียกอย่างไรบ้าง</td><td><code>jest.spyOn(Math, 'random')</code></td></tr>
+    <tr><td>Mock</td><td>ถูกตั้งความคาดหวังไว้ล่วงหน้าว่าต้องถูกเรียกแบบใด แล้วตรวจว่าตรงไหม</td><td>ตรวจว่า <code>save</code> ถูกเรียกหนึ่งครั้งด้วยข้อมูลนี้</td></tr>
+    <tr><td>Fake</td><td>ของที่ทำงานได้จริงแต่แบบง่าย ไม่เหมาะกับ production</td><td>repository ที่เก็บข้อมูลใน array แทน database</td></tr>
+  </table></div>
+  <p>ในทางปฏิบัติ <code>jest.fn()</code> เป็น “mock function” ตัวเดียวที่ทำได้ทั้ง stub (ตั้งค่าที่คืน) และ spy (จดการเรียก) ส่วน <code>Mockito.mock()</code> ในฝั่ง Java ก็คล้ายกัน จึงไม่ต้องกังวลถ้าเอกสารของ library เรียกทุกอย่างว่า mock สิ่งที่ต้องจำคือความต่างของ “ตรวจผลลัพธ์ที่ออกมา” (state verification) กับ “ตรวจว่าโค้ดเรียกใครอย่างไร” (behavior verification) เพราะสองแบบนี้ทำให้ test ผูกกับ implementation ในระดับต่างกัน</p>
+
+  <h4>ทำให้โค้ดเปลี่ยน dependency ได้ด้วยการ inject</h4>
+  <p>test ของ <code>OrderService</code> ด้านล่างทำได้ง่ายเพราะ class รับ repository, payment และ clock ผ่าน constructor ไม่ได้ <code>require</code> ของจริงไว้ข้างใน เวลาจึง inject เข้าไปได้ด้วย ทำให้ค่า <code>createdAt</code> คาดเดาได้</p>
+<pre><code>class OrderService {
+  constructor({ orderRepo, payment, clock = () =&gt; new Date() }) {
+    this.orderRepo = orderRepo;
+    this.payment = payment;
+    this.clock = clock;
+  }
+
+  async checkout(userId, amount) {
+    if (amount &lt;= 0) throw new Error('amount must be positive');
+    const charge = await this.payment.charge(userId, amount);
+    if (!charge.ok) return { status: 'FAILED', reason: charge.reason };
+    const order = await this.orderRepo.save({
+      userId, amount, chargeId: charge.id, createdAt: this.clock().toISOString(),
+    });
+    return { status: 'PAID', orderId: order.id };
+  }
+}</code></pre>
+<pre><code>function setup(chargeResult) {
+  const orderRepo = { save: jest.fn().mockResolvedValue({ id: 'ORD-1' }) };   <span class="cm">// stub + spy</span>
+  const payment = { charge: jest.fn().mockResolvedValue(chargeResult) };
+  const clock = () =&gt; new Date('2026-01-15T10:00:00.000Z');                    <span class="cm">// เวลาคงที่</span>
+  return { orderRepo, payment, service: new OrderService({ orderRepo, payment, clock }) };
+}
+
+test('ตัดเงินไม่ผ่าน → ไม่ต้องบันทึก order', async () =&gt; {
+  const { service, orderRepo } = setup({ ok: false, reason: 'INSUFFICIENT_FUNDS' });
+
+  const result = await service.checkout('u1', 500);
+
+  expect(result).toEqual({ status: 'FAILED', reason: 'INSUFFICIENT_FUNDS' });
+  expect(orderRepo.save).not.toHaveBeenCalled();
+});</code></pre>
+  <p>สังเกตว่า test นี้ตรวจทั้งผลลัพธ์ (state) และตรวจว่า <code>save</code> ไม่ถูกเรียก (behavior) เพราะ requirement ของเคสนี้คือ “ห้ามบันทึก” ซึ่งมองเห็นได้จากการเรียกเท่านั้น ถ้าตรวจแค่ผลลัพธ์ เราจะไม่รู้ว่ามีออเดอร์หลุดเข้า database หรือเปล่า</p>
+
+  <h4>mock ที่ชื่อที่โค้ดใช้ ไม่ใช่ที่ต้นทาง (Python)</h4>
+  <p>กับดักที่คนเจอบ่อยใน <code>unittest.mock.patch</code> คือ patch ผิดชื่อ ถ้า <code>user_service.py</code> เขียน <code>from mailer import send_email</code> ชื่อ <code>send_email</code> จะถูกคัดลอกเข้า namespace ของ <code>user_service</code> ไปแล้ว การ patch <code>mailer.send_email</code> จึงไม่มีผลกับโค้ดที่เรียกผ่านชื่อใน <code>user_service</code> ต้อง patch ที่ <code>user_service.send_email</code> ตัวอย่างนี้รันผ่านบน pytest 9.1.1 ทั้งสองกรณี</p>
+<pre><code>@patch("user_service.send_email")          <span class="cm"># ถูก: patch ที่ชื่อซึ่งโค้ดใช้อยู่</span>
+def test_register_sends_welcome_mail(send_email_mock):
+    user = UserService(make_repo()).register("a@x.com")
+    assert user["id"] == 1
+    send_email_mock.assert_called_once_with("a@x.com", "Welcome")
+
+def test_patching_wrong_target_does_not_stop_real_call():
+    with patch("mailer.send_email"):       <span class="cm"># ผิด: user_service ถือชื่อเดิมไปแล้ว</span>
+        with pytest.raises(RuntimeError):  <span class="cm"># ของจริงยังถูกเรียก</span>
+            UserService(make_repo()).register("a@x.com")</code></pre>
+
+  <h4>ข้อควรระวัง</h4>
+  <p>การ mock ของที่เราไม่ได้เป็นเจ้าของ เช่น HTTP client ของ third-party โดยตรง มีความเสี่ยงที่ mock จะไม่ตรงกับพฤติกรรมจริง แนวทางที่หลายทีมใช้คือเขียน adapter บาง ๆ ของเราเองครอบ library นั้น แล้ว mock ที่ adapter แทน นอกจากนี้ ถ้า test ต้อง mock ครึ่งระบบถึงจะรันได้ ให้สงสัยก่อนว่าโค้ดที่ทดสอบรับ dependency มากเกินไปหรือเปล่า</p>
+
+  <div class="quiz" data-topic="t3"></div>
+</section>
+
+<!-- ===== 4 ===== -->
+<section class="topic" id="t4" data-c="4">
+  <div class="t-head"><span class="n" style="background:var(--c4);color:#3a2700">4</span><div><h3>Functional testing เบื้องต้น: จาก requirement สู่ test case</h3><span class="lv k1">Beginner</span></div></div>
+  <p class="compet">Planning, designing and conducting tests to verify that systems, components and products meet specified requirements</p>
+
+  <h4>Functional test ต่างจาก unit test ตรงไหน</h4>
+  <p>unit test ถามว่า “โค้ดชิ้นนี้ทำงานถูกไหม” ส่วน functional test ถามว่า “ระบบทำสิ่งที่ requirement บอกไหม” ผู้เขียน test ไม่ต้องสนใจว่าข้างในแบ่ง class อย่างไร สนใจแค่ input ที่ส่งเข้าไปกับผลที่ออกมา (black-box) ดังนั้น functional test จึงมีอายุยืนกว่า เพราะถึงจะ refactor โครงสร้างภายใน test ก็ยังใช้ได้ตราบที่พฤติกรรมไม่เปลี่ยน</p>
+
+  <h4>เริ่มจาก requirement แล้วแตกเป็น test case</h4>
+  <p>สมมติ requirement ของ endpoint สมัครสมาชิกคือ “ผู้ใช้ส่ง email มาเพื่อสมัคร ถ้าสำเร็จตอบ 201 พร้อม Location ของผู้ใช้ใหม่ ถ้า email ซ้ำตอบ 409 ถ้ารูปแบบ email ไม่ถูกต้องตอบ 400” เราไล่ทีละประโยคแล้วแปลงเป็น test case ที่มี precondition, ขั้นตอน และผลคาดหวัง วิธีเขียนที่อ่านง่ายคือรูปแบบ Given / When / Then</p>
+  <div class="tbl"><table>
+    <tr><th>ID</th><th>Given</th><th>When</th><th>Then</th></tr>
+    <tr><td>TC-01</td><td>ยังไม่มี <code>a@x.com</code> ในระบบ</td><td>POST /users ด้วย <code>{"email":"a@x.com"}</code></td><td>201, header <code>Location: /users/1</code>, body มี id และ email</td></tr>
+    <tr><td>TC-02</td><td>มี <code>a@x.com</code> อยู่แล้ว</td><td>POST /users ด้วย email เดิม</td><td>409</td></tr>
+    <tr><td>TC-03</td><td>—</td><td>POST /users ด้วย <code>{}</code>, <code>"no-at-sign"</code>, ตัวเลข <code>123</code></td><td>400</td></tr>
+  </table></div>
+  <p>ตารางนี้ยังช่วยเรื่อง traceability ด้วย คือไล่กลับได้ว่าแต่ละประโยคของ requirement มี test คุ้มครองหรือยัง ประโยคไหนไม่มี test ก็เป็นช่องว่างที่ต้องปิด</p>
+
+  <h4>Test ที่ยิงผ่าน HTTP จริงแต่ใช้ repository ปลอม</h4>
+  <p>ตัวอย่างนี้ใช้ <code>supertest</code> ยิงเข้า Express app ที่สร้างในหน่วยความจำ ไม่ต้องเปิด port และใช้ repository ปลอมที่เก็บข้อมูลใน array จึงเร็วและไม่ต้องมี database ส่วนนี้เป็นจุดตรงกลางระหว่าง unit กับ integration ซึ่งหลายทีมเรียกว่า functional/API test รันผ่านบน Jest 30.5.2</p>
+<pre><code>function fakeRepo() {
+  const rows = [];
+  return {
+    findByEmail: async (email) =&gt; rows.find((r) =&gt; r.email === email) ?? null,
+    create: async ({ email }) =&gt; {
+      const row = { id: String(rows.length + 1), email };
+      rows.push(row);
+      return row;
+    },
+  };
+}
+
+test('สมัครสำเร็จ → 201 + Location', async () =&gt; {
+  const res = await request(createApp(fakeRepo())).post('/users').send({ email: 'a@x.com' });
+  expect(res.status).toBe(201);
+  expect(res.headers.location).toBe('/users/1');
+  expect(res.body).toEqual({ id: '1', email: 'a@x.com' });
+});
+
+test.each([[{}], [{ email: 'no-at-sign' }], [{ email: 123 }]])('body %p → 400', async (body) =&gt; {
+  const res = await request(createApp(fakeRepo())).post('/users').send(body);
+  expect(res.status).toBe(400);
+});</code></pre>
+
+  <h4>เทคนิคออกแบบ test case อื่นที่ควรรู้ชื่อ</h4>
+  <p>นอกจาก equivalence partitioning กับ boundary value ที่เห็นไปแล้ว มีอีกสองแบบที่ข้อสอบชอบถาม <b>decision table</b> ใช้เมื่อผลลัพธ์ขึ้นกับหลายเงื่อนไขรวมกัน เช่น ค่าส่งขึ้นกับว่าเป็นสมาชิกไหม และยอดถึงเกณฑ์ไหม เราไล่ทุกชุดเงื่อนไขในตารางแล้วเขียน test หนึ่งตัวต่อหนึ่งแถว ส่วน <b>state transition</b> ใช้กับสิ่งที่มีสถานะ เช่น ออเดอร์ที่เปลี่ยนจาก CREATED เป็น PAID เป็น SHIPPED ต้องทดสอบทั้งการเปลี่ยนสถานะที่ทำได้และที่ห้ามทำ เช่น ยกเลิกออเดอร์ที่ส่งไปแล้ว</p>
+
+  <h4>แผนการทดสอบแบบย่อ</h4>
+  <p>งานที่เป็นระบบจะมีแผนทดสอบ (test plan) อย่างน้อยต้องตอบว่า ทดสอบอะไร (scope) และไม่ทดสอบอะไร ใช้ข้อมูลและสภาพแวดล้อมแบบไหน เริ่มทดสอบได้เมื่อไร (entry criteria) และเมื่อไรถือว่าพอ (exit criteria) เช่น test case ที่วางไว้รันครบและไม่มี defect ระดับ critical ค้างอยู่ ส่วนตอนรันต้องบันทึกผลจริงเทียบกับผลคาดหวัง และเปิด defect พร้อมขั้นตอนทำซ้ำเมื่อไม่ตรง</p>
+
+  <div class="quiz" data-topic="t4"></div>
+</section>
+
+
+<div class="level-head k5" id="lv-i">
+  <h2>ระดับ Intermediate</h2>
+  <p>ระดับนี้อยากเห็นว่าเราดูแลตัวเลข coverage ให้ถึงเกณฑ์ที่ตกลงกันและรายงานผลได้ (เช่นผ่าน SonarQube) หาช่องว่างของ test ที่มีอยู่แล้วปิดได้อย่างมีเหตุผล และจัดการ dependency ภายนอกด้วยการ mock หรือ stub ได้โดยไม่ทำให้ test เปราะ</p>
+  <p class="roles">ทักษะที่คาดหวัง: ดูแล coverage threshold และรายงาน · ปิดช่องว่าง coverage · ใช้ mocking/stubbing กับ external dependency</p>
+</div>
+
+<!-- ===== 5 ===== -->
+<section class="topic" id="t5" data-c="5">
+  <div class="t-head"><span class="n" style="background:var(--c5)">5</span><div><h3>Coverage, threshold และการรายงานผ่าน SonarQube</h3><span class="lv k5">Intermediate</span></div></div>
+  <p class="compet">Ensure agreed unit test coverage thresholds are achieved and reported (e.g., via SonarQube)</p>
+
+  <h4>Coverage วัดอะไรบ้าง</h4>
+  <p>coverage คือสัดส่วนของโค้ดที่ถูกรันระหว่างที่ test ทำงาน แต่คำว่า “โค้ด” นับได้หลายแบบ ซึ่งให้ภาพไม่เท่ากัน</p>
+  <div class="tbl"><table>
+    <tr><th>ชนิด</th><th>นับอะไร</th><th>จุดที่ต้องระวัง</th></tr>
+    <tr><td>Statement / Line</td><td>คำสั่งหรือบรรทัดที่ถูกรัน</td><td><code>if</code> ที่ไม่มี <code>else</code> ให้ line ครบได้ แม้ฝั่ง false ไม่เคยถูกเดิน</td></tr>
+    <tr><td>Branch / Decision</td><td>ทางแยกของ <code>if</code>, <code>? :</code>, <code>&amp;&amp;</code>, <code>||</code>, ค่า default ว่าถูกเดินครบทั้งสองฝั่งไหม</td><td>เข้มกว่า line มาก ตัวเลขมักต่ำกว่า</td></tr>
+    <tr><td>Function / Method</td><td>ฟังก์ชันที่ถูกเรียกอย่างน้อยหนึ่งครั้ง</td><td>เรียกแล้วไม่ได้แปลว่าตรวจผล</td></tr>
+    <tr><td>Condition (คำที่ SonarQube ใช้)</td><td>แต่ละนิพจน์ boolean ถูกประเมินเป็นทั้ง true และ false หรือยัง</td><td>เป็นองค์ประกอบหนึ่งของค่า Coverage รวมของ SonarQube</td></tr>
+  </table></div>
+  <p>ตัวอย่างจริงจากโปรเจกต์ทดลองในชุดนี้ (Jest 30.5.2 รันด้วย <code>--coverage</code>) ก่อนมี test ของค่า default ของ <code>retry</code> ไฟล์ <code>retry.js</code> รายงานแบบนี้</p>
+<pre><code>File             | % Stmts | % Branch | % Funcs | % Lines
+ pricing.js      |     100 |      100 |     100 |     100
+ retry.js        |     100 |       40 |     100 |     100</code></pre>
+  <p>ทุกบรรทัดถูกรัน แต่ branch ได้แค่ 40% เพราะฟังก์ชันประกาศ <code>{ retries = 3, delayMs = 1000 } = {}</code> ซึ่งมีค่า default สามจุด และมี <code>if (attempt &lt; retries)</code> อีกหนึ่งจุด test ที่เขียนไว้ส่ง option ครบทุกครั้ง ค่า default จึงไม่เคยถูกใช้ ถ้าดูแค่ line coverage เราจะเห็นว่า “ครบแล้ว” ทั้งที่ยังมีเส้นทางที่ไม่เคยถูกทดสอบ</p>
+
+  <h4>ตั้ง threshold และให้ CI บังคับ</h4>
+  <p>ตัวเลขที่ตกลงกันไว้จะมีความหมายก็ต่อเมื่อ build ล้มเมื่อต่ำกว่าเกณฑ์ แต่ละเครื่องมือมีวิธีของตัวเอง</p>
+<pre><code><span class="cm">// package.json (Jest 30)</span>
+"jest": {
+  "collectCoverageFrom": ["src/**/*.js"],
+  "coverageThreshold": { "global": { "branches": 80, "lines": 80 } }
+}</code></pre>
+<pre><code><span class="cm"># Python: pytest-cov ล้มเมื่อรวมต่ำกว่า 80% และวัด branch ด้วย</span>
+pytest --cov=app --cov-branch --cov-report=xml --cov-fail-under=80</code></pre>
+  <p>ข้อสังเกตของ Jest คือถ้าไม่ตั้ง <code>collectCoverageFrom</code> ไฟล์ที่ไม่มี test ไหน import เลยจะไม่ถูกนับ ทำให้ไฟล์ใหม่ที่ไม่มี test ไม่ดึงตัวเลขลง ส่วนฝั่ง Java เครื่องมือที่ใช้กันมากคือ JaCoCo ซึ่งรายงานเป็น counter เช่น instruction, branch, line, method, class และ complexity</p>
+
+  <h4>SonarQube ทำอะไร และไม่ทำอะไร</h4>
+  <p>SonarQube ไม่ได้รัน test และไม่ได้วัด coverage เอง มันอ่านไฟล์รายงานที่เครื่องมือ coverage สร้างไว้แล้ว นำมาจับคู่กับไฟล์ source แล้วคำนวณ metric ของตัวเอง ดังนั้นขั้นตอนใน CI ต้องเรียงเป็น รัน test พร้อมสร้างรายงาน แล้วค่อยรัน scanner ชื่อ property ที่ใช้ชี้ไปยังรายงานต่างกันตามภาษา (ตรวจชื่อกับเอกสาร “Test coverage parameters” ของเวอร์ชันที่ใช้ เพราะชื่ออาจเปลี่ยนได้)</p>
+  <div class="tbl"><table>
+    <tr><th>ภาษา</th><th>รูปแบบรายงาน</th><th>ตัวอย่าง property</th></tr>
+    <tr><td>JavaScript / TypeScript</td><td>lcov จาก Jest (Istanbul)</td><td><code>sonar.javascript.lcov.reportPaths=coverage/lcov.info</code></td></tr>
+    <tr><td>Python</td><td>XML จาก coverage.py</td><td><code>sonar.python.coverage.reportPaths=coverage.xml</code></td></tr>
+    <tr><td>Java</td><td>JaCoCo XML</td><td><code>sonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml</code></td></tr>
+  </table></div>
+  <p>ค่า Coverage ที่ SonarQube แสดงเป็นการรวม line กับ condition เข้าด้วยกัน ตามสูตรในเอกสารของ Sonar</p>
+<pre><code>Coverage           = (CT + CF + LC) / (2*B + EL)
+Line coverage      = LC / EL
+Condition coverage = (CT + CF) / (2*B)
+
+CT = เงื่อนไขที่เคยประเมินเป็น true อย่างน้อยหนึ่งครั้ง   CF = เคยเป็น false
+B  = จำนวนเงื่อนไขทั้งหมด   LC = บรรทัดที่ถูกรัน   EL = บรรทัดที่ต้องครอบคลุม (lines to cover)</code></pre>
+  <p>ลองแทนค่าตัวอย่าง (ตัวเลขสมมติ เพื่อฝึกคำนวณ) EL = 100, LC = 90, B = 10, CT = 8, CF = 6 จะได้ Coverage = (8 + 6 + 90) / (20 + 100) = 104 / 120 ≈ 86.7% ขณะที่ line coverage คือ 90% และ condition coverage คือ 14 / 20 = 70% นี่คือเหตุผลหนึ่งที่ตัวเลขใน SonarQube ไม่ตรงกับที่เครื่องมือ coverage ตัวเดิมแสดง เพราะเทียบกันคนละ metric ได้ อีกเหตุผลคือ SonarQube นับ “บรรทัดที่ต้องครอบคลุม” ตามการวิเคราะห์ของมันเอง ซึ่งอาจไม่เท่ากับของเครื่องมือเดิม</p>
+
+  <h4>Quality gate และ “new code”</h4>
+  <p>quality gate ใน SonarQube คือชุดเงื่อนไขที่ถ้าไม่ผ่านจะถือว่า analysis ล้ม ตัวเริ่มต้นชื่อ Sonar way เน้นที่ new code คือโค้ดที่เพิ่งเพิ่มหรือแก้ตามนิยาม new code ของโปรเจกต์ เงื่อนไขของมันตามเอกสารของ SonarQube Server เวอร์ชัน 10.4 เป็นดังนี้ ไม่มี issue ใหม่ Security Hotspot ใหม่ถูกรีวิวครบ coverage ของ new code ตั้งแต่ 80.0% ขึ้นไป และโค้ดซ้ำใน new code ไม่เกิน 3.0% โดยเงื่อนไข coverage กับ duplication ปรับค่าเองได้ ตัวเลข 80% จึงเป็นค่าตั้งต้นของเครื่องมือ ไม่ใช่มาตรฐานสากล แต่ละทีมกำหนดเองได้ตามความเสี่ยง</p>
+  <p>เวลา analysis เป็น pull request จะใช้เฉพาะเงื่อนไขที่ผูกกับ new code นอกจากนี้มี “fudge factor” คือกลไกข้ามเงื่อนไข coverage และ duplication เมื่อโค้ดใหม่น้อยเกินไป เอกสารของ SonarQube Cloud ระบุว่าจะข้ามจนกว่าจะมีบรรทัดใหม่อย่างน้อย 20 บรรทัด ส่วน Server ให้ดูเอกสารของเวอร์ชันที่ใช้</p>
+
+  <div class="note warn"><b class="t">ถ้า new code coverage ว่างหรือไม่ขึ้น ให้เช็กตามลำดับนี้</b>หา report ไม่เจอเพราะ path ใน property ผิด (ใน CI แบบ Docker path ของไฟล์อาจต่างจากตอนรัน test) หรือไม่มีบรรทัดใหม่ในช่วง new code จริง ๆ และเคสที่พบบ่อยอีกอย่างคือ CI ใช้ shallow clone ทำให้ scanner หาบรรทัดที่เปลี่ยนจาก SCM ไม่ได้ ซึ่งแก้ด้วยการ clone เต็ม (เช่นตั้ง <code>fetch-depth: 0</code> ใน <code>actions/checkout</code>) ส่วน coverage ที่ไม่อยากนับ เช่น โค้ดที่ generate ขึ้นมา ใช้ <code>sonar.coverage.exclusions</code> ได้ แต่ควรให้ทีมรีวิวรายการ exclusion เป็นระยะ ไม่เช่นนั้นจะกลายเป็นที่ซ่อนโค้ดที่ไม่มี test</div>
+
+  <h4>Coverage สูงไม่ได้แปลว่าตรวจครบ</h4>
+<pre><code>test('calculateTotal รันได้', () =&gt; {
+  calculateTotal([{ price: 10, qty: 1 }]);   <span class="cm">// ไม่มี assertion</span>
+});</code></pre>
+  <p>test นี้ทำให้บรรทัดในฟังก์ชันเป็นสีเขียว แต่ถ้า logic ผิด มันก็ผ่านต่อไป เครื่องมือที่ตอบคำถามว่า test ตรวจผลจริงไหมคือ mutation testing เช่น Stryker (JavaScript/TypeScript), PIT (Java) และ mutmut (Python) หลักการคือแก้โค้ดให้ผิดทีละจุด (mutant) แล้วรัน test ถ้า test ล้มแปลว่าจับ mutant นั้นได้ สัดส่วน mutant ที่ถูกจับเรียกว่า mutation score ข้อเสียคือรันช้า จึงมักใช้กับโมดูลสำคัญหรือรันเฉพาะไฟล์ที่เปลี่ยน</p>
+
+  <div class="quiz" data-topic="t5"></div>
+</section>
+
+<!-- ===== 6 ===== -->
+<section class="topic" id="t6" data-c="6">
+  <div class="t-head"><span class="n" style="background:var(--c6)">6</span><div><h3>ปิดช่องว่างของ coverage อย่างมีเหตุผล</h3><span class="lv k5">Intermediate</span></div></div>
+  <p class="compet">Identify and close gaps in existing test coverage to strengthen code reliability</p>
+
+  <h4>อ่านรายงานแล้วเลือกว่าจะปิดตรงไหนก่อน</h4>
+  <p>เปิดรายงาน HTML ของเครื่องมือ (Jest สร้างที่ <code>coverage/lcov-report/index.html</code> ส่วน coverage.py ใช้ <code>coverage html</code>) แล้วดูบรรทัดสีแดงกับ branch ที่ถูกเดินไปไม่ครบ แต่ไม่ต้องเริ่มจากไฟล์ที่ตัวเลขต่ำสุดเสมอไป ให้ถามก่อนว่าถ้าตรงนี้พังจะเจ็บแค่ไหน โมดูลที่คิดเงิน ตรวจสิทธิ์ ลบข้อมูล หรือเคยมี bug หลุดไป production ควรมาก่อนไฟล์ config ที่ตัวเลขต่ำเพราะแทบไม่มี logic นอกจากนี้ ไฟล์ที่ซับซ้อนสูงและถูกแก้บ่อยก็เสี่ยงกว่าไฟล์ที่ไม่มีใครแตะมาปี</p>
+
+  <h4>ช่องว่างที่เจอบ่อย</h4>
+  <div class="tbl"><table>
+    <tr><th>ช่องว่าง</th><th>ทำไมถึงหลุด</th><th>test ที่ควรเพิ่ม</th></tr>
+    <tr><td><code>catch</code> / error path</td><td>เขียน test แต่เส้นทางปกติ</td><td>ทำให้ dependency โยน error แล้วตรวจว่าโค้ดตอบสนองถูก</td></tr>
+    <tr><td><code>else</code> หรือ early return ที่เกิดน้อย</td><td>ไม่ได้คิดถึง input ที่ทำให้เข้าฝั่งนั้น</td><td>เพิ่ม input ที่ทำให้เงื่อนไขเป็น false</td></tr>
+    <tr><td>ค่า default, <code>??</code>, <code>?.</code></td><td>test ส่งค่าครบทุกครั้ง</td><td>เรียกโดยไม่ส่งค่า และส่ง null/undefined</td></tr>
+    <tr><td>Promise reject / timeout</td><td>ตรวจแต่ resolve</td><td><code>mockRejectedValue</code> และตรวจพฤติกรรมเมื่อ reject</td></tr>
+    <tr><td>ค่าขอบ, collection ว่าง</td><td>ใช้ข้อมูลตัวอย่างที่ “สวย” เสมอ</td><td>array ว่าง, หนึ่งตัว, ตรงเกณฑ์พอดี</td></tr>
+  </table></div>
+
+  <h4>ปิดช่องจริง: จาก branch 40% เป็น 100%</h4>
+  <p>กลับไปที่ <code>retry.js</code> ที่ branch ได้ 40% ช่องที่หายไปคือค่า default เราเขียน test ที่เรียก <code>retry(fn)</code> โดยไม่ส่ง option และตรวจว่าค่า default ทำงานตามที่ตั้งใจจริง คือรอ 1,000 มิลลิวินาทีก่อนลองใหม่</p>
+<pre><code>test('เรียกโดยไม่ส่ง options → ใช้ retries=3 และ delay 1000ms', async () =&gt; {
+  const fn = jest.fn().mockRejectedValueOnce(new Error('e1')).mockResolvedValue('ok');
+
+  const promise = retry(fn);
+  await jest.advanceTimersByTimeAsync(999);
+  expect(fn).toHaveBeenCalledTimes(1);   <span class="cm">// ยังไม่ครบ 1000ms จึงยังไม่ลองใหม่</span>
+  await jest.advanceTimersByTimeAsync(1);
+
+  await expect(promise).resolves.toBe('ok');
+  expect(fn).toHaveBeenCalledTimes(2);
+});</code></pre>
+  <p>หลังเพิ่ม test ตัวนี้ (รันจริงบน Jest 30.5.2) <code>retry.js</code> ได้ branch 100% และ branch ของทั้งโปรเจกต์ทดลองขยับจาก 84.37% เป็น 93.75% จุดที่ควรสังเกตคือ test นี้ไม่ได้เขียนเพื่อดันตัวเลข มันตรวจพฤติกรรมที่ใครสักคนอาจแก้โดยไม่ตั้งใจ ถ้ามีคนเปลี่ยน default จาก 1000 เป็น 100 test นี้ล้มทันที</p>
+
+  <h4>โค้ดเก่าที่ยังไม่มี test เลย</h4>
+  <p>เริ่มจาก characterization test (แนวคิดจากหนังสือ Working Effectively with Legacy Code ของ Michael Feathers) คือเขียน test ที่บันทึกพฤติกรรมปัจจุบันของโค้ดตามที่เป็นอยู่ ไม่ว่าตอนนี้จะถูกหรือผิด แล้วใช้มันเป็นตาข่ายนิรภัยตอนแก้ ถ้าโค้ดรันยากเพราะฝัง <code>new Date()</code>, การเรียก HTTP หรือ singleton ไว้ข้างใน ให้หา seam คือจุดที่เปลี่ยนพฤติกรรมได้โดยไม่แก้ตรรกะ เช่น รับ clock หรือ client เป็น parameter ที่มีค่า default เป็นของจริง จากนั้นค่อยแยกส่วนที่เป็น logic ล้วน ๆ ออกจากส่วนที่ติด I/O เพื่อให้ส่วนแรกทดสอบแบบ unit ได้ง่าย</p>
+<pre><code><span class="cm">// ก่อน: ทดสอบยากเพราะผูกกับเวลาจริง</span>
+function createToken(userId) {
+  return { userId, expiresAt: new Date(Date.now() + 3600 * 1000) };
+}
+
+<span class="cm">// หลัง: seam คือพารามิเตอร์ now ที่มีค่า default เป็นของจริง</span>
+function createToken(userId, now = Date.now()) {
+  return { userId, expiresAt: new Date(now + 3600 * 1000) };
+}</code></pre>
+
+  <h4>อย่าไล่เลข</h4>
+  <p>ถ้าผลักทีมด้วยตัวเลขอย่างเดียว จะเจอ test ที่เขียนให้บรรทัดเป็นสีเขียวโดยไม่มี assertion หรือการ exclude ไฟล์เพื่อให้ผ่านเกณฑ์ คำถามที่ควรถามกับ test ทุกตัวคือ “ถ้าโค้ดตรงนี้ผิด test จะล้มไหม” วิธีตรวจเร็ว ๆ ด้วยมือคือแก้โค้ดจริงให้ผิดนิดเดียว เช่น เปลี่ยน <code>&gt;=</code> เป็น <code>&gt;</code> แล้วรัน test ถ้ายังผ่านก็แปลว่า test ยังไม่ได้ปกป้องจุดนั้น ซึ่งเป็นแนวคิดเดียวกับ mutation testing ที่ทำด้วยมือ</p>
+
+  <div class="quiz" data-topic="t6"></div>
+</section>
+
+<!-- ===== 7 ===== -->
+<section class="topic" id="t7" data-c="7">
+  <div class="t-head"><span class="n" style="background:var(--c7)">7</span><div><h3>Mocking และ stubbing external dependency</h3><span class="lv k5">Intermediate</span></div></div>
+  <p class="compet">Apply mocking/stubbing strategies for external dependencies</p>
+
+  <h4>จัดกลุ่ม dependency แล้วเลือกวิธีควบคุม</h4>
+  <div class="tbl"><table>
+    <tr><th>Dependency</th><th>ปัญหาใน unit test</th><th>วิธีควบคุม</th></tr>
+    <tr><td>เวลา (<code>Date</code>, <code>setTimeout</code>)</td><td>ผลเปลี่ยนตามเวลา และการรอจริงทำให้ช้า</td><td>inject clock, fake timers (<code>jest.useFakeTimers</code>, <code>jest.setSystemTime</code>), <code>monkeypatch</code> ใน pytest</td></tr>
+    <tr><td>ค่าสุ่ม, UUID</td><td>ผลไม่คงที่</td><td>inject generator หรือ <code>jest.spyOn(Math, 'random')</code></td></tr>
+    <tr><td>HTTP API ภายนอก</td><td>ช้า ล่มได้ มีต้นทุน</td><td>mock adapter ของเราเอง หรือจำลองที่ชั้น HTTP ด้วยเครื่องมือเช่น MSW, nock (JavaScript), responses (Python)</td></tr>
+    <tr><td>Database</td><td>ต้องมี infra และมี state</td><td>fake repository สำหรับ unit test และแยก integration test ไปทดสอบ query จริง</td></tr>
+    <tr><td>File system, env var</td><td>ผลขึ้นกับเครื่อง</td><td>ใช้ temp directory, รับ path เป็น parameter, <code>monkeypatch.setenv</code></td></tr>
+    <tr><td>Message queue</td><td>async และต้องมี broker</td><td>mock interface ของ publisher ใน unit test และทดสอบกับ broker จริงใน integration test</td></tr>
+  </table></div>
+
+  <h4>ตัวอย่างเรื่องเวลา</h4>
+  <p>ในฝั่ง Jest fake timers ควบคุมได้ทั้ง <code>setTimeout</code> และ <code>Date</code> test ของ <code>retry</code> ที่เห็นไปแล้วเลื่อนเวลาด้วย <code>jest.advanceTimersByTimeAsync</code> โดยไม่ต้องรอจริง ฝั่ง pytest ใช้ <code>monkeypatch</code> แทนฟังก์ชันเวลา ตัวอย่างนี้ทดสอบขอบของ “หมดอายุเมื่อเกิน TTL” รันผ่านจริงแล้ว</p>
+<pre><code><span class="cm"># clock_demo.py</span>
+import time
+
+def is_expired(created_at: float, ttl_seconds: int) -&gt; bool:
+    return time.time() - created_at &gt; ttl_seconds
+
+<span class="cm"># test_clock_demo.py</span>
+def test_expired_boundary(monkeypatch):
+    monkeypatch.setattr("clock_demo.time.time", lambda: 1000.0)
+    assert is_expired(created_at=900.0, ttl_seconds=100) is False   <span class="cm"># เท่ากับ ttl ยังไม่หมดอายุ</span>
+    assert is_expired(created_at=899.0, ttl_seconds=100) is True</code></pre>
+
+  <h4>จะ mock ที่ชั้นไหน</h4>
+  <p>กับ HTTP API ภายนอก มีสองทางเลือกหลัก ทางแรกคือ mock adapter ของเรา เช่น <code>paymentGateway.charge</code> ทำง่ายและเร็ว แต่ไม่ได้ตรวจว่าเราส่ง URL, header และ body ถูกหรือเปล่า รวมถึงการ parse response ทางที่สองคือจำลองที่ชั้น HTTP ซึ่ง library จริงของเรายังทำงานครบ จึงจับความผิดพลาดพวกนี้ได้ แลกกับ setup ที่มากกว่า หลายทีมเลือกใช้ทั้งสองแบบ คือ mock adapter ใน unit test ของ service และใช้ชั้น HTTP ทดสอบตัว adapter เอง</p>
+
+  <h4>mock ที่ไม่ตรงความจริง (mock drift)</h4>
+  <p>ปัญหาที่เจ็บที่สุดของการ mock คือ test ผ่านหมดแต่ production พัง เพราะ mock ตั้งไว้ว่า API คืน <code>{ id }</code> แต่ของจริงคืน <code>{ orderId }</code> วิธีลดความเสี่ยงคือทดสอบกับ contract จริง เช่น contract test (Pact เป็นตัวอย่างหนึ่ง) หรือตรวจ response ที่ใช้ใน mock เทียบกับ OpenAPI schema และมี integration test ของเส้นทางหลักกับ sandbox ของผู้ให้บริการ ฝั่ง Python มีเครื่องมือเล็ก ๆ ที่ช่วยได้คือ <code>autospec=True</code> ทำให้ mock มี signature เหมือนของจริง เรียกผิดจำนวน argument จะ error ทันที (ตรวจกับ Python 3.13 แล้ว ส่วน mock ธรรมดารับ argument อะไรก็ได้)</p>
+<pre><code>with patch("user_service.send_email", autospec=True) as m:
+    with pytest.raises(TypeError):
+        m("only-one-arg")      <span class="cm"># send_email จริงรับ 2 argument</span></code></pre>
+
+  <h4>วงจรชีวิตของ mock ใน Jest</h4>
+  <p>สามเมธอดนี้ถูกสับสนบ่อยมาก ตารางด้านล่างตรวจพฤติกรรมกับ Jest 30.5.2 แล้ว</p>
+  <div class="tbl"><table>
+    <tr><th>เมธอด</th><th>ล้างประวัติการเรียก</th><th>ลบ implementation ที่ตั้งไว้</th><th>คืนของเดิมที่ถูก spy</th></tr>
+    <tr><td><code>mockClear()</code></td><td>ใช่</td><td>ไม่</td><td>ไม่</td></tr>
+    <tr><td><code>mockReset()</code></td><td>ใช่</td><td>ใช่ (หลังจากนี้คืน <code>undefined</code>)</td><td>ไม่</td></tr>
+    <tr><td><code>mockRestore()</code></td><td>ใช่</td><td>ใช่</td><td>ใช่ (ใช้กับ <code>spyOn</code>)</td></tr>
+  </table></div>
+
+  <h4>Mockito ฝั่ง Java (ตัวอย่าง API ไม่ได้รันในชุดนี้)</h4>
+  <p>หลักการเดียวกัน คือ stub ด้วย <code>when(...).thenReturn(...)</code> และตรวจด้วย <code>verify</code> เมื่อใช้ <code>MockitoExtension</code> จะเปิด strict stubs ไว้ ถ้าตั้ง stub แล้ว test ไม่ได้ใช้ จะเกิด <code>UnnecessaryStubbingException</code> ซึ่งช่วยเตือนให้ลบ stub ที่ไม่จำเป็น</p>
+<pre><code>@ExtendWith(MockitoExtension.class)
+class OrderServiceTest {
+  @Mock PaymentGateway payment;
+  @Mock OrderRepo repo;
+  @InjectMocks OrderService service;
+
+  @Test
+  void doesNotSaveWhenChargeFails() {
+    when(payment.charge("u1", 500)).thenReturn(ChargeResult.failed("INSUFFICIENT_FUNDS"));
+
+    var result = service.checkout("u1", 500);
+
+    assertEquals("FAILED", result.status());
+    verify(repo, never()).save(any());
+  }
+}</code></pre>
+
+  <h4>ใช้ mock แค่ไหนถึงพอดี</h4>
+  <p>แนวทางที่หลายทีมใช้คือ stub ของที่ “ถามค่า” (query) เพื่อให้โค้ดเดินต่อได้ และ verify เฉพาะผลข้างเคียงที่เป็นหัวใจของ requirement เช่น การบันทึกออเดอร์หรือการส่งอีเมล ส่วนการ verify ทุกการเรียกภายในจะทำให้ test พังทุกครั้งที่ refactor ถึงพฤติกรรมภายนอกจะไม่เปลี่ยน</p>
+
+  <div class="quiz" data-topic="t7"></div>
+</section>
+
+<!-- ===== 8 ===== -->
+<section class="topic" id="t8" data-c="8">
+  <div class="t-head"><span class="n" style="background:var(--c8)">8</span><div><h3>Integration กับ dependency ใกล้ความจริง ข้อมูลทดสอบ และ flaky test</h3><span class="lv k5">Intermediate</span></div></div>
+  <p class="compet">Ensure agreed unit test coverage thresholds are achieved and reported; close gaps to strengthen code reliability</p>
+
+  <h4>เมื่อของปลอมไม่พอ</h4>
+  <p>fake repository ที่เก็บข้อมูลใน array เหมาะกับการทดสอบ logic แต่มองไม่เห็นเรื่องที่เกิดเฉพาะกับ database จริง เช่น SQL ที่เขียนผิด constraint แบบ unique, พฤติกรรมของ transaction, migration หรือ timezone ของ column ถ้าอยากรู้เรื่องเหล่านี้ต้องมี integration test กับ database ที่ใกล้ของจริง ตัวเลือกหลัก ๆ มีสองทาง</p>
+  <div class="tbl"><table>
+    <tr><th></th><th>In-memory DB (H2, SQLite)</th><th>Testcontainers (รัน DB จริงใน container)</th></tr>
+    <tr><td>ความเร็วตอนเริ่ม</td><td>เร็ว ไม่ต้องมี Docker</td><td>ช้ากว่า ต้องดึงและสตาร์ท container</td></tr>
+    <tr><td>ความใกล้เคียง production</td><td>ต่ำกว่า SQL dialect และพฤติกรรมบางอย่างต่างกัน</td><td>สูง ใช้ engine และ version เดียวกับของจริงได้</td></tr>
+    <tr><td>ข้อกำหนดของ CI</td><td>แทบไม่มี</td><td>ต้องมี Docker ใน runner</td></tr>
+    <tr><td>เหมาะกับ</td><td>logic ที่ไม่ผูกกับ dialect</td><td>query ซับซ้อน, constraint, migration</td></tr>
+  </table></div>
+
+  <h4>จัดการข้อมูลทดสอบให้ไม่ชนกัน</h4>
+  <p>หลักคือให้แต่ละ test สร้างข้อมูลที่ต้องใช้เอง ผ่าน builder หรือ factory แล้วล้างหลังจบ (rollback transaction หรือ truncate ตามที่ฐานข้อมูลรองรับ) ใช้ ID ที่ไม่ซ้ำเพื่อให้ test ที่รันพร้อมกันไม่เหยียบกัน และไม่พึ่งข้อมูลที่มีคนเตรียมไว้ใน environment กลางเพราะวันหนึ่งมีคนแก้หรือลบ test ก็ล้มโดยไม่มีใครรู้สาเหตุ</p>
+<pre><code>const { randomUUID } = require('node:crypto');
+
+function anOrder(overrides = {}) {
+  return { id: randomUUID(), userId: 'u1', amount: 500, status: 'CREATED', ...overrides };
+}
+
+const paid = anOrder({ status: 'PAID' });   <span class="cm">// ระบุเฉพาะฟิลด์ที่ test นี้สนใจ</span></code></pre>
+
+  <h4>Flaky test: ผลเปลี่ยนทั้งที่โค้ดไม่เปลี่ยน</h4>
+  <p>test ที่ผ่านบ้างล้มบ้างทำลายความเชื่อมั่นเร็วกว่าที่คิด พอทีมชินกับการกด “รันใหม่” ก็จะเริ่มมองข้าม test ที่ล้มจริง สาเหตุที่เจอบ่อยและวิธีรับมือมีดังนี้</p>
+  <div class="tbl"><table>
+    <tr><th>สาเหตุ</th><th>อาการ</th><th>วิธีหาและแก้</th></tr>
+    <tr><td>state ที่แชร์ / พึ่งลำดับการรัน</td><td>รันเดี่ยวผ่าน รันรวมล้ม หรือกลับกัน</td><td>แยก state ต่อ test สุ่มลำดับเพื่อจับ (<code>jest --randomize</code>, plugin pytest-randomly)</td></tr>
+    <tr><td>เวลาจริง / timezone</td><td>ล้มเฉพาะบางช่วงเวลาหรือบางเครื่อง</td><td>inject clock, fake timers, ระบุ timezone ใน config</td></tr>
+    <tr><td>รอด้วย sleep คงที่</td><td>ล้มเมื่อเครื่องช้า และเสียเวลาเมื่อเครื่องเร็ว</td><td>รอ event หรือ condition จริง ใช้ polling พร้อม timeout</td></tr>
+    <tr><td>Promise ที่ไม่ได้ await</td><td>ผ่านบ้างล้มบ้างตามจังหวะ</td><td><code>await</code> หรือ <code>return</code> ทุก Promise, ใช้ <code>expect.assertions(n)</code></td></tr>
+    <tr><td>เรียก service ภายนอกจริง</td><td>ล้มเมื่อเครือข่ายหรือ service ช้า</td><td>stub ใน unit/functional test ใช้ sandbox เฉพาะ integration test</td></tr>
+    <tr><td>รันขนานแล้วใช้ port, ไฟล์ หรือ schema ร่วมกัน</td><td>ล้มเฉพาะตอนรัน parallel</td><td>port สุ่ม, temp directory ต่อ worker, schema แยกต่อ worker</td></tr>
+  </table></div>
+  <p>เมื่อเจอ flaky ให้พิสูจน์ก่อนด้วยการรันซ้ำหลายสิบรอบและรันแบบสุ่มลำดับ แล้วจึงหาสาเหตุ ส่วนการจัดการระดับทีม ทางที่นิยมคือ quarantine คือย้าย test ออกจาก gate ที่บล็อก merge พร้อมเปิด ticket ระบุเจ้าของและกำหนดเวลา ดีกว่าปล่อยให้ทุกคนรัน retry ซ้ำ ๆ ส่วน retry อัตโนมัติเป็นได้แค่มาตรการชั่วคราว และควรนับจำนวน test ที่ผ่านเพราะ retry ไว้ด้วย ไม่งั้นปัญหาจะถูกซ่อน</p>
+
+  <h4>API functional test ควรตรวจอะไรบ้าง</h4>
+  <p>นอกจาก status code ที่ถูกต้อง ให้ตรวจ header ที่มีความหมายอย่าง <code>Location</code> และ <code>Content-Type</code> โครงของ body รูปแบบ error ที่เหมือนกันทุก endpoint การแยก 401 (ยังไม่ยืนยันตัวตน) ออกจาก 403 (ไม่มีสิทธิ์) การ validate input ที่รอยต่อ และพฤติกรรมของ method ที่ควร idempotent อย่าง PUT และ DELETE เมื่อเรียกซ้ำ</p>
+
+  <div class="quiz" data-topic="t8"></div>
+</section>
+
+
+<div class="level-head k2" id="lv-a">
+  <h2>ระดับ Advance</h2>
+  <p>ระดับนี้ไม่ได้ถามว่าเขียน test เก่งแค่ไหน แต่ถามว่าวางกลยุทธ์ให้หลายทีมได้ไหม วางมาตรฐานที่คนใช้จริง ทำให้ชุด test เร็วและดูแลได้ ใช้ตัวชี้วัดกำกับคุณภาพโดยไม่ถูกตัวเลขหลอก และผลักดันให้วัฒนธรรมการทดสอบเกิดขึ้นจริง</p>
+  <p class="roles">ทักษะที่คาดหวัง: กำหนดกลยุทธ์และเป้าหมาย coverage · วางมาตรฐาน · ปรับประสิทธิภาพ · กำกับด้วยเมตริก · ผลักดันวัฒนธรรมและโค้ช</p>
+</div>
+
+<!-- ===== 9 ===== -->
+<section class="topic" id="t9" data-c="1">
+  <div class="t-head"><span class="n" style="background:var(--c1)">9</span><div><h3>กลยุทธ์ unit testing และเป้าหมาย coverage ระดับหลายทีม</h3><span class="lv k2">Advance</span></div></div>
+  <p class="compet">Define and evolve unit testing strategy and coverage goals across teams or projects</p>
+
+  <h4>กลยุทธ์ไม่ใช่ตัวเลข coverage ตัวเดียว</h4>
+  <p>ก่อนตั้งเลขใด ๆ ให้ตอบสามข้อ bug ที่หลุดไป production ของเราเกิดจากอะไรบ้าง ระบบแบ่งเป็นชั้นอย่างไร และ test ชั้นไหนในตอนนี้เปราะหรือช้าที่สุด คำตอบจะบอกว่าควรลงน้ำหนักที่ไหน แนวคิดทั้ง test pyramid และ testing trophy เป็นแค่จุดเริ่มต้นให้คิด ไม่มีรูปทรงไหนถูกเสมอไป</p>
+  <div class="tbl"><table>
+    <tr><th>ลักษณะงาน</th><th>น้ำหนักที่ควรลง</th><th>ข้อควรระวัง</th></tr>
+    <tr><td>Domain logic หนัก (คิดราคา, ค่าธรรมเนียม, กฎสิทธิ์)</td><td>unit test หนาแน่น อาจเสริม property-based test หรือ mutation testing ในโมดูลสำคัญ</td><td>test ที่ผูกกับโครงสร้างภายใน refactor แล้วพังตาม</td></tr>
+    <tr><td>CRUD บาง ๆ บน framework</td><td>integration/API test กับ DB จริงมักคุ้มกว่า unit test ของ controller</td><td>unit test ที่ mock ทุกอย่างแทบไม่ตรวจอะไร</td></tr>
+    <tr><td>หลาย microservice</td><td>unit ในแต่ละ service + contract test ระหว่าง service + E2E น้อยตัวที่ครอบ journey สำคัญ</td><td>E2E จำนวนมากช้าและ flaky</td></tr>
+    <tr><td>Frontend</td><td>component test ที่ทดสอบพฤติกรรมที่ผู้ใช้เห็น + unit ของ logic ที่แยกออกมา</td><td>snapshot ที่ไม่มีใครอ่านตอนอัปเดต</td></tr>
+    <tr><td>Legacy ที่ไม่มี test</td><td>characterization test เฉพาะจุดที่กำลังแก้ + gate ที่ new code</td><td>อย่ารอเขียนทั้งระบบก่อนค่อยเริ่ม</td></tr>
+  </table></div>
+
+  <h4>ตั้งเป้า coverage เป็นชั้น ๆ</h4>
+  <p>เป้าหมายเดียวทั้งองค์กรมักไม่เวิร์ก ทางที่ใช้ได้จริงคือแยกเป็นหลายชั้น ชั้นแรกคือ gate ที่ new code ซึ่ง SonarQube ตั้งต้นไว้ที่ 80% ชั้นที่สองคือ ratchet คือ coverage รวมห้ามต่ำกว่าค่าปัจจุบัน แล้วขยับเป้าขึ้นเป็นช่วง ๆ ชั้นที่สามคือโมดูลที่เสี่ยงสูงตั้งเกณฑ์เข้มกว่า (เช่น โมดูลที่เกี่ยวกับเงินหรือสิทธิ์) และชั้นที่สี่คือข้อยกเว้นต้องบันทึกเหตุผล เจ้าของ และวันที่ทบทวน ตัวเลขทั้งหมดนี้ทีมต้องกำหนดเองจากบริบท ไม่มีตัวเลขสากลที่ถูกเสมอ</p>
+  <p>เหตุผลที่เริ่มที่ new code คือ ระบบเก่าที่ coverage 20% ปรับเป็น 80% ในไม่กี่เดือนไม่ได้ ถ้าตั้งเกณฑ์กับ coverage รวมทันที ทุก PR จะถูกบล็อกจากเรื่องที่ผู้เขียนไม่ได้ก่อ ทีมจะเริ่มหาทางเลี่ยง ส่วนการ gate ที่ new code ทำให้ของใหม่มีคุณภาพตามเกณฑ์ และตัวเลขรวมค่อย ๆ ดีขึ้นตามธรรมชาติ</p>
+
+  <h4>ขยายไปหลายทีมอย่างไรไม่ให้เกิดแรงต้าน</h4>
+  <p>เริ่มจากวัดสถานะปัจจุบันของแต่ละทีม (baseline) แล้วตกลงนิยามร่วมกัน เช่น อะไรนับเป็น unit test อะไรเป็น integration จากนั้นทำ template ของ pipeline กลางที่ตั้ง coverage report และ SonarQube ให้เรียบร้อย ทีมที่เริ่มทีหลังจะได้ไม่ต้องตั้งเอง ทดลองกับหนึ่งถึงสองทีมก่อน (pilot) เก็บปัญหาจริง แล้วค่อยขยาย ทบทวนกลยุทธ์เป็นรอบ เช่น ทุกไตรมาส โดยดูจากเมตริกและ incident ที่เกิด trade-off ของมาตรฐานกลางคือความสม่ำเสมอแลกกับความยืดหยุ่น ทางออกที่ใช้บ่อยคือให้ override ได้เมื่อมีเหตุผลที่บันทึกไว้</p>
+
+  <h4>สิ่งที่ตั้งใจไม่ทดสอบก็ได้ แต่ต้องตัดสินใจอย่างเปิดเผย</h4>
+  <p>getter/setter ธรรมดา โค้ดที่ generate จากเครื่องมือ (เช่น client ที่สร้างจาก OpenAPI spec) และ glue code ของ framework มีมูลค่าต่อการทดสอบต่ำ ให้ exclude แบบที่ทบทวนได้และมีเหตุผลกำกับ แล้วไปทดสอบที่ต้นทางแทน เช่น ทดสอบ spec หรือตัว generator ถ้า exclude แบบเงียบ ๆ รายการจะโตจนกลายเป็นที่ซ่อนโค้ดเสี่ยง</p>
+
+  <div class="quiz" data-topic="t9"></div>
+</section>
+
+<!-- ===== 10 ===== -->
+<section class="topic" id="t10" data-c="2">
+  <div class="t-head"><span class="n" style="background:var(--c2)">10</span><div><h3>มาตรฐานการเขียนโค้ดและ test ที่ขยายได้</h3><span class="lv k2">Advance</span></div></div>
+  <p class="compet">Establish coding and testing guidelines to ensure consistency and scalability of unit tests</p>
+
+  <h4>มาตรฐานที่ควรเขียนไว้</h4>
+  <p>ข้อกำหนดที่ดีสั้นและตรวจได้ ตารางนี้เป็นตัวอย่างหมวดที่ทีมส่วนใหญ่ควรตกลงกัน แต่ละข้อควรมีเหตุผลกำกับ เพื่อให้คนที่เห็นต่างเถียงกับเหตุผลได้ ไม่ใช่เถียงกับคนเขียน</p>
+  <div class="tbl"><table>
+    <tr><th>หมวด</th><th>ตัวอย่างข้อกำหนด</th><th>เหตุผล</th></tr>
+    <tr><td>ชื่อและโครงสร้าง</td><td>ชื่อ test บอกพฤติกรรมและเงื่อนไข ใช้โครง Arrange–Act–Assert</td><td>ล้มใน CI แล้วอ่านชื่อก็รู้ว่าอะไรพัง</td></tr>
+    <tr><td>ขอบเขต unit</td><td>unit test ห้ามแตะ network, database, เวลาจริง ถ้าแตะต้องติด tag integration</td><td>รักษาความเร็วและความเสถียรของ suite หลัก</td></tr>
+    <tr><td>นโยบาย mock</td><td>mock ที่ขอบระบบ (HTTP, DB, เวลา) ส่วนคลาสภายในใช้ของจริงหรือ fake กลาง</td><td>ลดความเปราะเวลา refactor</td></tr>
+    <tr><td>ข้อมูลทดสอบ</td><td>สร้างผ่าน builder ต่อ test ไม่แชร์ object ที่แก้ค่าได้</td><td>test ไม่เหยียบกัน รันขนานได้</td></tr>
+    <tr><td>Assertion</td><td>ทุก test ต้องมี assertion ที่ตรวจผล ไม่มี <code>if</code>/loop ใน test</td><td>กัน test ที่ผ่านโดยไม่ได้ตรวจอะไร</td></tr>
+    <tr><td>Definition of Done</td><td>โค้ดใหม่และ bug fix ต้องมี test และ new-code coverage ผ่าน gate</td><td>ทำให้ test เป็นส่วนหนึ่งของงาน</td></tr>
+  </table></div>
+
+  <h4>anti-pattern ที่ควรรู้จักชื่อ</h4>
+  <div class="tbl"><table>
+    <tr><th>Anti-pattern</th><th>ปัญหา</th><th>ทางแก้</th></tr>
+    <tr><td>Assertion-free test</td><td>รันผ่านแต่ไม่ตรวจอะไร ดัน coverage ปลอม</td><td>บังคับด้วย lint rule และรีวิว</td></tr>
+    <tr><td>Logic ใน test (loop, if)</td><td>test ซับซ้อนและอาจมี bug เอง บาง assertion อาจไม่ถูกรัน</td><td>ใช้ <code>test.each</code> / parametrize</td></tr>
+    <tr><td>Shared mutable fixture</td><td>test ผูกกัน ผ่านหรือล้มตามลำดับ</td><td>สร้างข้อมูลใหม่ต่อ test</td></tr>
+    <tr><td>ทดสอบ private method หรือรายละเอียดภายใน</td><td>refactor โดยพฤติกรรมเดิมก็ทำให้ test ล้ม</td><td>ทดสอบผ่านพฤติกรรมสาธารณะ</td></tr>
+    <tr><td>Over-mocking</td><td>test ผูกกับวิธีทำ ไม่ใช่ผลที่ต้องได้</td><td>mock เฉพาะที่ขอบระบบ</td></tr>
+    <tr><td>Skip หรือคอมเมนต์ test ทิ้งโดยไม่มีร่องรอย</td><td>ช่องว่างที่ไม่มีใครรู้</td><td>กติกา: skip ต้องมี ticket เจ้าของ และวันหมดอายุ</td></tr>
+  </table></div>
+
+  <h4>บังคับด้วยเครื่องมือ ไม่ใช่ด้วยเอกสารอย่างเดียว</h4>
+  <p>กติกาที่ต้องจำเอง ไม่นานก็ถูกลืม ถ้าตรวจอัตโนมัติได้ให้ตรวจใน CI ตัวอย่างนี้เปิดกฎของ <code>eslint-plugin-jest</code> ผมลองรันกับ ESLint 10.15.0 และ eslint-plugin-jest 29.17.0 กับไฟล์ที่มี test ไม่มี assertion, test ที่ถูก skip และ <code>expect</code> ใต้ <code>if</code> ซึ่งทั้งสามถูกจับครบ</p>
+<pre><code><span class="cm">// eslint.config.mjs</span>
+import jest from 'eslint-plugin-jest';
+
+export default [
+  {
+    files: ['**/*.test.js'],
+    plugins: { jest },
+    rules: {
+      'jest/expect-expect': 'error',          <span class="cm">// test ต้องมี assertion</span>
+      'jest/no-conditional-expect': 'error',  <span class="cm">// ห้าม expect ใต้ if/catch</span>
+      'jest/no-disabled-tests': 'warn',       <span class="cm">// เตือนเมื่อมี test.skip</span>
+      'jest/no-focused-tests': 'error',       <span class="cm">// ห้าม test.only หลุดเข้า main</span>
+      'jest/valid-expect': 'error',
+    },
+  },
+];</code></pre>
+  <p>ส่วนฝั่ง Python ใช้ marker และ <code>--strict-markers</code> เพื่อกันชื่อ marker ที่พิมพ์ผิด และฝั่ง Java ใช้ tag ของ JUnit (<code>@Tag("integration")</code>) แยกชั้นของ test เพื่อรันคนละจังหวะใน pipeline</p>
+
+  <h4>ทำให้มาตรฐานขยายได้</h4>
+  <p>หลักการที่ไม่ขึ้นกับภาษา เช่น Arrange–Act–Assert, test ต้อง independent, นโยบาย mock ควรแยกจากตัวอย่างและ config เฉพาะภาษา เพื่อให้ทีมที่ใช้ภาษาต่างกันใช้เอกสารเดียวกันได้ จากนั้นให้มี shared test utility (builder, fake ที่ใช้ซ้ำ) ใน package กลาง, template โปรเจกต์ที่ตั้ง lint, coverage และ CI ไว้ให้, PR template ที่มี checklist เรื่อง test และตัวอย่าง “test ที่ดี” จริงใน repo เอกสารควรมีเจ้าของและเวอร์ชัน บอกวันที่แก้และเหตุผล เพื่อให้เป็นเอกสารที่เปลี่ยนตามบทเรียน ไม่ใช่ประกาศที่ตายตัว</p>
+
+  <div class="quiz" data-topic="t10"></div>
+</section>
+
+<!-- ===== 11 ===== -->
+<section class="topic" id="t11" data-c="3">
+  <div class="t-head"><span class="n" style="background:var(--c3)">11</span><div><h3>ปรับประสิทธิภาพ test: ลดความซ้ำ เร็วขึ้น ดูแลง่าย</h3><span class="lv k2">Advance</span></div></div>
+  <p class="compet">Optimize test efficiency by reducing redundancy, improving runtime, and ensuring maintainability</p>
+
+  <h4>วัดก่อนปรับ</h4>
+  <p>suite ที่ช้ามักไม่ได้ช้าทั้งหมด แต่ช้าที่ไม่กี่จุด ใช้เครื่องมือบอกก่อนเดา ฝั่ง pytest ใช้ <code>pytest --durations=10</code> แสดง test ที่ช้าที่สุดสิบตัว ฝั่ง Jest ใช้ <code>--verbose</code> ดูเวลาของแต่ละ test แล้วดูว่าเวลาหมดไปกับขั้นตอนไหน เป็น setup, การรอ, หรือ I/O จริงที่หลุดเข้ามา การเพิ่ม worker เป็นสองเท่าโดยไม่รู้สาเหตุอาจทำให้ปัญหา flaky เพิ่มขึ้นแทนที่จะเร็วขึ้น</p>
+
+  <h4>ลดความซ้ำซ้อน</h4>
+  <p>ความซ้ำที่เจอบ่อยคือกฎเดียวกันถูกทดสอบครบทุกกรณีทั้งในชั้น unit, API และ E2E ซึ่งแปลว่าเสียเวลารันและเสียเวลาแก้สามที่เมื่อกฎเปลี่ยน แนวทางคือเก็บรายละเอียดทุกกรณีไว้ที่ชั้นล่างสุดที่จับได้ แล้วให้ชั้นบนมีเคสตัวแทนไม่กี่เคสเพื่อยืนยันว่าชิ้นส่วนต่อกันถูก test ที่คล้ายกันหลายตัวให้รวมเป็น parameterized test ส่วน test ที่ไม่มีใครรู้ว่าปกป้องอะไร ให้ตรวจก่อนลบ ด้วย mutation testing หรือด้วยการแก้โค้ดให้ผิดแล้วดูว่ามี test ล้มหรือไม่ pytest-cov มีตัวเลือก <code>--cov-context=test</code> ที่บันทึกว่า test ไหนรันบรรทัดไหน ใช้หา test ที่ครอบคลุมเท่ากันได้</p>
+
+  <h4>ลดเวลารัน</h4>
+  <div class="tbl"><table>
+    <tr><th>เทคนิค</th><th>ตัวอย่าง</th><th>เงื่อนไข / trade-off</th></tr>
+    <tr><td>รันขนาน</td><td>Jest แยก worker ตามไฟล์ (ปรับด้วย <code>--maxWorkers</code>), pytest-xdist (<code>-n auto</code>), JUnit parallel execution</td><td>test ต้อง independent ถ้าแชร์ port, ไฟล์ หรือ schema จะ flaky</td></tr>
+    <tr><td>แบ่ง shard ใน CI</td><td><code>jest --shard=1/3</code></td><td>ต้องรวมรายงาน coverage จากทุก shard ก่อนตรวจ threshold หรือส่งเข้า SonarQube</td></tr>
+    <tr><td>รันเฉพาะที่เกี่ยวข้อง</td><td><code>jest --changedSince=origin/main</code>, <code>--onlyChanged</code></td><td>เหมาะกับ feedback ระหว่างพัฒนา ควรรันครบอีกรอบก่อน merge</td></tr>
+    <tr><td>ตัดการรอเปล่า</td><td>แทน <code>sleep</code> ด้วย fake timers หรือรอ event</td><td>ต้องออกแบบโค้ดให้ควบคุมเวลาได้</td></tr>
+    <tr><td>ย้าย setup ที่แพงไปครั้งเดียว</td><td><code>beforeAll</code> หรือ fixture scope แบบ module</td><td>ใช้ได้เมื่อของที่สร้างเป็น read-only และล้างข้อมูลหลังจบ</td></tr>
+    <tr><td>แยก suite เร็วและช้า</td><td>tag unit กับ integration แล้วรันคนละจังหวะ</td><td>suite เร็วรันทุก commit suite ช้ารันทุก PR หรือรายคืน</td></tr>
+  </table></div>
+
+  <h4>ดูแลง่าย: DRY กับ DAMP</h4>
+  <p>ในโค้ดปกติเรากำจัดความซ้ำ แต่ใน test มีแนวคิดที่เรียกว่า DAMP (Descriptive And Meaningful Phrases) คือยอมให้ซ้ำบ้างถ้าทำให้ test แต่ละตัวอ่านจบในที่เดียวและเห็นเจตนาชัด helper ที่ซ่อนข้อมูลสำคัญไว้ลึกเกินไปบังคับให้คนต้องกระโดดไปมาระหว่างไฟล์เพื่อรู้ว่า test ตัวนี้ใช้ข้อมูลอะไร builder ที่ให้ระบุเฉพาะฟิลด์ที่เกี่ยวข้องกับ test เป็นจุดสมดุลที่ใช้ได้ดี และเพราะ test เป็นโค้ด จึงควรได้รับการรีวิวและ refactor เหมือนโค้ดหลัก รวมถึงลบ test ที่ปกป้องพฤติกรรมที่ requirement ยกเลิกไปแล้ว</p>
+
+  <h4>หนึ่ง property แทนหลายตัวอย่าง</h4>
+  <p>property-based testing (fast-check ใน JavaScript, Hypothesis ใน Python) ให้เราเขียนคุณสมบัติที่ต้องเป็นจริงเสมอ เช่น “ยอดรวมหลังลดต้องไม่เกินยอดก่อนลด” แล้วให้เครื่องมือสุ่มข้อมูลจำนวนมากมาทดสอบ ช่วยเจอกรณีที่ไม่ได้คิดถึง แลกกับความซับซ้อนในการเขียน property และต้องกำหนด seed เพื่อให้ทำซ้ำได้เมื่อล้ม</p>
+
+  <div class="quiz" data-topic="t11"></div>
+</section>
+
+<!-- ===== 12 ===== -->
+<section class="topic" id="t12" data-c="4">
+  <div class="t-head"><span class="n" style="background:var(--c4);color:#3a2700">12</span><div><h3>Quality governance ด้วยตัวชี้วัด</h3><span class="lv k2">Advance</span></div></div>
+  <p class="compet">Establish metrics-driven quality governance (e.g., coverage %, defect leakage, test pass/fail trends)</p>
+
+  <h4>ตัวชี้วัดที่ใช้บ่อย และกับดักของแต่ละตัว</h4>
+  <div class="tbl"><table>
+    <tr><th>ตัวชี้วัด</th><th>บอกอะไร</th><th>กับดัก</th></tr>
+    <tr><td>Coverage บน new code / รวม / branch</td><td>สัดส่วนโค้ดที่ test รัน</td><td>ไม่บอกว่าตรวจผลหรือเปล่า ดันตัวเลขได้ด้วย test ที่ไม่มี assertion</td></tr>
+    <tr><td>Mutation score</td><td>สัดส่วน mutant ที่ test จับได้ สะท้อนคุณภาพ assertion</td><td>รันช้า ใช้กับโมดูลสำคัญหรือไฟล์ที่เปลี่ยน</td></tr>
+    <tr><td>Pass/fail trend</td><td>แนวโน้มความเขียวของ build</td><td>เขียวตลอดอาจเพราะ test ถูก skip หรือ retry ปิดปัญหา</td></tr>
+    <tr><td>Flaky rate</td><td>สัดส่วนครั้งที่ test เปลี่ยนผลโดยไม่มีการเปลี่ยนโค้ด</td><td>ต้องนิยามและเก็บข้อมูลรันซ้ำให้ได้ก่อน</td></tr>
+    <tr><td>Suite duration (เช่น p50/p95)</td><td>ความเร็วของ feedback</td><td>เฉลี่ยอย่างเดียวซ่อนรอบที่ช้ามาก</td></tr>
+    <tr><td>Defect leakage / escaped defects</td><td>defect ที่หลุดไปหลังปล่อย</td><td>ต้องนิยามช่วงเวลาและชนิดของ defect ให้ตรงกัน</td></tr>
+    <tr><td>Change failure rate (กลุ่ม DORA)</td><td>สัดส่วนการ deploy ที่ต้องแก้ด่วนหรือ rollback</td><td>เป็นผลรวมของหลายปัจจัย ไม่ใช่เฉพาะ test</td></tr>
+  </table></div>
+
+  <h4>Defect leakage: คิดอย่างไร</h4>
+  <p>นิยามที่ใช้กันบ่อยคือ defect ที่พบหลังปล่อย หารด้วย defect ทั้งหมดที่พบก่อนและหลังปล่อย ตัวเลขด้านล่างเป็นตัวอย่างสมมติเพื่อฝึกคำนวณ ไม่ใช่ข้อมูลจริงหรือเกณฑ์อ้างอิง</p>
+<pre><code>ก่อนปล่อยพบ 36 รายการ, หลังปล่อยพบ 4 รายการ
+Defect leakage = 4 / (36 + 4) = 10%
+Defect Removal Efficiency (DRE) = 36 / (36 + 4) = 90%</code></pre>
+  <p>ทีมต้องตกลงให้ชัดว่านับ defect ช่วงเวลาไหนหลังปล่อย (เช่นภายใน 30 วัน) และไม่นับ requirement ที่เปลี่ยนภายหลังเป็น defect ไม่งั้นตัวเลขของทีมต่าง ๆ เทียบกันไม่ได้</p>
+
+  <h4>อ่านเทรนด์ให้เป็น</h4>
+  <p>ตัวเลขเดียวหลอกได้ง่าย การอ่านคู่กันบอกเรื่องราวมากกว่า ถ้า coverage ขึ้นจาก 60% เป็น 85% แต่ defect ที่หลุดไม่ลดเลย แสดงว่า test ที่เพิ่มอาจไม่ได้ตรวจอะไร ให้ตรวจด้วย mutation score และดูว่า defect หลุดจากโมดูลไหน ถ้า pass rate คงที่ที่ 98% แต่ flaky rate สูงขึ้น ความเชื่อมั่นต่อ pipeline กำลังลดลงทั้งที่ตัวเลขดูปกติ ถ้า suite duration เพิ่มขึ้นเรื่อย ๆ feedback ช้าลง คนจะรันน้อยลงและ commit ก้อนใหญ่ขึ้น และถ้า defect ซ้ำที่โมดูลเดิม แปลว่ามีช่องว่างของ test เฉพาะจุดที่ควรปิด</p>
+
+  <h4>วางกลไกกำกับ</h4>
+  <p>เมตริกที่คำนวณอัตโนมัติได้ (coverage บน new code, ผลของ test, ความซ้ำของโค้ด) ให้ใส่ใน quality gate ของ CI เพื่อไม่ต้องพึ่งการตามเตือนด้วยคน เมตริกที่ต้องตีความ (leakage, flaky rate, เทรนด์) ให้มีเจ้าของและจังหวะทบทวนที่ทีมตกลง พร้อมกระบวนการยกเว้นที่บันทึกเหตุผลและวันหมดอายุ การตั้งเกณฑ์ให้เริ่มจากค่าจริงของวันนี้แล้วบังคับว่าห้ามแย่ลง จากนั้นขยับขึ้นเป็นช่วง ๆ ตามข้อมูล จะได้รับการยอมรับมากกว่าการประกาศเกณฑ์สูงลิ่วในวันแรก</p>
+  <div class="note warn"><b class="t">Goodhart’s law</b>เมื่อตัวชี้วัดถูกใช้เป็นเป้าหมายเดียว คนจะปรับพฤติกรรมเพื่อให้ตัวเลขดี จนตัวเลขไม่สะท้อนคุณภาพจริง เช่น เขียน test ไม่มี assertion ให้ coverage ผ่าน หรือ exclude ไฟล์ วิธีลดความเสี่ยงคือดูหลายตัวคู่กัน (coverage คู่กับ mutation score และ leakage) และไม่ใช้เมตริกเหล่านี้ประเมินผลงานรายบุคคล</div>
+
+  <div class="quiz" data-topic="t12"></div>
+</section>
+
+<!-- ===== 13 ===== -->
+<section class="topic" id="t13" data-c="5">
+  <div class="t-head"><span class="n" style="background:var(--c5)">13</span><div><h3>ผลักดัน testing culture: อบรม โค้ช และวัดการยอมรับ</h3><span class="lv k2">Advance</span></div></div>
+  <p class="compet">Drive adoption of testing culture across teams through training and coaching</p>
+
+  <h4>ทำไมการ adopt ถึงล้มเหลวบ่อย</h4>
+  <p>เหตุผลที่เจอซ้ำ ๆ คือ test ช้าหรือ flaky จนไม่มีใครเชื่อผล ไม่มีเวลาเพราะ test ถูกเลื่อนทุก sprint ไม่มีเจ้าของที่ดูแลมาตรฐานต่อเนื่อง วัดด้วยตัวเลขอย่างเดียวจนคนเขียน test เพื่อให้ตัวเลขผ่าน และจัดอบรมครั้งเดียวแล้วหายไป การแก้จึงไม่ใช่การสั่งให้เขียนเยอะขึ้น แต่คือทำให้การเขียน test เป็นทางที่ง่ายและคุ้ม</p>
+
+  <h4>สี่กลไกที่ทำงานร่วมกัน</h4>
+  <p><b>ทำให้ง่าย</b> ด้วย feedback ที่เร็ว template โปรเจกต์ที่ตั้งเครื่องมือไว้แล้ว และ shared utility <b>ทำให้เห็น</b> ด้วย gate ที่ new code ใน pull request และ dashboard ที่ทุกคนเข้าถึงได้ <b>ทำให้เป็นส่วนของงาน</b> ด้วย Definition of Done ที่มี test, การรีวิวที่ดูคุณภาพ test และกติกาว่า bug fix ต้องมี regression test <b>ทำให้เรียนรู้ได้</b> ด้วยการ pair, kata, session แบ่งปันความรู้ และเครือข่ายคนในทีมที่ช่วยกัน</p>
+
+  <h4>รูปแบบการอบรมและโค้ช</h4>
+  <div class="tbl"><table>
+    <tr><th>รูปแบบ</th><th>ใช้เมื่อ</th><th>ข้อควรระวัง</th></tr>
+    <tr><td>Workshop แบบลงมือบนโค้ดจริงของทีม</td><td>เริ่มต้นกับทีมที่ยังไม่มีพื้นฐาน</td><td>ตัวอย่างต้องใกล้งานจริง ไม่ใช่โจทย์ในตำรา</td></tr>
+    <tr><td>Pair / mob programming</td><td>ถ่ายทอดวิธีคิดตอนออกแบบ test</td><td>ให้ผู้เรียนเป็นคนพิมพ์ ผู้โค้ชถามนำ</td></tr>
+    <tr><td>Code kata</td><td>ฝึกจังหวะ red–green–refactor โดยไม่มีแรงกดดันของงานจริง</td><td>แยกจากงานส่ง ไม่ใช้เป็นข้อสอบวัดคน</td></tr>
+    <tr><td>วิเคราะห์ bug จริงแล้วเขียน test ที่จะจับได้</td><td>ชวนให้เห็นคุณค่าด้วยเหตุการณ์ของตัวเอง</td><td>ไม่ใช้เพื่อหาคนผิด</td></tr>
+    <tr><td>รีวิว test ใน pull request</td><td>สร้างมาตรฐานต่อเนื่อง</td><td>ผู้รีวิวต้องมีเกณฑ์ชัด ไม่งั้นเป็นเรื่องรสนิยม</td></tr>
+    <tr><td>Test champion ประจำทีม</td><td>ทีมใหญ่ที่ต้องการคนช่วยใกล้ตัว</td><td>ไม่ใช่คนเขียน test แทนทุกคน</td></tr>
+  </table></div>
+
+  <h4>เมื่อเจอแรงต้าน</h4>
+  <p>ประโยคอย่าง “ไม่มีเวลาเขียน test” มักมีเรื่องอื่นซ่อนอยู่ เช่น test ที่ผ่านมาช้าและเปราะ หรือไม่เห็นว่าได้อะไรกลับมา ลองถามว่าเดือนที่แล้วเสียเวลากับการแก้ hotfix และ debug ใน production รวมเท่าไร แล้วเสนอกติกาเล็ก ๆ ที่เห็นผลเร็ว เช่น ทุก bug fix ต้องมี regression test แทนที่จะบังคับ TDD ทุกงานทันที TDD ช่วยให้โค้ดออกแบบให้ทดสอบได้และให้ feedback เร็วในหลายงาน แต่เป็นวิธีทำงานที่ไม่ได้เหมาะกับทุกคนและทุกงาน การบังคับเป็นกฎเดียวมักได้แค่การทำตามพิธี เมื่อเจอผู้มีประสบการณ์สูงที่เชื่อว่าโค้ดตัวเองไม่ต้อง test ให้ใช้ข้อมูลจาก incident จริงของทีมและคุยเรื่องความเสี่ยงของระบบ ไม่ใช่ความสามารถของตัวบุคคล</p>
+
+  <h4>วัดการ adopt โดยไม่ให้ถูกเล่นเกม</h4>
+  <p>ตัวชี้วัดที่ตรงกับพฤติกรรมที่เราอยากเห็นและเล่นเกมยากกว่า ได้แก่ สัดส่วน pull request แก้ bug ที่มี regression test แนวโน้ม new-code coverage ควบคู่กับ mutation score ในโมดูลสำคัญ flaky rate เวลา feedback ของ pipeline และผลสำรวจสั้น ๆ ว่าทีมมั่นใจแค่ไหนเวลาแก้โค้ดเดิม ส่วนอันดับรายบุคคลหรือจำนวนบรรทัด test ต่อคนทำให้คนเขียน test เพื่อตัวเลข จึงควรหลีกเลี่ยง</p>
+
+  <div class="quiz" data-topic="t13"></div>
+</section>
+
+
+<!-- ===== 14 CODING LAB ===== -->
+<section class="topic" id="code" data-c="6">
+  <div class="t-head"><span class="n" style="background:var(--c6)">14</span><div><h3>Coding Lab: เขียนและแก้ test แบบที่เจอในข้อสอบภาคปฏิบัติ</h3><span class="lv k5">Beginner – Intermediate</span> <span class="lv kd">HackerRank-style</span></div></div>
+  <p class="compet">ลองทำเองก่อนกดดูเฉลย โจทย์ทุกข้อใช้โค้ดที่รันผ่านจริงบน Jest 30.5.2 (Node 22) หรือ pytest 9.1.1 (Python 3.13)</p>
+
+  <h4>ข้อสอบภาคปฏิบัติของ HackerRank ทำงานอย่างไร</h4>
+  <p>จากเอกสารของ HackerRank คำถามกลุ่ม Front-end, Back-end, Full-stack, Mobile และ QA Engineer เป็นโจทย์แบบโปรเจกต์ มีไฟล์หลายไฟล์ ใน IDE บนเว็บ มี terminal และปุ่มรัน ผู้ตั้งโจทย์เลือกให้คะแนนอัตโนมัติจากจำนวน unit test ที่ผ่านได้ (รองรับ JUnit, xUnit, TAP) และเอกสารยกตัวอย่างว่าถ้าใช้ JUnit ซึ่งเป็นค่าเริ่มต้น แต่ละ test มีน้ำหนักเท่ากัน เช่น ข้อละ 50 คะแนนมี 5 test ผ่าน 3 ตัวได้ 30 คะแนน ผู้ตั้งโจทย์ยังตั้งให้ไฟล์ test เป็น read-only ได้ด้วย ดังนั้นแนวทางที่ใช้ได้จริงคือ รัน test ในเครื่องก่อนส่ง อ่านข้อความของ assertion ที่ล้มแล้วหาว่าโค้ดหรือการตั้งค่าผิดตรงไหน และไม่แก้ไฟล์ test ที่ถูกล็อก ชนิดคำถามทั้งหมดที่ HackerRank ระบุไว้ ได้แก่ Coding, Multiple Choice, Sentence Completion, Code Review, QA Engineer, Back-end Developer และอื่น ๆ ชุดนี้จึงมีโจทย์เลือกตอบ เติมคำ อ่านโค้ด และเขียน/แก้ test ให้ครบรูปแบบเหล่านี้</p>
+
+  <details class="sol"><summary>L1. เขียน test ให้ <code>calculateTotal</code> ให้ครบตามสเปก (Jest)</summary>
+    <p>สเปก: รับ <code>items</code> (array ของ <code>{ price, qty }</code>) และ <code>coupon</code> ถ้า items ไม่ใช่ array หรือว่างให้ throw <code>Error</code> ถ้า <code>price &lt; 0</code> หรือ <code>qty &lt;= 0</code> ให้ throw <code>RangeError</code> คูปอง <code>SAVE10</code> ลด 10% คูปอง <code>FREE100</code> ลด 100 บาทเมื่อยอดรวมตั้งแต่ 1,000 ขึ้นไป ผลปัดเป็นทศนิยม 2 ตำแหน่ง ให้เขียน test ที่ครอบคลุม partition และ boundary ทั้งหมด</p>
+<pre><code>function calculateTotal(items, coupon) {
+  if (!Array.isArray(items) || items.length === 0) throw new Error('items must be a non-empty array');
+  let subtotal = 0;
+  for (const { price, qty } of items) {
+    if (price &lt; 0 || qty &lt;= 0) throw new RangeError('invalid price or qty');
+    subtotal += price * qty;
+  }
+  let total = subtotal;
+  if (coupon === 'SAVE10') total = subtotal * 0.9;
+  else if (coupon === 'FREE100' &amp;&amp; subtotal &gt;= 1000) total = subtotal - 100;
+  return Math.round(total * 100) / 100;
+}</code></pre>
+    <p class="ans">แนวคิด: ไล่ทีละประโยคของสเปก แต่ละประโยคมีอย่างน้อยหนึ่ง test และเพิ่มค่ารอบเกณฑ์ 1,000</p>
+<pre><code>describe('calculateTotal', () =&gt; {
+  const items = [{ price: 199.5, qty: 2 }, { price: 50, qty: 1 }];
+
+  test('รวมราคาโดยไม่มีคูปอง', () =&gt; { expect(calculateTotal(items)).toBe(449); });
+  test('SAVE10 ลด 10%', () =&gt; { expect(calculateTotal(items, 'SAVE10')).toBeCloseTo(404.1, 2); });
+
+  test.each([[999.99, 999.99], [1000, 900], [1000.01, 900.01]])(
+    'FREE100 subtotal=%p → %p', (subtotal, expected) =&gt; {
+      expect(calculateTotal([{ price: subtotal, qty: 1 }], 'FREE100')).toBe(expected);
+    });
+
+  test('ตะกร้าว่างต้อง throw', () =&gt; { expect(() =&gt; calculateTotal([])).toThrow('non-empty'); });
+  test.each([[{ price: -1, qty: 1 }], [{ price: 10, qty: 0 }]])('ข้อมูลผิด %p → RangeError', (bad) =&gt; {
+    expect(() =&gt; calculateTotal([bad])).toThrow(RangeError);
+  });
+});</code></pre>
+    <p>ผลรันจริง: ผ่านทุกตัว และ <code>pricing.js</code> ได้ line 100% branch 100% ข้อที่คนมักพลาดคือไม่ลองค่ารอบ 1,000 และลืมว่า <code>toThrow</code> ต้องห่อด้วยฟังก์ชัน</p>
+  </details>
+
+  <details class="sol"><summary>L2. เขียน test ของ <code>OrderService.checkout</code> โดยไม่ใช้ payment จริง (Jest)</summary>
+    <p>โจทย์: ใช้ class <code>OrderService</code> จากหัวข้อ 3 เขียน test สามกรณี จ่ายสำเร็จ จ่ายไม่ผ่าน และ amount ไม่ถูกต้อง โดยเวลาของออเดอร์ต้องตรวจได้</p>
+    <p class="ans">แนวคิด: ใช้ <code>setup()</code> สร้าง stub ของ repo และ payment พร้อม clock ที่ inject ตรวจทั้งค่าที่คืนและการเรียก <code>save</code></p>
+<pre><code>test('จ่ายสำเร็จ → บันทึก order พร้อมเวลาจาก clock ที่ inject', async () =&gt; {
+  const { service, orderRepo, payment } = setup({ ok: true, id: 'CH-9' });
+
+  const result = await service.checkout('u1', 500);
+
+  expect(result).toEqual({ status: 'PAID', orderId: 'ORD-1' });
+  expect(payment.charge).toHaveBeenCalledWith('u1', 500);
+  expect(orderRepo.save).toHaveBeenCalledWith({
+    userId: 'u1', amount: 500, chargeId: 'CH-9', createdAt: '2026-01-15T10:00:00.000Z',
+  });
+});
+
+test('amount &lt;= 0 ต้อง reject และไม่เรียก payment', async () =&gt; {
+  const { service, payment } = setup({ ok: true, id: 'x' });
+
+  await expect(service.checkout('u1', 0)).rejects.toThrow('positive');
+  expect(payment.charge).not.toHaveBeenCalled();
+});</code></pre>
+    <p>กรณีจ่ายไม่ผ่านดูตัวอย่างในหัวข้อ 3 ทั้งสามตัวนี้ผ่านบน Jest 30.5.2 ถ้า <code>checkout</code> ถูกแก้ให้บันทึกออเดอร์ก่อนตัดเงิน test ที่ตรวจ <code>save</code> ไม่ถูกเรียกจะล้มทันที</p>
+  </details>
+
+  <details class="sol"><summary>L3. test นี้ล้มเป็นบางครั้งและช้ามาก ปรับให้เสถียรและเร็ว (Jest)</summary>
+<pre><code><span class="cm">// โค้ดเดิม</span>
+function createToken(userId) {
+  return { userId, expiresAt: Date.now() + 3600 * 1000 };
+}
+function isExpired(token) { return Date.now() &gt;= token.expiresAt; }
+
+test('token หมดอายุหลัง 1 ชั่วโมง', async () =&gt; {
+  const token = createToken('u1');
+  await new Promise((r) =&gt; setTimeout(r, 3600 * 1000));
+  expect(isExpired(token)).toBe(true);
+});</code></pre>
+    <p class="ans">ปัญหา: รอเวลาจริงหนึ่งชั่วโมงซึ่งใช้งานไม่ได้ และถ้าลดเวลารอลงก็จะผูกผลกับความเร็วของเครื่อง ทางแก้คือเปิดช่องให้ส่งเวลาเข้าไปได้ (seam) แล้วทดสอบด้วยเวลาที่เรากำหนดเอง รวมค่ารอบเกณฑ์</p>
+<pre><code>function createToken(userId, now = Date.now()) {
+  return { userId, expiresAt: now + 3600 * 1000 };
+}
+function isExpired(token, now = Date.now()) { return now &gt;= token.expiresAt; }
+
+describe('token หมดอายุ', () =&gt; {
+  const issuedAt = Date.parse('2026-01-15T10:00:00Z');
+  const token = createToken('u1', issuedAt);
+
+  test.each([
+    [3600 * 1000 - 1, false],
+    [3600 * 1000, true],
+    [3600 * 1000 + 1, true],
+  ])('ผ่านไป %p ms → expired = %p', (elapsed, expected) =&gt; {
+    expect(isExpired(token, issuedAt + elapsed)).toBe(expected);
+  });
+});</code></pre>
+    <p>ผลรันจริง ทั้งสามกรณีผ่านในเวลาไม่กี่มิลลิวินาที อีกทางเลือกคือเก็บ signature เดิมไว้แล้วใช้ <code>jest.useFakeTimers()</code> กับ <code>jest.setSystemTime</code> ซึ่งเหมาะเมื่อแก้ลายเซ็นของฟังก์ชันไม่ได้ trade-off คือ fake timers ผูก test กับกลไกของ Jest ส่วนการส่งพารามิเตอร์ทำให้โค้ดและ test เรียบง่ายกว่า แต่ต้องแก้ตัวโค้ด</p>
+  </details>
+
+  <details class="sol"><summary>L4. test นี้ส่งอีเมลจริงทั้งที่ patch แล้ว หาสาเหตุและแก้ (pytest)</summary>
+<pre><code><span class="cm"># user_service.py</span>
+from mailer import send_email
+
+class UserService:
+    def __init__(self, repo):
+        self.repo = repo
+    def register(self, email):
+        if self.repo.exists(email):
+            raise ValueError("duplicate email")
+        user = self.repo.add(email)
+        send_email(email, "Welcome")
+        return user
+
+<span class="cm"># test เดิม: RuntimeError เพราะ mailer.send_email ของจริงถูกเรียก</span>
+@patch("mailer.send_email")
+def test_register_sends_welcome_mail(send_email_mock):
+    UserService(make_repo()).register("a@x.com")
+    send_email_mock.assert_called_once_with("a@x.com", "Welcome")</code></pre>
+    <p class="ans">สาเหตุ: <code>from mailer import send_email</code> ทำให้ชื่อ <code>send_email</code> ถูกคัดลอกเข้า namespace ของ <code>user_service</code> การ patch ที่ <code>mailer</code> ไม่ได้เปลี่ยนชื่อที่ <code>user_service</code> ถืออยู่ ให้ patch ที่ชื่อซึ่งโค้ดใช้งาน</p>
+<pre><code>@patch("user_service.send_email", autospec=True)
+def test_register_sends_welcome_mail(send_email_mock):
+    user = UserService(make_repo()).register("a@x.com")
+    assert user["id"] == 1
+    send_email_mock.assert_called_once_with("a@x.com", "Welcome")</code></pre>
+    <p>ผลรันจริงผ่าน การเติม <code>autospec=True</code> เป็นตัวเลือกที่ช่วยให้จับการเรียกผิด signature ได้ด้วย</p>
+  </details>
+
+  <details class="sol"><summary>L5. ปิดช่อง branch coverage ของ <code>retry</code> (Jest)</summary>
+    <p>โจทย์: รายงาน coverage ของ <code>retry.js</code> ได้ line 100% แต่ branch 40% ให้เพิ่ม test ที่ปิดช่องนี้อย่างมีความหมาย ไม่ใช่แค่เรียกให้ผ่าน</p>
+<pre><code>async function retry(fn, { retries = 3, delayMs = 1000 } = {}) {
+  let lastError;
+  for (let attempt = 0; attempt &lt;= retries; attempt++) {
+    try {
+      return await fn(attempt);
+    } catch (err) {
+      lastError = err;
+      if (attempt &lt; retries) {
+        await new Promise((resolve) =&gt; setTimeout(resolve, delayMs));
+      }
+    }
+  }
+  throw lastError;
+}</code></pre>
+    <p class="ans">แนวคิด: ช่องที่ขาดคือค่า default ทั้งสามจุด test เดิมส่ง option ครบทุกครั้ง ให้เรียก <code>retry(fn)</code> โดยไม่ส่ง option และตรวจว่า delay ที่ใช้คือ 1,000 ms จริง</p>
+<pre><code>describe('retry: ค่า default', () =&gt; {
+  beforeEach(() =&gt; jest.useFakeTimers());
+  afterEach(() =&gt; jest.useRealTimers());
+
+  test('เรียกโดยไม่ส่ง options → ใช้ retries=3 และ delay 1000ms', async () =&gt; {
+    const fn = jest.fn().mockRejectedValueOnce(new Error('e1')).mockResolvedValue('ok');
+
+    const promise = retry(fn);
+    await jest.advanceTimersByTimeAsync(999);
+    expect(fn).toHaveBeenCalledTimes(1);
+    await jest.advanceTimersByTimeAsync(1);
+
+    await expect(promise).resolves.toBe('ok');
+    expect(fn).toHaveBeenCalledTimes(2);
+  });
+});</code></pre>
+    <p>ผลรันจริง: branch ของ <code>retry.js</code> เพิ่มจาก 40% เป็น 100% (line อยู่ที่ 100% ตั้งแต่ก่อนเพิ่ม test)</p>
+  </details>
+
+  <details class="sol"><summary>L6. สอง test นี้มีปัญหาคนละแบบ หาให้เจอและแก้ (Jest)</summary>
+<pre><code><span class="cm">// (ก) ล้มทั้งที่ค่าดูเหมือนกัน</span>
+test('โหลด user', async () =&gt; {
+  const user = await loadUser(1);                       <span class="cm">// คืน { id: 1, name: 'A', tags: [] }</span>
+  expect(user).toBe({ id: 1, name: 'A', tags: [] });
+});
+
+<span class="cm">// (ข) ผ่านหรือล้มไม่แน่นอน ผลไม่น่าเชื่อถือ</span>
+test('reject เมื่อ id ไม่ถูกต้อง', () =&gt; {
+  expect(loadUser(-1)).rejects.toThrow('invalid id');
+});</code></pre>
+    <p class="ans">(ก) <code>toBe</code> เทียบ reference ด้วย <code>Object.is</code> object สองก้อนจึงไม่เท่ากันแม้ค่าตรงกัน ให้ใช้ <code>toEqual</code> (ข) ไม่มี <code>await</code> หรือ <code>return</code> ทำให้ test จบก่อนที่ assertion จะทำงาน ผมลองกับ Jest 30.5.2 บน Node 22 แบบที่ assertion ล้ม ผลคือเกิด unhandled rejection จนโปรเซสของ Jest ล่ม ส่วนบางสภาพแวดล้อมอาจรายงานว่าผ่านโดยไม่เห็นความผิดพลาด จึงต้อง <code>await</code> หรือ <code>return</code> เสมอ</p>
+<pre><code>test('โหลด user', async () =&gt; {
+  const user = await loadUser(1);
+  expect(user).toEqual({ id: 1, name: 'A', tags: [] });
+});
+
+test('reject เมื่อ id ไม่ถูกต้อง', async () =&gt; {
+  await expect(loadUser(-1)).rejects.toThrow('invalid id');
+});</code></pre>
+  </details>
+
+  <div class="quiz" data-topic="code"></div>
+</section>
+
+
+<!-- ===== DELOITTE / HACKERRANK-STYLE ===== -->
+<section class="final dl" id="deloitte">
+  <h2>แนวข้อสอบ <span class="b">Deloitte / HackerRank-style</span></h2>
+  <p>ชุดนี้จำลองบรรยากาศการสอบจริง จับเวลา 30 นาที สุ่ม 20 ข้อจากคลังโจทย์ตามระดับ Beginner ถึง Advance ตอบแล้วเฉลยทันทีทีละข้อ ข้อเลือกตอบหลายข้อจะมีปุ่ม “ตรวจคำตอบ” เวลาเริ่มนับเมื่อตอบข้อแรก</p>
+
+  <div class="note warn"><b class="t">ข้อควรรู้ก่อนใช้ชุดนี้</b>
+    ผมหาคลังข้อสอบจริงของ Deloitte หรือ HackerRank สำหรับทักษะนี้ไม่พบในแหล่งสาธารณะ โจทย์ในหน้านี้จึงเป็นข้อสอบจำลองที่เขียนเองจากนิยามทักษะและระดับที่ได้รับ โดยเลียนรูปแบบที่ HackerRank ระบุไว้ในเอกสารของตัวเอง ไม่ใช่ข้อสอบจริงและไม่ได้ยืนยันว่าจะออกตรงกัน ใช้เป็นตัววัดความเข้าใจในหัวข้อ ไม่ใช่ตัวทำนายข้อสอบ</div>
+
+  <h4>ชนิดคำถามที่ HackerRank ระบุไว้ และชุดนี้เทียบกับอะไร</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>ชนิด</th><th>ในชุดนี้</th></tr></thead>
+    <tbody>
+      <tr><td>Multiple Choice (เลือกข้อเดียวและหลายข้อ)</td><td>ใช้เป็นหลักในหัวข้อ 1–13 และชุดจับเวลา</td></tr>
+      <tr><td>Sentence Completion</td><td>มีข้อเติมคำเรื่อง test double</td></tr>
+      <tr><td>Code Review / อ่านโค้ด</td><td>หัวข้อ 14 และโจทย์ที่มีโค้ดประกอบ</td></tr>
+      <tr><td>Coding / Project (QA Engineer, Back-end)</td><td>Coding Lab หัวข้อ 14 ให้เขียนและแก้ test เอง</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>เวลาที่เหลือ <span class="timer" id="dlTimer">30:00</span></p>
+  <div class="progress"><i id="dlBar"></i></div>
+  <p class="muted" id="dlStatus" aria-live="polite"></p>
+  <div id="dlResult" class="result" aria-live="polite"></div>
+  <div id="dlExam"></div>
+  <div class="btn-row">
+    <button class="btn primary" id="dlSubmit" type="button">ส่งและดูผล</button>
+    <button class="btn" id="dlNew" type="button">สุ่มชุดใหม่</button>
+  </div>
+
+  <h4>โจทย์เขียนตอบ ลองคิดก่อนอ่านแนวตอบ</h4>
+  <details class="sol"><summary>D1. ทีมต้องส่ง coverage ให้ SonarQube จะเตรียมอะไรใน pipeline ของโปรเจกต์ Node.js</summary>
+    <p>ลำดับที่ทำงานได้: รัน test พร้อม <code>--coverage</code> ให้ได้ไฟล์ <code>coverage/lcov.info</code> ก่อนขั้นสแกน ตั้ง <code>sonar.javascript.lcov.reportPaths=coverage/lcov.info</code> ใน <code>sonar-project.properties</code> และถ้าใช้ CI ที่ clone แบบตื้น ให้ดึงประวัติ git ให้พอ (เช่น <code>fetch-depth: 0</code> ใน GitHub Actions) เพื่อให้ SonarQube คำนวณโค้ดใหม่ได้ถูก ถ้า coverage ขึ้น 0% ให้ตรวจ path ของรายงานเป็นอย่างแรก</p>
+  </details>
+  <details class="sol"><summary>D2. coverage รวม 88% แต่ bug หลุด production บ่อย คุณจะสืบอย่างไรและเสนออะไรต่อทีม</summary>
+    <p>เริ่มจากสุ่มดู test ของโมดูลที่เกิด bug ว่ามี assertion ที่ตรวจผลจริงหรือเป็นแค่การเรียกให้โค้ดทำงาน ลองทำ mutation testing กับโมดูลนั้น (Stryker, PIT หรือ mutmut ตามภาษา) เพื่อดูว่า test จับการเปลี่ยนพฤติกรรมได้หรือไม่ จากนั้นเสนอให้ดู branch coverage ควบคู่ ตั้ง checklist ใน code review เรื่องกรณีผิดปกติ และติดตาม defect leakage เป็นแนวโน้มร่วมกับ coverage ไม่ใช้ตัวเลขเดียว</p>
+  </details>
+  <details class="sol"><summary>D3. เสนอแผนลดเวลารัน unit test จาก 25 นาทีให้ใช้ได้บน pull request</summary>
+    <p>วัดก่อนว่า test ตัวไหนและไฟล์ไหนใช้เวลามากที่สุด แล้วไล่ตามสาเหตุ: setup ที่ซ้ำและหนัก การรอเวลาจริง I/O จริงที่ควรถูกแทนด้วย fake รัน test แบบขนาน และใช้การรันเฉพาะไฟล์ที่เปลี่ยน (เช่น <code>jest --changedSince</code>) บน PR โดยยังรันชุดเต็มบน main ผลที่ได้ต้องเทียบเวลาก่อนหลังด้วยตัวเลขที่วัดจริง ไม่ใช่ความรู้สึก และต้องระวังไม่ให้ความเร็วมาแลกกับความเชื่อถือได้ของผล</p>
+  </details>
+</section>
+
+<!-- ===== FINAL EXAM + CHEAT ===== -->
+<section class="final" id="final">
+  <h2>ข้อสอบรวม <span class="b">สุ่ม 40 ข้อ</span></h2>
+  <p>สุ่มจากคลังโจทย์ทั้งหมด <b data-total>0</b> ข้อ เลือกระดับได้ ตอบแล้วเฉลยทันที ไม่ต้องตอบครบก็ดูผลได้ ข้อที่ยังไม่ตอบนับเป็นผิดเมื่อกดส่ง</p>
+
+  <h4>สรุปก่อนสอบ</h4>
+  <div class="cheat">
+    <div style="background:var(--c1bg);border-color:var(--c1bd)"><b>Beginner</b>AAA, F.I.R.S.T., assertion ให้ตรงชนิด (<code>toBe</code> เทียบ reference, <code>toEqual</code> เทียบค่า), ค่าขอบ, test double 5 ชนิด, inject dependency ผ่าน constructor</div>
+    <div style="background:var(--c5bg);border-color:var(--c5bd)"><b>Intermediate</b>statement ไม่เท่ากับ branch, ตั้ง threshold และชี้ path รายงานให้ SonarQube, ปิดช่องด้วยกรณีผิดปกติ, patch ที่ชื่อที่โค้ดใช้, test ที่ flaky ต้องหาสาเหตุ</div>
+    <div style="background:var(--c2bg);border-color:var(--c2bd)"><b>Advance</b>เป้า coverage แบบแบ่งชั้น, gate บนโค้ดใหม่, วัดก่อนแก้, ตัวชี้วัดหลายตัวคู่กัน (mutation, flaky rate, leakage), ปรับวัฒนธรรมด้วยกลไกที่ทำซ้ำได้</div>
+    <div style="background:var(--c4bg);border-color:var(--c4bd)"><b>ตอนทำข้อสอบโปรเจกต์</b>อ่านข้อความ assertion ที่ล้ม รัน test ในเครื่องก่อนส่ง ไม่แก้ไฟล์ test ที่ล็อกไว้ ทำให้ build ผ่านก่อน</div>
+  </div>
+
+  <div class="seg" id="lvSeg" role="group" aria-label="เลือกระดับ">
+    <button type="button" data-lv="all" aria-pressed="true">ทุกระดับ</button>
+    <button type="button" data-lv="B" aria-pressed="false">Beginner</button>
+    <button type="button" data-lv="I" aria-pressed="false">Intermediate</button>
+    <button type="button" data-lv="A" aria-pressed="false">Advance</button>
+  </div>
+  <div class="progress"><i id="examBar"></i></div>
+  <p class="muted" id="examStatus" aria-live="polite"></p>
+  <div id="examResult" class="result" aria-live="polite"></div>
+  <div id="exam"></div>
+  <div class="btn-row">
+    <button class="btn primary" id="submitExam" type="button">ส่งและดูผล</button>
+    <button class="btn" id="newExam" type="button">สุ่มชุดใหม่</button>
+  </div>
+</section>
+
+<!-- ===== APPENDIX ===== -->
+<section class="final" id="appendix">
+  <h2>ภาคผนวก <span class="b">คู่ที่มักสับสน และรายการเช็กก่อนสอบ</span></h2>
+
+  <h4>คู่ที่มักสับสน</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>คู่</th><th>ต่างกันที่</th></tr></thead>
+    <tbody>
+      <tr><td>stub กับ mock</td><td>stub ให้คำตอบที่เตรียมไว้ ส่วน mock ตั้งความคาดหวังเรื่องการถูกเรียกและตรวจให้ (ตามนิยามของ Meszaros และ Fowler) ในไลบรารีอย่าง Jest ฟังก์ชันเดียวกัน (<code>jest.fn</code>) ใช้ได้ทั้งสองแบบ</td></tr>
+      <tr><td><code>toBe</code> กับ <code>toEqual</code></td><td><code>toBe</code> ใช้ <code>Object.is</code> เทียบ reference ส่วน <code>toEqual</code> เทียบค่าแบบลึก และ <code>toStrictEqual</code> เข้มกว่าเรื่อง <code>undefined</code> และชนิดของ object</td></tr>
+      <tr><td>line กับ branch coverage</td><td>บรรทัดถูกรันแล้วไม่ได้แปลว่าทุกทางของเงื่อนไขถูกลอง (ตัวอย่างใน retry: line 100% แต่ branch 40%)</td></tr>
+      <tr><td>coverage รวมกับ coverage บนโค้ดใหม่</td><td>Sonar way ตัดสินจากโค้ดใหม่ ค่ารวมของทั้งระบบอาจสูงแต่ gate ไม่ผ่านได้</td></tr>
+      <tr><td>unit test กับ functional test</td><td>ขึ้นกับว่าทีมให้นิยามอย่างไร ในที่นี้ unit ตรวจชิ้นเล็ก ๆ โดยแยก dependency ส่วน functional ตรวจพฤติกรรมตามความต้องการผ่านจุดเข้าของระบบ (เช่น API)</td></tr>
+      <tr><td>defect leakage กับ DRE</td><td>leakage = พบหลัง release / (พบก่อน + พบหลัง) ส่วน DRE = พบก่อน / (พบก่อน + พบหลัง) บวกกันได้ 100%</td></tr>
+      <tr><td>patch ที่ต้นทางกับที่ปลายทาง</td><td>ใน Python ต้อง patch ที่ชื่อที่โค้ดค้นหาอยู่ตอนรัน เช่น <code>user_service.send_email</code> ไม่ใช่ <code>mailer.send_email</code> เมื่อใช้ <code>from … import</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>รายการเช็กความพร้อม <span class="muted" id="ckCount">(0 / 0)</span></h4>
+  <ul class="checklist" id="checklist">
+    <li><label><input type="checkbox"> เขียน test ตามโครง Arrange – Act – Assert ได้โดยไม่ต้องดูตัวอย่าง</label></li>
+    <li><label><input type="checkbox"> เลือกค่า boundary และ partition สำหรับเงื่อนไขที่โจทย์ให้ได้</label></li>
+    <li><label><input type="checkbox"> บอกได้ว่าเมื่อไรใช้ stub, spy, mock, fake</label></li>
+    <li><label><input type="checkbox"> ตรวจ exception และ async ได้ถูก (wrapper ของ <code>toThrow</code>, <code>await</code> ของ <code>rejects</code>)</label></li>
+    <li><label><input type="checkbox"> อ่านรายงาน coverage แล้วระบุ branch ที่ยังไม่ถูกลองได้</label></li>
+    <li><label><input type="checkbox"> ตั้ง threshold และชี้รายงานให้ SonarQube ได้ถูก</label></li>
+    <li><label><input type="checkbox"> patch ในที่ที่ถูก และคืนค่า mock หลังทุก test</label></li>
+    <li><label><input type="checkbox"> ไล่สาเหตุของ test ที่ flaky หรือช้าได้เป็นระบบ</label></li>
+    <li><label><input type="checkbox"> อธิบายเป้า coverage แบบแบ่งชั้นและวิธีนำร่องกับหลายทีมได้</label></li>
+    <li><label><input type="checkbox"> เลือกตัวชี้วัดคู่กัน และบอกได้ว่าทำไมไม่ใช้ coverage ตัวเดียว</label></li>
+    <li><label><input type="checkbox"> ออกแบบกลไกฝึกและโค้ชให้ทีมเขียน test ดีขึ้นได้</label></li>
+  </ul>
+
+  <h4>เอกสารทางการและแหล่งอ้างอิง</h4>
+  <ul>
+    <li><a href="https://jestjs.io/docs/expect" target="_blank" rel="noopener">Jest: Expect</a> และ <a href="https://jestjs.io/docs/mock-function-api" target="_blank" rel="noopener">Mock Functions API</a></li>
+    <li><a href="https://jestjs.io/docs/configuration" target="_blank" rel="noopener">Jest: Configuration</a> (<code>coverageThreshold</code>, <code>collectCoverageFrom</code>, <code>restoreMocks</code>)</li>
+    <li><a href="https://docs.pytest.org/en/stable/how-to/parametrize.html" target="_blank" rel="noopener">pytest: Parametrize</a></li>
+    <li><a href="https://docs.python.org/3/library/unittest.mock.html#where-to-patch" target="_blank" rel="noopener">Python unittest.mock: where to patch</a></li>
+    <li><a href="https://pytest-cov.readthedocs.io/" target="_blank" rel="noopener">pytest-cov</a> และ <a href="https://coverage.readthedocs.io/" target="_blank" rel="noopener">coverage.py</a></li>
+    <li><a href="https://docs.junit.org/6.0.0/release-notes/" target="_blank" rel="noopener">JUnit 6.0.0 release notes</a></li>
+    <li><a href="https://docs.sonarsource.com/sonarqube-server/2025.4/quality-standards-administration/managing-quality-gates/introduction-to-quality-gates" target="_blank" rel="noopener">SonarQube Server: Introduction to quality gates</a> (รวมคำอธิบาย fudge factor ที่ละเว้นเงื่อนไข coverage และ duplication จนกว่าบรรทัดใหม่จะถึง 20 บรรทัด)</li>
+    <li><a href="https://docs.sonarsource.com/sonarqube-server/latest/user-guide/about-new-code/" target="_blank" rel="noopener">SonarQube Server: About new code</a></li>
+    <li><a href="https://hackerrank-knowledge-base.help.usepylon.com/articles/1570281449" target="_blank" rel="noopener">HackerRank: Front-end, Back-end, Full-stack, Mobile and QA Engineer questions</a></li>
+    <li><a href="https://martinfowler.com/articles/mocksArentStubs.html" target="_blank" rel="noopener">Martin Fowler: Mocks Aren’t Stubs</a> และ <a href="https://martinfowler.com/bliki/TestPyramid.html" target="_blank" rel="noopener">Test Pyramid</a></li>
+    <li><a href="https://stryker-mutator.io/" target="_blank" rel="noopener">Stryker</a> · <a href="https://pitest.org/" target="_blank" rel="noopener">PIT</a> · <a href="https://testcontainers.com/" target="_blank" rel="noopener">Testcontainers</a> · <a href="https://github.com/jest-community/eslint-plugin-jest" target="_blank" rel="noopener">eslint-plugin-jest</a></li>
+  </ul>
+</section>
+
+</main>
+
+
+<footer>เรียบเรียงจากนิยามทักษะ Unit &amp; Functional Testing (for Developer) ระดับ Beginner / Intermediate / Advance ข้อสอบทั้งหมดเป็นข้อสอบจำลองเพื่อการฝึก ไม่ใช่ข้อสอบจริงของ Deloitte หรือ HackerRank</footer>
+<script>
+const TOPICS = [
+ ['t1','Unit test พื้นฐาน','B'],['t2','Assertion & Test case','B'],['t3','Test double','B'],['t4','Functional test','B'],
+ ['t5','Coverage & SonarQube','I'],['t6','ปิดช่อง coverage','I'],['t7','Mock external','I'],['t8','Integration & Flaky','I'],
+ ['t9','Strategy','A'],['t10','Guidelines','A'],['t11','Efficiency','A'],['t12','Metrics & Governance','A'],['t13','Testing culture','A'],
+ ['code','Coding Lab','I']
+];
+const COLORS = [1,2,3,4,5,6,7,8];
+const Q = {};
+
+Q.t1 = [
+ {lv:'B', q:'ข้อใดเป็นลักษณะของ unit test ที่ดี',
+  o:['รันเร็ว ไม่แตะ network หรือ database จริง และให้ผลเหมือนเดิมทุกครั้งที่รัน','ทดสอบทุกชั้นของระบบพร้อมกันเพื่อให้ครอบคลุมการทำงานตั้งแต่ต้นจนจบให้มากที่สุด','ใช้ข้อมูลจริงจาก database ของ production เพื่อให้ผลใกล้เคียงสภาพการใช้งานจริง','อ้างอิงผลของ test ก่อนหน้าเพื่อสร้างข้อมูลตั้งต้น จะได้ไม่ต้องเขียน setup ซ้ำ'],
+  e:'unit test ต้องเร็วและ deterministic เพื่อให้รันได้บ่อยและเชื่อถือผลได้ การพึ่ง database จริง ข้อมูล production หรือผลของ test อื่นทำให้ผลไม่แน่นอนและรันช้า'},
+ {lv:'B', q:'ในโครง Arrange – Act – Assert ขั้น “Act” คืออะไร',
+  o:['เรียกโค้ดที่ต้องการทดสอบ ซึ่งมักเป็นบรรทัดเดียว','สร้าง object และข้อมูลตั้งต้นที่ test ต้องใช้ก่อนเรียกโค้ดที่จะทดสอบ','เทียบผลที่ได้กับค่าที่คาดหวัง','ล้างข้อมูลที่ test สร้างไว้หลังรันจบ'],
+  e:'Arrange เตรียมข้อมูล Act เรียกสิ่งที่ทดสอบ Assert ตรวจผล ส่วนการล้างข้อมูลเป็นหน้าที่ของ teardown'},
+ {lv:'B', q:'ทำไมแนวคิด test pyramid จึงแนะนำให้มี unit test มากกว่า end-to-end test',
+  o:['unit test รันเร็วและดูแลถูกกว่า จึงให้ feedback เร็วทุกครั้งที่แก้โค้ด','unit test จับปัญหาที่รอยต่อระหว่างระบบได้ดีกว่า end-to-end','framework บางตัวจำกัดสัดส่วนของ end-to-end ไว้ตายตัวและจะแจ้ง error ถ้าเกินกำหนดตอนรัน','end-to-end เขียนได้เฉพาะกับโค้ดฝั่ง frontend เท่านั้น ฝั่ง backend จึงต้องใช้ unit test แทน'],
+  e:'เหตุผลหลักคือต้นทุนและความเร็ว ยิ่งชั้นบนยิ่งช้า แพง และพังเองง่าย ส่วนปัญหาที่รอยต่อระหว่างระบบเป็นจุดแข็งของ integration และ end-to-end ไม่ใช่ unit test'},
+ {lv:'B', q:'test นี้มีปัญหาหลักอะไร',
+  code:`test('SAVE10 ลด 10%', () => {
+  const items = [{ price: 100, qty: 3 }];
+  const expected = items.reduce((s, i) => s + i.price * i.qty, 0) * 0.9;
+  expect(calculateTotal(items, 'SAVE10')).toBe(expected);
+});`,
+  o:['ค่าที่คาดหวังถูกคำนวณด้วยสูตรเดียวกับโค้ดจริง ถ้า logic ผิดตั้งแต่ต้น test ก็ผิดตามและยังผ่าน','ใช้ reduce ภายใน test ทำให้ test ช้าเกินกว่าจะเป็น unit test และควรเปลี่ยนไปใช้ for loop ธรรมดา','ไม่มี assertion จึงไม่ได้ตรวจอะไรเลย','ต้องใช้ test.each เสมอเมื่อมี array เป็น input ไม่เช่นนั้นจะนับเป็น test ที่เขียนผิดรูปแบบ'],
+  e:'ควรคำนวณค่าที่คาดหวังจาก requirement แล้วเขียนเป็นตัวเลขตรง ๆ เช่น 270 เพื่อให้ test เป็นเกณฑ์อิสระจากโค้ด test นี้มี assertion อยู่แล้ว และ reduce ไม่ได้ทำให้ช้าอย่างมีนัยสำคัญ'},
+ {lv:'B', q:'test สองตัวใน suite เดียวกัน ตัวที่สองจะผ่านก็ต่อเมื่อตัวแรกรันก่อน ขัดกับหลักข้อใดของ F.I.R.S.T.',
+  o:['Independent','Fast','Self-validating','Timely'],
+  e:'Independent คือแต่ละ test ต้องไม่พึ่งผลของ test อื่น เพื่อให้สลับลำดับหรือรันตัวเดียวได้'},
+ {lv:'B', multi:true, q:'ข้อใดเป็นลักษณะของ test ที่อ่านและดูแลง่าย (เลือกทั้งหมดที่ถูก)',
+  o:['ชื่อ test บอกพฤติกรรมและเงื่อนไขที่ทดสอบ','ค่าที่คาดหวังเขียนจาก requirement เป็นค่าตรง ๆ','ตรวจหลายพฤติกรรมที่ไม่เกี่ยวกันใน test เดียวเพื่อประหยัดบรรทัด','แต่ละ test เตรียมข้อมูลที่ใช้เองหรือผ่าน setup ที่สร้างใหม่ทุกครั้ง','อ่านค่าที่ test ก่อนหน้าเก็บไว้ในตัวแปรระดับไฟล์'],
+  c:[0,1,3],
+  e:'ชื่อที่สื่อพฤติกรรม ค่าคาดหวังที่เป็นอิสระจากโค้ด และข้อมูลที่แยกกันในแต่ละ test ทำให้ล้มแล้วรู้สาเหตุ ส่วนการรวมหลายเรื่องหรือแชร์ตัวแปรข้าม test ทำให้ไล่หาสาเหตุยากและ test ผูกกันเอง'},
+ {lv:'B', q:'ข้อใดอธิบายความต่างระหว่าง unit test กับ functional test ได้ถูกต้องที่สุด',
+  o:['unit test ตรวจโค้ดหน่วยเล็กแยกจากส่วนอื่น ส่วน functional test ตรวจพฤติกรรมของระบบตาม requirement จากภายนอก','unit test ตรวจ performance ของแต่ละฟังก์ชันแยกกัน ส่วน functional test ตรวจด้าน security ของทั้งระบบก่อนปล่อย','unit test ใช้ได้เฉพาะกับโค้ด backend ส่วน functional test ใช้ได้เฉพาะกับ frontend ที่มีหน้าจอให้ผู้ใช้เห็น','ทั้งสองอย่างเหมือนกัน ต่างกันที่ชื่อเรียกของแต่ละทีมเท่านั้น'],
+  e:'unit test โฟกัสหน่วยเล็กและมักแยกจาก dependency ส่วน functional test ดูพฤติกรรมของระบบหรือ component ตาม requirement แบบ black-box ส่วน performance กับ security เป็นกลุ่ม non-functional'},
+];
+
+Q.t2 = [
+ {lv:'B', q:'`expect([1, 2, 3]).toBe([1, 2, 3])` ใน Jest ให้ผลอย่างไร',
+  o:['ล้ม เพราะ toBe เทียบด้วย Object.is และสอง array เป็นคนละ object','ผ่าน เพราะค่าใน array เท่ากันทุกตำแหน่ง','ผ่านแต่แสดง warning ใน console ว่าควรเปลี่ยนไปใช้ toEqual แทน toBe','เกิด SyntaxError เพราะใช้ toBe กับ array ไม่ได้ ต้องใช้กับค่าชนิด primitive เท่านั้น'],
+  e:'toBe เทียบ reference แบบ Object.is ถ้าต้องการเทียบเนื้อหาของ array หรือ object ให้ใช้ toEqual (ตรวจกับ Jest 30.5.2 แล้ว)'},
+ {lv:'B', q:'ควรใช้ assertion ใดตรวจว่า `0.1 + 0.2` ให้ผลประมาณ 0.3',
+  o:['expect(0.1 + 0.2).toBeCloseTo(0.3)','expect(0.1 + 0.2).toBe(0.3)','expect(0.1 + 0.2).toStrictEqual(0.3)','expect(0.1 + 0.2).toBeTruthy()'],
+  e:'ทศนิยมแบบ floating point เก็บค่าไม่เป๊ะ 0.1 + 0.2 ไม่เท่ากับ 0.3 พอดี จึงต้องเทียบแบบมีช่วงคลาดเคลื่อนด้วย toBeCloseTo (หรือ pytest.approx ใน Python)'},
+ {lv:'B', q:'ใน pytest ต้องการตรวจว่า `f(-1)` โยน ValueError ที่ข้อความมีคำว่า “must be” ควรเขียนแบบใด',
+  o:['with pytest.raises(ValueError, match="must be"): f(-1)','assert f(-1) == ValueError("must be")  # เทียบผลที่ได้กับ exception ตรง ๆ','try: f(-1)\nexcept: pass','assert pytest.raises(ValueError, f(-1))'],
+  e:'pytest.raises ใช้เป็น context manager และ match เป็น regex ที่เทียบกับข้อความของ exception ถ้าเขียน try/except แล้ว pass โดยไม่มี assertion test จะผ่านแม้ f(-1) ไม่โยน error'},
+ {lv:'B', q:'โค้ดนี้ใน Jest ให้ผลอย่างไร เมื่อ `f` โยน error จริง',
+  code:`test('f(-1) ต้อง throw', () => {
+  expect(f(-1)).toThrow();
+});`,
+  o:['test ล้มด้วย error ที่ f โยน เพราะ f(-1) ถูกเรียกก่อนที่ expect จะทำงาน ต้องห่อเป็น () => f(-1)','test ผ่าน เพราะ toThrow จับ error ที่เกิดขึ้นตอนประเมินค่าภายใน expect ให้เอง แล้วถือเป็นผลที่ต้องการตามข้อกำหนดของ Jest','test ผ่านเฉพาะเมื่อ f เป็น async function ที่คืนค่า Promise กลับมา ซึ่งต้องมี await อยู่ในตัว test ด้วย','test ถูกข้ามอัตโนมัติเพราะไม่มีการ await และ Jest จะแสดงสถานะเป็น skipped ตามที่เอกสารของ Jest ระบุไว้'],
+  e:'argument ของ expect ถูกประเมินก่อน ถ้า f(-1) โยน error ตรงนั้น error หลุดออกมาก่อนถึง toThrow จึงต้องส่งเป็นฟังก์ชัน () => f(-1) เพื่อให้ Jest เรียกเองภายใน try/catch'},
+ {lv:'B', q:'กติกาคือ “ลด 10% เมื่ออายุตั้งแต่ 60 ปีขึ้นไป” ชุดค่าอายุใดเหมาะที่สุดสำหรับทดสอบตรงรอยต่อ',
+  o:['59, 60 และ 61','20, 40 และ 80','0, 100 และ 1000','ค่าสุ่ม 3 ค่าระหว่าง 1 ถึง 100'],
+  e:'bug เรื่อง > กับ >= มักอยู่ตรงเกณฑ์ จึงต้องทดสอบค่าก่อนเกณฑ์ ค่าพอดีเกณฑ์ และค่าหลังเกณฑ์'},
+ {lv:'B', multi:true, q:'ข้อใดเป็นข้อดีของการใช้ test.each หรือ parametrize (เลือกทั้งหมดที่ถูก)',
+  o:['ลดโค้ด test ที่ซ้ำกันเมื่อ logic เหมือนกันแต่ข้อมูลต่างกัน','แต่ละชุดข้อมูลถูกรายงานผลแยกกันเมื่อล้ม','ทำให้ test รันเร็วขึ้นเพราะ framework รวมทุกชุดเป็น test เดียว','เพิ่ม case ใหม่ได้โดยเพิ่มแถวข้อมูล','ใช้แทน test ของ error path ได้ทุกกรณีโดยไม่ต้องเขียนแยก'],
+  c:[0,1,3],
+  e:'parametrize ลดความซ้ำและรายงานผลแยกต่อชุดข้อมูล แต่ไม่ได้ทำให้เร็วขึ้นเอง และถ้า error path ต้อง assert ต่างจากเส้นทางปกติ (เช่น ต้องตรวจ exception) ก็ควรแยก test'},
+ {lv:'B', q:'test ผ่านเมื่อรันทั้งไฟล์ แต่ล้มเมื่อรันเฉพาะตัวเดียว สาเหตุที่น่าสงสัยที่สุดคืออะไร',
+  o:['test แชร์ state ที่แก้ค่าได้ เช่น ตัวแปรระดับไฟล์ และพึ่งผลที่ test อื่นทิ้งไว้','ชื่อ test ยาวเกินกว่าที่ framework รองรับจึงตัดชื่อแล้วทำให้ test ซ้ำกัน','ลืม import ตัว framework ที่ต้นไฟล์ ทำให้ test บางตัวไม่ถูกลงทะเบียน','เครื่องที่รันมี CPU ช้ากว่าปกติ จึงเกิด timeout เฉพาะตอนรันตัวเดียว'],
+  e:'อาการ “ผ่านเมื่อรวม ล้มเมื่อรันเดี่ยว” (หรือกลับกัน) เป็นสัญญาณคลาสสิกของ test ที่ไม่ independent และพึ่ง state ร่วมกัน'},
+];
+
+Q.t3 = [
+ {lv:'B', q:'test double ที่ถูกตั้งให้ตอบค่าที่กำหนดไว้ล่วงหน้า เพื่อบังคับให้โค้ดเดินไปเส้นทางที่ต้องการ เรียกว่าอะไร',
+  o:['Stub','Fake','Dummy','Spy'],
+  e:'Stub ตอบค่าตามที่ตั้งไว้ Fake มี implementation ที่ใช้งานได้จริงแบบง่าย Dummy ส่งไปให้ครบ parameter แต่ไม่ถูกใช้ และ Spy จดว่าถูกเรียกอย่างไร'},
+ {lv:'B', q:'repository ที่เก็บข้อมูลใน array ในหน่วยความจำ และทำงานได้จริงตาม interface เดียวกับของจริง จัดเป็น test double แบบใด',
+  o:['Fake','Mock','Stub','Dummy'],
+  e:'Fake คือของที่ทำงานได้จริงแต่ใช้วิธีง่าย ๆ ที่ไม่เหมาะกับ production เช่น in-memory repository'},
+ {lv:'B', q:'`user_service.py` เขียน `from mailer import send_email` แล้ว test ใช้ `patch("mailer.send_email")` จะเกิดอะไรขึ้น',
+  o:['ไม่มีผลกับ user_service เพราะชื่อ send_email ถูกคัดลอกเข้า namespace ของมันไปแล้ว ของจริงจึงยังถูกเรียก','patch มีผลกับทุกที่ที่ import ชื่อนี้ ไม่ว่าจะ import ด้วยวิธีใด เพราะ Python ใช้ชื่อเดียวกันทั้งโปรเจกต์ ไม่ว่าไฟล์ไหนก็เห็นค่าใหม่','เกิด ImportError ตอน patch เพราะ mailer ยังไม่ได้ถูกโหลด','patch มีผล แต่ต้องเรียก reset ด้วยตัวเองหลังจบ test ไม่เช่นนั้นจะค้างไปถึง test ถัดไป'],
+  e:'patch ต้องชี้ไปที่ชื่อที่โค้ดใช้อยู่จริง คือ `user_service.send_email` (ตรวจกับ pytest 9.1.1 แล้ว: ถ้า patch ผิดที่ ของจริงถูกเรียกและ RuntimeError ถูกโยน)'},
+ {lv:'B', q:'requirement ระบุว่า “ถ้าตัดเงินไม่สำเร็จ ห้ามบันทึกออเดอร์” ควรตรวจอย่างไรจึงตรงกับ requirement ที่สุด',
+  o:['ตรวจว่า orderRepo.save ไม่ถูกเรียก ร่วมกับตรวจผลลัพธ์ที่ฟังก์ชันคืนมา','ตรวจเฉพาะค่าที่ return เพราะสิ่งที่เกิดภายในไม่ใช่เรื่องของ test','ตรวจว่า payment.charge ถูกเรียกครบ 3 ครั้งตามจำนวน retry ที่กำหนด','ตรวจเพียงว่าฟังก์ชันไม่โยน exception ออกมาแล้วถือว่าจัดการกรณีนี้ครบแล้ว'],
+  e:'ข้อกำหนดนี้พูดถึงสิ่งที่ “ไม่ควรเกิด” ซึ่งมองไม่เห็นจากผลลัพธ์อย่างเดียว ต้องตรวจพฤติกรรมว่า save ไม่ถูกเรียก (behavior verification) ควบคู่กับผลลัพธ์'},
+ {lv:'B', multi:true, q:'ข้อใดเป็นเหตุผลที่ดีของการรับ dependency ผ่าน constructor (constructor injection) (เลือกทั้งหมดที่ถูก)',
+  o:['ส่ง test double เข้าไปแทนของจริงใน test ได้โดยไม่ต้องแก้โค้ดที่ทดสอบ','ควบคุมค่าที่ไม่แน่นอน เช่น เวลาปัจจุบัน ผ่านตัวที่ inject เข้าไปได้','ทำให้ framework รัน test เร็วขึ้นโดยอัตโนมัติ','เห็น dependency ที่คลาสพึ่งพาได้จากลายเซ็นของ constructor','ทำให้ไม่ต้องเขียน assertion ใน test อีกต่อไป'],
+  c:[0,1,3],
+  e:'การ inject ทำให้แทน dependency ได้ ควบคุมสิ่งที่ไม่แน่นอนได้ และบอกขอบเขตของคลาสชัดเจน แต่ไม่ได้ทำให้เร็วขึ้นหรือแทน assertion'},
+ {lv:'B', q:'ข้อใดเป็นสัญญาณว่า test ใช้ mock มากเกินไป',
+  o:['ต้องแก้ test หลายไฟล์ทุกครั้งที่ refactor ภายในทั้งที่พฤติกรรมภายนอกไม่เปลี่ยน','test หนึ่งตัวมี assertion มากกว่าหนึ่งบรรทัดในกรณีที่ตรวจผลของพฤติกรรมเดียวกัน','มีการเรียก jest.fn() อยู่ในไฟล์ test เกินสิบตำแหน่งต่อหนึ่งไฟล์','test ใช้เวลารันน้อยกว่าหนึ่งวินาที'],
+  e:'mock ที่ผูกกับลำดับและวิธีเรียกภายในทำให้ test พังเมื่อ implementation เปลี่ยน แม้พฤติกรรมยังถูกต้อง ซึ่งเป็นต้นทุนของ over-mocking'},
+ {lv:'B', q:'ใน test หนึ่งตั้ง `jest.spyOn(Math, "random").mockReturnValue(0.5)` แล้วไม่ restore หลังจบ จะเกิดอะไรกับ test ถัดไปในไฟล์เดียวกัน',
+  o:['Math.random ยังคืน 0.5 อยู่','Jest คืนค่าเดิมให้อัตโนมัติทุกครั้งที่ test จบ จึงไม่ต้องจัดการอะไรเพิ่มไม่ว่าจะตั้งค่าอย่างไรก็ตาม','Math.random คืนค่าสุ่มปกติ เพราะ mock มีผลเฉพาะใน test ที่สร้าง','เกิด error ตอนจบ test เพราะ spy ยังค้างอยู่'],
+  e:'spy ที่ผูกกับ global อย่าง Math ยังอยู่จนกว่าจะ restore (mockRestore, restoreAllMocks หรือตั้ง restoreMocks ใน config) ปล่อยค้างไว้ทำให้ test อื่นได้ค่าที่ไม่คาดคิด'},
+];
+
+Q.t4 = [
+ {lv:'B', q:'ข้อใดอธิบาย functional testing แบบ black-box ได้ถูกต้อง',
+  o:['ตรวจพฤติกรรมจาก input และ output ตาม requirement โดยไม่ต้องรู้โครงสร้างภายใน','ตรวจว่าทุกบรรทัดในโค้ดถูกรันโดย test อย่างน้อยหนึ่งครั้ง โดยดูจากรายงาน coverage ของเครื่องมือ','วัดจำนวน request ที่ระบบรับไหวต่อวินาที','ตรวจรูปแบบการตั้งชื่อตัวแปรและการจัดโครงสร้างไฟล์ให้ตรงตามมาตรฐานของทีม'],
+  e:'black-box ดูแค่ input กับ output ตาม requirement ส่วนการตรวจว่าบรรทัดไหนถูกรันคือ coverage (white-box) และการวัดจำนวน request คือ performance testing'},
+ {lv:'B', q:'requirement: “สมัครด้วย email ที่มีอยู่แล้วต้องตอบ 409” test case ใดตรงกับ requirement นี้',
+  o:['มี a@x.com อยู่ในระบบแล้ว ส่ง POST /users ด้วย a@x.com อีกครั้ง คาดหวัง 409','ส่ง POST /users ด้วย email ที่ยังไม่มีในระบบ และมี body ครบถ้วนทุกฟิลด์ คาดหวัง 409','ส่ง GET /users/1 โดยไม่ระบุ token ใน header ของ request คาดหวัง 409','ส่ง POST /users โดยไม่มี body คาดหวัง 409'],
+  e:'ต้องมี precondition ว่ามี email นั้นอยู่แล้ว แล้วส่งซ้ำ ส่วน body ว่างเป็นกรณี 400 ตามอีก requirement หนึ่ง'},
+ {lv:'B', q:'เงื่อนไขสองข้อ (A และ B) ที่แต่ละข้อเป็นจริงหรือเท็จได้ ต้องมี test อย่างน้อยกี่ชุดจึงครอบคลุมทุกชุดเงื่อนไขใน decision table',
+  o:['4 ชุด','2 ชุด','3 ชุด','8 ชุด'],
+  e:'แต่ละเงื่อนไขมี 2 ค่า ผสมกันได้ 2 × 2 = 4 ชุด ถ้าเป็นสามเงื่อนไขจะเป็น 8 ชุด'},
+ {lv:'B', q:'ออเดอร์อยู่ในสถานะ SHIPPED แล้วมีคำสั่ง cancel เข้ามา ระบบต้องปฏิเสธ การออกแบบ test case แบบนี้ใช้เทคนิคใด',
+  o:['State transition testing','Boundary value analysis','Load testing','Mutation testing'],
+  e:'state transition ตรวจทั้งการเปลี่ยนสถานะที่อนุญาตและที่ห้าม เช่น ยกเลิกออเดอร์ที่ส่งไปแล้ว'},
+ {lv:'B', q:'ข้อใดเหมาะเป็น exit criteria ของแผนทดสอบ',
+  o:['test case ที่วางไว้รันครบ และไม่มี defect ระดับ critical หรือ high ค้างอยู่','จำนวน test case ที่เขียนถึงเลขกลม ๆ ที่ตั้งเป้าไว้ โดยไม่ดูผลการรันของแต่ละตัว','ทีมทดสอบรู้สึกว่าน่าจะพอแล้วหลังรันมาหลายรอบโดยไม่พบอะไรเพิ่ม','developer ยืนยันว่าโค้ดไม่มี bug และไม่มีใครแจ้งปัญหาในช่วงสัปดาห์ที่ผ่านมา'],
+  e:'exit criteria ต้องวัดได้และอิงผลการทดสอบ เช่น รันครบตามแผนและไม่มี defect ร้ายแรงค้าง ไม่ใช่ความรู้สึกหรือจำนวน test ที่เขียน'},
+ {lv:'B', multi:true, q:'ข้อใดเป็นข้อมูลที่ test case ที่ดีควรมี (เลือกทั้งหมดที่ถูก)',
+  o:['precondition หรือสถานะเริ่มต้นของระบบ','input หรือขั้นตอนที่ต้องทำ','ผลที่คาดหวังตาม requirement','ผลจริงที่เคยรันผ่านในอดีตใช้แทนผลที่คาดหวัง','รหัสอ้างอิงไปยัง requirement ที่ test นี้คุ้มครอง'],
+  c:[0,1,2,4],
+  e:'test case ต้องบอกสถานะเริ่มต้น สิ่งที่ทำ ผลที่ควรเป็น และผูกกลับไปหา requirement ได้ (traceability) ส่วนผลที่เคยผ่านไม่ใช่เกณฑ์ เพราะอาจเป็นผลที่ผิดมาตั้งแต่แรก'},
+ {lv:'B', q:'test ที่ยิงผ่าน HTTP จริงเข้า Express app แต่ใช้ repository ปลอม ต่างจาก unit test ของ service ตรงไหน',
+  o:['ตรวจครอบคลุม routing, การ parse body, status code และ header ที่ client เห็นจริง','ไม่ตรวจ logic ของ service เลย เพราะ service ถูกเรียกผ่าน HTTP เท่านั้น','ต้องมี database จริงจึงจะรันได้ เพราะ supertest เชื่อมต่อ database ให้เอง','ช้ากว่า end-to-end test ผ่านเบราว์เซอร์เสมอ เพราะต้องเปิด server ใหม่ทุกครั้ง'],
+  e:'test แบบนี้เดินผ่านชั้น HTTP ทั้งหมดจึงจับปัญหาอย่าง status หรือ Location header ผิดได้ ส่วน logic ของ service ยังถูกรันผ่านมันด้วย และรันเร็วกว่า end-to-end มาก'},
+];
+
+Q.t5 = [
+ {lv:'I', q:'ฟังก์ชันมี `if` ที่ไม่มี `else` และ test เรียกเฉพาะกรณีที่เงื่อนไขเป็นจริง ผลต่อ coverage เป็นอย่างไร',
+  o:['line coverage อาจครบ 100% แต่ branch coverage ไม่ถึง เพราะฝั่ง false ไม่เคยถูกเดิน','ทั้ง line และ branch coverage ครบ 100% เพราะทุกบรรทัดถูกรันแล้ว และ if ที่ไม่มี else ไม่มีทางแยกอื่นให้นับ','branch coverage ครบ แต่ line coverage ไม่ครบ','coverage ไม่เปลี่ยนเลยทั้งสองแบบ เพราะ if ที่ไม่มี else ไม่นับเป็นโค้ดที่ต้องครอบคลุมตามนิยามของเครื่องมือ'],
+  e:'line coverage นับว่าบรรทัดถูกรันหรือไม่ ส่วน branch coverage นับว่าทางแยกถูกเดินครบทั้งสองฝั่งหรือไม่ ซึ่งเป็นเหตุที่ retry.js ในตัวอย่างได้ line 100% แต่ branch 40%'},
+ {lv:'I', q:'SonarQube ได้ค่า coverage มาจากไหน',
+  o:['อ่านจากไฟล์รายงานของเครื่องมือ coverage (เช่น lcov, JaCoCo XML) ที่ส่งเข้ามาตอน analysis','รัน unit test เองระหว่าง analysis ด้วย scanner ที่ติดตั้งไว้แล้ววัดค่าเอง ไม่ต้องมีรายงานจากภายนอก','คำนวณจากจำนวนบรรทัดของโค้ด test เทียบกับโค้ดหลักในโปรเจกต์ที่ถูกสแกนในแต่ละรอบ','ดึงจาก plugin ใน IDE ของนักพัฒนาแต่ละคน'],
+  e:'SonarQube ไม่ได้รัน test และไม่ได้วัด coverage เอง ต้องรัน test พร้อมสร้างรายงานก่อน แล้วชี้ property ไปที่ไฟล์รายงานนั้นให้ scanner อ่าน'},
+ {lv:'I', q:'ใน quality gate Sonar way ตามเอกสารของ SonarQube Server 10.4 เงื่อนไขเรื่อง coverage ตั้งต้นคืออะไร',
+  o:['coverage ของ new code ตั้งแต่ 80.0% ขึ้นไป','coverage ของทั้งโปรเจกต์ตั้งแต่ 80.0% ขึ้นไป','coverage 100% ในทุกไฟล์ที่ถูกแก้','ไม่มีเงื่อนไขเรื่อง coverage'],
+  e:'Sonar way เน้น new code (Clean as You Code) เงื่อนไขนี้ปรับค่าได้ และ 80% เป็นค่าตั้งต้นของเครื่องมือ ไม่ใช่มาตรฐานสากล'},
+ {lv:'I', q:'ใช้สูตร Coverage = (CT + CF + LC) / (2×B + EL) ของ SonarQube ถ้า EL = 100, LC = 90, B = 10, CT = 8, CF = 6 จะได้ค่าใกล้เคียงข้อใด',
+  o:['86.7%','90%','70%','80%'],
+  e:'(8 + 6 + 90) / (2×10 + 100) = 104 / 120 ≈ 86.7% ส่วน 90% คือ line coverage, 70% คือ condition coverage (14/20) และ 80% เป็นค่าเฉลี่ยง่าย ๆ ของสองตัวนั้นซึ่งไม่ใช่สูตรจริง'},
+ {lv:'I', q:'ทีมตั้ง `coverageThreshold` ใน Jest ไว้ แต่เพิ่มไฟล์ใหม่ที่ยังไม่มี test เลยแล้วตัวเลขไม่ลด สาเหตุที่เป็นไปได้มากที่สุดคืออะไร',
+  o:['ไม่ได้ตั้ง collectCoverageFrom ไฟล์ที่ไม่ถูก test ไหน import จึงไม่ถูกนับ','Jest ไม่คำนวณ coverage ของไฟล์ใหม่ภายใน 24 ชั่วโมงแรกหลังสร้างไฟล์ในโปรเจกต์','ต้องใช้ฟิลด์ coverageMinimum แทน coverageThreshold จึงจะนับไฟล์ที่ยังไม่มี test','threshold ของ Jest ใช้ได้เฉพาะกับ branch ไม่ใช่ line จึงไม่เห็นผลของไฟล์ที่ไม่มี test'],
+  e:'Jest รายงานเฉพาะไฟล์ที่ถูกโหลดระหว่างการรัน test ถ้าไม่ระบุ collectCoverageFrom ไฟล์ที่ไม่มี test จะหลุดจากตัวเลข'},
+ {lv:'I', multi:true, q:'ข้อใดเป็นสาเหตุที่ new code coverage ใน SonarQube ว่างหรือไม่แสดงผล (เลือกทั้งหมดที่ถูก)',
+  o:['path ของไฟล์รายงานใน property ผิด จึงหาไฟล์ไม่เจอ','ไม่มีบรรทัดใหม่ในช่วงที่นิยามว่าเป็น new code','CI ใช้ shallow clone ทำให้หาบรรทัดที่เปลี่ยนจาก SCM ไม่ได้','test ทุกตัวผ่านหมด SonarQube จึงไม่วัด coverage','โปรเจกต์เขียนด้วย TypeScript ซึ่ง SonarQube นำเข้า coverage ไม่ได้'],
+  c:[0,1,2],
+  e:'สาเหตุที่พบบ่อยคือหาไฟล์รายงานไม่เจอ ไม่มีบรรทัดใหม่ หรือ shallow clone ส่วนผลผ่านของ test ไม่เกี่ยวกับการวัด coverage และ SonarQube นำเข้า coverage ของ JavaScript/TypeScript ได้'},
+ {lv:'I', q:'mutation testing ช่วยตอบคำถามใดที่ line coverage ตอบไม่ได้',
+  o:['test ของเรามี assertion ที่แยกโค้ดที่ถูกออกจากโค้ดที่ถูกแก้ให้ผิดได้หรือไม่','มีกี่บรรทัดที่ถูกรันตอนรัน test ทั้งชุด และมีกี่ branch ที่ถูกเดินผ่าน','test suite ใช้เวลารันนานแค่ไหนเมื่อเทียบกับจำนวน test ทั้งหมดในโปรเจกต์','dependency ตัวไหนมีเวอร์ชันใหม่กว่าและควรอัปเดตก่อนปล่อยรุ่นถัดไป'],
+  e:'mutation testing แก้โค้ดให้ผิดทีละจุดแล้วดูว่า test ล้มหรือไม่ จึงวัดคุณภาพของ assertion ส่วนจำนวนบรรทัดที่ถูกรันคือ coverage'},
+];
+
+Q.t6 = [
+ {lv:'I', q:'รายงานระบุ `retry.js` line 100% แต่ branch 40% หมายความว่าอย่างไร',
+  o:['ทุกบรรทัดถูกรันแล้ว แต่ทางแยกบางทาง เช่น ค่า default ของ parameter ยังไม่เคยถูกเดิน','ไฟล์นี้มีบรรทัดที่ไม่เคยถูกรันอยู่ 60% จึงต้องเพิ่ม test ให้ครบทุกบรรทัดก่อน','รายงานผิดพลาด เพราะ branch coverage ต้องเท่ากับ line coverage เสมอตามนิยามของ Istanbul','test ทุกตัวในไฟล์นี้ล้มจนวัดค่าไม่ได้'],
+  e:'branch coverage นับทางแยกแยกจาก line ค่า default ของ destructuring และเงื่อนไข if ทำให้เกิด branch ที่ line coverage มองไม่เห็น'},
+ {lv:'I', q:'ทีมมีเวลาปิดช่อง coverage ได้แค่สองวัน ควรเริ่มจากส่วนใดเพื่อให้ได้ความมั่นใจมากที่สุด',
+  o:['โมดูลคิดเงินที่ซับซ้อน ถูกแก้บ่อย และเคยมี bug หลุดไป production','ไฟล์ที่ตัวเลข coverage ต่ำสุด โดยไม่ดูว่าไฟล์นั้นทำหน้าที่อะไร','ไฟล์ config และ getter/setter เพราะเขียน test ง่ายและตัวเลขขึ้นเร็ว','ไฟล์ที่มีจำนวนบรรทัดน้อยที่สุด'],
+  e:'ควรเรียงตามความเสี่ยงและผลกระทบ ไม่ใช่ตามตัวเลขอย่างเดียว โมดูลที่ซับซ้อน แก้บ่อย และเคยพังมักคุ้มค่าที่สุด'},
+ {lv:'I', q:'characterization test ใช้เมื่อไรและตรวจอะไร',
+  o:['เมื่อต้องแก้โค้ดเก่าที่ไม่มี test โดยบันทึกพฤติกรรมปัจจุบันตามที่เป็นอยู่ ไว้เป็นตาข่ายนิรภัยตอน refactor','เมื่อต้องตรวจว่าโค้ดตรงกับ requirement ฉบับล่าสุดก่อนปล่อย โดยเทียบกับเอกสารที่ฝ่ายธุรกิจอนุมัติ','ใช้เฉพาะกับโค้ดใหม่ที่เขียนด้วย TDD เพื่อบันทึกพฤติกรรมที่ตั้งใจไว้ตั้งแต่ต้น','เมื่อต้องวัด performance ก่อนและหลังแก้ แล้วเทียบเวลารันกับค่าที่บันทึกไว้'],
+  e:'characterization test จับพฤติกรรมปัจจุบันไว้ก่อน ไม่ว่าถูกหรือผิด เพื่อให้รู้ทันทีว่าการแก้ไปเปลี่ยนพฤติกรรมหรือเปล่า'},
+ {lv:'I', q:'ฟังก์ชันนี้ทดสอบยากเพราะอะไร และวิธีแก้เบื้องต้นคืออะไร',
+  code:`function createToken(userId) {
+  return { userId, expiresAt: new Date(Date.now() + 3600 * 1000) };
+}`,
+  o:['ผูกกับเวลาจริง แก้โดยรับเวลาเป็น parameter หรือใช้ fake timers','ใช้ new Date ซึ่งทดสอบไม่ได้ในทุกกรณี ต้องเปลี่ยนไปใช้ library จัดการวันที่ตัวอื่นแทนทั้งโปรเจกต์','คืนค่าเป็น object ซึ่ง Jest เทียบค่าไม่ได้ จึงต้องแปลงเป็น string ก่อนเทียบเสมอ','มี parameter เดียว จึงไม่มีทางแยกให้ทดสอบ และไม่ต้องเขียน test เพิ่มสำหรับฟังก์ชันแบบนี้'],
+  e:'ค่า expiresAt ขึ้นกับเวลาปัจจุบัน ผลจึงเปลี่ยนทุกครั้ง การเพิ่ม seam เป็นพารามิเตอร์ now หรือใช้ fake timers ทำให้ควบคุมค่าได้ และ Jest เทียบ object ได้ด้วย toEqual'},
+ {lv:'I', multi:true, q:'ข้อใดเป็นช่องว่างของ coverage ที่มักถูกมองข้ามและควรตรวจเป็นพิเศษ (เลือกทั้งหมดที่ถูก)',
+  o:['catch block หรือ error path','else หรือ early return ที่เกิดน้อย','ค่า default ของ parameter และ `??`','getter/setter ธรรมดาที่ไม่มี logic','ข้อความ log ที่พิมพ์ออกหน้าจอ'],
+  c:[0,1,2],
+  e:'ช่องที่ซ่อนพฤติกรรมจริงคือ error path, ทางแยกที่เกิดน้อย และค่า default ส่วน getter/setter ธรรมดากับข้อความ log แทบไม่มี logic ให้ปกป้อง'},
+ {lv:'I', q:'เพิ่ม test ที่เรียกฟังก์ชันจนบรรทัดเป็นสีเขียวทั้งหมดแต่ไม่มี assertion ข้อใดอธิบายผลได้ถูกต้อง',
+  o:['ตัวเลข coverage ขึ้น แต่ความมั่นใจไม่เพิ่ม เพราะไม่มี assertion','ทั้ง coverage และความมั่นใจเพิ่มขึ้นเท่ากัน เพราะทุกบรรทัดถูกทดสอบแล้ว','Jest จะแจ้งว่า test ไม่ถูกต้องและไม่นับ coverage ของ test ที่ไม่มี assertion','coverage ไม่ขึ้นเพราะ framework นับเฉพาะ test ที่มี assertion'],
+  e:'coverage วัดว่าโค้ดถูกรัน ไม่ได้วัดว่าผลถูกตรวจ test ที่ไม่มี assertion จึงดัน coverage ได้โดยไม่เพิ่มการปกป้องอะไรเลย'},
+ {lv:'I', q:'ก่อนเชื่อว่า test ที่เพิ่งเขียนปกป้องโค้ดได้จริง วิธีตรวจเร็ว ๆ ด้วยมือคือข้อใด',
+  o:['แก้โค้ดให้ผิดนิดเดียว เช่น เปลี่ยน >= เป็น > แล้วดูว่า test ล้มหรือไม่','รัน test ซ้ำสิบรอบเพื่อดูว่าผ่านทุกรอบ ถ้าผ่านครบถือว่าปกป้องโค้ดได้','ดูว่าชื่อ test ยาวและละเอียดพอหรือไม่ว่าสื่อพฤติกรรมครบถ้วน','ดูว่า coverage ของไฟล์ขึ้นกี่เปอร์เซ็นต์หลังเพิ่ม test ตัวใหม่เข้าไป'],
+  e:'การทำ mutation ด้วยมือบอกได้ทันทีว่า test จับความผิดตรงนั้นได้ไหม ส่วนการรันซ้ำเป็นการตรวจเรื่อง flaky ซึ่งเป็นคนละคำถาม'},
+];
+
+Q.t7 = [
+ {lv:'I', q:'ต้องการทดสอบฟังก์ชันที่ใช้ `Date.now()` ในกรณี “ผ่านไป 1 ชั่วโมงพอดี” ใน Jest ควรทำอย่างไร',
+  o:['ใช้ jest.setSystemTime กับ fake timers หรือรับเวลาเป็น parameter','ใช้ setTimeout รอจริงหนึ่งชั่วโมงใน test แล้วค่อยตรวจผลหลังรอเสร็จ','แก้เวลาของเครื่อง CI ก่อนรัน test ให้ตรงกับกรณีที่ต้องการทดสอบ','ข้ามกรณีนี้ไปเพราะทดสอบเรื่องเวลาไม่ได้ในระดับ unit test เลย'],
+  e:'fake timers ของ Jest ควบคุมทั้ง setTimeout และ Date (ตรวจกับ 30.5.2 แล้ว) การรอจริงหรือแก้เวลาเครื่องทำให้ test ช้าและไม่แน่นอน'},
+ {lv:'I', q:'เปรียบเทียบการ mock ที่ adapter ของเราเอง กับ mock ที่ชั้น HTTP (เช่น MSW หรือ nock) ข้อใดถูกต้อง',
+  o:['mock ที่ adapter ง่ายและเร็วแต่ไม่ตรวจ URL, header และการ parse response จริง ส่วนชั้น HTTP ตรวจได้แต่ต้อง setup มากกว่า','mock ที่ชั้น HTTP เร็วกว่าและง่ายกว่าในทุกกรณี เพราะไม่ต้องสร้างชั้น adapter เพิ่ม และตรวจได้ครบเท่ากัน และใช้ได้ทุกไลบรารีโดยไม่ต้องแก้โค้ดใด ๆ ในอนาคต','mock ที่ adapter ตรวจ header และ URL ได้ละเอียดกว่าเพราะรู้โครงสร้างภายในของ client','ทั้งสองวิธีให้ผลเหมือนกันทุกประการ จึงเลือกแบบใดก็ได้ ไม่ว่าจะมีการเปลี่ยน HTTP client ในอนาคตหรือไม่'],
+  e:'การ mock ที่ adapter ข้าม library HTTP ไปเลย จึงไม่เห็นข้อผิดพลาดในการสร้าง request หรือ parse response ส่วนการจำลองที่ชั้น HTTP ปล่อยให้โค้ดจริงทำงานครบ แลกกับการตั้งค่าที่มากกว่า'},
+ {lv:'I', q:'test ผ่านหมดแต่ production พังเพราะ API ภายนอกใช้ชื่อฟิลด์ต่างจากที่ mock ไว้ สาเหตุหลักคืออะไร',
+  o:['mock ไม่ตรงกับ API จริง (mock drift) ควรเสริมด้วย contract test','Jest ไม่รองรับการ mock HTTP จึงต้องเรียก API จริงใน test ทั้งหมดแทน','coverage ยังไม่ถึง 100% ทำให้มีบรรทัดที่ไม่ถูกทดสอบเหลืออยู่ในโมดูลที่เรียก API','ใช้ test.each น้อยเกินไป จึงมีกรณีทดสอบไม่ครบทุกค่าของ response ที่เป็นไปได้'],
+  e:'mock คือสิ่งที่เราเชื่อว่า API ตอบ ถ้าความเชื่อผิดหรือล้าสมัย test จะผ่านทั้งที่ของจริงต่าง การตรวจกับ contract หรือ OpenAPI schema และ integration test กับ sandbox ช่วยลดความเสี่ยงนี้'},
+ {lv:'I', q:'`f = jest.fn(() => 5)` เรียก `f.mockClear()` แล้วเรียก `f()` จะได้อะไร',
+  o:['5 เพราะ mockClear ล้างเฉพาะประวัติการเรียก','undefined เพราะ mockClear ลบ implementation ทิ้งไปพร้อมกับประวัติการเรียก','เกิด error เพราะ mock ถูกล้างแล้วและต้องสร้างใหม่ก่อนเรียกอีกครั้ง','null เพราะ mock กลับสู่ค่าเริ่มต้นหลังถูกล้างแล้วเรียกซ้ำ'],
+  e:'mockClear ล้าง mock.calls และ mock.results เท่านั้น mockReset จึงจะลบ implementation (ตรวจกับ Jest 30.5.2 แล้ว)'},
+ {lv:'I', q:'`patch("user_service.send_email", autospec=True)` ให้ประโยชน์อะไรเมื่อเทียบกับ patch ธรรมดา',
+  o:['mock มี signature เหมือนของจริง เรียกด้วย argument ผิดจำนวนจะ error ทันที','mock คืนค่าจริงของฟังก์ชันต้นฉบับโดยอัตโนมัติทุกครั้งที่ถูกเรียกใน test','patch มีผลกับทุก module ที่ import ชื่อนี้พร้อมกัน ไม่ว่าจะ import มาจากที่ไหน','ไม่ต้องใช้ assert_called_with อีกต่อไป เพราะ autospec ตรวจการเรียกให้เองทั้งหมด'],
+  e:'autospec ทำให้ mock รู้ signature ของฟังก์ชันจริง จึงจับการเรียกผิดแบบที่ mock ธรรมดาจะปล่อยผ่าน (ตรวจกับ Python 3.13 แล้ว)'},
+ {lv:'I', multi:true, q:'ข้อใดช่วยลดความเสี่ยงที่ mock ไม่ตรงกับความจริงของ API ภายนอก (เลือกทั้งหมดที่ถูก)',
+  o:['ทำ contract test ระหว่างผู้ใช้และผู้ให้บริการ API (เช่น Pact)','ตรวจ response ที่ใช้ใน mock เทียบกับ OpenAPI schema','มี integration test ของเส้นทางหลักกับ sandbox ของผู้ให้บริการ','เพิ่มจำนวน mock ในทุก test ให้มากขึ้น','ลบ test ที่ล้มเมื่อ API เปลี่ยน'],
+  c:[0,1,2],
+  e:'ทั้งสามข้อแรกเทียบ mock กับความจริงโดยตรง ส่วนการเพิ่ม mock หรือลบ test ที่ล้มทำให้ปัญหาถูกซ่อน ไม่ได้ลดความเสี่ยง'},
+ {lv:'I', q:'ใช้ Mockito ร่วมกับ `MockitoExtension` แล้วตั้ง stub ไว้แต่ test ไม่ได้เรียกใช้ จะเกิดอะไรขึ้นตามค่าเริ่มต้น',
+  o:['เกิด UnnecessaryStubbingException เพราะเปิด strict stubs ไว้','test ผ่านปกติโดยไม่มีการแจ้งเตือนอะไรทั้งสิ้นจาก Mockito','เกิด NullPointerException ตอนเรียก stub ที่ตั้งไว้แต่ไม่ถูกใช้','stub ถูกข้ามโดยอัตโนมัติ แต่ coverage ของ test ลดลงเล็กน้อย'],
+  e:'MockitoExtension เปิด strict stubs ไว้ ถ้ามี stub ที่ไม่ถูกใช้จะแจ้งด้วย UnnecessaryStubbingException เพื่อให้ลบ stub ที่ไม่จำเป็น'},
+ {lv:'I', q:'ข้อใดเป็นปัญหาของการ verify ทุกการเรียกภายในด้วย mock',
+  o:['test ผูกกับ implementation จึงล้มเมื่อ refactor ทั้งที่พฤติกรรมไม่เปลี่ยน','ทำให้ test รันช้าลงมากเพราะ mock สร้างยากและกินหน่วยความจำมากกว่าปกติ','Jest ไม่อนุญาตให้ verify เกินสามครั้งต่อ test ถ้าเกินจะข้ามการตรวจที่เหลือ','ผลของ test ไม่เหมือนเดิมทุกครั้งที่รันเพราะ mock ถูกสร้างใหม่ตลอด'],
+  e:'การ verify ลำดับและวิธีเรียกภายในแปลว่า test รู้ “วิธีทำ” แทนที่จะรู้ “ผลที่ต้องได้” จึงเปราะต่อการ refactor'},
+];
+
+Q.t8 = [
+ {lv:'I', q:'ทำไมการทดสอบ repository ด้วย in-memory database อย่าง H2 หรือ SQLite อย่างเดียว จึงมีความเสี่ยง เมื่อ production ใช้ PostgreSQL',
+  o:['SQL dialect, constraint และ transaction อาจต่างกัน test จึงผ่านทั้งที่ของจริงพัง','in-memory database ไม่รองรับคำสั่ง SELECT ที่มีเงื่อนไขซับซ้อนทุกรูปแบบ','in-memory database ช้ากว่า PostgreSQL มากเพราะต้องโหลดข้อมูลใหม่ทุกครั้ง','test ที่ใช้ in-memory database ไม่ถูกนับเป็น coverage ในรายงานของเครื่องมือทุกตัว'],
+  e:'ความต่างของ dialect และพฤติกรรมเฉพาะ engine เป็นเหตุผลที่หลายทีมใช้ DB จริงใน container สำหรับ integration test ส่วน in-memory เหมาะกับ logic ที่ไม่ผูก dialect'},
+ {lv:'I', q:'Testcontainers ให้ประโยชน์หลักอะไร',
+  o:['รัน dependency จริง เช่น PostgreSQL ใน container ชั่วคราว จึงใกล้ production กว่า แลกกับความช้า','ทำให้ unit test รันเร็วขึ้นโดยแทน database ด้วย mock ที่สร้างให้อัตโนมัติจาก schema ของโปรเจกต์','สร้างข้อมูลทดสอบให้อัตโนมัติจาก schema ของ database ในทุกครั้งที่เริ่ม test','แทนที่ contract test ระหว่าง service ได้ทั้งหมด จึงไม่ต้องเขียนเพิ่มอีก'],
+  e:'Testcontainers สตาร์ท dependency จริงเป็น container ให้ test ใช้แล้วทิ้ง จึงจับปัญหาเฉพาะ engine ได้ ราคาที่ต้องจ่ายคือเวลาเริ่มต้นและข้อกำหนดเรื่อง Docker'},
+ {lv:'I', q:'test ที่เรียกว่า flaky คือแบบใด',
+  o:['test ที่ผ่านหรือล้มต่างกันได้ ทั้งที่โค้ดและ test ไม่เปลี่ยน','test ที่ใช้เวลารันนานกว่าหนึ่งวินาทีเมื่อรันบนเครื่องของนักพัฒนา','test ที่ล้มทุกครั้งเพราะโค้ดมี bug จริงที่ยังไม่ได้แก้','test ที่ไม่มี assertion'],
+  e:'flaky คือผลไม่คงที่โดยไม่มีการเปลี่ยนโค้ด ซึ่งต่างจาก test ที่ล้มสม่ำเสมอเพราะ bug จริง'},
+ {lv:'I', q:'ข้อใดคือความเสี่ยงหลักของ test นี้',
+  code:`test('job เสร็จภายในเวลา', async () => {
+  startJob();
+  await new Promise((r) => setTimeout(r, 500));
+  expect(job.status).toBe('DONE');
+});`,
+  o:['ผลขึ้นกับความเร็วเครื่อง ช้ากว่า 500ms ก็ล้ม เร็วกว่าก็เสียเวลารอ ควรรอเหตุการณ์จริงหรือใช้ fake timers','ใช้ setTimeout ใน test ไม่ได้ทุกกรณี จึงต้องเปลี่ยนไปใช้ setInterval ทุกที่แทน และไม่ควรใช้ timer จริงในกรณีใดเลย','toBe ใช้เทียบ string ไม่ได้ จึงต้องเปลี่ยนไปใช้ toEqual กับข้อความทุกตัว ในทุกกรณีที่ข้อความมีตัวอักษรภาษาไทย','ต้องเปลี่ยนเป็น test.each เพื่อให้ได้ผลที่เสถียรเมื่อรันหลายรอบ แล้วรันหลายรอบเพื่อให้ผลนิ่งขึ้นตามจำนวนรอบ'],
+  e:'การรอด้วยเวลาคงที่ทำให้ test เปราะ (ช้าไปนิดเดียวก็ล้ม) และเสียเวลาเมื่อเครื่องเร็ว ควรรอจนเกิดเหตุการณ์ที่ต้องการ หรือใช้ fake timers เมื่อเป็นตัวจับเวลาในโค้ด'},
+ {lv:'I', q:'คำสั่ง/แฟล็กใดของ Jest ช่วยหา test ที่พึ่งลำดับการรัน',
+  o:['jest --randomize','jest --coverage --coverageReporters=text','jest --silent --runInBand','jest --bail=1 --watchAll'],
+  e:'--randomize สุ่มลำดับ test ในไฟล์ จึงเปิดโปง test ที่พึ่ง state ของ test อื่น (มีใน Jest 30.5.2) ส่วน --bail หยุดเมื่อมี test ล้มและ --coverage วัด coverage'},
+ {lv:'I', multi:true, q:'ข้อใดเป็นสาเหตุที่ทำให้ test กลายเป็น flaky (เลือกทั้งหมดที่ถูก)',
+  o:['แชร์ state ที่เปลี่ยนค่าได้ระหว่าง test','รอด้วย sleep เวลาคงที่แทนการรอ condition','ใช้ port คงที่ตอนรัน test แบบขนาน','ใช้ test.each กับชุดข้อมูลหลายแถว','ตั้งชื่อ test เป็นภาษาไทย'],
+  c:[0,1,2],
+  e:'state ร่วม การรอแบบ fix เวลา และ port ชนกันล้วนทำให้ผลขึ้นกับจังหวะ ส่วน test.each และภาษาที่ใช้ตั้งชื่อ test ไม่ส่งผลต่อความเสถียร'},
+ {lv:'I', q:'ทีมแก้ flaky test ด้วยการให้ CI retry อัตโนมัติ 3 รอบ ข้อใดอธิบายผลได้เหมาะสมที่สุด',
+  o:['เป็นมาตรการชั่วคราวที่อาจซ่อนปัญหา ควรนับ test ที่ผ่านเพราะ retry แล้วตามแก้ root cause','เป็นวิธีแก้ root cause ที่ได้ผลแน่นอนเพราะรันซ้ำจนสะอาดและไม่ต้องตามหาสาเหตุต่อ','ทำให้ test ที่ผิดจริงกลายเป็นผ่านถูกต้องตามหลักสถิติเมื่อรันซ้ำหลายรอบ','ควรเพิ่มเป็น 10 รอบเพื่อให้แน่ใจว่าไม่ต้องดูแลอีกต่อไป'],
+  e:'retry ทำให้ pipeline เขียวโดยไม่ได้ทำให้ test เสถียร ถ้าไม่วัดว่ามี test กี่ตัวที่ผ่านด้วย retry ทีมจะไม่เห็นว่าปัญหาสะสม'},
+];
+
+Q.t9 = [
+ {lv:'A', q:'ระบบ legacy มี coverage รวม 20% ควรตั้ง quality gate อย่างไรให้ได้ผลโดยไม่ทำให้ทุก PR ถูกบล็อก',
+  o:['ตั้งเงื่อนไขที่ new code ก่อน และกำหนดว่า coverage รวมห้ามต่ำกว่าปัจจุบัน แล้วค่อยขยับเป้า','บังคับ coverage รวม 80% ทุก repo ตั้งแต่วันแรก เพื่อให้ทุกทีมเริ่มจากมาตรฐานเดียวกัน','ยกเลิก coverage gate จนกว่าระบบเก่าจะถูกเขียนใหม่ทั้งหมด แล้วค่อยกลับมาตั้งเกณฑ์ใหม่','ใช้เฉพาะ line coverage เพราะตัวเลขสูงกว่า branch และทีมเห็นความคืบหน้าเร็วกว่า'],
+  e:'gate ที่ new code ทำให้ของใหม่ได้มาตรฐาน ส่วน ratchet กันไม่ให้ตัวเลขรวมแย่ลง การบังคับเกณฑ์รวมทันทีทำให้ผู้เขียน PR ถูกบล็อกจากเรื่องที่ตนไม่ได้ก่อ'},
+ {lv:'A', q:'โมดูลคิดค่าธรรมเนียมที่ซับซ้อน กับ CRUD บาง ๆ บน framework ควรวางน้ำหนักการทดสอบต่างกันอย่างไร',
+  o:['โมดูลค่าธรรมเนียมเน้น unit test หนาแน่น ส่วน CRUD ใช้ integration test กับ DB จริงคุ้มกว่า','ใช้ตัวเลข coverage เดียวกันทุกโมดูลเพื่อความเป็นธรรมกับทุกทีมที่ดูแลโค้ดต่างกัน','CRUD ต้อง unit test ทุก getter ส่วนโมดูลค่าธรรมเนียมใช้ E2E อย่างเดียว','ไม่ต้องทดสอบโมดูลที่ซับซ้อนเพราะทดสอบยาก ให้ไปเน้นโมดูลที่เขียน test ง่ายแทน'],
+  e:'น้ำหนักควรตามความเสี่ยงและลักษณะงาน logic ที่ซับซ้อนได้ประโยชน์จาก unit test ละเอียด ส่วนโค้ดที่เป็นแค่ตัวต่อกับ DB ให้ความมั่นใจมากกว่าเมื่อทดสอบกับของจริง'},
+ {lv:'A', q:'ข้อใดเป็นข้อดีของการเริ่มบังคับเกณฑ์ที่ new code มากกว่า overall code',
+  o:['ไม่ต้องรอแก้โค้ดเก่า ของใหม่ได้มาตรฐานทันที และตัวเลขรวมค่อย ๆ ดีขึ้นตามเวลา','ทำให้ coverage รวมถึง 100% ภายในหนึ่งไตรมาสโดยไม่ต้องแก้โค้ดเก่า','ไม่ต้องมี test ใหม่เลยเพราะ SonarQube คำนวณ coverage ของโค้ดใหม่ให้เองจากโครงสร้างโค้ด','ทำให้โค้ดเก่าถูกลบออกจากการวัดอย่างถาวรและไม่ต้องกลับมาแก้อีก'],
+  e:'แนวคิด Clean as You Code คือคุมคุณภาพของสิ่งที่เปลี่ยนใหม่ ไม่รอแก้ของเก่าทั้งหมด จึงเริ่มได้ทันทีและทีมยอมรับง่ายกว่า'},
+ {lv:'A', multi:true, q:'ข้อใดควรอยู่ในกระบวนการข้อยกเว้น (waiver) ของ coverage gate (เลือกทั้งหมดที่ถูก)',
+  o:['เหตุผลทางเทคนิคที่บันทึกไว้','เจ้าของที่รับผิดชอบ','วันหมดอายุหรือเงื่อนไขที่ต้องทบทวน','ผู้เขียน PR อนุมัติให้ตัวเองได้เสมอ','ไม่ต้องบันทึกเพื่อลดภาระเอกสาร'],
+  c:[0,1,2],
+  e:'ข้อยกเว้นที่ไม่มีเหตุผล เจ้าของ และวันทบทวน จะสะสมจนกลายเป็นช่องว่างถาวร ส่วนการอนุมัติตัวเองทำให้ไม่มีการถ่วงดุล'},
+ {lv:'A', q:'ข้อใดสะท้อนการเลือกระหว่าง test pyramid กับ testing trophy ได้เหมาะสมที่สุด',
+  o:['เลือกจากข้อมูลว่า bug เกิดที่ชั้นไหน และต้นทุนของ test แต่ละชั้น ไม่มีรูปทรงเดียวที่ถูกเสมอ','pyramid ถูกต้องที่สุดเสมอเพราะเป็นแนวคิดที่เก่าแก่ที่สุดและทีมส่วนใหญ่ใช้กันมานาน','trophy ถูกต้องเสมอเพราะเป็นแนวคิดที่ใหม่กว่า จึงแก้ข้อจำกัดของ pyramid ได้หมดแล้ว','ใช้ E2E เป็นฐานของทุกระบบเพราะใกล้ผู้ใช้จริงที่สุดและตรวจได้ครบทุกชั้น'],
+  e:'ทั้งสองเป็นแนวคิดให้ช่วยคิด ไม่ใช่กฎ ทีมควรดูว่า bug ที่หลุดเกิดที่ใด และ test ชั้นไหนให้ความมั่นใจคุ้มต้นทุนที่สุด'},
+ {lv:'A', q:'ก่อนประกาศมาตรฐาน coverage ใหม่ให้ทุกทีม ควรทำอะไรก่อน',
+  o:['วัดสถานะปัจจุบัน (baseline) ของแต่ละทีม แล้วทดลองกับ 1–2 ทีม (pilot)','ประกาศเกณฑ์สูงสุดก่อนแล้วให้ทีมปรับตัวตามเองภายในเวลาที่กำหนดไว้ล่วงหน้า','ใช้ทีมที่ coverage สูงสุดเป็นต้นแบบโดยไม่ถามทีมอื่นว่าบริบทงานต่างกันอย่างไร','ซื้อเครื่องมือใหม่ก่อนแล้วค่อยกำหนดเกณฑ์ตามที่เครื่องมือรองรับ'],
+  e:'ต้องรู้จุดเริ่มต้นจริงและลองกับบริบทจริงก่อน ไม่งั้นเกณฑ์อาจไม่เหมาะ และเกิดแรงต่อต้านเมื่อขยายทั้งองค์กร'},
+ {lv:'A', q:'ส่วนใดของระบบเหมาะที่สุดที่จะไม่บังคับ unit test ครอบคลุมสูง และ exclude แบบมีเหตุผลที่ทบทวนได้',
+  o:['client ที่ generate จาก OpenAPI spec ซึ่งควรทดสอบที่ต้นทาง','ฟังก์ชันคำนวณภาษีที่มีเงื่อนไขหลายขั้นตามช่วงรายได้','ฟังก์ชันตรวจสิทธิ์การเข้าถึงข้อมูลตามบทบาทของผู้ใช้','ฟังก์ชันตัดสินสถานะของออเดอร์จากผลการจ่ายเงินและการจัดส่ง'],
+  e:'โค้ดที่ generate ทดสอบที่ spec หรือ generator ได้ ส่วนภาษี สิทธิ์ และสถานะออเดอร์เป็น logic ที่ผิดแล้วเจ็บ จึงควรได้ test หนาแน่น'},
+];
+
+Q.t10 = [
+ {lv:'A', q:'ปัญหาหลักของ test นี้คืออะไร',
+  code:`test('ราคาตามประเภทสินค้า', () => {
+  for (const item of items) {
+    if (item.type === 'A') expect(price(item)).toBe(10);
+    else expect(price(item)).toBe(20);
+  }
+});`,
+  o:['มี logic (loop และ if) อยู่ใน test เอง ทำให้ซับซ้อนและอาจมี assertion ที่ไม่ถูกรัน ควรใช้ test.each','ใช้ for-of ใน Jest ไม่ได้เพราะ Jest ไม่รองรับ iterator ใน test ต้องเขียนเป็น for แบบมีตัวนับแทนเท่านั้น','toBe ใช้กับตัวเลขไม่ได้ จึงต้องเปลี่ยนเป็น toEqual ทุกครั้งที่เทียบค่า','ต้องมี beforeEach ในทุก test เพื่อให้ข้อมูลตั้งต้นถูกสร้างใหม่ก่อนทุกครั้ง ไม่เช่นนั้นผลจะไม่นับ'],
+  e:'test ที่มี logic ต้องถูกทดสอบซ้ำอีกชั้นว่าถูกต้องไหม และหาก items ว่าง assertion จะไม่ถูกรันเลย การใช้ test.each ทำให้แต่ละกรณีชัดเจนและรายงานผลแยกกัน'},
+ {lv:'A', q:'ข้อใดเป็นเหตุผลที่ดีที่สุดในการบังคับกติกาของ test ด้วย lint rule เช่น `jest/expect-expect` แทนการเขียนไว้ในเอกสารอย่างเดียว',
+  o:['ตรวจอัตโนมัติทุก PR ไม่ขึ้นกับความจำของคนหรือผู้รีวิว','lint รับประกันว่า test ทุกตัวมีคุณภาพเมื่อผ่านกฎทั้งหมดที่ตั้งไว้แล้ว','เอกสารไม่มีประโยชน์เมื่อมี lint เพราะกฎใน lint ครอบคลุมทุกเรื่องที่ต้องรู้แล้ว','ทำให้ test รันเร็วขึ้นเพราะ lint ตัดโค้ดที่ซ้ำออกก่อนรัน'],
+  e:'lint ตรวจกติกาเชิงโครงสร้างได้สม่ำเสมอ แต่ไม่ได้รับประกันคุณภาพของ assertion เอกสารยังจำเป็นสำหรับอธิบายเหตุผลและหลักการ'},
+ {lv:'A', q:'นโยบาย mock แบบใดที่ทีมควรตกลงร่วมกันเพื่อลดความเปราะของ test',
+  o:['mock ที่ขอบระบบ (HTTP, DB, เวลา) ส่วนคลาสภายในใช้ของจริงหรือ fake กลางร่วมกัน','mock ทุกคลาสที่ไม่ใช่คลาสที่กำลังทดสอบ เพื่อให้แต่ละ test แยกจากกันอย่างสมบูรณ์','ห้ามใช้ mock ในทุกกรณี และให้ทุก test เรียกของจริงเท่านั้น','mock ได้เฉพาะฟังก์ชันที่ไม่มี parameter เพื่อให้ตั้งค่าที่คืนได้ง่าย'],
+  e:'mock ที่ขอบระบบแยกสิ่งที่ควบคุมไม่ได้ออก โดยไม่ผูก test กับโครงสร้างภายในของเรา ทำให้ refactor ได้ง่ายขึ้น'},
+ {lv:'A', multi:true, q:'ข้อใดควรอยู่ใน checklist สำหรับรีวิว test ใน pull request (เลือกทั้งหมดที่ถูก)',
+  o:['test จะล้มจริงถ้าโค้ดผิด (มี assertion ที่ตรวจผลลัพธ์)','ชื่อ test บอกพฤติกรรมและเงื่อนไข','ไม่มี sleep เวลาจริง หรือ network ใน unit test','จำนวนบรรทัดของ test ต้องไม่เกินโค้ดหลัก','ทุก method ในคลาสต้องมี test หนึ่งตัวพอดี'],
+  c:[0,1,2],
+  e:'สามข้อแรกวัดสิ่งที่กระทบความเชื่อถือได้ของ test จริง ส่วนจำนวนบรรทัดหรือจับคู่ method ต่อ test แบบ 1:1 ไม่ได้สะท้อนคุณภาพ'},
+ {lv:'A', q:'พบ test ที่ถูก `test.skip` โดยไม่มี ticket มาหลายเดือน ควรมีกติกาอย่างไร',
+  o:['skip ต้องมี ticket เจ้าของ วันหมดอายุ และตรวจด้วย lint หรือ dashboard','ปล่อยไว้เพราะไม่กระทบ build และไม่มีใครเดือดร้อนจากการข้ามไป','ลบทุกตัวที่ถูก skip ทิ้งโดยไม่ถามใครเพื่อให้โค้ดสะอาดขึ้นทันที','เปลี่ยนเป็น test.only เพื่อให้เห็นผลว่ากรณีที่ข้ามมีปัญหาอะไร'],
+  e:'test ที่ถูก skip คือช่องว่างที่มองไม่เห็น การกำหนดเจ้าของและวันหมดอายุทำให้มันกลับมาถูกแก้หรือถูกลบอย่างมีเหตุผล'},
+ {lv:'A', q:'การทดสอบ private method โดยตรงมีปัญหาอะไร',
+  o:['ผูก test กับโครงสร้างภายใน refactor แล้ว test ล้มทั้งที่พฤติกรรมไม่เปลี่ยน','Jest และ pytest ไม่รองรับการเรียก method ที่ขึ้นต้นด้วยขีดล่างโดยตรง','ทำให้ coverage ต่ำลงเสมอเพราะเครื่องมือไม่นับ private method','ทำให้ test รันช้ากว่าเดิมมากเพราะต้องใช้ reflection ในทุกครั้งที่เรียก'],
+  e:'private method เป็นรายละเอียดของการทำงาน ถ้า test รู้ลึกถึงระดับนั้น การปรับโครงสร้างภายในจะทำให้ test พังโดยไม่มีพฤติกรรมไหนเปลี่ยนจริง'},
+ {lv:'A', q:'มาตรฐาน testing ที่ต้องใช้กับหลายทีมที่ใช้ภาษาต่างกัน ควรเป็นแบบใด',
+  o:['แยกหลักการที่ไม่ขึ้นกับภาษาออกจากตัวอย่างเฉพาะภาษา และมีเจ้าของกับเวอร์ชัน','เขียนเป็นภาษาเดียวแล้วให้ทุกทีมแปลงเองตามบริบทของภาษาที่ใช้อยู่','กำหนดชื่อ framework เดียวให้ใช้ทุกภาษา เพื่อให้เอกสารและเครื่องมือเหมือนกันหมด','ล็อกเอกสารไม่ให้แก้หลังประกาศ เพื่อให้ทุกทีมยึดตามฉบับเดียวกันตลอด'],
+  e:'หลักการเป็นสากลแต่เครื่องมือต่างกัน การแยกสองส่วนทำให้ใช้ร่วมกันได้ และเจ้าของกับเวอร์ชันทำให้ปรับตามบทเรียนได้'},
+];
+
+Q.t11 = [
+ {lv:'A', q:'suite ใช้เวลา 12 นาที ก่อนจะลงมือปรับ ควรเริ่มที่ใด',
+  o:['วัดว่า test หรือขั้นตอนใดใช้เวลามากที่สุด เช่น pytest --durations=10 แล้วแก้จุดนั้น','เพิ่ม worker เป็นสองเท่าทันทีโดยไม่ต้องดูว่า test ตัวไหนช้า แล้วค่อยดูทีหลังว่ายังช้าอยู่หรือไม่','ลบ test ที่เขียนยาวที่สุดเพราะมักเป็นตัวที่ช้าที่สุดด้วย ออกก่อนเพื่อให้ suite สั้นลงให้เร็วที่สุด','ย้าย test ทั้งหมดไปรันรายคืนเพื่อไม่ให้กระทบเวลาทำงานช่วงกลางวัน และให้ PR ผ่านได้โดยไม่ต้องรอผลของ suite เลย'],
+  e:'ต้องรู้ก่อนว่าเวลาหมดไปกับอะไร การเพิ่ม worker โดยไม่รู้สาเหตุอาจทำให้ปัญหา flaky เพิ่มโดยไม่ได้เร็วขึ้นเท่าที่หวัง'},
+ {lv:'A', q:'การรัน test แบบขนาน (parallel) ให้ผลดีเมื่อเงื่อนไขใดเป็นจริง',
+  o:['test แต่ละตัว independent ไม่แชร์ port ไฟล์ หรือ state ที่แก้ได้','test หลายตัวอ่านเขียนตารางเดียวกันใน database เดียวกันพร้อมกัน','test พึ่งลำดับการรันตามชื่อไฟล์ที่เรียงไว้แล้ว','จำนวน test น้อยกว่าสิบตัวต่อหนึ่งไฟล์ที่รันพร้อมกัน'],
+  e:'การรันขนานเปิดโปงการพึ่งพากันของ test ถ้าไม่ independent จะเกิด flaky ทันที'},
+ {lv:'A', q:'กฎคิดส่วนลดถูกทดสอบครบทุกกรณีด้วยข้อมูลชุดเดียวกันทั้งใน unit, API และ E2E ควรจัดการอย่างไร',
+  o:['เก็บทุกกรณีไว้ที่ unit test และให้ชั้นบนมีเฉพาะเคสตัวแทน','ลบ unit test เพราะ E2E ครอบคลุมทุกกรณีของกฎนี้แล้ว','เพิ่มกรณีเดียวกันอีกในทุกชั้นเพื่อความปลอดภัย','รวมทั้งหมดเป็น E2E ตัวเดียวเพื่อลดจำนวนไฟล์ที่ต้องดูแล'],
+  e:'ความซ้ำข้ามชั้นทำให้ต้องแก้หลายที่เมื่อกฎเปลี่ยนและรันนานขึ้น ควรทดสอบแต่ละอย่างที่ชั้นถูกสุดที่จับได้'},
+ {lv:'A', q:'แนวคิด DAMP (Descriptive And Meaningful Phrases) สำหรับโค้ด test หมายถึงอะไร',
+  o:['ยอมให้มีส่วนซ้ำบ้างถ้าทำให้ test อ่านจบในที่เดียวและเห็นเจตนาชัด','ห้ามมีโค้ดซ้ำใน test แม้แต่บรรทัดเดียว ต้องดึงออกเป็น helper ทุกครั้ง','ซ่อนข้อมูลทดสอบทั้งหมดไว้ใน helper กลางเพื่อให้ test สั้นที่สุด','ตั้งชื่อ test ให้สั้นที่สุดเท่าที่เป็นไปได้เพื่อให้อ่านผ่านตาได้เร็ว'],
+  e:'ใน test ความอ่านง่ายสำคัญกว่าการไม่ซ้ำ helper ที่ซ่อนข้อมูลลึกเกินไปทำให้ต้องกระโดดไฟล์เพื่อเข้าใจ test ตัวเดียว'},
+ {lv:'A', multi:true, q:'ข้อใดช่วยลดเวลารัน test ใน CI ได้ (เลือกทั้งหมดที่ถูก)',
+  o:['รันเฉพาะ test ที่เกี่ยวกับไฟล์ที่เปลี่ยน (เช่น jest --changedSince)','แบ่ง test เป็น shard รันบนหลาย runner','แทน sleep ด้วย fake timers หรือการรอ event','เพิ่ม retry ให้ทุก test','รวมทุก test ให้อยู่ในไฟล์เดียว'],
+  c:[0,1,2],
+  e:'สามข้อแรกลดงานที่ต้องทำหรือกระจายงาน ส่วน retry ทำให้เวลารวมเพิ่มและซ่อนปัญหา การรวมไฟล์เดียวทำให้ขนานไม่ได้'},
+ {lv:'A', q:'เมื่อใช้ `jest --shard` แบ่งงานบนหลาย job ร่วมกับการวัด coverage มีข้อควรระวังอะไร',
+  o:['ต้องรวมรายงาน coverage จากทุก shard เป็นชุดเดียวก่อนตรวจ threshold หรือส่งเข้า SonarQube','ไม่ต้องทำอะไร เพราะ Jest รวมรายงานข้าม job ให้เองแม้จะรันบนเครื่องคนละเครื่อง','วัด coverage ไม่ได้เมื่อใช้ shard จึงต้องปิดการวัดในทุก job ที่แบ่งงาน','ต้องตั้ง threshold ของแต่ละ shard เป็น 100% เพื่อให้ผลรวมไม่ต่ำกว่าเกณฑ์'],
+  e:'แต่ละ shard รันแยก job และสร้างรายงานของตัวเอง ถ้าตรวจ threshold ต่อ shard จะได้ตัวเลขไม่ครบ จึงต้อง merge รายงานก่อน'},
+ {lv:'A', q:'mutation testing ช่วยเรื่องประสิทธิภาพของชุด test ได้อย่างไร',
+  o:['ชี้จุดที่ test ไม่ได้ปกป้องจริง (mutant รอด) และเป็นข้อมูลประกอบก่อนลบ test ที่ดูซ้ำซ้อน','ทำให้ test ทุกตัวรันเร็วขึ้นโดยอัตโนมัติเพราะตัด test ที่ไม่จำเป็นออกให้เอง','แทนที่การรีวิว test ทั้งหมดได้ จึงไม่ต้องให้คนอ่าน test อีก','วัดว่า test ชุดนี้ใช้เวลารันเท่าไรในแต่ละ build ที่ผ่านมา'],
+  e:'mutant ที่ไม่ถูกจับชี้ว่าตรงไหน test อ่อน ข้อมูลนี้ช่วยตัดสินใจว่าควรเสริม หรือ test ไหนตัดได้โดยไม่เสียการปกป้อง'},
+];
+
+Q.t12 = [
+ {lv:'A', q:'ก่อนปล่อยพบ defect 36 รายการ หลังปล่อยพบอีก 4 รายการ ถ้านิยาม defect leakage = หลังปล่อย / (ก่อนปล่อย + หลังปล่อย) จะได้ค่าเท่าใด',
+  o:['10%','11.1%','90%','4%'],
+  e:'4 / (36 + 4) = 4 / 40 = 10% ส่วน 11.1% คือ 4/36 (นิยามต่างออกไป) และ 90% คือ DRE = 36/40'},
+ {lv:'A', q:'coverage เพิ่มจาก 60% เป็น 85% ในสามเดือน แต่ defect ที่หลุดไป production ไม่ลดเลย ควรตรวจอะไรต่อ',
+  o:['คุณภาพของ assertion อาจต่ำ ตรวจด้วย mutation score หรือรีวิว test ที่เพิ่ม','coverage ยังไม่ถึง 100% จึงต้องเพิ่ม test ต่อจนกว่าจะครบทุกบรรทัดในระบบ','defect ไม่เกี่ยวกับ test จึงเลิกวัด coverage และเลิกติดตาม defect ไปพร้อมกัน','เปลี่ยนไปวัดเฉพาะ line coverage เพื่อให้ตัวเลขสูงขึ้น'],
+  e:'coverage ขึ้นโดยผลลัพธ์ไม่ดีขึ้นเป็นสัญญาณว่า test อาจไม่ได้ตรวจอะไรจริง หรือ defect อยู่ในส่วนที่ test ยังไม่ครอบคลุม'},
+ {lv:'A', q:'Goodhart’s law ในบริบทของตัวชี้วัดการทดสอบหมายถึงอะไร',
+  o:['เมื่อตัวชี้วัดถูกใช้เป็นเป้าหมายเดียว คนจะปรับพฤติกรรมเพื่อให้ตัวเลขดีจนไม่สะท้อนคุณภาพจริง','ตัวชี้วัดที่ดีต้องคำนวณจากข้อมูลย้อนหลังอย่างน้อยหนึ่งปีเต็มก่อนนำไปใช้ตัดสินใจ','coverage ที่สูงกว่า 80% ทำให้ defect เป็นศูนย์ในโมดูลที่มี test ครอบคลุมแล้ว','ตัวชี้วัดแต่ละตัวมีค่าที่ดีที่สุดเพียงค่าเดียวทั่วโลก'],
+  e:'เมื่อตัวเลขกลายเป็นเป้า คนจะ optimize ตัวเลข เช่นเขียน test ไม่มี assertion จึงควรดูหลายตัวคู่กันและไม่ใช้ประเมินรายบุคคล'},
+ {lv:'A', q:'flaky rate ควรนิยามอย่างไรให้วัดได้จริง',
+  o:['สัดส่วนครั้งที่ test ล้มแล้วผ่านเมื่อรันซ้ำโดยไม่เปลี่ยนโค้ด ต่อจำนวนครั้งที่รันทั้งหมด','จำนวน test ที่ใช้เวลารันเกินหนึ่งวินาทีต่อหนึ่งครั้งที่รัน suite บนเครื่องของ CI ในแต่ละ build','สัดส่วน test ที่ล้มในรอบแรกของทุก build ก่อนที่จะแก้โค้ดใด ๆ เมื่อเทียบกับ build ก่อนหน้า','จำนวน test ทั้งหมดหารด้วยจำนวนนักพัฒนาในทีมที่ดูแลระบบ เพื่อดูว่าใครเขียน test ต่อหัวได้มากน้อยแค่ไหน'],
+  e:'flaky คือผลไม่คงที่โดยโค้ดไม่เปลี่ยน จึงต้องเก็บข้อมูลการรันซ้ำของ commit เดียวกันเพื่อวัด การล้มรอบแรกอาจเกิดจาก bug จริงก็ได้'},
+ {lv:'A', multi:true, q:'ข้อใดเป็นตัวชี้วัดที่ควรดูควบคู่กับ coverage เพื่อไม่ให้เข้าใจผิด (เลือกทั้งหมดที่ถูก)',
+  o:['mutation score','defect leakage หรือ escaped defects','flaky rate','จำนวนบรรทัดของ test','จำนวน commit ต่อคนต่อวัน'],
+  c:[0,1,2],
+  e:'ทั้งสามตัวบอกคุณภาพของ test และผลลัพธ์จริง ส่วนจำนวนบรรทัดของ test และจำนวน commit ไม่ได้บอกว่า test ปกป้องโค้ดได้ดีหรือไม่'},
+ {lv:'A', q:'ทีมจะนำเมตริกการทดสอบมาใช้ประเมินผลงานรายบุคคล ข้อใดเป็นความเสี่ยงที่ใหญ่ที่สุด',
+  o:['คนจะปรับพฤติกรรมเพื่อดันตัวเลข เช่นเขียน test ไม่มี assertion จนข้อมูลเชื่อถือไม่ได้','ต้องซื้อเครื่องมือเพิ่มเพื่อแยกตัวเลขรายบุคคลออกจากรายทีม','ตัวเลขคำนวณช้าลงมากเพราะต้องแยกข้อมูลทีละคนในทุกรอบของ pipeline ทั้งหมด','ทีมจะเขียน test น้อยลงเพราะเรียนรู้เร็วขึ้นว่าอะไรไม่จำเป็นต้องทดสอบ'],
+  e:'การผูกตัวเลขกับผลประเมินส่วนบุคคลกระตุ้นให้เล่นกับตัวเลข ข้อมูลที่ใช้กำกับคุณภาพของทีมจึงเสียหาย'},
+ {lv:'A', q:'ทีมที่เพิ่งเริ่มตั้ง quality gate ควรกำหนด threshold เริ่มต้นอย่างไร',
+  o:['เริ่มจากค่าจริงปัจจุบัน บังคับว่าห้ามลดลง แล้วขยับเป้าขึ้นตามข้อมูล','ตั้ง 100% ทุกเมตริกตั้งแต่วันแรกเพื่อให้ทีมไม่มีข้ออ้างในการลดมาตรฐาน','ใช้ตัวเลขมาตรฐานของบริษัทอื่นโดยไม่ดูบริบทของทีมและระบบเราเอง','ไม่ตั้งจนกว่าทีมจะมีเวลาและงานเร่งด่วนเบาลงแล้วค่อยพิจารณาอีกที'],
+  e:'เกณฑ์ที่เริ่มจากความเป็นจริงและเลื่อนขึ้นตามข้อมูลได้รับการยอมรับมากกว่า และกันไม่ให้คุณภาพแย่ลงระหว่างที่ปรับปรุง'},
+ {lv:'A', q:'ข้อใดเป็นเมตริกที่เหมาะจะใส่เป็นเงื่อนไขอัตโนมัติใน quality gate ของ CI มากที่สุด',
+  o:['coverage บน new code และผลการรัน test ซึ่งคำนวณจากเครื่องมือได้ทันที','ความพึงพอใจของทีมต่อกระบวนการ test ที่เก็บจากแบบสอบถามรายไตรมาส','จำนวนครั้งที่ทีมจัดอบรมในไตรมาสนี้เมื่อเทียบกับไตรมาสก่อนหน้า','ความเห็นของผู้บริหารต่อคุณภาพที่ได้จากการประชุมประจำเดือน'],
+  e:'quality gate ควรใช้เมตริกที่คำนวณอัตโนมัติและตัดสินได้ทันที ส่วนเรื่องที่ต้องตีความอย่างความพึงพอใจหรือเทรนด์ควรมีเจ้าของและจังหวะทบทวนแยกต่างหาก'},
+];
+
+Q.t13 = [
+ {lv:'A', q:'ทีมบอกว่า “ไม่มีเวลาเขียน test” แนวทางโค้ชที่เหมาะในช่วงแรกคือข้อใด',
+  o:['เริ่มจากกติกาเล็กที่เห็นผลเร็ว เช่น ทุก bug fix ต้องมี regression test แล้วดูว่าเสียเวลากับ hotfix เท่าไร','บังคับ TDD ทุกงานตั้งแต่วันพรุ่งนี้เพื่อให้ทีมปรับตัวให้เร็วที่สุด โดยไม่ต้องมีช่วงทดลองหรือการฝึกก่อน','ประกาศ coverage 90% ทั้งบริษัททันทีเพื่อให้ทุกทีมมีเป้าหมายเดียวกัน และรายงานผลให้ผู้บริหารทุกสัปดาห์','รอจนเกิดเหตุร้ายแรงก่อนค่อยคุยเรื่อง test เพราะทีมจะเห็นความสำคัญเองโดยไม่ต้องมีใครไปกดดัน'],
+  e:'เริ่มจากกติกาเล็กที่ผูกกับปัญหาที่ทีมเจอจริงจะเห็นคุณค่าเร็ว การบังคับกว้าง ๆ ทันทีมักได้แค่การทำตามพิธี'},
+ {lv:'A', q:'ข้อใดวัดการ adopt testing culture ได้ตรงกับพฤติกรรมที่อยากเห็นและเล่นเกมยากกว่า',
+  o:['สัดส่วน PR แก้ bug ที่มี regression test และความมั่นใจของทีมเวลาแก้โค้ดเดิม','จำนวนบรรทัด test ต่อคนในแต่ละสัปดาห์ที่ทีมส่งงาน และจำนวน test ที่เขียนเพิ่มในแต่ละ sprint ของทีมทั้งหมด','อันดับ coverage รายบุคคลที่จัดทำเป็นตารางประจำเดือน รวมถึงจำนวนวันที่ coverage ของแต่ละคนอยู่ในเกณฑ์','จำนวนครั้งที่เปิดดูรายงาน coverage ในแต่ละสัปดาห์ของทั้งทีม'],
+  e:'ตัวชี้วัดที่ผูกกับพฤติกรรมจริงอย่าง regression test ต่อ bug fix ยากที่จะดันตัวเลขโดยไม่ทำสิ่งที่ต้องการ ส่วนอันดับรายบุคคลและจำนวนบรรทัดกระตุ้นให้เล่นกับตัวเลข'},
+ {lv:'A', q:'code kata เมื่อใช้ฝึกการเขียน test คืออะไร',
+  o:['โจทย์เล็ก ๆ ที่ทำซ้ำเพื่อฝึกทักษะ เช่นจังหวะ red–green–refactor โดยไม่มีแรงกดดันจากงานจริง','การรีวิวโค้ดของคนที่ coverage ต่ำที่สุดเพื่อหาจุดที่ต้องปรับปรุงเป็นรายบุคคล โดยให้ทั้งทีมช่วยกันชี้ข้อบกพร่องของ test รายคน','ข้อสอบวัดผลก่อนเลื่อนตำแหน่งที่ใช้โจทย์เดียวกันกับทุกคนในทีม และคะแนนจะถูกนำไปเทียบกับเกณฑ์ของบริษัทโดยตรง','รายงานสรุป bug ประจำเดือนที่ทีมใช้ประชุมทบทวนคุณภาพ ซึ่งจัดทำโดยทีม QA และใช้เป็นตัวชี้วัดของแต่ละทีม'],
+  e:'kata คือการฝึกซ้ำกับโจทย์เล็กที่ไม่ผูกกับ deadline ใช้เพื่อสร้างความชำนาญ ไม่ใช่เครื่องมือวัดคน'},
+ {lv:'A', q:'test champion ประจำทีมควรมีบทบาทอะไร',
+  o:['ช่วยทีมใช้มาตรฐาน ตอบคำถาม และเก็บปัญหากลับไปปรับ guideline โดยไม่เขียน test แทนทุกคน','เป็นคนเดียวที่มีสิทธิ์ merge ไฟล์ test เพื่อควบคุมคุณภาพของทั้งทีม และต้องเป็นผู้อนุมัติทุก pull request ที่แตะ test','รับผิดชอบเขียน test ทั้งหมดของทีมเพื่อให้คนอื่นโฟกัสกับ feature ทุกงานที่เปิดใหม่ในแต่ละ sprint โดยตรง','ตรวจ coverage แล้วลงโทษคนที่ต่ำกว่าเกณฑ์ที่ทีมกำหนดในแต่ละเดือน'],
+  e:'บทบาทคือผู้เอื้อให้ทีมทำได้ ไม่ใช่คอขวดหรือผู้ลงโทษ ถ้าเขียน test แทนทุกคน ความรู้จะไม่กระจายออกไป'},
+ {lv:'A', multi:true, q:'ข้อใดเป็นกลไกที่ช่วยให้การเขียน test เป็นส่วนหนึ่งของงานประจำ (เลือกทั้งหมดที่ถูก)',
+  o:['Definition of Done ที่ระบุว่าต้องมี test','การรีวิวโค้ดที่ดูคุณภาพของ test ด้วย','template และเครื่องมือที่ทำให้เริ่มเขียน test ได้เร็ว','จัดอบรมครั้งเดียวแล้วจบ','ให้เขียน test เฉพาะช่วงใกล้ปล่อย'],
+  c:[0,1,2],
+  e:'กลไกที่ฝังอยู่ในกระบวนการทำงานได้ผลต่อเนื่อง ส่วนการอบรมครั้งเดียวและการเขียน test ท้ายสุดมักไม่ทำให้พฤติกรรมเปลี่ยน'},
+ {lv:'A', q:'ข้อใดเป็นมุมมองต่อ TDD ที่สมดุลที่สุดเมื่อต้องผลักดันทีม',
+  o:['TDD ช่วยให้โค้ดทดสอบได้และให้ feedback เร็วในหลายงาน ควรให้ทีมลองและดูผล ไม่บังคับทุกงาน','TDD เป็นวิธีเดียวที่ถูกต้อง ทุกทีมต้องใช้โดยไม่มีข้อยกเว้นกับงานประเภทใด','TDD ไม่มีประโยชน์เลยจึงไม่ควรแนะนำให้ทีมไหนลองใช้ในงานจริง','TDD ใช้ได้เฉพาะกับภาษา Java เพราะภาษาอื่นไม่มี framework รองรับ'],
+  e:'TDD เป็นทางเลือกวิธีทำงานที่มีข้อดีในหลายบริบท แต่การบังคับเป็นกฎเดียวมักได้แค่พิธีกรรม ควรประเมินจากผลกับทีม'},
+ {lv:'A', q:'นักพัฒนาอาวุโสบอกว่าโค้ดที่เขาเขียนมั่นใจแล้วไม่ต้อง test แนวทางใดมีโอกาสได้ผลมากกว่า',
+  o:['ใช้ข้อมูล incident จริงของทีมคุยเรื่องความเสี่ยงของระบบ ไม่ใช่ตัวบุคคล','ขอให้ผู้บริหารสั่งเป็นนโยบายให้ทุกคนเขียน test โดยไม่ต้องอธิบายเหตุผล','ยกเว้นให้คนนี้ไม่ต้องทำเพราะประสบการณ์สูงและโค้ดมักไม่ค่อยมีปัญหา','ประกาศรายชื่อคนที่ไม่เขียน test ให้ทั้งทีมเห็นในที่ประชุมประจำสัปดาห์'],
+  e:'การคุยด้วยข้อมูลของทีมเองและโฟกัสที่ความเสี่ยงของระบบลดการปะทะเรื่องตัวบุคคล และทำให้เห็นคุณค่าจากเหตุการณ์จริง'},
+];
+
+Q.code = [
+ {lv:'B', q:'โค้ดนี้พิมพ์อะไรออกมา',
+  code:"const fn = jest.fn().mockReturnValueOnce(1).mockReturnValue(2);\nconsole.log(fn(), fn(), fn());",
+  o:['1 2 2','1 1 2','2 2 2','1 2 1'],
+  e:'`mockReturnValueOnce` ใช้กับการเรียกครั้งถัดไปครั้งเดียว หลังจากนั้นจึงใช้ค่า default จาก `mockReturnValue` ผลคือ 1 แล้วตามด้วย 2 สองครั้ง'},
+ {lv:'B', q:'ข้อใดอธิบายผลของ assertion ทั้งสองบรรทัดนี้ได้ถูกต้อง',
+  code:"const actual = { id: 1, note: undefined };\nconst expected = { id: 1 };\n\nexpect(actual).toEqual(expected);\nexpect(actual).toStrictEqual(expected);",
+  o:['บรรทัดแรกผ่าน ส่วนบรรทัดที่สองล้ม','ทั้งสองบรรทัดผ่าน','ทั้งสองบรรทัดล้ม','บรรทัดแรกล้ม ส่วนบรรทัดที่สองผ่าน'],
+  e:'`toEqual` ข้าม property ที่มีค่า `undefined` ส่วน `toStrictEqual` ถือว่า key ที่เป็น `undefined` ต่างจากการไม่มี key นั้น จึงล้ม'},
+ {lv:'B', q:'รัน pytest ชุดนี้แล้วผลเป็นอย่างไร (ไฟล์เดียว รันตามลำดับที่เขียน)',
+  code:"import pytest\n\n@pytest.fixture(scope=\"module\")\ndef items():\n    return []\n\ndef test_a(items):\n    items.append(1)\n    assert items == [1]\n\ndef test_b(items):\n    assert items == []",
+  o:['test_a ผ่าน ส่วน test_b ล้ม','ทั้งสอง test ผ่าน','test_a ล้ม ส่วน test_b ผ่าน','ทั้งสอง test ล้ม'],
+  e:'fixture ที่ scope เป็น module ถูกสร้างครั้งเดียวต่อไฟล์ list จึงถูกใช้ร่วมกันและ test_b เห็นค่า `[1]` ที่ test_a ใส่ไว้ ถ้าต้องการให้แยกกัน ให้ใช้ scope เริ่มต้นคือ function'},
+ {lv:'B', q:'โค้ดนี้พิมพ์ตัวเลขอะไรสองตัว',
+  code:"jest.useFakeTimers();\nconst cb = jest.fn();\nsetTimeout(cb, 1000);\n\njest.advanceTimersByTime(999);\nconst a = cb.mock.calls.length;\njest.advanceTimersByTime(1);\nconst b = cb.mock.calls.length;\nconsole.log(a, b);",
+  o:['0 1','1 1','0 0','1 2'],
+  e:'ที่ 999 ms timer ยังไม่ถึงกำหนดจึงยังไม่ถูกเรียก พอเดินเวลาอีก 1 ms ครบ 1000 ms callback ทำงานหนึ่งครั้ง'},
+ {lv:'B', q:'pytest จะตั้งชื่อ test ที่ได้จากการ parametrize ชุดนี้ว่าอย่างไร',
+  code:"import pytest\n\n@pytest.mark.parametrize(\"x\", [1, 2])\ndef test_x(x):\n    assert x > 0",
+  o:['`test_x[1]` และ `test_x[2]`','`test_x_1` และ `test_x_2`','`test_x` สองครั้งโดยไม่มีตัวต่อท้าย','`test_x[x=1]` และ `test_x[x=2]`'],
+  e:'ถ้าไม่กำหนด `ids` pytest สร้าง id จากค่าของ parameter ที่เป็นตัวเลขหรือสตริงง่าย ๆ ต่อท้ายชื่อในวงเล็บเหลี่ยม เช่น `test_x[1]`'},
+ {lv:'B', multi:true, q:'ข้อใดผ่านตามพฤติกรรมของ `toBe` ใน Jest (เลือกทั้งหมดที่ผ่าน)',
+  o:['`expect(NaN).toBe(NaN)`','`expect("a").toBe("a")`','`expect({}).toBe({})`','`expect(0).toBe(-0)`','`expect([1]).toBe([1])`'],
+  c:[0,1],
+  e:'`toBe` ใช้ `Object.is` จึงเทียบ NaN กับ NaN ได้ว่าเท่ากัน และสตริงเทียบตามค่า ส่วน object หรือ array คนละก้อนไม่เท่ากันเพราะ reference ต่างกัน และ `Object.is(0, -0)` เป็น false'},
+ {lv:'B', q:'โจทย์โปรเจกต์ของ HackerRank ให้คะแนนจากจำนวน unit test ที่ผ่าน โดยใช้ JUnit และน้ำหนักเท่ากัน ข้อนี้เต็ม 50 คะแนนมี 5 test ผ่าน 3 ตัว ได้กี่คะแนน',
+  o:['30','25','35','50'],
+  e:'50 คะแนนแบ่งเท่ากันห้า test ได้ตัวละ 10 ผ่านสามตัวจึงได้ 30 ตัวเลขนี้มาจากตัวอย่างในเอกสารของ HackerRank'},
+ {lv:'I', q:'test นี้ไม่มีทั้ง `await` และ `return` ข้อใดคือผลที่ควรคาดไว้',
+  code:"test('reject เมื่อ id ไม่ถูกต้อง', () => {\n  expect(loadUser(-1)).rejects.toThrow('invalid id');\n});",
+  o:['test จบก่อน assertion เสร็จ ผลจึงไม่น่าเชื่อถือและอาจทำให้โปรเซสล้ม','Jest รอ promise ให้เองจึงทำงานเหมือนมี `await` โดยไม่ต้องเขียนเพิ่ม','test ผ่านเสมอเพราะ `rejects` กลืน error ทุกชนิดที่เกิดขึ้นภายใน promise','Jest แจ้ง syntax error ตั้งแต่ก่อนรัน test เพราะ `rejects` ต้องใช้คู่กับ `await` เท่านั้น'],
+  e:'ต้อง `await` หรือ `return` promise ของ `rejects` และ `resolves` เสมอ ไม่เช่นนั้น test อาจจบก่อน และเมื่อ assertion ล้มจะกลายเป็น unhandled rejection ที่ลองกับ Jest 30.5.2 แล้วทำให้โปรเซสล้ม'}
+];
+
+Q.dl = [
+ {lv:'B', src:'Skills taxonomy', q:'test ตัวหนึ่งตรวจว่าโค้ดคืนข้อความ “สวัสดีตอนเช้า” โดยอ่านเวลาจากนาฬิกาเครื่อง รันตอนเช้าผ่าน รันตอนบ่ายล้ม ข้อใดของ F.I.R.S.T. ที่ test ตัวนี้ละเมิดโดยตรง',
+  o:['Repeatable','Fast','Timely','Self-validating'],
+  e:'Repeatable หมายถึงรันกี่ครั้งในสภาพแวดล้อมไหนก็ได้ผลเดิม การพึ่งเวลาจริงทำให้ผลเปลี่ยนตามเวลา วิธีแก้คือส่งเวลาเข้ามาเป็นพารามิเตอร์หรือใช้ fake clock'},
+ {lv:'B', src:'Sentence completion', q:'เติมคำให้ถูก: test double ที่ถูกตั้งให้ตอบค่าตายตัวเมื่อโค้ดเรียกมัน โดยที่ test ไม่ได้ตรวจว่าถูกเรียกอย่างไร เรียกว่า ______',
+  o:['stub','mock','spy','dummy'],
+  e:'stub คืนคำตอบที่เตรียมไว้ mock ตั้งความคาดหวังเรื่องการเรียกและตรวจให้ spy บันทึกการเรียกไว้ให้ตรวจทีหลัง และ dummy ถูกส่งเข้าไปเพื่อให้ครบพารามิเตอร์โดยไม่ถูกใช้จริง'},
+ {lv:'B', src:'Skills taxonomy', q:'ฟังก์ชัน `isAdult(age)` คืน true เมื่อ `age >= 18` ชุดค่าทดสอบข้อใดครอบคลุมจุดเปลี่ยนของเงื่อนไขนี้ดีที่สุดโดยใช้ค่าน้อยที่สุด',
+  o:['17, 18, 19','0, 50, 100','18, 19, 20','10, 17, 30'],
+  e:'boundary value analysis ให้ลองค่าที่ขอบพอดีและค่าที่อยู่ข้างทั้งสองด้าน คือ 17 ที่ยังไม่ผ่าน 18 ที่เริ่มผ่าน และ 19 ที่เลยจุดนั้นไปแล้ว ชุดอื่นไม่มีค่าที่ขอบ 18 ครบทั้งสองฝั่ง'},
+ {lv:'B', src:'HackerRank-style', q:'`expect(0.1 + 0.2).toBe(0.3)` ล้มใน Jest ควรแก้อย่างไรให้ถูกหลัก',
+  o:['เปลี่ยนเป็น `toBeCloseTo(0.3)` เพราะเลขทศนิยมแบบ binary มีความคลาดเคลื่อน','เปลี่ยนเป็น `toEqual(0.3)` เพราะ toEqual เทียบแบบหลวมกว่า และไม่ต้องแก้ค่าอื่นเพิ่มเติมใน test','ปัดค่าคาดหวังเป็น `0.30000000000000004` แล้วคงไว้ทุกที่ ตามผลที่ได้จริงเพื่อให้ test ผ่านทันที','ครอบด้วย `try/catch` แล้วถือว่าผ่านถ้าไม่เกิด error ไว้รอบ assertion เพื่อให้ test ไม่ล้มด้วยเหตุผลใด ๆ'],
+  e:'เลขทศนิยมแบบ floating point เก็บค่าเป็นฐานสองจึงมีความคลาดเคลื่อน ควรเทียบแบบมีค่าความคลาดเคลื่อนด้วย `toBeCloseTo` หรือ `pytest.approx` ส่วน `toEqual` กับค่าตัวเลขเทียบเหมือน `toBe` ไม่ได้ช่วย'},
+ {lv:'B', src:'HackerRank-style', q:'`divide(1, 0)` ถูกออกแบบให้ throw `Error` โค้ด test ข้อใดล้มทั้งที่พฤติกรรมของฟังก์ชันถูกต้อง',
+  o:['`expect(divide(1, 0)).toThrow();`','`expect(() => divide(1, 0)).toThrow();`','`expect(() => divide(1, 0)).toThrow(Error);`','`expect(() => divide(1, 0)).toThrow(/zero/);`'],
+  e:'ในตัวเลือกแรก `divide(1, 0)` ถูกเรียกก่อนที่ `expect` จะรับค่า error จึงโยนออกมาจาก test เลย ต้องห่อด้วย arrow function เพื่อให้ Jest เป็นฝ่ายเรียกและจับ error เอง'},
+ {lv:'B', src:'Skills taxonomy', q:'ใน pytest ตรวจว่าโค้ดโยน `ValueError` ที่ข้อความมีคำว่า duplicate ควรเขียนอย่างไร',
+  o:['`with pytest.raises(ValueError, match="duplicate"):`','`assert pytest.raises(ValueError) == "duplicate"`','`with pytest.raises("duplicate"):`','`pytest.raises(ValueError).message == "duplicate"`'],
+  e:'`match` เป็น regular expression ที่ค้นหาในข้อความของ exception ด้วย `re.search` จึงใช้ตรวจบางส่วนของข้อความได้ ตัวเลือกอื่นไม่ใช่รูปแบบที่ pytest รองรับ'},
+ {lv:'B', src:'Skills taxonomy', q:'ระบบคิดค่าส่งตามเงื่อนไขหลายตัวที่ผสมกัน (ประเภทลูกค้า, น้ำหนัก, โซน) และแต่ละชุดเงื่อนไขให้ผลต่างกัน เทคนิคออกแบบ test ข้อใดช่วยไล่ชุดผสมเหล่านี้ได้เป็นระบบที่สุด',
+  o:['decision table','equivalence partitioning เพียงอย่างเดียว','สุ่มค่าทดสอบแล้วดูว่าผ่านหรือไม่','เขียน test เฉพาะกรณีที่ลูกค้าร้องเรียน'],
+  e:'decision table เรียงชุดเงื่อนไขกับผลลัพธ์เป็นตาราง ทำให้เห็นว่าชุดไหนยังไม่มี test ส่วน equivalence partitioning ช่วยแบ่งค่าในแต่ละเงื่อนไข แต่ไม่ได้ไล่การผสมกันของหลายเงื่อนไข'},
+ {lv:'I', src:'Skills taxonomy', q:'โปรเจกต์ Jest ถูกสแกนด้วย SonarQube แต่หน้า dashboard ขึ้น Coverage 0% ทั้งที่รัน `jest --coverage` ผ่านแล้ว สาเหตุที่ควรตรวจก่อนคือข้อใด',
+  o:['SonarQube ไม่ได้รับไฟล์ lcov เพราะไม่ได้ตั้ง `sonar.javascript.lcov.reportPaths` หรือ path ผิด','Jest ต้องใช้ `--runInBand` เพื่อให้ SonarQube อ่านค่า coverage ได้ครบทุกไฟล์ในโปรเจกต์','ต้องปิด branch coverage ใน Jest ก่อนเพราะ SonarQube รับเฉพาะ line coverage จาก lcov','SonarQube คำนวณ coverage จากจำนวน test file ไม่ใช่จากรายงาน'],
+  e:'SonarQube ไม่ได้รัน test เอง แต่นำเข้ารายงาน coverage ที่สร้างไว้แล้ว ต้องสร้างรายงานก่อนสแกนและชี้ path ให้ถูกผ่าน property ของภาษานั้น (สำหรับ JS/TS คือ lcov)'},
+ {lv:'I', src:'Skills taxonomy', q:'ทีมพบว่า coverage รวมของระบบอยู่ที่ 85% แต่ quality gate ตาม Sonar way ยังไม่ผ่าน ข้อใดเป็นคำอธิบายที่น่าจะเป็นไปได้มากที่สุด',
+  o:['gate วัด coverage จากโค้ดใหม่ ซึ่งอาจต่ำกว่า 80%','gate วัดเฉพาะ branch coverage ของไฟล์ที่ใหญ่ที่สุดในโปรเจกต์ทั้งหมด','gate ไม่ผ่านเพราะ coverage สูงเกินไปจนระบบสงสัยว่าเป็นตัวเลขที่ถูกปรับแต่ง','gate วัดจาก coverage ของ build ก่อนหน้าเสมอ ไม่ว่าจะมีโค้ดใหม่เข้ามาหรือไม่'],
+  e:'Sonar way ใช้เงื่อนไขกับโค้ดใหม่ในช่วงที่กำหนด เช่น coverage ของโค้ดใหม่ต้องไม่ต่ำกว่า 80% ค่ารวมของทั้งระบบสูงได้ ในขณะที่โค้ดที่เพิ่งเพิ่มยังไม่มี test'},
+ {lv:'I', src:'HackerRank-style', q:'service เรียก `axios.get` ตรง ๆ ในหลายที่ ทีมใช้ `jest.mock("axios")` แล้ว test แก้ยากเวลาเปลี่ยนไปใช้ `fetch` วิธีปรับที่ดีที่สุดคือข้อใด',
+  o:['ห่อการเรียก HTTP ไว้หลัง adapter ที่ inject เข้า service ใช้ fake adapter ใน unit test แล้วทดสอบ adapter กับชั้น HTTP แยก','เพิ่ม `jest.mock` ของ `fetch` ต่อจาก axios ในทุกไฟล์ test แล้วตั้งให้สองตัวคืน response เดียวกัน เพื่อให้ test เดิมยังผ่าน','ลบ unit test ของ service แล้วเหลือแค่ E2E เพราะ E2E ไม่ผูกกับ HTTP client ตัวใดเลย','เปลี่ยน test ให้เรียก API จริงของ production เพื่อให้ผลตรงกับ HTTP client ทุกตัวที่อาจเปลี่ยนไปใช้'],
+  e:'การ mock library โดยตรงทำให้ test ผูกกับ implementation เมื่อมี adapter ตรงกลาง logic ของ service ทดสอบได้โดยไม่รู้ว่าใช้ HTTP client ตัวไหน และจุดที่ติดต่อ HTTP จริงทดสอบแยกที่เดียว'},
+ {lv:'I', src:'HackerRank-style', q:'test A ใช้ `jest.spyOn(Date, "now").mockReturnValue(1000)` แล้วไม่ได้คืนค่า ทำให้ test B ในไฟล์เดียวกันที่ใช้เวลาจริงล้มเป็นครั้งคราว ควรแก้อย่างไรให้ครอบคลุมทั้งโปรเจกต์',
+  o:['ตั้ง `restoreMocks: true` ใน config หรือเรียก `jest.restoreAllMocks()` ใน `afterEach`','ย้าย test B ไปไว้ก่อน test A ในไฟล์','เพิ่ม `setTimeout` รอ 100 ms ก่อนเริ่ม test B','เปลี่ยน `mockReturnValue` เป็น `mockReturnValueOnce` ทุกที่โดยไม่แก้อย่างอื่น'],
+  e:'spy ที่ไม่ถูกคืนค่าจะรั่วไปยัง test ถัดไป การคืนค่าอัตโนมัติหลังทุก test ทำให้ test ไม่ขึ้นกับลำดับ การสลับลำดับหรือรอเวลาเพียงซ่อนปัญหา'},
+ {lv:'I', multi:true, src:'Skills taxonomy', q:'ข้อใดเป็นสาเหตุที่พบบ่อยของ test ที่ล้มเป็นครั้งคราว (flaky) (เลือกทั้งหมดที่ถูก)',
+  o:['แชร์ state ที่เปลี่ยนค่าได้ระหว่าง test แล้วผลขึ้นกับลำดับการรัน','อ่านเวลาปัจจุบันหรือค่าสุ่มโดยไม่ควบคุม','รอ async ด้วยการ sleep เวลาคงที่แทนการรอเหตุการณ์จริง','ตั้งชื่อ test เป็นประโยคอธิบายพฤติกรรม','ใช้ `test.each` เพื่อรวมกรณีทดสอบที่โครงเหมือนกัน'],
+  c:[0,1,2],
+  e:'state ที่แชร์กัน เวลา ค่าสุ่ม และการรอแบบเดาเวลาทำให้ผลไม่แน่นอน ส่วนการตั้งชื่อที่ดีหรือใช้ `test.each` ไม่ได้ทำให้ผลของ test เปลี่ยนไปตามสภาพแวดล้อม'},
+ {lv:'I', src:'Skills taxonomy', q:'สอง service แยกทีมกัน ทีม consumer อยากรู้ให้เร็วว่าการเปลี่ยน response ของ provider จะทำให้ consumer พังหรือไม่ โดยไม่ต้องตั้งสภาพแวดล้อมรวมทั้งระบบ แนวทางใดตรงที่สุด',
+  o:['contract testing เช่น Pact','E2E ที่เปิดทุก service พร้อมกันทุกครั้งที่ commit','unit test ที่ mock response ตามความเข้าใจของ consumer เพียงฝั่งเดียว','manual regression ก่อน release'],
+  e:'contract test ให้ consumer ประกาศสิ่งที่ต้องใช้ แล้วให้ provider ตรวจว่ายังให้ได้ตรงตามนั้นโดยไม่ต้องรันทั้งระบบ การ mock ฝั่งเดียวไม่ตรวจว่าความเข้าใจตรงกับของจริง'},
+ {lv:'I', src:'Skills taxonomy', q:'สมมติวัดแบบสูตรของ SonarQube: Coverage = (CT + CF + LC) / (2*B + EL) โค้ดมีบรรทัดที่ต้องมี coverage 20 บรรทัด (EL) ถูกรัน 14 บรรทัด (LC) มีเงื่อนไข 6 ตัว (B) โดยมี 3 กรณีที่ true ถูกรัน (CT) และ 2 กรณีที่ false ถูกรัน (CF) ค่า coverage รวมคือเท่าไร',
+  o:['ประมาณ 59.4%','ประมาณ 70.0%','ประมาณ 73.1%','ประมาณ 83.3%'],
+  e:'(3 + 2 + 14) / (2*6 + 20) = 19 / 32 ≈ 59.4% ค่า 70.0% คือ line coverage อย่างเดียว (14/20) และ 83.3% คือสัดส่วนของ branch ที่ถูกรันต่อจำนวนเงื่อนไข (5/6) ซึ่งไม่ใช่สูตรที่ถามมา'},
+ {lv:'I', src:'HackerRank-style', q:'ต้องการให้ pipeline ของโปรเจกต์ Python ล้มเมื่อ coverage รวมของทั้ง line และ branch ต่ำกว่า 80% คำสั่งข้อใดถูกต้อง',
+  o:['`pytest --cov=app --cov-branch --cov-fail-under=80`','`pytest --cov=app --cov-report=term`','`pytest --cov-fail-under=80` โดยไม่ระบุ package','`pytest --cov=app --cov-branch --cov-min=80`'],
+  e:'ต้องระบุ package ที่วัดด้วย `--cov` เปิด branch ด้วย `--cov-branch` และตั้งเกณฑ์ด้วย `--cov-fail-under` ซึ่งทำให้ pytest จบด้วยรหัสไม่เป็นศูนย์เมื่อต่ำกว่าเกณฑ์ ตัวเลือกที่ใช้ `--cov-min` ไม่ใช่ option ของ pytest-cov'},
+ {lv:'I', src:'Skills taxonomy', q:'ตั้ง `coverageThreshold` ใน Jest ไว้ 80% แล้วผ่านตลอด แต่ทีมสังเกตว่าไฟล์ใหม่ที่ยังไม่มี test เลยไม่ทำให้ตัวเลขตก สาเหตุมักเป็นเพราะอะไร',
+  o:['ไม่ได้ตั้ง `collectCoverageFrom` ไฟล์ที่ไม่ถูก test import จึงไม่ถูกนับ','Jest ไม่นับไฟล์ที่ยาวเกิน 100 บรรทัดเพราะถือว่าเป็นไฟล์ที่ซับซ้อนเกินไป','`coverageThreshold` ใช้ได้กับ branch เท่านั้น จึงไม่เห็นผลของบรรทัดที่ไม่มี test','ไฟล์ใหม่จะถูกนับก็ต่อเมื่อชื่อลงท้ายด้วย `.test.js`'],
+  e:'โดยปกติ Jest เก็บ coverage จากไฟล์ที่ test โหลดจริง ถ้าต้องการให้นับไฟล์ที่ไม่มี test ด้วยต้องระบุ `collectCoverageFrom` เป็น glob ของ source'},
+ {lv:'A', src:'Skills taxonomy', q:'ผู้บริหารสั่งให้ทั้ง 12 ทีมมี unit test coverage 90% ภายในหนึ่งไตรมาส บางทีมตอนนี้อยู่ที่ 20% คุณเป็น tech lead ควรตอบอย่างไรที่ได้ผลดีที่สุดในระยะยาว',
+  o:['วัด baseline ของแต่ละทีม ตั้ง gate บนโค้ดใหม่ ตั้งเป้าสูงเฉพาะโมดูลสำคัญ แล้วให้ค่ารวมค่อย ๆ ขยับขึ้น','รับคำสั่งตามนั้นและให้ทุกทีมเขียน test จนถึง 90% ทันทีโดยใช้เกณฑ์เดียวกับทั้งบริษัท','ปฏิเสธการวัด coverage เพราะเป็นตัวชี้วัดที่ไม่มีประโยชน์ แล้วเสนอให้วัดจากจำนวน bug แทนอย่างเดียว','ให้ทีมที่ coverage ต่ำที่สุดหยุดพัฒนา feature จนกว่าจะถึงเป้า'],
+  e:'เป้าเดียวกันกับทุกทีมโดยไม่ดูจุดเริ่มต้นและความเสี่ยงมักทำให้เกิด test ที่เขียนเพื่อดันตัวเลข การวัดฐานก่อน ใช้ gate กับโค้ดใหม่ และกำหนดเป้าต่างกันตามความสำคัญของโมดูลทำให้ยกคุณภาพได้จริงและวัดความคืบหน้าได้'},
+ {lv:'A', src:'Skills taxonomy', q:'ไตรมาสที่ผ่านมา coverage รวมของทีมขึ้นจาก 55% เป็น 75% แต่ defect leakage แทบไม่เปลี่ยน ข้อสันนิษฐานแรกที่ควรตรวจคือข้อใด',
+  o:['test ที่เพิ่มอาจรันโค้ดโดยแทบไม่มี assertion ที่มีความหมาย ควรสุ่มตรวจด้วย mutation testing','coverage สูงขึ้นย่อมทำให้ leakage ต้องลดลง จึงเป็นความผิดของ QA ที่ทดสอบก่อน release ไม่ครบ','ตัวเลข coverage คลาดเคลื่อน ให้เลิกใช้ SonarQube แล้วกลับไปวัดด้วยเครื่องมือของแต่ละภาษาแทน','leakage ไม่เกี่ยวกับคุณภาพของ unit test เลย จึงไม่ต้องนำสองตัวเลขนี้มาเทียบกัน'],
+  e:'coverage บอกว่าโค้ดถูกรัน ไม่ได้บอกว่ามีใครตรวจผล mutation testing ช่วยดูว่า test จับการเปลี่ยนพฤติกรรมได้จริงหรือไม่ ควรใช้ร่วมกับตัวชี้วัดอื่น ไม่ใช้ตัวเลขเดียวตัดสิน'},
+ {lv:'A', multi:true, src:'Skills taxonomy', q:'ข้อใดเป็นสัญญาณว่าชุด unit test ดูแลยาก (เลือกทั้งหมดที่ถูก)',
+  o:['refactor ภายในโดยพฤติกรรมไม่เปลี่ยน แต่ test ล้มเป็นสิบ ๆ ตัว','setup ชุดเดียวกันยาวหลายสิบบรรทัดถูกคัดลอกไปทุกไฟล์','test ส่วนใหญ่ตรวจว่า method ภายในถูกเรียกกี่ครั้งแทนผลลัพธ์','test หนึ่งตัวตรวจพฤติกรรมเดียวและชื่อบอกสาเหตุเมื่อล้ม','ใช้ test data builder สร้างข้อมูลที่ต้องการเฉพาะจุด'],
+  c:[0,1,2],
+  e:'test ที่ผูกกับโครงสร้างภายใน และการคัดลอก setup ทำให้ต้องแก้หลายที่ทุกครั้งที่โค้ดเปลี่ยน ส่วน test ที่โฟกัสพฤติกรรมเดียวและ builder เป็นแนวทางที่ลดภาระดูแล'},
+ {lv:'A', src:'HackerRank-style', q:'ชุด unit test ของทีมรันนาน 25 นาทีบน CI ก่อนลงมือแก้ ควรทำอะไรเป็นขั้นแรก',
+  o:['รันพร้อมรายงานเวลาแล้วเรียงตามระยะเวลา เพื่อดูว่าเวลาหมดไปกับส่วนไหน','เพิ่มเครื่อง CI เป็นสองเท่าทันทีแล้วดูว่าเวลารันลดลงหรือไม่ค่อยกลับมาวิเคราะห์ต่อ','ลบ test ที่ดูซ้ำกันแบบสุ่มตามความรู้สึกของทีมโดยไม่ต้องตรวจ coverage ก่อน','ปิด test ที่ช้าทั้งหมดไปก่อนแล้วค่อยกลับมาเปิดทีละตัวเมื่อมีเวลา'],
+  e:'ต้องรู้ก่อนว่าคอขวดอยู่ตรงไหน (เช่น setup ที่หนัก การรอเวลาจริง หรือ I/O จริง) การเพิ่มเครื่องหรือตัด test โดยไม่วัดอาจไม่ช่วยหรือทำให้ความเสี่ยงเพิ่ม'},
+ {lv:'A', src:'Skills taxonomy', q:'ใน 40 defect ที่พบช่วงหนึ่ง มี 36 รายการที่พบก่อน release และ 4 รายการที่ลูกค้าพบหลัง release ถ้านิยาม defect leakage = พบหลัง release / (พบก่อน + พบหลัง) ค่าเท่าไร',
+  o:['10%','11.1%','90%','4%'],
+  e:'4 / (36 + 4) = 0.10 หรือ 10% ส่วน 11.1% มาจาก 4 / 36 ซึ่งหารผิดฐาน และ 90% คือ defect removal efficiency (36/40) ซึ่งเป็นอีกตัวชี้วัดหนึ่ง'},
+ {lv:'A', src:'Skills taxonomy', q:'หัวหน้าทีมเสนอให้ห้าม mock ทั้งหมด เพราะ test ผ่านแต่ production พัง คำแนะนำใดสมเหตุสมผลที่สุด',
+  o:['เก็บ mock ไว้ที่ขอบเขตที่ช้าหรือคาดเดาไม่ได้ แล้วเพิ่ม integration หรือ contract test ตรงรอยต่อ','ห้าม mock และให้ทุก test ต่อ database กับ network จริงเพื่อให้ผลเหมือน production มากที่สุด','ใช้ mock มากขึ้นเพราะ production พังแปลว่า mock ยังไม่ครอบคลุมทุกคลาสที่เกี่ยวข้องในระบบ','เลิกเขียน unit test แล้วพึ่ง E2E อย่างเดียวเพราะ E2E จับปัญหาได้ใกล้ผู้ใช้จริงที่สุด'],
+  e:'ปัญหาอยู่ที่รอยต่อที่ไม่ได้ถูกทดสอบกับของจริง ไม่ใช่การมี mock เอง การห้ามทั้งหมดทำให้ unit test ช้าและไม่เสถียร ควรเสริมชั้นทดสอบที่ตรวจรอยต่อแทน'},
+ {lv:'A', src:'Skills taxonomy', q:'ทีมหนึ่งเขียนแต่ test กรณีปกติเพื่อให้ coverage ผ่านเกณฑ์ และ bug ส่วนใหญ่มาจากกรณีผิดปกติ การโค้ชแบบใดน่าจะได้ผลที่สุด',
+  o:['ทำ pairing เขียน test กรณีผิดปกติและค่าขอบจาก requirement แล้วเพิ่มเข้ารายการตรวจ code review','ส่งอีเมลเตือนให้ทุกคนเขียน test ให้ครอบคลุมกรณีผิดปกติมากขึ้น พร้อมแนบลิงก์บทความเรื่องการออกแบบ test case','เพิ่มเกณฑ์ coverage ขึ้นอีก 10% และให้ gate ล้มทันทีถ้าทีมไหนทำไม่ถึงในไตรมาสนี้','ย้ายการเขียน test ไปให้ทีมอื่นทำแทนทั้งหมดเพื่อให้ทีมนี้โฟกัสกับการส่งมอบ feature ให้ทัน'],
+  e:'พฤติกรรมเปลี่ยนเมื่อได้เห็นวิธีทำจริงและมีกลไกที่ทำซ้ำได้ใน workflow ประจำวัน การเตือนกว้าง ๆ หรือเพิ่มตัวเลขอย่างเดียวไม่ได้สอนวิธีคิดหาเคสผิดปกติ'},
+ {lv:'A', src:'Skills taxonomy', q:'ฟังก์ชัน `decode(encode(x))` ควรได้ `x` เดิมสำหรับข้อมูลที่ถูกต้องทุกแบบ การทดสอบแบบใดเหมาะกับคุณสมบัตินี้ที่สุด',
+  o:['property-based testing ที่สุ่มข้อมูลจำนวนมากแล้วตรวจว่า round-trip ได้ค่าเดิม','เขียน test ด้วยค่าที่ยกตัวอย่างสามค่าที่ดูหลากหลายแล้วถือว่าพอ','ตรวจเฉพาะ coverage ของ encode ให้ครบทุกบรรทัดและทุก branch','snapshot test ของผลลัพธ์ encode หนึ่งค่าที่ทีมเห็นพ้องกันว่าถูกต้อง'],
+  e:'คุณสมบัติที่ต้องจริงกับอินพุตกว้าง ๆ เหมาะกับการสร้างข้อมูลสุ่มจำนวนมาก (เช่น fast-check, Hypothesis) และให้เครื่องมือย่อค่าที่ล้มให้เล็กลง ตัวอย่างไม่กี่ค่ามักพลาดกรณีขอบ'},
+ {lv:'B', multi:true, src:'HackerRank-style', q:'ข้อใดเป็นวิธีทำงานที่เหมาะกับโจทย์โปรเจกต์ที่ตรวจด้วย unit test อัตโนมัติ (เลือกทั้งหมดที่ถูก)',
+  o:['รัน test ที่ให้มาในเครื่องก่อนส่งและอ่านข้อความ assertion ที่ล้ม','ถ้าไฟล์ test ถูกตั้งเป็น read-only ให้แก้ที่ source code แทน','ก่อนส่งให้ตรวจว่าโปรเจกต์ build ผ่านโดยไม่มี error','ลบ test ที่ล้มออกเพื่อให้เหลือแต่ test ที่ผ่าน','แก้ไฟล์ test ให้ expected value ตรงกับผลที่โค้ดคืนมา'],
+  c:[0,1,2],
+  e:'ผลที่ตรวจจริงมาจาก test ที่ผู้ตั้งโจทย์เตรียมไว้ จึงต้องทำให้โค้ดตรงกับ test เหล่านั้น การลบหรือแก้ test ที่ล็อกไว้ไม่ได้ช่วย และเป็นการเปลี่ยนเป้าหมายแทนการแก้ปัญหา'}
+];
+
+/* ===================== ENGINE ===================== */
+/* o: ตัวเลือก (ถ้าไม่ใส่ c ข้อแรกคือคำตอบที่ถูก) | c: ดัชนีคำตอบถูกของข้อ multi | e: เฉลย | code: โค้ดประกอบโจทย์ */
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fmt = s => esc(s).replace(/`([^`]+)`/g,'<code>$1</code>');
+const sameSet = (a,b) => a.length===b.length && [...a].sort((x,y)=>x-y).join()===[...b].sort((x,y)=>x-y).join();
+const L = 'กขคงจฉ';
+const LVN = {B:'Beginner', I:'Intermediate', A:'Advance'};
+const LVK = {B:'k1', I:'k5', A:'k2'};
+
+function prep(item){
+  const cset = new Set(item.c || [0]);
+  const opts = shuffle(item.o.map((t,i)=>({t, ok: cset.has(i)})));
+  const ansSet = opts.map((x,i)=>x.ok?i:-1).filter(i=>i>=0);
+  return {...item, opts, ansSet, ans: ansSet[0], multi: !!item.multi};
+}
+
+function qHTML(it,i,prefix,withCheck){
+  const multiTag = it.multi ? '<span class="tag multi">เลือกหลายข้อ</span>' : '';
+  const hint = it.multi ? '<p class="hint">เลือกได้หลายข้อ แล้วกด “ตรวจคำตอบ” ถึงจะถูกก็ต่อเมื่อเลือกตรงทั้งหมด (เลือกครบทุกข้อที่ถูก และไม่เลือกข้อที่ผิด)</p>' : '';
+  const pressed = it.multi ? ' aria-pressed="false"' : '';
+  const check = (withCheck && it.multi) ? '<div class="btn-row"><button type="button" class="btn check" disabled>ตรวจคำตอบ</button></div>' : '';
+  const code = it.code ? `<pre class="qcode"><code>${esc(it.code)}</code></pre>` : '';
+  return `<div class="q" data-i="${i}">
+    <div class="qt"><span class="qn">${i+1}.</span>${it.lv?`<span class="lv ${LVK[it.lv]}">${LVN[it.lv]}</span>`:''}${it.src?`<span class="tag">${esc(it.src)}</span>`:''}${multiTag}${fmt(it.q)}${code}</div>
+    ${hint}
+    <div class="opts">${it.opts.map((o,k)=>`<button type="button" class="opt" data-k="${k}"${pressed}><span class="l">${L[k]}.</span><span>${fmt(o.t)}</span></button>`).join('')}</div>
+    ${check}
+    <div class="exp" id="${prefix}-e${i}"><b>เฉลย ${it.ansSet.map(k=>L[k]).join(', ')}.</b> ${fmt(it.e)}</div>
+  </div>`;
+}
+
+/* ---------- แบบฝึกท้ายหัวข้อ: คลิกตัวเลือกแล้วเฉลยทันที (ข้อ multi มีปุ่มตรวจคำตอบ) ---------- */
+function buildTopicQuiz(box){
+  const id = box.dataset.topic;
+  if(!Q[id]) return;
+  const items = Q[id].map(prep);
+  let score=0, done=0;
+  const nMulti = items.filter(x=>x.multi).length;
+  box.innerHTML = `<div class="quiz-h"><h4>แนวข้อสอบหัวข้อนี้ (${items.length} ข้อ${nMulti?` · เลือกหลายข้อ ${nMulti} ข้อ`:''})</h4><span class="score" aria-live="polite">0 / ${items.length}</span></div>`
+    + items.map((it,i)=>qHTML(it,i,id,true)).join('')
+    + `<div class="btn-row"><button type="button" class="btn reset">ทำใหม่ (สลับตัวเลือก)</button></div>`;
+  const sc = box.querySelector('.score');
+  box.querySelectorAll(':scope > .q').forEach(qe=>{
+    const it = items[+qe.dataset.i];
+    const opts = [...qe.querySelectorAll('.opt')];
+    const chk = qe.querySelector('.check');
+    const chosen = new Set();
+    let locked = false;
+    const reveal = picks => {
+      if(locked) return; locked = true;
+      opts.forEach((x,j)=>{
+        x.disabled = true;
+        if(it.ansSet.includes(j)) x.classList.add('correct');
+        else if(picks.includes(j)) x.classList.add('wrong');
+      });
+      if(sameSet(picks, it.ansSet)) score++;
+      done++;
+      qe.querySelector('.exp').classList.add('show');
+      if(chk) chk.disabled = true;
+      sc.textContent = `${score} / ${items.length}` + (done===items.length?' ✓':'');
+    };
+    if(!it.multi){
+      opts.forEach(b=>b.addEventListener('click',()=>reveal([+b.dataset.k])));
+    } else {
+      opts.forEach(b=>b.addEventListener('click',()=>{
+        if(locked) return;
+        const k=+b.dataset.k;
+        chosen.has(k) ? chosen.delete(k) : chosen.add(k);
+        b.classList.toggle('picked', chosen.has(k));
+        b.setAttribute('aria-pressed', String(chosen.has(k)));
+        chk.disabled = chosen.size===0;
+      }));
+      chk.addEventListener('click',()=>reveal([...chosen]));
+    }
+  });
+  box.querySelector(':scope > .btn-row .reset').addEventListener('click',()=>buildTopicQuiz(box));
+}
+document.querySelectorAll('.quiz').forEach(buildTopicQuiz);
+
+/* ---------- chip nav ---------- */
+const bar=document.getElementById('chipbar');
+bar.innerHTML = TOPICS.map((t,i)=>`<a class="chip k${COLORS[i%COLORS.length]}" href="#${t[0]}"><span class="n">${i+1}</span>${t[1]}</a>`).join('')
+  + `<a class="chip kd" href="#deloitte"><span class="n">D</span>Deloitte / HackerRank-style</a>`
+  + `<a class="chip k3" href="#final"><span class="n">✓</span>ข้อสอบรวม</a>`
+  + `<a class="chip k4" href="#appendix"><span class="n">★</span>สรุป 1 หน้า</a>`;
+const chips=[...bar.querySelectorAll('.chip')];
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{ if(e.isIntersecting){
+  chips.forEach(c=>c.classList.toggle('active',c.getAttribute('href')==='#'+e.target.id));
+  const a=bar.querySelector('.chip.active');
+  if(a){ const r=a.getBoundingClientRect(), br=bar.getBoundingClientRect();
+    bar.scrollTo({left: bar.scrollLeft + (r.left-br.left) - (bar.clientWidth/2 - r.width/2)}); }
+}});},{rootMargin:'-40% 0px -55% 0px'});
+document.querySelectorAll('section.topic, #final, #deloitte, #appendix').forEach(s=>obs.observe(s));
+bar.addEventListener('click',e=>{
+  const a=e.target.closest('a.chip'); if(!a) return;
+  const t=document.getElementById(a.getAttribute('href').slice(1)); if(!t) return;
+  e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'});
+  history.replaceState(null,'',a.getAttribute('href'));
+});
+
+/* ---------- exam factory: เฉลยทันทีทุกข้อ ---------- */
+function makeExam({box, barEl, statusEl, resultEl, submitBtn, newBtn, count, getPool, timerEl, minutes, anchor}){
+  let exam=[], picks=[], checked=[], submitted=false, timerId=null, deadline=0, started=false;
+  const answered = p => Array.isArray(p) && p.length>0;
+  function start(){
+    exam=shuffle(getPool()).slice(0,Math.min(count,getPool().length)).map(prep);
+    picks=exam.map(()=>[]); checked=exam.map(()=>false); submitted=false;
+    resultEl.classList.remove('show'); resultEl.innerHTML='';
+    box.innerHTML=exam.map((it,i)=>qHTML(it,i,anchor)).join('');
+    box.querySelectorAll('.q').forEach(qe=>{
+      const i=+qe.dataset.i, it=exam[i];
+      const row=document.createElement('div');
+      row.className='btn-row qcheck-row';
+      row.innerHTML=(it.multi?'<button type="button" class="btn check" disabled>ตรวจคำตอบ</button>':'')+'<span class="qres" aria-live="polite"></span>';
+      qe.insertBefore(row, qe.querySelector('.exp'));
+      const chk=row.querySelector('.check');
+      if(chk) chk.addEventListener('click',()=>checkOne(i));
+      qe.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+        if(submitted || checked[i]) return;
+        startTimer();
+        const k=+b.dataset.k;
+        if(it.multi){
+          const set=new Set(picks[i]);
+          set.has(k) ? set.delete(k) : set.add(k);
+          picks[i]=[...set];
+          b.classList.toggle('picked', set.has(k));
+          b.setAttribute('aria-pressed', String(set.has(k)));
+          chk.disabled = !answered(picks[i]);
+        } else {
+          picks[i]=[k];
+          checkOne(i);
+        }
+      }));
+    });
+    submitBtn.disabled=false;
+    if(timerEl){ clearInterval(timerId); started=false; timerEl.textContent=`${String(minutes).padStart(2,'0')}:00`; timerEl.classList.remove('low'); }
+    update();
+  }
+  function markQuestion(i){
+    const qe=box.querySelector(`.q[data-i="${i}"]`), it=exam[i], p=picks[i]||[];
+    qe.querySelectorAll('.opt').forEach((x,j)=>{
+      x.disabled=true; x.classList.remove('picked');
+      if(it.ansSet.includes(j)) x.classList.add('correct');
+      else if(p.includes(j)) x.classList.add('wrong');
+    });
+    qe.querySelector('.exp').classList.add('show');
+    const c=qe.querySelector('.check'); if(c) c.disabled=true;
+    return sameSet(p,it.ansSet);
+  }
+  function checkOne(i){
+    if(submitted || checked[i] || !answered(picks[i])) return;
+    checked[i]=true;
+    const ok=markQuestion(i);
+    const res=box.querySelector(`.q[data-i="${i}"] .qres`);
+    res.textContent = ok ? '✓ ถูกต้อง' : '✗ ยังไม่ถูก ดูเฉลยด้านล่าง';
+    res.className = 'qres ' + (ok ? 'ok' : 'bad');
+    update();
+    if(checked.every(Boolean)) finish(false);
+  }
+  function startTimer(){
+    if(!timerEl || started) return;
+    started=true; deadline=Date.now()+minutes*60000; tick(); timerId=setInterval(tick,1000);
+  }
+  function tick(){
+    const left=Math.max(0,deadline-Date.now());
+    const m=Math.floor(left/60000), s=Math.floor(left%60000/1000);
+    timerEl.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    timerEl.classList.toggle('low', left<5*60000);
+    if(left===0){ clearInterval(timerId); if(!submitted) finish(true); }
+  }
+  function update(){
+    const n=checked.filter(Boolean).length;
+    const ok=checked.reduce((a,c,i)=>a+(c && sameSet(picks[i],exam[i].ansSet)?1:0),0);
+    barEl.style.width=(n/exam.length*100)+'%';
+    statusEl.textContent=submitted?'':`ตอบแล้ว ${n} / ${exam.length} ข้อ · ถูก ${ok} ข้อ`+(timerEl&&!started?' · เวลาเริ่มนับเมื่อตอบข้อแรก':'');
+  }
+  function finish(auto){
+    submitted=true; clearInterval(timerId);
+    let score=0; const weak={}; const byLv={};
+    box.querySelectorAll('.q').forEach(qe=>{
+      const i=+qe.dataset.i, it=exam[i], p=picks[i]||[];
+      if(it.lv){ byLv[it.lv]=byLv[it.lv]||[0,0]; byLv[it.lv][1]++; }
+      markQuestion(i);
+      if(!checked[i]){ const r=qe.querySelector('.qres'); if(r){ r.textContent='ไม่ได้ตอบ'; r.className='qres bad'; } }
+      if(sameSet(p,it.ansSet)){ score++; if(it.lv) byLv[it.lv][0]++; }
+      else weak[it.topic||'อื่น ๆ']=(weak[it.topic||'อื่น ๆ']||0)+1;
+    });
+    const pct=Math.round(score/exam.length*100);
+    const msg=pct>=80?'พร้อมสอบแล้ว ทบทวนเฉพาะจุดที่พลาดก็พอ':pct>=60?'ผ่านเกณฑ์ ควรอ่านหัวข้อที่พลาดซ้ำอีกรอบ':'ควรกลับไปอ่านเนื้อหาหัวข้อที่พลาดแล้วลองชุดใหม่';
+    const w=Object.entries(weak).sort((a,b)=>b[1]-a[1]);
+    const lvLine=['B','I','A'].filter(k=>byLv[k]).map(k=>`<span class="lv ${LVK[k]}" style="margin-right:6px">${LVN[k]} ${byLv[k][0]} / ${byLv[k][1]}</span>`).join(' ');
+    resultEl.innerHTML=`${auto?'<p style="margin:0 0 6px;font-weight:600">หมดเวลา ระบบสรุปผลให้อัตโนมัติ</p>':''}<div class="big">${score} / ${exam.length}</div><p style="margin:4px 0 0">${pct}% ${msg}</p><p style="margin:10px 0 0">${lvLine}</p>`
+      +(w.length?`<p style="margin:10px 0 0;font-weight:600">หัวข้อที่ควรทบทวน</p><ul>${w.map(([t,c])=>`<li>${esc(t)} (พลาด ${c} ข้อ)</li>`).join('')}</ul>`:'<p style="margin:10px 0 0">ตอบถูกทุกข้อ</p>');
+    resultEl.classList.add('show'); statusEl.textContent='';
+    submitBtn.disabled=true;
+    resultEl.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  submitBtn.addEventListener('click',()=>{
+    const left = checked.filter(c=>!c).length;
+    if(left && !confirm(`ยังตอบไม่ครบอีก ${left} ข้อ ข้อที่ยังไม่ตอบจะนับเป็นผิด ต้องการดูสรุปผลเลยหรือไม่`)) return;
+    finish(false);
+  });
+  newBtn.addEventListener('click',()=>{ start(); document.getElementById(anchor).scrollIntoView({behavior:'smooth'}); });
+  return { start };
+}
+
+/* ---------- final exam ---------- */
+let level='all';
+function fullPool(){
+  const all=[];
+  TOPICS.forEach((t,i)=>(Q[t[0]]||[]).forEach(q=>all.push({...q,src:`หัวข้อ ${i+1}`,topic:t[1]})));
+  (Q.dl||[]).forEach(q=>all.push({...q,src:q.src||'Deloitte / HackerRank-style',topic:'Deloitte / HackerRank-style'}));
+  return level==='all'?all:all.filter(q=>q.lv===level);
+}
+const finalExam = makeExam({
+  box:document.getElementById('exam'), barEl:document.getElementById('examBar'),
+  statusEl:document.getElementById('examStatus'), resultEl:document.getElementById('examResult'),
+  submitBtn:document.getElementById('submitExam'), newBtn:document.getElementById('newExam'),
+  count:40, getPool:fullPool, anchor:'final'
+});
+document.querySelectorAll('#lvSeg button').forEach(b=>b.addEventListener('click',()=>{
+  level=b.dataset.lv;
+  document.querySelectorAll('#lvSeg button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+  finalExam.start();
+}));
+finalExam.start();
+
+/* ---------- Deloitte / HackerRank-style (จับเวลา) ---------- */
+function dlPool(){ return (Q.dl||[]).map(q=>({...q,topic:q.topic||'Deloitte / HackerRank-style'})); }
+const dlExam = makeExam({
+  box:document.getElementById('dlExam'), barEl:document.getElementById('dlBar'),
+  statusEl:document.getElementById('dlStatus'), resultEl:document.getElementById('dlResult'),
+  submitBtn:document.getElementById('dlSubmit'), newBtn:document.getElementById('dlNew'),
+  count:20, getPool:dlPool, timerEl:document.getElementById('dlTimer'), minutes:30, anchor:'deloitte'
+});
+dlExam.start();
+
+/* ---------- table of contents in hero ---------- */
+document.getElementById('toc').innerHTML = TOPICS.map((t,i)=>{
+  const c=COLORS[i%COLORS.length]; const n=(Q[t[0]]||[]).length;
+  return `<a href="#${t[0]}"><span class="n" style="background:var(--c${c})${c===4?';color:#3a2700':''}">${i+1}</span><span>${t[1]} <span class="muted">· ${n} ข้อ</span></span></a>`;
+}).join('');
+document.querySelectorAll('[data-total]').forEach(el=>{
+  const total=TOPICS.reduce((a,t)=>a+(Q[t[0]]||[]).length,0)+(Q.dl||[]).length;
+  el.textContent=total;
+});
+
+/* ---------- readiness checklist ---------- */
+(function(){
+  const boxes=[...document.querySelectorAll('#checklist input')];
+  const out=document.getElementById('ckCount');
+  const upd=()=>{ const n=boxes.filter(b=>b.checked).length; out.textContent=`(${n} / ${boxes.length})`; };
+  boxes.forEach(b=>b.addEventListener('change',upd)); upd();
+})();
+
+</script>
+</body>
+</html>

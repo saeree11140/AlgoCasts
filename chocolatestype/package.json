@@ -1,0 +1,16 @@
+{
+  "name": "chocolatestype",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mock Chocolate Types API และแบบฝึกเขียน client",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "api": "npm run build && node dist/api/main.js",
+    "test": "npm run build && node --test dist/api/test.js",
+    "test:client": "npm run build && node --test dist/client/test.js",
+    "test:all": "npm run build && node --test dist/api/test.js dist/client/test.js"
+  }
+}
