@@ -1,0 +1,19 @@
+web/src/workspace-layout.css
+  s_3ee02705296a9e::t_705b5e6e29f0cc 58,76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "61482c06f9456368e2944dc1836e80aed50d9757",
+  "prompts": {},
+  "sessions": {
+    "s_3ee02705296a9e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "30540c99-93e7-4375-b389-3c792a184c22",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
