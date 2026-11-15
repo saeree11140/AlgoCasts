@@ -6,7 +6,7 @@ const manifest = JSON.parse(fs.readFileSync(new URL('manifest.json', content)));
 test('all source categories imported without losing files', () => {
   assert.equal(manifest.problems.filter(p=>p.source==='AlgoCasts').length, 27);
   assert.equal(manifest.problems.length, 34);
-  assert.equal(manifest.competencies.length, 14);
+  assert.equal(manifest.competencies.length, 15);
   assert.ok(manifest.diagrams.length > 100);
   for (const d of manifest.diagrams) {
     const svg = fs.readFileSync(new URL(d.path, content),'utf8');
@@ -40,6 +40,7 @@ for (const [id, title, source, firstSection, sectionCount] of [
   ['cloud', 'Cloud', 'Cloud/cloud-skill-review.html', 'Cloud models, service types และประโยชน์ที่ข้อสอบชอบถาม', 15],
   ['ci-cd', 'CI/CD', 'CICD/ci-cd-review.html', 'ระดับ Beginner', 6],
   ['application-security', 'Application Security', 'Application Security/application-security-review.html', 'ระดับ Beginner', 7],
+  ['ai-prompt-engineering', 'AI & Prompt Engineering', 'AI & Prompt engineer/ai-prompt-engineering-review.html', 'ระดับ Beginner', 8],
 ]) {
   test(`${title} lesson is complete and available from competency navigation`, () => {
     const topic = manifest.competencies.find(item => item.id === id);
@@ -65,4 +66,17 @@ test('Coding Skill worker permissions stay confined to an opaque document sandbo
   assert.match(policy, /(?:^|;)\s*sandbox allow-scripts/);
   assert.doesNotMatch(policy, /allow-same-origin/);
   assert.match(policy, /connect-src 'none'/);
+});
+
+test('Sorting diagrams follow draw.io layering and keep free text readable', () => {
+  const svg = id => fs.readFileSync(new URL(`diagrams/${id}.svg`, content), 'utf8');
+  const labels = id => [...svg(id).matchAll(/<text[^>]*>([\s\S]*?)<\/text>/g)].map(m => m[1].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
+  // "10" sits under the "If the incoming array..." box in the source; its label must stay hidden.
+  assert.ok(!labels('10-04').includes('10'));
+  for (const id of ['10-05', '10-06']) {
+    assert.ok(labels(id).some(text => text.includes('mergeSort')), `${id} keeps "mergeSort" whole`);
+    for (const size of svg(id).matchAll(/data-kind="text"[^>]*font-size="([\d.]+)"/g)) assert.ok(Number(size[1]) >= 11);
+  }
+  assert.match(svg('03-01'), /O\(n²\)/);
+  assert.doesNotMatch(svg('03-01'), /&lt;sup/);
 });

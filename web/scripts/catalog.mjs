@@ -42,6 +42,7 @@ export const competencyInfo = {
   'Monitoring and Logging': ['monitoring','Monitoring & Logging','Logs, metrics, traces และ incident response','OBS'],
   'Software Engineering and Development': ['web-mobile','Web & Mobile Development','JavaScript, Frontend, Backend และ Mobile','WEB'],
   'Unit & Functional testing (for Developer)': ['testing','Unit & Functional Testing','Test cases, mocking, integration และคุณภาพซอฟต์แวร์','TEST'],
+  'AI & Prompt engineer': ['ai-prompt-engineering','AI & Prompt Engineering','LLM, Prompt Engineering, RAG, MLOps และ AI Governance','AI'],
 };
 export const diagramGroups = {
  '01': 'เริ่มต้นแก้โจทย์', '02': 'String & Array', '03': 'Loop & Recursion',

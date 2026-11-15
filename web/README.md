@@ -26,8 +26,9 @@ pnpm run check  # tests + TypeScript check + production build
 - ค้นหา กรองระดับ/หมวด/สถานะ บันทึกโจทย์ไว้
 - CodeMirror editor, TypeScript syntax, auto-save, reset, คำใบ้, เฉลย, ชุดทดสอบ และประวัติส่งคำตอบ
 - รันทดสอบ 3 เคสแรก หรือส่งคำตอบตรวจทุกเคส; ผ่านทุกเคสจึงนับว่าสำเร็จ
-- คู่มือภาพ 115 หน้าแปลงจาก draw.io และเอกสาร Coding Practice
-- เตรียมสอบ 14 ทักษะ แสดง HTML ต้นฉบับพร้อมแบบทดสอบที่กดทำได้ และ JavaScript PDF
+- คู่มือภาพ 10 หมวดแปลงจาก draw.io พร้อมคำอธิบายภาษาไทยทุกภาพ และ Lab แบบ interactive ทุกหมวด (เดินทีละขั้น ไฮไลต์บรรทัดโค้ด)
+- เอกสาร Coding Practice
+- เตรียมสอบ 15 ทักษะ แสดง HTML ต้นฉบับพร้อมแบบทดสอบที่กดทำได้ และ JavaScript PDF
 - Coding Skill: Beginner–Advance, DSA ด้วย JavaScript และ Coding Lab รันเทสต์ในเบราว์เซอร์
 - ธีมสว่าง/มืด หน้าจอมือถือ ส่งออก/นำเข้าความคืบหน้า JSON
 
@@ -42,6 +43,8 @@ web/
   src/main.ts                 หน้าจอและ navigation
   src/ui-refinements.css      ตัวอักษร ปุ่ม และ responsive layout หลัง UI review
   src/diagram-viewer.ts       เปิดภาพแบบขยาย พร้อมซูมและดาวน์โหลด
+  src/guide-content.ts        คำอธิบายหมวดและคำอธิบายรายภาพ (key = id ภาพใน manifest)
+  src/labs/                   Lab ของแต่ละหมวด ใช้ step-player ร่วมใน engine.ts โหลดเฉพาะหน้าคู่มือ
   src/editor.ts               CodeMirror
   src/runtime.js              runner รองรับ API เทสต์ที่ใช้จริงใน repo
   src/runner.ts               TypeScript transpilation + sandbox bridge

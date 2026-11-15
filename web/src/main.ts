@@ -11,6 +11,7 @@ import {marked} from 'marked';
 import {load,save,validateBackup} from './storage';
 import {cancelRun,runCode} from './runner';
 import {openDiagram} from './diagram-viewer';
+import {guideGroups,guideNotes} from './guide-content';
 import type {Detail,Manifest,Problem,RunResult} from './types';
 import type {EditorView} from 'codemirror';
 
@@ -133,9 +134,33 @@ function competencyReader(id:string){
 }
 function guides(params:URLSearchParams){
  const selected=params.get('group')||'';
- const diagrams=manifest.diagrams.filter(d=>!selected||d.group===selected);
- shell('guides',`${heading('คู่มือและภาพอธิบาย','เข้าใจวิธีคิดก่อนเขียนโค้ด เชื่อมภาพประกอบกับโจทย์ที่กำลังฝึก')}<div class="guide-tabs"><a class="button ${!selected?'primary':''}" href="#/guides">ทั้งหมด</a>${Object.entries(manifest.diagramGroups).sort(([a],[b])=>a.localeCompare(b)).map(([key,title])=>`<a class="button ${selected===key?'primary':''}" href="#/guides?group=${key}">${e(title)}</a>`).join('')}</div>${!selected?`<section class="guide-intro panel prose"><h2>ฝึกอย่างไรให้เข้าใจ</h2><div class="learning-steps"><div><span>01</span><h3>อ่านโจทย์</h3><p>ระบุ Input, Output และกรณีขอบให้ชัด</p></div><div><span>02</span><h3>วาดวิธีคิด</h3><p>ไล่ข้อมูลทีละขั้น แล้วเลือกโครงสร้างที่เหมาะ</p></div><div><span>03</span><h3>เขียนและทดสอบ</h3><p>เริ่มจากคำตอบที่ถูก แล้วค่อยลดเวลาและพื้นที่</p></div></div><p><strong>Big O:</strong> O(1) คงที่ · O(log n) ลดช่วงครึ่งหนึ่ง · O(n) อ่านทุกสมาชิก · O(n log n) เช่น Merge Sort · O(n²) เช่น loop ซ้อนที่ขึ้นกับ n ทั้งคู่</p><div class="button-row"><a class="button" href="#/reading/coding-practice">คู่มือ Coding Practice 6 ข้อ</a><a class="button" href="#/reading/chocolate-score">โจทย์ Chocolate API: Score</a></div></section>`:''}<div class="section-title"><h2>${e(manifest.diagramGroups[selected]||'ภาพประกอบทั้งหมด')}</h2><span class="muted">${diagrams.length} ภาพ</span></div><div class="diagram-grid">${diagrams.map(d=>`<figure class="diagram-card"><button class="diagram-preview" data-diagram="${d.id}" aria-label="ขยายภาพ ${e(d.title)}"><img src="/content/${d.path}" alt="${e(d.title)}" loading="lazy"></button><figcaption><span class="badge blue">${e(d.category)}</span><strong>${e(d.title)}</strong><button class="text-link" data-diagram="${d.id}" aria-label="เปิดภาพ ${e(d.title)}">ขยายภาพ ${icon('search')}</button></figcaption></figure>`).join('')}</div>`);
- document.querySelectorAll<HTMLButtonElement>('[data-diagram]').forEach(button=>button.onclick=()=>{const d=manifest.diagrams.find(d=>d.id===button.dataset.diagram)!;openDiagram(d.title,'/content/'+d.path,d.category);});
+ const groups=Object.entries(manifest.diagramGroups).sort(([a],[b])=>a.localeCompare(b));
+ const visible=(group:string)=>manifest.diagrams.filter(d=>d.group===group&&!guideNotes[d.id]?.hidden);
+ const tabs=`<div class="guide-tabs"><a class="button ${!selected?'primary':''}" href="#/guides">ทั้งหมด</a>${groups.map(([key,title])=>`<a class="button ${selected===key?'primary':''}" href="#/guides?group=${key}">${e(title)}</a>`).join('')}</div>`;
+ const top=heading('คู่มือและภาพอธิบาย','เข้าใจวิธีคิดก่อนเขียนโค้ด เชื่อมภาพประกอบกับโจทย์ที่กำลังฝึก')+tabs;
+ if(!selected||!manifest.diagramGroups[selected]){
+  shell('guides',`${top}<section class="guide-intro panel prose"><h2>ฝึกอย่างไรให้เข้าใจ</h2><div class="learning-steps"><div><span>01</span><h3>อ่านโจทย์</h3><p>ระบุ Input, Output และกรณีขอบให้ชัด</p></div><div><span>02</span><h3>วาดวิธีคิด</h3><p>ไล่ข้อมูลทีละขั้น แล้วเลือกโครงสร้างที่เหมาะ</p></div><div><span>03</span><h3>เขียนและทดสอบ</h3><p>เริ่มจากคำตอบที่ถูก แล้วค่อยลดเวลาและพื้นที่</p></div></div><p><strong>Big O:</strong> O(1) คงที่ · O(log n) ลดช่วงครึ่งหนึ่ง · O(n) อ่านทุกสมาชิก · O(n log n) เช่น Merge Sort · O(n²) เช่น loop ซ้อนที่ขึ้นกับ n ทั้งคู่</p><div class="button-row"><a class="button" href="#/reading/coding-practice">คู่มือ Coding Practice 6 ข้อ</a><a class="button" href="#/reading/chocolate-score">โจทย์ Chocolate API: Score</a></div></section><div class="section-title"><h2>เลือกหมวดที่อยากเรียน</h2><span class="muted">${groups.length} หมวด · ${manifest.diagrams.filter(d=>!guideNotes[d.id]?.hidden).length} ภาพ</span></div><div class="guide-group-grid">${groups.map(([key,title])=>{const g=guideGroups[key];const first=visible(key)[0];return `<a class="guide-group-card" href="#/guides?group=${key}"><span class="guide-group-thumb">${first?`<img src="/content/${first.path}" alt="" loading="lazy">`:''}</span><span class="guide-group-body"><span class="eyebrow">หมวด ${key}</span><strong>${e(title)}</strong><span>${e(g?.summary??'')}</span><small>${visible(key).length} ภาพ · มี Lab ให้ลองเอง ${icon('arrow')}</small></span></a>`;}).join('')}</div>`);
+  return;
+ }
+ const group=guideGroups[selected],diagrams=visible(selected);
+ const problems=(group?.problems??[]).map(id=>manifest.problems.find(p=>p.id===id)).filter((p):p is Problem=>!!p);
+ const step=(d:typeof diagrams[number],i:number)=>{
+  const note=guideNotes[d.id];
+  return `<li class="lesson-step" id="diagram-${d.id}"><button class="diagram-preview lesson-preview" data-diagram="${d.id}" aria-label="ขยายภาพ ${e(note?.title??d.title)}"><img src="/content/${d.path}" alt="${e(note?.title??d.title)}" loading="lazy"></button><div class="lesson-text"><span class="lesson-no">${String(i+1).padStart(2,'0')}</span><h3>${e(note?.title??d.title)}</h3><p class="lesson-source">ภาพต้นฉบับ: ${e(d.title)}</p>${note?`<p>${e(note.summary)}</p>${note.points?.length?`<ul>${note.points.map(point=>`<li>${e(point)}</li>`).join('')}</ul>`:''}`:''}<div class="lesson-actions"><button class="button" data-diagram="${d.id}">${icon('search')}ขยายภาพ</button>${note?.lab?`<a class="button" href="#/guides?group=${selected}&lab=${note.lab}">ลองใน Lab ${icon('arrow')}</a>`:''}</div></div></li>`;
+ };
+ shell('guides',`${top}<section class="lesson-intro panel"><div><p class="eyebrow">หมวด ${selected}</p><h2>${e(manifest.diagramGroups[selected])}</h2><p>${e(group?.summary??'')}</p></div>${group?`<div class="lesson-goals"><h3>เรียนจบหมวดนี้แล้วควร</h3><ul>${group.goals.map(goal=>`<li>${e(goal)}</li>`).join('')}</ul>${problems.length?`<h3>โจทย์ที่เกี่ยวข้อง</h3><div class="chip-row">${problems.map(p=>`<a class="chip" href="#/problem/${p.id}">${e(p.title)}</a>`).join('')}</div>`:''}</div>`:''}</section><div id="guide-lab-slot"><p class="loading">กำลังโหลด Lab…</p></div><div class="section-title"><h2>บทเรียนทีละภาพ</h2><span class="muted">${diagrams.length} ภาพ · กดภาพเพื่อขยาย</span></div><ol class="lesson-list">${diagrams.map(step).join('')}</ol>`);
+ document.querySelectorAll<HTMLButtonElement>('[data-diagram]').forEach(button=>button.onclick=()=>{const d=manifest.diagrams.find(d=>d.id===button.dataset.diagram)!;openDiagram(guideNotes[d.id]?.title??d.title,'/content/'+d.path,d.category);});
+ // Wide diagrams (e.g. long linked lists) read better across the full card width.
+ document.querySelectorAll<HTMLImageElement>('.lesson-preview img').forEach(img=>{const mark=()=>{if(img.naturalWidth>760&&img.naturalWidth/img.naturalHeight>2.2)img.closest('.lesson-step')?.classList.add('is-wide');};if(img.complete)mark();else img.addEventListener('load',mark,{once:true});});
+ const version=routeVersion,slot=document.querySelector<HTMLElement>('#guide-lab-slot')!;
+ import('./labs').then(({labs,labHtml,mountLab})=>{
+  if(version!==routeVersion||!slot.isConnected)return;
+  const spec=labs[selected];if(!spec){slot.remove();return;}
+  slot.innerHTML=labHtml(spec);
+  const lab=slot.querySelector<HTMLElement>('#guide-lab')!;
+  mountLab(lab,spec,params.get('lab')??undefined);
+  if(params.get('lab'))lab.scrollIntoView({block:'start'});
+ }).catch(()=>{slot.innerHTML='<p class="loading">โหลด Lab ไม่สำเร็จ ลองรีเฟรชหน้านี้</p>';});
 }
 async function reading(id:string,version:number){
  const files:Record<string,[string,string]>={'coding-practice':['Coding Practice — คู่มือ 6 โจทย์','coding-practice.md'],'chocolate-score':['Chocolate API — Pagination & Score','chocolate-score.md']};
