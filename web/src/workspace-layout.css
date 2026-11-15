@@ -1,0 +1,76 @@
+/* The coding workspace follows the real browser viewport; reading pages keep their own measure. */
+#app { width: 100%; min-width: 0; }
+main.workspace-page { width: 100%; max-width: none; }
+
+@media (min-width: 980px) and (min-height: 650px) {
+  #app[data-layout="workspace"] {
+    height: 100dvh;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  #app[data-layout="workspace"] > .topbar,
+  #app[data-layout="workspace"] > .main-nav {
+    flex: none;
+  }
+  #app[data-layout="workspace"] .topbar-inner,
+  #app[data-layout="workspace"] .main-nav > div {
+    max-width: none;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  #app[data-layout="workspace"] > footer { display: none; }
+  main.workspace-page {
+    flex: 1;
+    min-height: 0;
+    margin: 0;
+    padding: 12px 24px 8px;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+  .workspace-page .workspace-breadcrumb,
+  .workspace-page .workspace-heading,
+  .workspace-page .workspace-note {
+    margin: 0;
+  }
+  .workspace-page .workspace {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+  }
+  .workspace-page .statement-pane {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .workspace-page .tabs { flex: none; }
+  .workspace-page .statement {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .workspace-page .coding-pane {
+    display: grid;
+    min-height: 0;
+    grid-template-rows: 49px minmax(100px, 1fr) auto minmax(100px, .45fr);
+  }
+  .workspace-page .code-editor {
+    height: auto;
+    min-height: 0;
+  }
+  .workspace-page .results {
+    min-height: 0;
+    max-height: none;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+/* Small/short windows keep normal document scrolling; nothing is hidden off-screen. */
+@media (max-width: 979px), (max-height: 649px) {
+  #app[data-layout="workspace"] { height: auto; }
+  .workspace-page .workspace { min-height: 0; }
+}

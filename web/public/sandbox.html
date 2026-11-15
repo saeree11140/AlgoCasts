@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'; worker-src blob:; connect-src 'none'"><title>Isolated code runner</title></head><body><script>
+'use strict';
+let worker;
+const reply = parent.postMessage.bind(parent);
+addEventListener('message', event => {
+ if(event.source !== parent || !event.data || event.data.type !== 'run' || typeof event.data.program !== 'string') return;
+ try {
+  const blob = new Blob([event.data.program], {type:'text/javascript'});
+  const url = URL.createObjectURL(blob);
+  worker = new Worker(url);
+  URL.revokeObjectURL(url);
+  worker.onmessage = e => { reply({type:'result',result:e.data},'*'); worker.terminate(); };
+  worker.onerror = e => { e.preventDefault(); reply({type:'result',result:{tests:[],logs:[],error:e.message || 'Worker failed'}},'*'); worker.terminate(); };
+ } catch(e) {reply({type:'result',result:{tests:[],logs:[],error:String(e)}},'*');}
+},{once:true});
+reply({type:'ready'},'*');
+</script></body></html>

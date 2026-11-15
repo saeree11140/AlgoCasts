@@ -1,0 +1,8 @@
+# Copy to repository root as .dockerignore before building on the VPS.
+.git
+**/node_modules
+**/dist
+**/.DS_Store
+**/.env
+**/*.local
+web/public/content

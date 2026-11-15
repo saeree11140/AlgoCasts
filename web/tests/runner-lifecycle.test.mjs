@@ -1,0 +1,21 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import ts from 'typescript';
+test('Stop during compiler download prevents a stale sandbox from starting',async()=>{
+ let release,appended=0;
+ const deferred=new Promise(resolve=>release=resolve);
+ let source=fs.readFileSync(new URL('../src/runner.ts',import.meta.url),'utf8');
+ source=source.replace("import {executeSuite} from './runtime.js';",'const executeSuite=()=>({tests:[],logs:[]});').replace("import('typescript')",'getCompiler()');
+ let js=ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext}}).outputText.replace(/export /g,'');
+ js+='\nglobalThis.api={runCode,cancelRun};';
+ const context={getCompiler:()=>deferred,setTimeout,clearTimeout,addEventListener(){},removeEventListener(){},document:{createElement:()=>({setAttribute(){},remove(){},contentWindow:{postMessage(){}}}),body:{append(){appended++;}}}};
+ vm.runInNewContext(js,context);
+ const running=context.api.runCode({modules:{'./test':'test("sample",()=>{})'}},'export = 1',false);
+ context.api.cancelRun();
+ release(ts);
+ const result=await running;
+ assert.match(result.error,/ยกเลิก/);
+ assert.equal(appended,0);
+});

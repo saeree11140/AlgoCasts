@@ -1,0 +1,68 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const content = new URL('../public/content/', import.meta.url);
+const manifest = JSON.parse(fs.readFileSync(new URL('manifest.json', content)));
+test('all source categories imported without losing files', () => {
+  assert.equal(manifest.problems.filter(p=>p.source==='AlgoCasts').length, 27);
+  assert.equal(manifest.problems.length, 34);
+  assert.equal(manifest.competencies.length, 14);
+  assert.ok(manifest.diagrams.length > 100);
+  for (const d of manifest.diagrams) {
+    const svg = fs.readFileSync(new URL(d.path, content),'utf8');
+    assert.match(svg, /<svg/);
+    assert.doesNotMatch(svg, /<script|<foreignObject|onload=/);
+  }
+});
+test('problem details contain genuine tests and clean starter separate from solution', () => {
+  for (const p of manifest.problems) {
+    const d = JSON.parse(fs.readFileSync(new URL(`problems/${p.id}.json`, content)));
+    assert.notEqual(d.starter, d.solution);
+    assert.match(d.starter, /TODO/);
+    assert.ok(d.modules['./test']);
+  }
+});
+
+test('Container lesson is complete and available from competency navigation', () => {
+  const topic = manifest.competencies.find(item => item.id === 'container');
+  assert.ok(topic, 'Container must appear in the competency manifest');
+  assert.equal(topic.title, 'Container');
+  assert.equal(topic.path, 'documents/container.html');
+  assert.ok(topic.sections.includes('ระดับ Beginner'));
+  assert.ok(topic.sections.includes('ระดับ Intermediate'));
+  const html = fs.readFileSync(new URL(topic.path, content), 'utf8');
+  const source = fs.readFileSync(new URL('../../competency/Container/container-review.html', import.meta.url), 'utf8');
+  assert.equal(html, source, 'Preserve all original lesson and quiz content');
+});
+
+for (const [id, title, source, firstSection, sectionCount] of [
+  ['coding-skill', 'Coding Skill', 'Coding Skill/coding-skill-review.html', 'Coding ในหน้านี้ครอบคลุมอะไรบ้าง', 8],
+  ['cloud', 'Cloud', 'Cloud/cloud-skill-review.html', 'Cloud models, service types และประโยชน์ที่ข้อสอบชอบถาม', 15],
+  ['ci-cd', 'CI/CD', 'CICD/ci-cd-review.html', 'ระดับ Beginner', 6],
+  ['application-security', 'Application Security', 'Application Security/application-security-review.html', 'ระดับ Beginner', 7],
+]) {
+  test(`${title} lesson is complete and available from competency navigation`, () => {
+    const topic = manifest.competencies.find(item => item.id === id);
+    assert.ok(topic, `${title} must appear in the competency manifest`);
+    assert.equal(topic.title, title);
+    assert.equal(topic.path, `documents/${id}.html`);
+    assert.equal(topic.sections[0], firstSection);
+    assert.equal(topic.sections.length, sectionCount);
+    const html = fs.readFileSync(new URL(topic.path, content), 'utf8');
+    const original = fs.readFileSync(new URL(`../../competency/${source}`, import.meta.url), 'utf8');
+    assert.equal(html, original, 'Preserve all original lesson and quiz content');
+  });
+}
+
+test('Coding Skill worker permissions stay confined to an opaque document sandbox', () => {
+  const config = fs.readFileSync(new URL('../deploy/nginx.conf', import.meta.url), 'utf8');
+  const block = config.match(/location = \/content\/documents\/coding-skill\.html\s*\{([\s\S]*?)\n\s*\}/)?.[1];
+  assert.ok(block, 'Coding Lab needs a dedicated document policy');
+  const policy = block.match(/Content-Security-Policy \"([^\"]+)\"/)?.[1];
+  assert.ok(policy);
+  assert.match(policy, /worker-src blob:/);
+  assert.match(policy, /script-src[^;]*'unsafe-eval'/);
+  assert.match(policy, /(?:^|;)\s*sandbox allow-scripts/);
+  assert.doesNotMatch(policy, /allow-same-origin/);
+  assert.match(policy, /connect-src 'none'/);
+});

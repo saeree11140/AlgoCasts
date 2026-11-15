@@ -1,0 +1,435 @@
+/* Overrides for style.css (imported after it): type scale, buttons and responsive layout. */
+
+body {
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.brand small {
+  font-size: 12px;
+  letter-spacing: .25px;
+}
+
+.main-nav a {
+  font-size: 16px;
+}
+
+.page-heading > p:last-child,
+.lead {
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+.prose {
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.muted {
+  font-size: 14px;
+}
+
+.topic-card h3 {
+  min-height: 40px;
+  font-size: 17px;
+}
+
+.topic-card p,
+.topic-card p span {
+  font-size: 14px;
+}
+
+.competency-card p {
+  font-size: 15px;
+}
+
+.competency-card-top > .muted,
+.competency-card-bottom {
+  font-size: 14px;
+}
+
+.competency-card-bottom .text-link {
+  font-size: 14px;
+}
+
+.problem-name strong {
+  font-size: 16px;
+}
+
+.problem-name small,
+.status-text,
+.sidebar-note,
+.list-caption,
+.workspace-note,
+.diagram-viewer-hint {
+  font-size: 14px;
+}
+
+.save-state {
+  font-size: 13px;
+}
+
+.learning-steps p {
+  font-size: 15px;
+}
+
+.badge,
+.section-kicker > span,
+.welcome-tags {
+  font-size: 13px;
+}
+
+.button {
+  min-height: 42px;
+  font-size: 15px;
+}
+
+.icon-button {
+  width: 40px;
+  height: 40px;
+}
+
+.category-button {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 15px;
+}
+
+.tabs button {
+  min-height: 48px;
+  font-size: 15px;
+}
+
+.run-toolbar .button {
+  min-height: 40px;
+  font-size: 14px;
+}
+
+.editor-toolbar .icon-button {
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+}
+
+.search-field {
+  min-height: 44px;
+}
+
+.search-field input {
+  font-size: 15px;
+}
+
+.filter-bar select {
+  min-height: 44px;
+  font-size: 14px;
+}
+
+.filter-bar {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) repeat(3, minmax(100px, auto));
+  gap: 10px;
+  align-items: stretch;
+}
+
+.filter-bar .search-field {
+  min-width: 0;
+  margin: 0;
+}
+
+.filter-bar select {
+  width: 100%;
+  min-width: 0;
+}
+
+.topic-card,
+.competency-card {
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.topic-card:hover,
+.competency-card:hover {
+  transform: none;
+  border-color: var(--blue);
+  box-shadow: var(--shadow);
+}
+
+.category-button.selected,
+.tabs button[aria-selected="true"] {
+  font-weight: 600;
+}
+
+.problem-row:focus-within {
+  background: var(--blue-bg);
+}
+
+.diagram-preview:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: -5px;
+}
+
+.diagram-card figcaption strong {
+  font-size: 16px;
+}
+
+.diagram-card figcaption .badge,
+.diagram-card figcaption .text-link {
+  font-size: 13px;
+}
+
+@media (max-width: 1100px) {
+  .filter-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filter-bar .search-field,
+  .filter-bar #source {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+
+  .main-nav a {
+    font-size: 15px;
+  }
+
+  .topic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .topic-card h3 {
+    min-height: 38px;
+  }
+
+  .page-heading > p:last-child {
+    font-size: 15px;
+  }
+
+  .workspace-note {
+    font-size: 13px;
+  }
+
+  .run-toolbar > span {
+    font-size: 12px;
+  }
+
+  .results-heading > span {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filter-bar .search-field,
+  .filter-bar #source {
+    grid-column: 1 / -1;
+  }
+
+  .topbar-inner {
+    gap: 8px;
+  }
+
+  .brand {
+    font-size: 23px;
+  }
+
+  .brand small {
+    font-size: 12px;
+  }
+
+  .top-actions {
+    gap: 8px;
+  }
+
+  .top-actions .icon-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .data-menu summary {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+
+  .main-nav a {
+    min-height: 48px;
+    font-size: 14px;
+  }
+
+  .main-nav > div {
+    gap: 18px;
+  }
+
+  .welcome .button-row {
+    align-items: stretch;
+  }
+
+  .welcome .button-row .button {
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .welcome-tags {
+    font-size: 12px;
+  }
+
+  .lead {
+    font-size: 15px;
+  }
+
+  .topic-card h3 {
+    font-size: 16px;
+  }
+
+  .topic-card p,
+  .topic-card p span {
+    font-size: 13px;
+  }
+
+  .topic-number {
+    font-size: 14px;
+  }
+
+  .problem-name strong {
+    font-size: 14px;
+  }
+
+  .problem-name small,
+  .problem-row > .badge {
+    font-size: 12px;
+  }
+
+  .bookmark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .table-head,
+  .problem-row {
+    grid-template-columns: minmax(0, 1fr) 55px 32px;
+  }
+
+  .competency-card h2 {
+    font-size: 21px;
+  }
+
+  .competency-card p {
+    font-size: 15px;
+  }
+
+  .competency-card-top > .muted,
+  .competency-card-bottom {
+    font-size: 13px;
+  }
+
+  .tabs button {
+    min-height: 48px;
+    font-size: 14px;
+  }
+
+  .tabs {
+    gap: 18px;
+  }
+
+  .run-toolbar > span {
+    display: none;
+  }
+
+  .run-toolbar > div {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .run-toolbar .button {
+    flex: 1;
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .prose {
+    font-size: 15px;
+  }
+
+  .save-state {
+    font-size: 12px;
+  }
+
+  .diagram-viewer-hint {
+    font-size: 12px;
+  }
+
+  .resources .button {
+    max-width: 100%;
+    font-size: 13px;
+  }
+
+  .reader-toolbar .button {
+    min-height: 40px;
+    font-size: 13px;
+  }
+}
+
+/* Narrowest phones: keep the brand and both top actions inside the 16px gutter. */
+@media (max-width: 360px) {
+  .brand {
+    font-size: 20px;
+    gap: 8px;
+  }
+
+  .data-menu summary {
+    padding: 7px 8px;
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topic-card,
+  .competency-card {
+    transition: none;
+  }
+}
+
+/* Keep test evidence as readable as the surrounding controls. */
+.results-heading h2 { font-size: 16px; }
+.test-case strong, .test-case summary, .console-output { font-size: 14px; }
+.test-case small { font-size: 13px; }
+.test-case pre, .console-output pre { font-size: 14px; }
+
+/* Grid children must shrink around scrollable category chips. */
+.library-main, .library-sidebar { min-width: 0; }
+@media (max-width: 768px) {
+  .library-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Avoid single-word last lines in body copy; keep multi-line headings even. */
+p, li, .lead { text-wrap: pretty; }
+h1, h2, h3 { text-wrap: balance; }
+
+/* Standalone links meet the 24px target minimum (WCAG 2.5.8). */
+.text-link, .workspace-breadcrumb a, .continue-line a { min-height: 24px; display: inline-flex; align-items: center; }
+
+/* These headings now open their panels. */
+.competency-intro h2, .study-callout h2 { margin-top: 0; }
+
+/* The search input drops its own outline, so the field shows focus instead (WCAG 2.4.7). */
+.search-field:focus-within { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+/* Browser-drawn surfaces take the palette instead of UA defaults. */
+:root {
+  accent-color: var(--blue);
+  caret-color: var(--blue-ink);
+  scrollbar-color: color-mix(in srgb, var(--muted) 45%, transparent) transparent;
+}
+::selection { background: color-mix(in srgb, var(--blue) 24%, transparent); color: inherit; }

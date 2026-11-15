@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cloud: ติวสอบและแนวข้อสอบ (Beginner → Advance)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f6fa;--card:#ffffff;--ink:#1b2130;--muted:#586174;--line:#e1e5ee;--soft:#eef1f7;
+  --brand:#1f4fc7;
+  --c1:#2563eb;--c1bg:#eaf1ff;--c1bd:#bcd0fb;
+  --c2:#0f766e;--c2bg:#e4f5f2;--c2bd:#a9ddd6;
+  --c3:#7c3aed;--c3bg:#f1ebff;--c3bd:#d3c2fb;
+  --c4:#f59e0b;--c4bg:#fff5de;--c4bd:#f6d58b;
+  --c5:#be185d;--c5bg:#fdeaf3;--c5bd:#f2b5d2;
+  --c6:#15803d;--c6bg:#e6f5ea;--c6bd:#aedcbb;
+  --c7:#c2410c;--c7bg:#fdeee4;--c7bd:#f4c2a4;
+  --c8:#0e7490;--c8bg:#e2f4f8;--c8bd:#a6d8e4;
+  --ok:#15803d;--okbg:#e8f6ec;--bad:#b91c1c;--badbg:#fdecec;
+  --code:#0f1722;--codeink:#e6edf7;
+  --radius:14px;
+  --font:'Prompt','Noto Sans Thai','Sarabun',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:ui-monospace,'JetBrains Mono','SFMono-Regular',Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:78px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.8;-webkit-text-size-adjust:100%}
+a{color:var(--brand)}
+code{font-family:var(--mono);font-size:.88em;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:.05em .38em;word-break:break-word}
+pre{margin:14px 0;background:var(--code);color:var(--codeink);border-radius:12px;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.6;tab-size:2}
+pre code{background:none;border:0;padding:0;color:inherit;font-size:inherit;word-break:normal}
+.pre-lang{display:block;font-family:var(--font);font-size:11.5px;letter-spacing:.04em;color:#93a4bd;margin-bottom:6px;text-transform:uppercase}
+
+/* ---------- header / nav ---------- */
+header.top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1040px;margin:0 auto;padding:8px 16px 0}
+.top-title{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14.5px}
+.top-title .dot{width:10px;height:10px;border-radius:50%;background:var(--brand)}
+.top-title span.sub{color:var(--muted);font-weight:400}
+#chipbar{display:flex;gap:8px;overflow-x:auto;padding:8px 0 10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:5px 12px 5px 6px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);text-decoration:none;font-size:13px;line-height:1.4;white-space:nowrap}
+.chip .n{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:50%;font-size:11.5px;font-weight:600;color:#fff;background:var(--brand)}
+.chip.k1 .n{background:var(--c1)}.chip.k2 .n{background:var(--c2)}.chip.k3 .n{background:var(--c3)}.chip.k4 .n{background:var(--c4);color:#3a2700}
+.chip.k5 .n{background:var(--c5)}.chip.k6 .n{background:var(--c6)}.chip.k7 .n{background:var(--c7)}.chip.k8 .n{background:var(--c8)}.chip.kd .n{background:#334155}
+.chip:hover{border-color:#b7c2d8}
+.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip.active .n{box-shadow:0 0 0 2px rgba(255,255,255,.5)}
+
+/* ---------- layout ---------- */
+main{max-width:880px;margin:0 auto;padding:22px 16px 80px}
+.hero{background:linear-gradient(135deg,#17306e,#1f4fc7 60%,#2f7be0);color:#fff;border-radius:20px;padding:30px 26px;margin-bottom:22px}
+.hero h1{margin:0 0 6px;font-size:28px;line-height:1.35;font-weight:700}
+.hero p{margin:0;color:#dce7ff;max-width:60ch}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.hero .meta span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:3px 12px;font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin:0 0 18px}
+.card h2{margin:0 0 8px;font-size:19px}
+.map{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+.map>div{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px;line-height:1.65}
+.map b{display:block;margin-bottom:2px}
+.map ol{margin:.3em 0 0;padding-left:1.2em}
+.map li{margin:.15em 0}
+.muted{color:var(--muted)}
+.toc a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);padding:6px 4px;border-radius:8px}
+.toc a:hover{background:var(--soft)}
+.toc .n{display:inline-grid;place-items:center;min-width:26px;height:26px;border-radius:50%;color:#fff;font-size:12.5px;font-weight:600}
+.toc .grp{margin:12px 0 2px;font-size:12.5px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+
+section.topic{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px 24px;margin:0 0 22px;border-top:5px solid var(--c1)}
+section.topic[data-c="2"]{border-top-color:var(--c2)}section.topic[data-c="3"]{border-top-color:var(--c3)}section.topic[data-c="4"]{border-top-color:var(--c4)}
+section.topic[data-c="5"]{border-top-color:var(--c5)}section.topic[data-c="6"]{border-top-color:var(--c6)}section.topic[data-c="7"]{border-top-color:var(--c7)}section.topic[data-c="8"]{border-top-color:var(--c8)}
+.t-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:10px}
+.t-head .n{flex:0 0 auto;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:#fff;font-weight:700;font-size:15px}
+.t-head h3{margin:0 0 4px;font-size:20px;line-height:1.45}
+section.topic h4{margin:22px 0 4px;font-size:16.5px}
+section.topic p{margin:.65em 0}
+.lv{display:inline-block;font-size:12px;font-weight:600;border-radius:999px;padding:1px 10px;line-height:1.7;vertical-align:middle}
+.lv.k1{background:#dcf5e3;color:#14532d}.lv.k5{background:#dbe8ff;color:#1e3a8a}.lv.k2{background:#f6e3fb;color:#6b1a7a}
+.tag{display:inline-block;font-size:11.5px;border:1px solid var(--line);background:var(--soft);color:var(--muted);border-radius:999px;padding:0 9px;margin-right:6px;line-height:1.7;vertical-align:middle}
+.tag.multi{background:#fff2d6;border-color:#f0cf86;color:#6b4300}
+
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px;line-height:1.6}
+.tw{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:12px}
+.tw table{margin:0}
+th,td{padding:8px 11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--soft);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.me{background:#fde8d6}td.prov{background:#dbeafe}td.sh{background:#ece6fb}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:-4px 0 10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+.note,.tip,.warn{border-radius:12px;padding:11px 15px;margin:14px 0;font-size:15px;line-height:1.7;border:1px solid}
+.note{background:#eef4ff;border-color:#c5d6fb}
+.tip{background:#fff6dd;border-color:#f1d68e}
+.warn{background:#fdecec;border-color:#f2b9b9}
+.note b,.tip b,.warn b{display:block;font-size:13px;letter-spacing:.03em;margin-bottom:1px}
+figure{margin:16px 0}
+figure svg{width:100%;height:auto;display:block;background:#fbfcff;border:1px solid var(--line);border-radius:12px}
+figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+svg text{font-family:var(--font)}
+
+/* ---------- quiz ---------- */
+.quiz{margin-top:26px;border-top:2px dashed var(--line);padding-top:16px}
+.quiz-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.quiz-h h4{margin:0!important;font-size:16.5px}
+.score{font-weight:600;font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:1px 13px}
+.q{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0;background:#fcfcfe}
+.qt{font-weight:500;line-height:1.7}
+.qn{font-weight:700;margin-right:8px;color:var(--brand)}
+.hint{font-size:13px;color:#6b4300;margin:6px 0 0}
+.qcode{margin:10px 0 2px;font-weight:400}
+.opts{display:grid;gap:8px;margin-top:10px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;font:inherit;font-size:15px;line-height:1.65;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:11px;padding:9px 12px;cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:#9fb2d8;background:#f7f9ff}
+.opt:focus-visible{outline:3px solid #9bb8ff;outline-offset:1px}
+.opt .l{flex:0 0 auto;font-weight:600;color:var(--muted);min-width:1.4em}
+.opt.picked{border-color:var(--brand);background:#edf2ff}
+.opt.correct{border-color:var(--ok);background:var(--okbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt:disabled{cursor:default;color:var(--ink)}
+.exp{display:none;margin-top:12px;border-left:4px solid var(--brand);background:#f3f6fd;border-radius:0 10px 10px 0;padding:10px 14px;font-size:15px;line-height:1.7}
+.exp.show{display:block}
+.exp b:first-child{display:block;margin-bottom:2px}
+.btn-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.btn{font:inherit;font-size:14.5px;font-weight:500;border-radius:10px;border:1.5px solid var(--brand);background:var(--brand);color:#fff;padding:7px 16px;cursor:pointer}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:#fff;color:var(--brand)}
+.btn:focus-visible{outline:3px solid #9bb8ff;outline-offset:2px}
+.qres{font-size:14px;font-weight:600}
+.qres.ok{color:var(--ok)}.qres.no{color:var(--bad)}
+
+/* ---------- exam ---------- */
+.exam-ctl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:10px 0 6px}
+.exam-ctl label{font-size:14px;color:var(--muted)}
+.exam-ctl select{font:inherit;font-size:14.5px;padding:6px 10px;border-radius:9px;border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.progress{height:8px;background:var(--soft);border-radius:99px;overflow:hidden;margin:10px 0 4px}
+.progress i{display:block;height:100%;width:0;background:var(--brand);transition:width .2s}
+.result{display:none;margin-top:16px;border:2px solid var(--brand);border-radius:14px;padding:14px 18px;background:#f4f7ff}
+.result.show{display:block}
+.result h4{margin:0 0 6px!important}
+.bars{display:grid;gap:6px;margin-top:8px;font-size:14px}
+.bars div{display:grid;grid-template-columns:110px 1fr 56px;gap:10px;align-items:center}
+.bars .bar{height:10px;background:#dfe6f5;border-radius:99px;overflow:hidden}
+.bars .bar i{display:block;height:100%;background:var(--brand)}
+
+.cheat{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:12px 0}
+.cheat>div{border:1px solid var(--line);border-radius:12px;padding:11px 14px;font-size:14.5px;line-height:1.65}
+.cheat b{display:block;margin-bottom:2px}
+.cheat .b1{background:var(--c1bg);border-color:var(--c1bd)}.cheat .b5{background:var(--c5bg);border-color:var(--c5bd)}.cheat .b2{background:var(--c3bg);border-color:var(--c3bd)}.cheat .b3{background:var(--c6bg);border-color:var(--c6bd)}
+.refs li{margin:.35em 0;font-size:14.5px;word-break:break-word}
+footer{max-width:880px;margin:0 auto;padding:0 16px 40px;color:var(--muted);font-size:13px}
+
+@media (max-width:720px){
+  .top-title .sub{display:none}
+  .map{grid-template-columns:1fr}
+  .cheat{grid-template-columns:1fr}
+  .hero{padding:22px 18px}.hero h1{font-size:23px}
+  section.topic{padding:18px 15px 20px}
+  .bars div{grid-template-columns:90px 1fr 48px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.progress i{transition:none}}
+
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="top-title"><span class="dot"></span>Cloud · ติวสอบ <span class="sub">Beginner → Intermediate → Advance</span></div>
+  <nav id="chipbar" aria-label="หัวข้อทั้งหมด"></nav>
+</div></header>
+<main>
+  <div class="hero">
+    <h1>Cloud: เนื้อหาติวสอบและแนวข้อสอบ</h1>
+    <p>อ่านทีละหัวข้อ แล้วทำแบบฝึกท้ายหัวข้อได้เลย กดตอบแล้วเฉลยทันที ไม่ต้องรอทำครบ. ปิดท้ายด้วยชุดแนว Deloitte / HackerRank และข้อสอบรวมแบบสุ่ม.</p>
+    <div class="meta"><span>12 หัวข้อ</span><span>63 ข้อ</span><span>เลือกข้อเดียว + เลือกหลายข้อ</span><span>ข้อมูลตรวจกับเอกสารสาธารณะ ณ พ.ย. 2026</span></div>
+  </div>
+
+  <section class="card">
+    <h2>ขอบเขตตาม skill definition</h2>
+    <p class="muted" style="margin:.2em 0 .4em">Understanding cloud platforms by exploring core concepts, services, architectures, and best practices, including how cloud and containerized services enable scalable, secure, and efficient solutions.</p>
+    <div class="map">
+      <div style="background:var(--c1bg);border-color:var(--c1bd)"><b>Beginner · หัวข้อ 1-4</b>
+        <ol><li>Cloud models, IaaS/PaaS/SaaS, benefits</li><li>Providers และ core offerings (เช่น App Engine)</li><li>Containerization และบทบาทใน cloud</li><li>Region, AZ, scalability</li></ol></div>
+      <div style="background:var(--c5bg);border-color:var(--c5bd)"><b>Intermediate · หัวข้อ 5-8</b>
+        <ol start="5"><li>Service interaction, diagram, communication flow</li><li>Managed services และ pricing models</li><li>Security: IAM, encryption</li><li>SLA และ compliance</li></ol></div>
+      <div style="background:var(--c3bg);border-color:var(--c3bd)"><b>Advance · หัวข้อ 9-12</b>
+        <ol start="9"><li>Trade-offs: scalability, cost, performance</li><li>Microservices, serverless, event-driven</li><li>Hybrid / multi-cloud</li><li>Governance และ framework ระดับองค์กร</li></ol></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>วิธีใช้</h2>
+    <p style="margin:.3em 0">ข้อเลือกข้อเดียว: กดตัวเลือกแล้วเห็นเฉลยทันที. ข้อที่มีป้าย <span class="tag multi">เลือกหลายข้อ</span> ให้ติ๊กทุกข้อที่คิดว่าถูก แล้วกด “ตรวจคำตอบ” ซึ่งจะถูกก็ต่อเมื่อครบและไม่มีข้อผิดปน. ตำแหน่งตัวเลือกสลับใหม่ทุกครั้งที่กด “ทำใหม่”. ตัวเลขราคาและตัวอย่างคำนวณเป็นค่าสมมุติเพื่อฝึกคิด ส่วนชื่อบริการและ limit ของ provider เปลี่ยนได้ ให้ตรวจกับเอกสารทางการก่อนนำไปอ้างในงานจริง.</p>
+    <div id="toc" class="toc" style="margin-top:8px"></div>
+  </section>
+
+<section class="topic" id="t1" data-c="1">
+  <div class="t-head"><span class="n" style="background:var(--c1)">1</span><div><h3>Cloud models, service types และประโยชน์ที่ข้อสอบชอบถาม</h3><span class="lv k1">Beginner</span></div></div>
+
+  <p>คำถามแรกที่ต้องตอบให้ได้คือ "cloud ต่างจากการเช่า server ธรรมดาตรงไหน?" นิยามที่ใช้อ้างอิงกันบ่อยคือของ NIST (SP 800-145) ซึ่งบอกว่า cloud ต้องมีลักษณะสำคัญ 5 อย่าง ได้แก่ on-demand self-service, broad network access, resource pooling, rapid elasticity และ measured service. ถ้าเช่า server รายเดือนแล้วต้องรอคนมา provision ให้ ก็ยังไม่ใช่ cloud ตามนิยามนี้.</p>
+
+  <h4>Deployment model: ใครเป็นเจ้าของ infrastructure</h4>
+  <div class="tw"><table>
+    <tr><th>Model</th><th>ใครใช้ / ใครเป็นเจ้าของ</th><th>เหมาะกับ</th><th>ข้อจำกัด</th></tr>
+    <tr><td>Public</td><td>Provider เป็นเจ้าของ แชร์ทรัพยากรหลายลูกค้า (logical isolation)</td><td>Startup, workload ที่โหลดไม่แน่นอน, ต้องการเริ่มเร็ว</td><td>ข้อกำหนดด้าน data residency หรือ compliance บางเคสต้องออกแบบเพิ่ม</td></tr>
+    <tr><td>Private</td><td>องค์กรเดียวใช้ จะอยู่ใน data center ตัวเองหรือเช่าแยกก็ได้</td><td>ต้องควบคุมสูง, ระบบเดิมที่ย้ายยาก</td><td>ต้องลงทุนและดูแลเอง scale ได้ช้ากว่า</td></tr>
+    <tr><td>Hybrid</td><td>ผสม private/on-premises กับ public เชื่อมกันด้วย network และ identity</td><td>ย้ายระบบทีละส่วน, เก็บข้อมูลสำคัญไว้ในองค์กรแต่ใช้ compute บน cloud</td><td>ความซับซ้อนของ network, security และ operation สูงขึ้น</td></tr>
+  </table></div>
+  <p>โจทย์มักให้แยกคำว่า hybrid กับ multi-cloud. Hybrid คือผสม on-premises กับ cloud. Multi-cloud คือใช้ public cloud มากกว่าหนึ่งเจ้า (เช่น AWS + Azure). สองอย่างนี้ใช้พร้อมกันได้ แต่ไม่ใช่คำเดียวกัน.</p>
+
+  <h4>Service model: IaaS, PaaS, SaaS</h4>
+  <p>ตัวแบ่งจริง ๆ คือ "คุณต้องดูแลชั้นไหนเอง". ยิ่งไปทาง SaaS คุณคุมน้อยลงแต่ภาระ operation ก็น้อยลง. ตารางข้างล่างคือสิ่งที่ควรจำให้ขึ้นใจ เพราะมันเป็นฐานของ shared responsibility model ด้วย.</p>
+  <div class="legend"><span><i style="background:#fde8d6"></i>คุณดูแล</span><span><i style="background:#dbeafe"></i>Provider ดูแล</span></div>
+  <div class="tw"><table>
+    <tr><th>Layer</th><th>On-premises</th><th>IaaS</th><th>PaaS</th><th>SaaS</th></tr>
+    <tr><td>Data และ access config</td><td class="me">คุณ</td><td class="me">คุณ</td><td class="me">คุณ</td><td class="me">คุณ (ตั้งค่า user/สิทธิ์/ข้อมูล)</td></tr>
+    <tr><td>Application</td><td class="me">คุณ</td><td class="me">คุณ</td><td class="me">คุณ</td><td class="prov">Provider</td></tr>
+    <tr><td>Runtime / Middleware</td><td class="me">คุณ</td><td class="me">คุณ</td><td class="prov">Provider</td><td class="prov">Provider</td></tr>
+    <tr><td>Operating System</td><td class="me">คุณ</td><td class="me">คุณ</td><td class="prov">Provider</td><td class="prov">Provider</td></tr>
+    <tr><td>Virtualization, Server, Storage, Network, Data center</td><td class="me">คุณ</td><td class="prov">Provider</td><td class="prov">Provider</td><td class="prov">Provider</td></tr>
+  </table></div>
+  <p>ตัวอย่างให้เห็นภาพ: EC2 / Azure Virtual Machines / Compute Engine คือ IaaS (คุณ patch OS เอง). App Service / App Engine / Elastic Beanstalk คือ PaaS (คุณส่งโค้ด ส่วน runtime provider ดูแล). Microsoft 365, Salesforce, Google Workspace คือ SaaS.</p>
+  <div class="note"><b>จำให้แม่น</b>บริการหนึ่ง ๆ อาจจัดอยู่ในหมวดที่ "กำกวม" ได้ เช่น Kubernetes แบบ managed (EKS, AKS, GKE) หรือ serverless function. วิธีตัดสินที่ใช้ได้คือดูว่า "ใครรับผิดชอบ OS" ไม่ใช่ดูจากชื่อผลิตภัณฑ์.</div>
+
+  <h4>ประโยชน์ของ cloud และสิ่งที่มักเข้าใจผิด</h4>
+  <p>Scalability คือความสามารถในการรองรับโหลดที่เพิ่มขึ้น แยกเป็น vertical (เพิ่มขนาดเครื่อง) กับ horizontal (เพิ่มจำนวนเครื่อง). Elasticity คือการที่ระบบ "ขยายและหดเองตามโหลด" จึงจ่ายตามที่ใช้จริง ซึ่งเป็นที่มาของ cost efficiency แบบเปลี่ยนจาก CapEx (ซื้อเครื่องล่วงหน้า) เป็น OpEx (จ่ายตามการใช้). แต่ cloud ไม่ได้ถูกกว่าเสมอ. workload ที่โหลดคงที่ตลอด 24 ชั่วโมงและใช้เครื่องเต็มกำลัง อาจถูกกว่าเมื่อจองระยะยาวหรืออยู่บนเครื่องของตัวเอง ซึ่งจะลงรายละเอียดในหัวข้อ pricing.</p>
+
+  <div class="quiz" data-topic="t1"></div>
+</section>
+
+<section class="topic" id="t2" data-c="2">
+  <div class="t-head"><span class="n" style="background:var(--c2)">2</span><div><h3>Cloud provider หลักและบริการแกนกลาง (AWS, Azure, GCP)</h3><span class="lv k1">Beginner</span></div></div>
+
+  <p>ผู้ให้บริการใหญ่สามเจ้ามีบริการคล้ายกันเกือบทุกหมวด แค่ใช้ชื่อต่างกัน. โจทย์ระดับ Beginner มักเป็นแนวจับคู่ "งานแบบนี้ ใช้บริการอะไร" หรือ "บริการนี้เป็น IaaS/PaaS/serverless". ชื่อบริการเปลี่ยนได้ตามเวลา (เช่น Cloud Functions ของ Google มีการเปลี่ยนชื่อ/ปรับแบรนด์) ให้ตรวจกับ documentation ของ provider ก่อนอ้างชื่อในงานจริง.</p>
+
+  <div class="tw"><table>
+    <tr><th>หมวด</th><th>AWS</th><th>Azure</th><th>Google Cloud</th></tr>
+    <tr><td>Virtual machine (IaaS)</td><td>EC2</td><td>Virtual Machines</td><td>Compute Engine</td></tr>
+    <tr><td>PaaS สำหรับเว็บแอป</td><td>Elastic Beanstalk</td><td>App Service</td><td>App Engine</td></tr>
+    <tr><td>Serverless function</td><td>Lambda</td><td>Azure Functions</td><td>Cloud Functions / Cloud Run functions</td></tr>
+    <tr><td>รัน container แบบ serverless</td><td>Fargate (กับ ECS/EKS)</td><td>Container Apps</td><td>Cloud Run</td></tr>
+    <tr><td>Managed Kubernetes</td><td>EKS</td><td>AKS</td><td>GKE</td></tr>
+    <tr><td>Object storage</td><td>S3</td><td>Blob Storage</td><td>Cloud Storage</td></tr>
+    <tr><td>Managed relational DB</td><td>RDS / Aurora</td><td>Azure SQL Database</td><td>Cloud SQL</td></tr>
+    <tr><td>Managed NoSQL</td><td>DynamoDB</td><td>Cosmos DB</td><td>Firestore / Bigtable</td></tr>
+    <tr><td>Message queue / pub-sub</td><td>SQS, SNS</td><td>Service Bus, Event Grid</td><td>Pub/Sub</td></tr>
+    <tr><td>Identity และสิทธิ์</td><td>IAM</td><td>Microsoft Entra ID + Azure RBAC</td><td>Cloud IAM</td></tr>
+    <tr><td>Monitoring</td><td>CloudWatch</td><td>Azure Monitor</td><td>Cloud Monitoring</td></tr>
+  </table></div>
+
+  <h4>App Engine: จุดที่ควรรู้ เพราะ skill definition ระบุไว้</h4>
+  <p>Skill definition ระบุ App Engine ไว้ตรง ๆ ดังนั้นควรรู้ว่ามันมีสองแบบ. <b>Standard environment</b> รันโค้ดใน sandbox ของ runtime ที่ Google รองรับ เริ่ม instance ได้ในระดับวินาที และคิดเงินตาม instance hours. <b>Flexible environment</b> รัน application ใน Docker container บน Compute Engine VM เริ่มช้ากว่า (ระดับนาที) แต่ปรับ runtime ได้อิสระกว่า และคิดเงินตาม vCPU, memory และ disk ที่ใช้ (ตามเอกสารของ Google). ถ้างานต้องการ container ที่กำหนดเองทั้งหมดและไม่ผูกกับ runtime ของ App Engine ให้ดู Cloud Run ด้วย เพราะ Google มีเอกสารเปรียบเทียบและแนวทางย้ายจาก App Engine ไป Cloud Run ซึ่งรับ container image ได้ทุกภาษา.</p>
+
+  <div class="tip"><b>ตัวอย่างโจทย์แนวนี้</b>"ต้องการรันโค้ดโดยไม่อยากจัดการ server เลย และโหลดขึ้นลงแรงมาก" → นึกถึง serverless (Lambda / Functions / Cloud Run). "ต้องการควบคุม OS และติดตั้ง agent เอง" → VM. "ส่งโค้ดแล้วให้ platform จัดการ runtime" → PaaS.</div>
+
+  <h4>บริการอื่นที่มีในทุกเจ้า: ไม่ใช่แค่ compute</h4>
+  <p>นอกจาก compute, storage และ database แล้ว สามเจ้ายังมีหมวด networking (VPC / VNet), load balancing, CDN, secret/key management, IaC (CloudFormation, ARM/Bicep, Terraform ที่ใช้ได้ข้าม provider) และ observability. ตอนอ่านโจทย์ให้แปลงจากชื่อเฉพาะกลับเป็นหน้าที่ก่อน เช่น "S3" = object storage แล้วค่อยคิดต่อว่าโจทย์ถามเรื่องอะไร.</p>
+
+  <div class="quiz" data-topic="t2"></div>
+</section>
+
+<section class="topic" id="t3" data-c="3">
+  <div class="t-head"><span class="n" style="background:var(--c3)">3</span><div><h3>Containerization: Docker, image, registry และ Kubernetes เบื้องต้น</h3><span class="lv k1">Beginner</span></div></div>
+
+  <p>ปัญหาที่ container แก้คือ "บนเครื่องผมรันได้นะ". Container แพ็กแอปพร้อม dependency (library, runtime, config ที่ต้องใช้) เป็น image เดียว ทำให้รันได้เหมือนกันทั้งบนเครื่อง dev, CI และ production. มันไม่ได้บรรจุ OS ทั้งตัว แต่แชร์ kernel ของ host ไว้ จึงเบากว่า virtual machine ที่มี guest OS ของตัวเอง.</p>
+
+  <figure>
+    <svg viewBox="0 0 720 250" role="img" aria-label="เปรียบเทียบ Virtual Machine กับ Container">
+      <text x="170" y="22" text-anchor="middle" font-size="15" font-weight="600" fill="#1b2130">Virtual Machine</text>
+      <text x="550" y="22" text-anchor="middle" font-size="15" font-weight="600" fill="#1b2130">Container</text>
+      <g font-size="12.5" text-anchor="middle">
+        <rect x="30" y="196" width="280" height="30" rx="6" fill="#d9dfeb"/><text x="170" y="216" fill="#1b2130">Hardware</text>
+        <rect x="30" y="160" width="280" height="30" rx="6" fill="#bcd0fb"/><text x="170" y="180" fill="#1b2130">Hypervisor</text>
+        <rect x="30" y="38" width="130" height="116" rx="8" fill="#eaf1ff" stroke="#9fb8f0"/>
+        <rect x="180" y="38" width="130" height="116" rx="8" fill="#eaf1ff" stroke="#9fb8f0"/>
+        <text x="95" y="58" fill="#1b2130" font-weight="600">VM 1</text><text x="245" y="58" fill="#1b2130" font-weight="600">VM 2</text>
+        <rect x="42" y="68" width="106" height="24" rx="5" fill="#fff" stroke="#c5d3f3"/><text x="95" y="85" fill="#1b2130">App + Libs</text>
+        <rect x="192" y="68" width="106" height="24" rx="5" fill="#fff" stroke="#c5d3f3"/><text x="245" y="85" fill="#1b2130">App + Libs</text>
+        <rect x="42" y="100" width="106" height="46" rx="5" fill="#fde8d6" stroke="#f1c4a1"/><text x="95" y="120" fill="#1b2130">Guest OS</text><text x="95" y="136" fill="#7a4a1d" font-size="11">แยกต่อ VM</text>
+        <rect x="192" y="100" width="106" height="46" rx="5" fill="#fde8d6" stroke="#f1c4a1"/><text x="245" y="120" fill="#1b2130">Guest OS</text><text x="245" y="136" fill="#7a4a1d" font-size="11">แยกต่อ VM</text>
+
+        <rect x="410" y="196" width="280" height="30" rx="6" fill="#d9dfeb"/><text x="550" y="216" fill="#1b2130">Hardware</text>
+        <rect x="410" y="160" width="280" height="30" rx="6" fill="#fde8d6"/><text x="550" y="180" fill="#1b2130">Host OS (kernel ใช้ร่วมกัน)</text>
+        <rect x="410" y="124" width="280" height="30" rx="6" fill="#d6f1e0"/><text x="550" y="144" fill="#1b2130">Container runtime (เช่น containerd)</text>
+        <rect x="410" y="38" width="86" height="80" rx="8" fill="#eaf1ff" stroke="#9fb8f0"/><text x="453" y="62" fill="#1b2130">App A</text><text x="453" y="80" fill="#1b2130" font-size="11">+ Libs</text>
+        <rect x="507" y="38" width="86" height="80" rx="8" fill="#eaf1ff" stroke="#9fb8f0"/><text x="550" y="62" fill="#1b2130">App B</text><text x="550" y="80" fill="#1b2130" font-size="11">+ Libs</text>
+        <rect x="604" y="38" width="86" height="80" rx="8" fill="#eaf1ff" stroke="#9fb8f0"/><text x="647" y="62" fill="#1b2130">App C</text><text x="647" y="80" fill="#1b2130" font-size="11">+ Libs</text>
+      </g>
+    </svg>
+    <figcaption>VM แยก OS ต่อเครื่อง ส่วน container แชร์ kernel ของ host ได้ เริ่มเร็วและใช้ทรัพยากรน้อยกว่า แต่การแยกตัวระดับ kernel ไม่แน่นหนาเท่า VM.</figcaption>
+  </figure>
+
+  <h4>คำศัพท์ที่ต้องแยกให้ออก</h4>
+  <p><b>Image</b> คือแพ็กเกจแบบอ่านอย่างเดียว (immutable) ที่สร้างจาก Dockerfile. <b>Container</b> คือ instance ที่กำลังรันของ image นั้น. <b>Registry</b> คือที่เก็บ image (Docker Hub, Amazon ECR, Azure Container Registry, Artifact Registry). <b>Tag</b> เช่น <code>myapp:1.4.2</code> ใช้ระบุเวอร์ชัน. Dockerfile ด้านล่างเป็น multi-stage build ที่ใช้ได้จริงกับแอป Node.js ธรรมดา.</p>
+<pre><span class="pre-lang">dockerfile</span><code>FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM node:20-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/package*.json ./
+RUN npm ci --omit=dev
+USER node
+EXPOSE 3000
+CMD ["node", "dist/server.js"]</code></pre>
+  <p>จุดที่ควรอธิบายได้: แยก stage เพื่อให้ image สุดท้ายไม่มี source และ dev dependency ติดไปด้วย (image เล็กลง และมีส่วนให้โจมตีน้อยลง). <code>COPY package*.json</code> มาก่อน <code>COPY . .</code> เพื่อให้ layer cache ของ <code>npm ci</code> ยังใช้ได้ตราบที่ dependency ไม่เปลี่ยน. <code>USER node</code> ทำให้ process ไม่รันด้วย root. <code>EXPOSE</code> เป็นแค่การบันทึกว่าแอปฟังพอร์ตไหน ไม่ได้เปิดพอร์ตให้ภายนอกเอง.</p>
+
+  <h4>Container กับ cloud: ใช้งานผ่านอะไรได้บ้าง</h4>
+  <p>รัน container บน VM เองก็ได้ แต่ในงานจริงมักใช้ orchestrator เพราะต้องมีเรื่อง scheduling, restart เมื่อล่ม, rolling update และ scale. <b>Kubernetes</b> เป็นตัวที่นิยมที่สุด. แนวคิดแกนกลางมีสามอย่าง: <b>Pod</b> (หน่วยเล็กสุดที่ schedule ได้ ภายในมี container หนึ่งตัวหรือมากกว่า), <b>Deployment</b> (บอกว่าต้องการ Pod กี่ตัวและอัปเดตอย่างไร), <b>Service</b> (endpoint คงที่ที่กระจาย traffic ไปยัง Pod ที่เปลี่ยนไปมา). ถ้าไม่อยากดูแล cluster เอง มีทางเลือกอย่าง Cloud Run, Fargate, Azure Container Apps ที่รัน container โดยไม่ต้องจัดการ node.</p>
+<pre><span class="pre-lang">yaml</span><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: orders-api
+  template:
+    metadata:
+      labels:
+        app: orders-api
+    spec:
+      containers:
+        - name: api
+          image: registry.example.com/orders-api:1.4.2
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+          resources:
+            requests: { cpu: "250m", memory: "256Mi" }
+            limits:   { cpu: "500m", memory: "512Mi" }</code></pre>
+  <p><code>selector.matchLabels</code> ต้องตรงกับ <code>template.metadata.labels</code> ไม่เช่นนั้น Deployment จะสร้างไม่ผ่าน. <code>readinessProbe</code> บอกว่า Pod พร้อมรับ traffic เมื่อไร. <code>requests</code> คือค่าที่ scheduler ใช้จองทรัพยากร ส่วน <code>limits</code> คือเพดาน.</p>
+
+  <div class="warn"><b>ข้อควรระวัง</b>Container ไม่ได้ปลอดภัยเองโดยอัตโนมัติ. image ที่มี package เก่าที่มีช่องโหว่ หรือรันด้วย root หรือฝัง secret ไว้ใน layer ก็ยังเป็นความเสี่ยงเหมือนเดิม และ secret ที่ฝังใน layer จะอยู่ในประวัติของ image แม้ลบไฟล์ใน layer ถัดไป.</div>
+
+  <div class="quiz" data-topic="t3"></div>
+</section>
+
+<section class="topic" id="t4" data-c="4">
+  <div class="t-head"><span class="n" style="background:var(--c4);color:#3a2700">4</span><div><h3>Region, Availability Zone, scalability และ elasticity ในทางปฏิบัติ</h3><span class="lv k1">Beginner</span></div></div>
+
+  <p><b>Region</b> คือพื้นที่ทางภูมิศาสตร์ที่ provider มี data center อยู่ (เช่น ap-southeast-1 ของ AWS ที่สิงคโปร์). ภายใน region มี <b>Availability Zone (AZ)</b> หลายแห่งที่แยกกันทางกายภาพ มีไฟและ network ของตัวเอง แต่เชื่อมกันด้วย latency ต่ำ. Azure และ GCP ก็ใช้แนวคิดเดียวกัน (Azure มี availability zones ใน region ที่รองรับ, GCP มี zones ใน region). ชื่อและจำนวนของแต่ละ region ให้ดูหน้า global infrastructure ของ provider เพราะเพิ่มขึ้นเรื่อย ๆ.</p>
+
+  <p>ถ้าวางทุกอย่างไว้ใน AZ เดียว แล้ว AZ นั้นมีปัญหา ระบบก็ล่มทั้งหมด. การกระจายไปหลาย AZ ใน region เดียวกันป้องกันความเสียหายระดับ data center. การกระจายไปหลาย region ป้องกันความเสียหายระดับ region และช่วยเรื่อง latency ของผู้ใช้ในแต่ละภูมิภาค แต่ต้องจัดการเรื่องการ replicate ข้อมูล, ค่าใช้จ่าย data transfer และ consistency เพิ่ม.</p>
+
+  <h4>Scale แบบไหน และเมื่อไร</h4>
+  <div class="tw"><table>
+    <tr><th></th><th>Vertical (scale up)</th><th>Horizontal (scale out)</th></tr>
+    <tr><td>ทำอย่างไร</td><td>เพิ่ม CPU/RAM ของเครื่องเดิม</td><td>เพิ่มจำนวน instance แล้วกระจาย traffic</td></tr>
+    <tr><td>ข้อดี</td><td>ง่าย ไม่ต้องแก้แอปมาก</td><td>ไม่มีเพดานเท่ากับเครื่องเดียว ทนต่อ instance ล่ม</td></tr>
+    <tr><td>ข้อจำกัด</td><td>มีเพดานของขนาดเครื่อง มักต้อง restart และยังเป็น single point of failure</td><td>แอปควรเป็น stateless หรือแยก state ออกไป (session, cache, database)</td></tr>
+  </table></div>
+  <p>แอปที่เก็บ session ไว้ใน memory ของเครื่องตัวเองจะ scale out ได้ยาก เพราะ request ถัดไปของผู้ใช้เดียวกันอาจไปตกเครื่องอื่น. วิธีแก้ที่พบบ่อยคือย้าย session ไปไว้ใน Redis/Memcached แบบ managed หรือใช้ token ที่ client เก็บ (เช่น JWT) แต่ต้องดูว่ารองรับข้อกำหนดเรื่องการเพิกถอน (revoke) token ได้หรือไม่.</p>
+
+  <h4>Elasticity และ auto scaling</h4>
+  <p>Auto scaling ปรับจำนวน instance ตาม metric เช่น CPU utilization, request count หรือความยาวของ queue. ตัวอย่างนโยบายง่าย ๆ คือ "คง CPU เฉลี่ยไว้ราว 60%". สิ่งที่ต้องคิดเสมอคือ instance ใหม่ต้องใช้เวลาเริ่มต้น (warm-up) ดังนั้นถ้าคาดว่าโหลดจะพุ่งตามเวลา (เช่นเปิดขายตอนเที่ยง) การตั้ง scheduled scaling ล่วงหน้าไว้คู่กับ reactive scaling จะดีกว่าการรอให้ CPU พุ่งแล้วค่อยขยาย.</p>
+
+  <div class="note"><b>Latency, availability, durability</b>คนมักใช้สลับกัน. Availability คือสัดส่วนเวลาที่บริการใช้งานได้. Durability คือโอกาสที่ข้อมูลจะไม่สูญหาย (เช่น object storage ที่ replicate ข้อมูลหลายแห่ง). Latency คือเวลาตอบสนอง. ระบบหนึ่งอาจ durable มากแต่ available ไม่สูงในช่วงที่ service มีปัญหา.</div>
+
+  <div class="quiz" data-topic="t4"></div>
+</section>
+
+<section class="topic" id="t5" data-c="5">
+  <div class="t-head"><span class="n" style="background:var(--c5)">5</span><div><h3>Cloud service interaction: อ่าน architecture diagram และ communication flow</h3><span class="lv k5">Intermediate</span></div></div>
+
+  <p>ข้อสอบระดับนี้ไม่ถามว่า "S3 คืออะไร" แต่ให้ diagram มาหนึ่งใบแล้วถามว่า "request วิ่งผ่านอะไรบ้าง", "ถ้าชิ้นนี้ล่มแล้วส่วนไหนได้รับผลกระทบ", หรือ "ควรเพิ่มอะไรตรงไหน". วิธีอ่านที่ได้ผลคือไล่ตามเส้นทางของ request หนึ่งตัวตั้งแต่ client ไปจนถึง data store แล้วแยกให้ได้ว่าลูกศรไหนเป็น <b>synchronous</b> (ผู้เรียกต้องรอผล) และลูกศรไหนเป็น <b>asynchronous</b> (ส่งงานเข้า queue แล้วไปต่อ).</p>
+
+  <figure>
+    <svg viewBox="0 0 760 330" role="img" aria-label="Architecture ตัวอย่าง: client, CDN, load balancer, app, queue, worker, database, cache">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+        <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+      </defs>
+      <rect x="150" y="70" width="480" height="236" rx="14" fill="#f1f5fb" stroke="#c5d0e6" stroke-dasharray="5 4"/>
+      <text x="162" y="90" font-size="12" fill="#586174">VPC (private network)</text>
+      <rect x="170" y="100" width="150" height="196" rx="10" fill="#e8f0ff" stroke="#b4c8f2"/>
+      <text x="180" y="118" font-size="11.5" fill="#586174">Public subnet</text>
+      <rect x="340" y="100" width="280" height="196" rx="10" fill="#eef7f0" stroke="#b9dcc3"/>
+      <text x="350" y="118" font-size="11.5" fill="#586174">Private subnet</text>
+      <g font-size="13" text-anchor="middle" fill="#1b2130">
+        <rect x="14" y="150" width="96" height="44" rx="9" fill="#fff" stroke="#8aa0c8"/><text x="62" y="177">Client</text>
+        <rect x="14" y="20" width="96" height="40" rx="9" fill="#fff" stroke="#8aa0c8"/><text x="62" y="45">CDN</text>
+        <rect x="190" y="150" width="110" height="44" rx="9" fill="#fff" stroke="#6f8fd6"/><text x="245" y="170">Load Balancer</text><text x="245" y="186" font-size="10.5" fill="#586174">+ API Gateway</text>
+        <rect x="360" y="132" width="110" height="44" rx="9" fill="#fff" stroke="#5aa874"/><text x="415" y="159">App (container)</text>
+        <rect x="360" y="226" width="110" height="44" rx="9" fill="#fff" stroke="#5aa874"/><text x="415" y="253">Cache</text>
+        <rect x="500" y="132" width="100" height="44" rx="9" fill="#fff" stroke="#e08a4b"/><text x="550" y="159">Queue</text>
+        <rect x="500" y="226" width="100" height="44" rx="9" fill="#fff" stroke="#5aa874"/><text x="550" y="253">Worker</text>
+        <rect x="650" y="226" width="96" height="44" rx="9" fill="#fff" stroke="#8aa0c8"/><text x="698" y="253">Database</text>
+      </g>
+      <g stroke="#475569" stroke-width="1.6" fill="none" marker-end="url(#ar)">
+        <path d="M62 60 L62 150"/>
+        <path d="M110 172 L190 172"/>
+        <path d="M300 172 L360 156"/>
+        <path d="M415 176 L415 226"/>
+      </g>
+      <g stroke="#c2410c" stroke-width="1.6" fill="none" marker-end="url(#ar2)" stroke-dasharray="6 4">
+        <path d="M470 154 L500 154"/>
+        <path d="M550 176 L550 226"/>
+      </g>
+      <g stroke="#475569" stroke-width="1.6" fill="none" marker-end="url(#ar)">
+        <path d="M600 248 L650 248"/>
+        <path d="M470 248 Q620 300 698 270"/>
+      </g>
+      <text x="124" y="166" font-size="11" fill="#586174">HTTPS</text>
+      <text x="428" y="206" font-size="11" fill="#586174">อ่านซ้ำเร็ว</text>
+      <text x="484" y="124" font-size="11" fill="#c2410c">async</text>
+      <text x="560" y="300" font-size="11" fill="#586174">cache miss → อ่านจาก DB</text>
+      <text x="560" y="206" font-size="11" fill="#c2410c">async</text>
+    </svg>
+    <figcaption>เส้นทึบ = synchronous. เส้นประสีส้ม = asynchronous ผ่าน queue. CDN เสิร์ฟ static content ให้ client โดยตรง ส่วน request ที่เป็น dynamic วิ่งผ่าน load balancer. Load balancer อยู่ใน public subnet ส่วน app, worker และ database อยู่ใน private subnet ไม่เปิดตรงสู่อินเทอร์เน็ต. เส้นโค้งจาก cache ไป database คือกรณี cache miss.</figcaption>
+  </figure>
+
+  <h4>บทบาทของแต่ละชั้นใน diagram</h4>
+  <p><b>CDN</b> เก็บ static content ไว้ใกล้ผู้ใช้ ลด latency และลดโหลดที่ origin. <b>Load balancer</b> กระจาย request ไปยัง instance ที่ health check ผ่าน; ชนิด Layer 7 (HTTP) ตัดสินใจตาม path/header ได้ ส่วน Layer 4 (TCP) มักเรียบง่ายกว่าและมี overhead น้อยกว่า. <b>API gateway</b> รวมงานซ้ำ ๆ ไว้จุดเดียว เช่น authentication, rate limiting, request validation. <b>Queue</b> คั่นกลางระหว่างฝั่งที่ส่งงานกับฝั่งที่ทำงาน ทำให้สองฝั่งไม่ต้องเร็วเท่ากันและไม่ต้องออนไลน์พร้อมกัน. <b>Cache</b> ลดการยิง database ซ้ำสำหรับข้อมูลที่อ่านบ่อย แลกกับความเสี่ยงที่ข้อมูลจะเก่า (stale) จึงต้องกำหนด TTL และวิธี invalidate.</p>
+
+  <h4>Sync หรือ async: เลือกอย่างไร</h4>
+  <p>ถ้าผู้ใช้ต้องการผลลัพธ์ทันทีและงานสั้น (เช่นดูรายการสินค้า) ใช้ sync. ถ้างานหนักหรือช้า (เช่นออกใบเสร็จเป็น PDF, ส่งอีเมล, ประมวลผลรูป) ให้ตอบรับก่อนแล้วโยนเข้า queue ให้ worker ทำ. ผลข้างเคียงที่ต้องรับให้ได้คือผู้ใช้ไม่ได้ผลทันที (ต้องมี polling, webhook หรือ notification) และ queue ส่วนใหญ่ส่งข้อความแบบ at-least-once ซึ่งแปลว่า worker อาจได้รับข้อความเดิมซ้ำ จึงต้องทำให้ logic เป็น idempotent.</p>
+
+  <h4>Networking ที่ต้องอ่านออก</h4>
+  <p>Public subnet คือ subnet ที่มี route ไปยัง internet gateway. Private subnet ไม่มี route ขาเข้าจากอินเทอร์เน็ต ถ้าต้องออกไปข้างนอก (เช่น ดึง package) ใช้ NAT gateway หรือ service endpoint/private link. Security group (AWS) / NSG (Azure) ทำหน้าที่เหมือน firewall ระดับ instance โดยเป็น stateful ส่วน network ACL เป็นกฎระดับ subnet. ใน AWS security group ไม่มีกฎ deny; มีแต่ allow และค่าเริ่มต้นปฏิเสธทุกอย่างที่ไม่ได้ระบุ.</p>
+
+  <div class="tip"><b>เทคนิคอ่านโจทย์ diagram</b>ถามตัวเองสามข้อ: (1) request path เดียวกันผ่านกี่ชั้น และชั้นไหนเป็น single point of failure (2) มี state เก็บอยู่ที่ไหน (3) ข้อมูลหรือ service ไหนเปิดสู่ public โดยไม่จำเป็น. สามข้อนี้ช่วยให้ไล่ประเด็นของโจทย์ diagram ได้ครบ.</div>
+
+  <div class="quiz" data-topic="t5"></div>
+</section>
+
+<section class="topic" id="t6" data-c="6">
+  <div class="t-head"><span class="n" style="background:var(--c6)">6</span><div><h3>Managed services และ pricing models: ประเมินตามรูปแบบการใช้งาน</h3><span class="lv k5">Intermediate</span></div></div>
+
+  <p>Managed service คือบริการที่ provider ดูแลการติดตั้ง patch, backup, high availability และ scaling ให้ในระดับหนึ่ง เช่น RDS แทนการลง MySQL บน VM เอง. สิ่งที่คุณได้คือภาระ operation น้อยลง สิ่งที่แลกคือค่าบริการต่อหน่วยมักสูงกว่า, ปรับแต่งระดับ OS ไม่ได้, และผูกกับ feature ของ provider. ตัดสินใจโดยเทียบ "ต้นทุนของคนที่ต้องดูแล" กับ "ส่วนต่างราคา" ไม่ใช่ดูราคาต่อชั่วโมงอย่างเดียว.</p>
+
+  <h4>Pricing model ของ compute (ใช้ศัพท์ AWS เป็นตัวอย่าง; Azure/GCP มีของคล้ายกัน)</h4>
+  <div class="tw"><table>
+    <tr><th>Model</th><th>การจ่าย</th><th>เหมาะกับ</th><th>ต้องระวัง</th></tr>
+    <tr><td>On-Demand</td><td>จ่ายตามที่ใช้ ไม่ผูกสัญญา</td><td>โหลดไม่แน่นอน, ทดลอง, ระบบใหม่</td><td>ราคาต่อหน่วยสูงสุด</td></tr>
+    <tr><td>Reserved Instances / Savings Plans</td><td>ผูกสัญญา 1 หรือ 3 ปี แลกส่วนลด (Savings Plans ผูกเป็น $/ชั่วโมง)</td><td>โหลดพื้นฐานที่ใช้ตลอด</td><td>จ่ายแม้ไม่ได้ใช้ ถ้าใช้ไม่ถึง break-even จะเสียเปรียบ On-Demand</td></tr>
+    <tr><td>Spot (Preemptible)</td><td>ใช้ความจุส่วนเกินในราคาถูก provider เรียกคืนได้</td><td>batch, CI, งานที่ retry ได้</td><td>ถูกขัดจังหวะได้ ไม่ควรใช้กับ stateful ที่ทนไม่ได้</td></tr>
+    <tr><td>Serverless (per request / duration)</td><td>จ่ายตามจำนวน request และเวลารัน (ตัวอย่าง Lambda: requests + duration เป็น GB-second)</td><td>โหลดกระโดด, งานเป็นช่วง ๆ</td><td>โหลดสูงและคงที่อาจแพงกว่า instance ที่จองไว้</td></tr>
+  </table></div>
+  <p>ระดับส่วนลดที่แต่ละ provider ประกาศ (เช่น Reserved/Savings Plans ลดได้สูงสุดราว 70% กว่า และ Spot สูงสุดราว 90% ตามที่ AWS ระบุ) เป็นค่า "สูงสุด" ที่ขึ้นกับ instance type, region และระยะสัญญา อย่าอ้างเป็นตัวเลขตายตัวในข้อสอบหรือรายงาน ให้ใช้ pricing calculator ของ provider คำนวณกับกรณีของคุณ.</p>
+
+  <h4>ตัวอย่างการประเมิน (ตัวเลขสมมุติเพื่อฝึกคำนวณ)</h4>
+  <p>สมมุติ instance หนึ่งราคา On-Demand 0.10 USD/ชั่วโมง และแบบจองระยะยาวคิดเป็น 0.06 USD/ชั่วโมงที่ต้องจ่ายตลอด 730 ชั่วโมงต่อเดือนไม่ว่าจะใช้หรือไม่. ถ้าเปิดเครื่องตลอดเดือน On-Demand = 73.00 USD และแบบจอง = 43.80 USD. แต่ถ้าเครื่องทำงานแค่ 40% ของเวลา (292 ชั่วโมง) On-Demand จะเหลือ 29.20 USD ส่วนแบบจองยังเป็น 43.80 USD. จุดคุ้มทุนคือ 0.06 / 0.10 = 60% ของเวลาในเดือน. ต่ำกว่านี้ On-Demand ถูกกว่า สูงกว่านี้การจองถูกกว่า.</p>
+
+  <h4>ค่าใช้จ่ายที่มักถูกลืม</h4>
+  <p>Data transfer ออกจาก cloud ไปอินเทอร์เน็ต (egress) และข้ามระหว่าง region/AZ มักคิดเงิน ส่วนขาเข้ามักไม่คิด (ตรวจเงื่อนไขของ provider แต่ละราย). Storage มีหลาย tier ตามความถี่ในการเข้าถึง และบาง tier คิดค่า retrieval และมีระยะเก็บขั้นต่ำ. Load balancer, NAT gateway, log ingestion และ snapshot คิดเงินแยก ซึ่งบ่อยครั้งแซงค่า compute ในระบบเล็ก. Lambda ตัวอย่าง: 1,000,000 ครั้ง ครั้งละ 200 ms ที่ memory 512 MB = 1,000,000 × 0.2 วินาที × 0.5 GB = 100,000 GB-second (เทียบกับ free tier ของ Lambda ที่ AWS ระบุไว้ 400,000 GB-second และ 1 ล้าน request ต่อเดือน).</p>
+
+  <div class="note"><b>Managed ไม่ได้แปลว่าไม่ต้องทำอะไร</b>ใน RDS คุณยังต้องเลือก instance size, ตั้ง backup retention, ออกแบบ index, ตั้ง security group และทดสอบ restore. Provider ดูแลตัว database engine และ host แต่ไม่รู้ว่า query ของคุณช้าเพราะอะไร.</div>
+
+  <div class="quiz" data-topic="t6"></div>
+</section>
+
+<section class="topic" id="t7" data-c="7">
+  <div class="t-head"><span class="n" style="background:var(--c7)">7</span><div><h3>Security best practices: IAM, encryption และการจัดการ secret</h3><span class="lv k5">Intermediate</span></div></div>
+
+  <p>หลักใหญ่คือ <b>least privilege</b> ให้สิทธิ์เท่าที่งานต้องใช้และไม่เกินนั้น, <b>defense in depth</b> วางหลายชั้น ไม่พึ่งชั้นเดียว, และ <b>shared responsibility</b> ตามโมเดลที่ AWS ระบุว่า provider รับผิดชอบ security "of" the cloud ส่วนลูกค้ารับผิดชอบ security "in" the cloud ซึ่งขอบเขตขึ้นกับบริการที่เลือกใช้. ถ้าตั้ง S3 bucket เป็น public เอง นั่นเป็นความรับผิดชอบของคุณ ไม่ใช่ของ provider.</p>
+
+  <h4>IAM: identity, role, policy</h4>
+  <p>แยกให้ออกว่า <b>user</b> คือตัวตนระยะยาวของคนหรือระบบ (มี credential ถาวรได้), <b>group</b> คือชุดของ user ที่ใช้ policy ร่วมกัน, ส่วน <b>role</b> คือตัวตนที่ถูก "สวม" ชั่วคราวและได้รับ credential อายุสั้น เหมาะกับ EC2/Lambda/container ที่ต้องเรียกบริการอื่น เพราะไม่ต้องฝัง access key ลงในโค้ด. Policy ระบุว่าใครทำ action อะไรกับ resource ไหนภายใต้เงื่อนไขใด. กติกาประเมินสิทธิ์ที่ต้องจำ: ค่าเริ่มต้นคือ deny, ต้องมี explicit allow จึงจะทำได้, และ explicit deny ชนะ allow เสมอ.</p>
+<pre><span class="pre-lang">json · IAM policy (AWS)</span><code>{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadReportsOnly",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:ListBucket"],
+      "Resource": [
+        "arn:aws:s3:::acme-reports",
+        "arn:aws:s3:::acme-reports/finance/*"
+      ]
+    },
+    {
+      "Sid": "DenyUnencryptedTransport",
+      "Effect": "Deny",
+      "Action": "s3:*",
+      "Resource": ["arn:aws:s3:::acme-reports", "arn:aws:s3:::acme-reports/*"],
+      "Condition": { "Bool": { "aws:SecureTransport": "false" } }
+    }
+  ]
+}</code></pre>
+  <p>Policy นี้อนุญาตอ่านเฉพาะ bucket <code>acme-reports</code> และ prefix <code>finance/</code> และปฏิเสธทุกคำขอที่ไม่ใช้ TLS. สังเกตว่า <code>s3:ListBucket</code> อ้างกับ resource ระดับ bucket ส่วน <code>s3:GetObject</code> อ้างกับ object (<code>/finance/*</code>) ซึ่งเป็นจุดที่คนเขียน policy ผิดบ่อย. การใช้ <code>"Action": "*"</code> กับ <code>"Resource": "*"</code> คือตรงข้ามกับ least privilege.</p>
+
+  <h4>Encryption</h4>
+  <p><b>In transit</b> ใช้ TLS ระหว่าง client กับ service และระหว่าง service ภายในที่ข้ามขอบเขตเครือข่าย. <b>At rest</b> เข้ารหัสข้อมูลที่เก็บไว้ (disk, object, database, backup). ส่วนใหญ่ใช้ <b>envelope encryption</b>: ข้อมูลถูกเข้ารหัสด้วย data key และ data key ถูกเข้ารหัสอีกชั้นด้วย key ใน KMS (AWS KMS / Azure Key Vault / Cloud KMS). ข้อดีคือ key หลักไม่ต้องออกจาก KMS และสั่ง rotate หรือเพิกถอนได้จากจุดเดียว. มีทั้ง provider-managed key (ง่ายกว่า) และ customer-managed key (คุมนโยบายและ audit ได้มากกว่า แต่ต้องดูแลเอง).</p>
+
+  <h4>Secret และ network</h4>
+  <p>อย่าฝัง password, API key หรือ connection string ลงใน source code, image layer หรือ commit. เก็บใน secret manager (Secrets Manager, Key Vault, Secret Manager) แล้วให้ workload ดึงด้วย role/managed identity. เปิด audit log (CloudTrail, Azure Activity Log, Cloud Audit Logs) เพื่อตอบคำถาม "ใครทำอะไรเมื่อไร". บังคับ MFA กับบัญชีที่มีสิทธิ์สูง และจำกัด root/owner account ให้ใช้เฉพาะงานที่จำเป็น.</p>
+
+  <div class="warn"><b>อย่าสับสน</b>Encryption ไม่ใช่ access control. ข้อมูลที่เข้ารหัสด้วย key ที่ทุกคนใน account ใช้ได้ ก็ยังถูกอ่านได้โดยคนที่มีสิทธิ์ใช้ key นั้น. ต้องคุมทั้งสิทธิ์ของข้อมูลและสิทธิ์ของ key.</div>
+
+  <div class="quiz" data-topic="t7"></div>
+</section>
+
+<section class="topic" id="t8" data-c="8">
+  <div class="t-head"><span class="n" style="background:var(--c8)">8</span><div><h3>SLA, ความพร้อมใช้งาน และการจัดแนวกับ compliance</h3><span class="lv k5">Intermediate</span></div></div>
+
+  <p>สามคำนี้มักถูกใช้ปนกัน. <b>SLI</b> คือตัวชี้วัดที่วัดได้จริง (เช่นสัดส่วน request ที่สำเร็จ). <b>SLO</b> คือเป้าหมายภายในของทีมต่อ SLI นั้น (เช่น 99.95% ต่อเดือน). <b>SLA</b> คือข้อตกลงทางสัญญากับลูกค้า ที่มักระบุเงื่อนไขชดเชย (service credit) เมื่อ provider ทำไม่ถึงเป้า. SLA ของ provider ไม่ได้รับประกันว่าระบบของคุณจะไม่ล่ม แค่กำหนดผลชดเชยเมื่อบริการนั้น ๆ ต่ำกว่าเกณฑ์ และมักมีเงื่อนไขว่าต้องออกแบบตามที่ provider กำหนด (เช่นรันหลาย AZ).</p>
+
+  <h4>คำนวณ downtime จากเปอร์เซ็นต์</h4>
+  <div class="tw"><table>
+    <tr><th>Availability</th><th>Downtime ที่ยอมได้ ต่อ 30 วัน (43,200 นาที)</th><th>ต่อปี (365 วัน)</th></tr>
+    <tr><td>99%</td><td>432 นาที (7.2 ชั่วโมง)</td><td>3.65 วัน</td></tr>
+    <tr><td>99.9%</td><td>43.2 นาที</td><td>8.76 ชั่วโมง</td></tr>
+    <tr><td>99.95%</td><td>21.6 นาที</td><td>4.38 ชั่วโมง</td></tr>
+    <tr><td>99.99%</td><td>4.32 นาที</td><td>52.56 นาที</td></tr>
+  </table></div>
+
+  <h4>Composite availability</h4>
+  <p>ถ้า request ต้องผ่านหลาย component ต่อกันแบบอนุกรม (ขาดตัวใดตัวหนึ่งก็ล่ม) ให้คูณ availability เข้าด้วยกัน. สมมุติมี gateway 99.95% → function 99.95% → database 99.99% (ตัวเลขสมมุติเพื่อฝึกคำนวณ ไม่ใช่ SLA จริงของ provider ใด) ได้ประมาณ 0.9995 × 0.9995 × 0.9999 ≈ 0.9989 หรือ 99.89% ซึ่งต่ำกว่าตัวที่ต่ำสุดเสมอ. ในทางกลับกัน ถ้ามีสำเนาที่ทำงานแทนกันแบบขนาน (และล้มเหลวแยกอิสระ) availability รวม = 1 − (อัตราล้มเหลวของแต่ละตัวคูณกัน). สอง instance ที่ 99% ต่อกัน ได้ 1 − 0.01 × 0.01 = 99.99%. สมมติฐานว่า "ล้มเหลวอิสระต่อกัน" มักไม่จริงเมื่ออยู่ใน AZ หรือ region เดียวกัน จึงต้องกระจาย failure domain.</p>
+
+  <h4>RTO, RPO และ DR</h4>
+  <p><b>RPO</b> (Recovery Point Objective) คือข้อมูลที่ยอมเสียได้นานแค่ไหน (เช่น 15 นาทีของธุรกรรม) จึงกำหนดความถี่ backup/replication. <b>RTO</b> (Recovery Time Objective) คือใช้เวลานานแค่ไหนกว่าระบบจะกลับมา จึงกำหนดว่าต้องมีระบบสำรองพร้อมรับมือระดับใด. กลยุทธ์ DR เรียงจากถูก-ช้าไปแพง-เร็ว: backup & restore → pilot light → warm standby → active-active (multi-site). เลือกจาก RTO/RPO ที่ธุรกิจยอมรับ ไม่ใช่เลือกแบบที่ดีที่สุดทางเทคนิคเสมอ.</p>
+
+  <h4>จัดแนวกับ compliance</h4>
+  <p>Provider มีรายงาน/ใบรับรองของตัวเอง (เช่น ISO/IEC 27001, SOC reports) ที่ลูกค้านำไปใช้เป็นหลักฐานส่วนที่ provider รับผิดชอบได้ แต่ส่วนที่เป็น "in the cloud" ลูกค้าต้องมีการควบคุมและหลักฐานเอง. ประเด็นที่ต้องดูเสมอมีสี่เรื่อง: data residency (ข้อมูลอยู่ใน region ที่กฎหมายหรือสัญญากำหนดหรือไม่), การจำแนกข้อมูลและการเข้ารหัส, audit log และระยะเก็บ, และการควบคุมสิทธิ์. สำหรับข้อมูลส่วนบุคคลในไทย ต้องพิจารณา พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล (PDPA) ร่วมกับข้อกำหนดของอุตสาหกรรมนั้น ๆ; รายละเอียดทางกฎหมายควรปรึกษาผู้เชี่ยวชาญ ไม่ควรตัดสินจากสรุปในเอกสารติวนี้.</p>
+
+  <div class="quiz" data-topic="t8"></div>
+</section>
+
+<section class="topic" id="t9" data-c="1">
+  <div class="t-head"><span class="n" style="background:var(--c1)">9</span><div><h3>Trade-offs ของการเลือก service: scalability, cost และ performance</h3><span class="lv k2">Advance</span></div></div>
+
+  <p>ข้อสอบระดับ Advance มักไม่มีคำตอบที่ "ดีที่สุดเสมอ". โจทย์จะให้บริบทมา (รูปแบบโหลด, latency ที่ยอมรับ, ทักษะทีม, งบ, compliance) แล้วถามว่าตัวเลือกไหนเหมาะที่สุด. วิธีคิดที่ใช้ได้เกือบทุกข้อคือเริ่มจากการระบุลักษณะของ workload ก่อน แล้วค่อยจับคู่กับ compute model ไม่ใช่เริ่มจากชื่อเทคโนโลยี.</p>
+
+  <h4>เทียบ compute model สามแบบ</h4>
+  <div class="tw"><table>
+    <tr><th></th><th>VM (IaaS)</th><th>Container platform (Kubernetes / ECS / Cloud Run)</th><th>Serverless function</th></tr>
+    <tr><td>ภาระ operation</td><td>สูง: patch OS, scaling, image เอง</td><td>กลาง: ดูแล image และ config; ถ้าเป็น cluster เองจะสูงขึ้น</td><td>ต่ำ</td></tr>
+    <tr><td>Scale</td><td>ช้า (ระดับนาที) ต้องออกแบบ auto scaling เอง</td><td>เร็วกว่า VM; Cloud Run และ Fargate scale ได้โดยไม่ต้องจัด node</td><td>เร็วมาก scale ถึงศูนย์ได้ แต่มี concurrency limit และ cold start</td></tr>
+    <tr><td>การคุม runtime</td><td>เต็มที่</td><td>ดี (กำหนดเองผ่าน image)</td><td>จำกัดตาม runtime และ limit เช่น execution timeout</td></tr>
+    <tr><td>รูปแบบต้นทุน</td><td>ต่อชั่วโมงที่เปิด</td><td>ต่อ node/ต่อ vCPU-memory ที่ใช้</td><td>ต่อ request และเวลารัน</td></tr>
+    <tr><td>เหมาะกับ</td><td>ระบบเดิม, ต้องคุม OS/agent, license ผูกกับเครื่อง</td><td>บริการที่รันต่อเนื่อง ต้องการ portability</td><td>งาน event-driven, โหลดกระโดด, glue code</td></tr>
+  </table></div>
+
+  <h4>Cost ไม่ได้เป็นเส้นตรง</h4>
+  <p>serverless ถูกมากเมื่อโหลดต่ำหรือเป็นช่วง ๆ แต่เมื่อโหลดสูงและต่อเนื่อง ต้นทุนต่อ request ที่คงที่จะแซงค่า instance ที่จองไว้. โค้ดข้างล่างใช้ราคา "สมมุติ" เพื่อหาจุดตัด (ไม่ใช่ราคาของ provider ใด).</p>
+<pre><span class="pre-lang">python</span><code>INSTANCE_PER_MONTH = 60.0          # instance 1 ตัว เปิดตลอดเดือน (USD)
+PER_MILLION_REQUESTS = 0.20        # ค่า request ต่อ 1 ล้านครั้ง (USD)
+PER_GB_SECOND = 0.0000166667       # ค่า duration ต่อ GB-second (USD)
+
+def serverless_cost(requests, avg_ms, memory_gb):
+    gb_seconds = requests * (avg_ms / 1000) * memory_gb
+    return requests / 1_000_000 * PER_MILLION_REQUESTS + gb_seconds * PER_GB_SECOND
+
+for monthly_requests in (1_000_000, 10_000_000, 40_000_000, 200_000_000):
+    cost = serverless_cost(monthly_requests, avg_ms=120, memory_gb=0.5)
+    cheaper = "serverless" if cost &lt; INSTANCE_PER_MONTH else "instance"
+    print(f"{monthly_requests:&gt;12,} req/เดือน  serverless = {cost:8.2f} USD  -&gt; ถูกกว่า: {cheaper}")</code></pre>
+  <p>ผลที่ได้: 1 ล้านครั้ง = 1.20 USD, 10 ล้าน = 12.00, 40 ล้าน = 48.00 (ยังถูกกว่า instance 60), และ 200 ล้าน = 240.00 (แพงกว่า). จุดตัดอยู่ราว 50 ล้าน request ต่อเดือนภายใต้สมมติฐานนี้. ในงานจริงยังต้องบวกค่า API gateway, log, การรองรับ peak ที่ instance เดียวรับไม่ไหว และเวลาของคนดูแล ซึ่งทำให้จุดตัดเลื่อนไปได้ทั้งสองทาง.</p>
+
+  <h4>Performance: latency มาจากไหน</h4>
+  <p>ปัจจัยที่ทำให้ช้ามักไม่ใช่ CPU แต่เป็นระยะทาง (client ไป region), จำนวน network hop ระหว่าง service, การเรียก database แบบ N+1, cold start ของ function ที่ไม่มีการใช้งานมาสักพัก และ connection ที่ถูกเปิดใหม่ทุกครั้ง. ตัวช่วยที่ใช้บ่อย: CDN และ cache ใกล้ผู้ใช้, connection pooling/proxy หน้า database, provisioned concurrency หรือ min instances เพื่อลด cold start (แลกกับค่าจ่ายคงที่), read replica สำหรับ workload อ่านหนัก (แลกกับ replication lag), และการวาง compute กับ data ไว้ region เดียวกันเพื่อเลี่ยง cross-region latency และค่า transfer.</p>
+
+  <div class="note"><b>วิธีตอบ trade-off question</b>(1) ระบุ requirement ที่เป็นตัวตัดสิน เช่น latency เป้าหมาย, ความถี่ของ peak, state (2) ตัดตัวเลือกที่ขัดกับข้อกำหนดบังคับก่อน เช่น compliance, timeout limit (3) เทียบที่เหลือด้วย cost/ops/scale (4) บอกสิ่งที่ยอมแลก. โครงสี่ข้อนี้ช่วยให้คำตอบแบบเขียนอธิบายครบประเด็น.</div>
+
+  <div class="quiz" data-topic="t9"></div>
+</section>
+
+<section class="topic" id="t10" data-c="2">
+  <div class="t-head"><span class="n" style="background:var(--c2)">10</span><div><h3>Cloud-native design: microservices, serverless และ event-driven</h3><span class="lv k2">Advance</span></div></div>
+
+  <p>Cloud-native ไม่ได้แปลว่า "ย้ายไปอยู่บน cloud". มันคือการออกแบบให้ใช้ความสามารถของ cloud: ทุกอย่างแตกเป็นบริการเล็ก ๆ ที่ deploy แยกกัน, state ถูกแยกออกจาก compute, scale ตามโหลด, และยอมรับว่า "ความล้มเหลวเกิดขึ้นเป็นเรื่องปกติ". รูปแบบที่ใช้ร่วมกันบ่อยคือ microservices, serverless และ event-driven architecture.</p>
+
+  <h4>Microservices: ได้อะไร เสียอะไร</h4>
+  <p>แบ่งระบบตาม business capability (เช่น orders, inventory, payment) ให้แต่ละบริการมีข้อมูลของตัวเอง deploy และ scale แยกกันได้ ทีมทำงานคู่ขนานได้โดยไม่ชนกัน. สิ่งที่แลกคือความซับซ้อนแบบกระจาย: network call แทน function call, ธุรกรรมข้ามบริการไม่มี ACID ข้ามกัน, การ debug ต้องมี distributed tracing, และต้องมี platform (CI/CD, service discovery, observability) รองรับ. ทีมเล็กหรือโดเมนยังไม่นิ่ง มักเริ่มจาก modular monolith แล้วค่อยแยกบริการเมื่อเจอแรงกดดันจริง (เช่นส่วนหนึ่งต้อง scale ต่างจากส่วนอื่นมาก). การย้ายระบบเดิมแบบค่อยเป็นค่อยไปมีรูปแบบ <b>strangler fig</b> คือสร้างบริการใหม่ครอบทีละส่วนแล้วค่อย ๆ เบี่ยง traffic ออกจากระบบเก่า.</p>
+
+  <h4>Event-driven: ใช้ event แทนการเรียกตรง</h4>
+  <figure>
+    <svg viewBox="0 0 760 270" role="img" aria-label="Event-driven: Orders service ส่ง event ไป event bus แล้วกระจายไปหลาย consumer">
+      <defs><marker id="ev" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+      <g font-size="13" text-anchor="middle" fill="#1b2130">
+        <rect x="20" y="105" width="130" height="56" rx="10" fill="#fff" stroke="#6f8fd6"/><text x="85" y="130">Orders service</text><text x="85" y="148" font-size="11" fill="#586174">เขียน DB + outbox</text>
+        <rect x="230" y="105" width="150" height="56" rx="10" fill="#fff4e6" stroke="#e08a4b"/><text x="305" y="130">Event bus / Topic</text><text x="305" y="148" font-size="11" fill="#586174">OrderPlaced</text>
+        <rect x="470" y="20" width="150" height="48" rx="10" fill="#fff" stroke="#5aa874"/><text x="545" y="49">Payment</text>
+        <rect x="470" y="110" width="150" height="48" rx="10" fill="#fff" stroke="#5aa874"/><text x="545" y="139">Inventory</text>
+        <rect x="470" y="200" width="150" height="48" rx="10" fill="#fff" stroke="#5aa874"/><text x="545" y="229">Notification</text>
+        <rect x="660" y="200" width="90" height="48" rx="10" fill="#fdecec" stroke="#d98a8a"/><text x="705" y="222">DLQ</text><text x="705" y="238" font-size="10.5" fill="#586174">ข้อความที่พัง</text>
+      </g>
+      <g stroke="#475569" stroke-width="1.6" fill="none" marker-end="url(#ev)">
+        <path d="M150 133 L230 133"/>
+        <path d="M380 124 L470 48"/>
+        <path d="M380 133 L470 134"/>
+        <path d="M380 142 L470 224"/>
+        <path d="M620 224 L660 224" stroke-dasharray="5 4"/>
+      </g>
+      <text x="196" y="124" font-size="11" fill="#586174">publish</text>
+      <text x="410" y="258" font-size="11" fill="#586174">consumer แต่ละตัวมี subscription / queue ของตัวเอง</text>
+    </svg>
+    <figcaption>Orders ไม่รู้ว่ามี consumer กี่ตัว เพิ่ม consumer ใหม่ได้โดยไม่แก้ Orders. ข้อความที่ประมวลผลไม่สำเร็จเกินจำนวนครั้งที่กำหนดจะถูกย้ายไป dead-letter queue (DLQ) เพื่อตรวจสอบภายหลัง.</figcaption>
+  </figure>
+  <p>ข้อดีคือ producer กับ consumer แยกกันหลวม (loose coupling) ทั้งเรื่องเวลา เวอร์ชัน และการ scale. ข้อควรระวังคือพฤติกรรมของ message broker: ส่วนใหญ่รับประกัน at-least-once ไม่ใช่ exactly-once ดังนั้น consumer ต้อง idempotent, ลำดับข้อความอาจสลับกันถ้าไม่ได้ใช้ ordering key/FIFO, และต้องมี DLQ กับ alert เพื่อไม่ให้ข้อความที่พังหายเงียบ. ตัวอย่างโค้ดข้างล่างแสดง idempotent handler และ retry แบบ exponential backoff ที่มี jitter.</p>
+<pre><span class="pre-lang">python</span><code>import random
+import time
+
+processed_ids = set()      # ใน production เก็บใน database/cache ที่ทุก worker เห็นร่วมกัน
+balance = {"acc-1": 100}
+
+def handle_message(message):
+    """ถ้า message ซ้ำ (at-least-once delivery) ต้องไม่หักเงินซ้ำ"""
+    if message["id"] in processed_ids:
+        return "skip"
+    balance[message["account"]] -= message["amount"]
+    processed_ids.add(message["id"])
+    return "applied"
+
+def call_with_retry(fn, attempts=4, base_delay=0.1):
+    for attempt in range(attempts):
+        try:
+            return fn()
+        except ConnectionError:
+            if attempt == attempts - 1:
+                raise
+            time.sleep(random.uniform(0, base_delay * 2 ** attempt))   # backoff + full jitter
+
+msg = {"id": "evt-001", "account": "acc-1", "amount": 30}
+print(handle_message(msg), handle_message(msg), balance)
+# applied skip {'acc-1': 70}</code></pre>
+  <p>โค้ดตัวอย่างนี้เก็บ <code>processed_ids</code> ไว้ใน memory เพื่ออธิบายหลักการเท่านั้น. ถ้ามีหลาย worker หรือ worker restart ต้องเก็บใน store ร่วม และควรตรวจกับการเขียนข้อมูลเป็น transaction เดียว (หรือใช้ unique constraint) เพื่อไม่ให้เกิดช่องว่างระหว่าง "หักเงิน" กับ "บันทึกว่าทำแล้ว". Jitter สำคัญเพราะถ้า client หลายตัว retry พร้อมกันที่ช่วงเวลาเดียวกัน จะกระแทก service ที่เพิ่งฟื้นซ้ำอีกรอบ.</p>
+
+  <h4>รูปแบบที่ควรรู้จักชื่อและเหตุผล</h4>
+  <p><b>Saga</b> จัดการธุรกรรมที่ข้ามหลายบริการด้วยลำดับของ local transaction และ compensating action (เช่นชำระเงินแล้วสต็อกไม่พอ → สั่งคืนเงิน) แทนการใช้ distributed transaction. <b>Transactional outbox</b> เขียน event ลงตาราง outbox ใน transaction เดียวกับข้อมูลหลัก แล้วมี process แยกส่งออกไป broker ช่วยแก้ปัญหา "บันทึก DB สำเร็จแต่ publish ไม่สำเร็จ". <b>Circuit breaker</b> หยุดเรียก dependency ที่กำลังพัง (fail fast) แทนที่จะรอ timeout แล้วลากทั้งระบบล้ม. <b>Bulkhead</b> แยก resource pool ต่อ dependency เพื่อให้ตัวหนึ่งช้าแล้วไม่ดูด thread ของทั้งแอป. <b>CQRS</b> แยกโมเดลเขียนกับอ่านเมื่อสองฝั่งต้องการรูปแบบข้อมูลและ scale ต่างกัน แต่เพิ่มความซับซ้อนเรื่อง eventual consistency.</p>
+
+  <h4>Serverless: ข้อจำกัดที่ต้องออกแบบรองรับ</h4>
+  <p>Function ต้อง stateless (instance หนึ่งถูกสร้าง/ทิ้งได้ตลอด), มี execution timeout (Lambda ตั้งได้สูงสุด 15 นาที ตามเอกสาร AWS ณ ตอนเขียน — ตรวจ limit ปัจจุบันเสมอ), มี cold start และ concurrency limit ที่ถ้าเกินจะถูก throttle หรือไปกระทบ downstream (เช่น database connection หมด). งานยาวหรือต้องรอหลายขั้นตอนมักใช้ workflow orchestrator (Step Functions, Durable Functions, Workflows) แทนการเขียน function ใหญ่ตัวเดียว.</p>
+
+  <div class="quiz" data-topic="t10"></div>
+</section>
+
+<section class="topic" id="t11" data-c="3">
+  <div class="t-head"><span class="n" style="background:var(--c3)">11</span><div><h3>Hybrid และ multi-cloud: ความซ้ำซ้อนกับการควบคุม</h3><span class="lv k2">Advance</span></div></div>
+
+  <p>คำถามที่ควรถามก่อนคือ "เราอยากได้อะไรจาก multi-cloud?" เหตุผลที่เจอบ่อยมีไม่กี่ข้อ: ลดความเสี่ยงจากการพึ่ง provider เดียว, ข้อบังคับด้าน regulation/data residency ที่ provider เดียวตอบไม่ครบ, ต้องการบริการเด่นของแต่ละเจ้า (best-of-breed), หรือสืบทอดมาจากการควบรวมกิจการ. ถ้าเป้าหมายคือ "ระบบไม่ล่ม" อย่างเดียว การทำ multi-AZ และ multi-region ใน provider เดียวมักให้ความทนทานระดับ region ด้วยต้นทุนและความซับซ้อนที่ต่ำกว่า multi-cloud. แต่ไม่ได้ป้องกันความเสี่ยงระดับ provider เช่นปัญหาบัญชี, control plane ล่มทั้งระบบ หรือประเด็นสัญญา.</p>
+
+  <h4>ตัวเลือกและสิ่งที่ต้องแลก</h4>
+  <div class="tw"><table>
+    <tr><th>แนวทาง</th><th>ได้</th><th>เสีย / ความเสี่ยง</th></tr>
+    <tr><td>Single cloud, multi-region</td><td>ทนต่อความเสียหายระดับ region; tooling เดียวกัน; ทีมต้องรู้ชุดเดียว</td><td>ยังผูกกับ provider เดียว (ทั้งเรื่องสัญญา, outage ระดับ global control plane)</td></tr>
+    <tr><td>Hybrid (on-prem + cloud)</td><td>เก็บข้อมูลที่ต้องอยู่ในองค์กร; ใช้ cloud สำหรับ burst หรือ DR; ย้ายระบบเดิมทีละส่วน</td><td>เครือข่ายเชื่อมต่อ (VPN / ExpressRoute / Direct Connect / Interconnect) เป็นจุดวิกฤต; ต้องรวม identity และ monitoring ข้ามสองสภาพแวดล้อม</td></tr>
+    <tr><td>Multi-cloud แบบแยกหน้าที่</td><td>เลือกบริการเด่นของแต่ละเจ้า; ลด concentration risk บางส่วน</td><td>ต้องมีทักษะหลายชุด; ค่า egress ข้าม cloud; IAM/monitoring ต่างกัน</td></tr>
+    <tr><td>Multi-cloud แบบ active-active ที่ portable ทั้งหมด</td><td>ย้าย workload ข้าม provider ได้ในทางทฤษฎี</td><td>มักต้องใช้เฉพาะ feature ที่ตรงกันทุกเจ้า (lowest common denominator) ทำให้เสียประโยชน์ของ managed service; ซับซ้อนและแพงที่สุด</td></tr>
+  </table></div>
+
+  <h4>Portability ทำได้ถึงระดับไหน</h4>
+  <p>ชั้นที่ย้ายง่าย: container image, Kubernetes manifest, ภาษาโปรแกรม, open-source database (PostgreSQL, MySQL), และ Infrastructure as Code ที่ไม่ผูก provider (Terraform/OpenTofu แต่ resource ของแต่ละ provider ยังต่างกัน). ชั้นที่ย้ายยาก: managed service ที่มี API เฉพาะ (เช่น DynamoDB, Cosmos DB, Pub/Sub), IAM model, network primitive และข้อมูลปริมาณมาก. "Data gravity" คือข้อมูลก้อนใหญ่ดึงให้ compute และบริการอื่นมาอยู่ใกล้ ทั้งเพราะ latency และค่า egress ทำให้การย้ายข้อมูลกลายเป็นต้นทุนหลักของการเปลี่ยน provider.</p>
+  <p>การลด lock-in ไม่ใช่เรื่องขาว-ดำ. วิธีที่ใช้ได้จริงคือจำแนกว่า dependency ไหน "ผูกแล้วคุ้ม" (เช่นใช้ managed database ที่ประหยัดแรงดูแลมาก) กับอันไหนควรห่อด้วย abstraction layer ที่ย้ายได้ในราคาที่ยอมรับได้ แล้วเขียน exit plan คร่าว ๆ ไว้ว่าถ้าต้องย้ายจะใช้เวลาและเงินเท่าไร.</p>
+
+  <h4>เครื่องมือ hybrid / multi-cloud ที่ provider เสนอ</h4>
+  <p>แต่ละเจ้ามีผลิตภัณฑ์ที่ขยาย control plane ของตัวเองไปยัง on-premises หรือ cloud อื่น เช่น AWS Outposts, Azure Arc, และฝั่ง Google มีกลุ่มผลิตภัณฑ์ที่เคยชื่อ Anthos (ปัจจุบันจัดอยู่ใน GKE Enterprise / Google Distributed Cloud). ชื่อและขอบเขตเปลี่ยนบ่อย ให้ตรวจเอกสารปัจจุบัน และในข้อสอบเน้นเข้าใจ "เหตุผลที่มีผลิตภัณฑ์กลุ่มนี้" มากกว่าท่องชื่อ.</p>
+
+  <div class="warn"><b>ข้อควรระวังเรื่อง redundancy</b>สำเนาที่อยู่คนละ cloud แต่ใช้ identity provider, DNS หรือ pipeline deploy ตัวเดียวกัน ก็ยังมี single point of failure ที่ชั้นนั้น. ทำ failure mode analysis ว่าอะไรที่ใช้ร่วมกันของทั้งสองฝั่งบ้าง.</div>
+
+  <div class="quiz" data-topic="t11"></div>
+</section>
+
+<section class="topic" id="t12" data-c="4">
+  <div class="t-head"><span class="n" style="background:var(--c4);color:#3a2700">12</span><div><h3>เชื่อม cloud กับ enterprise และ governance ด้วย framework</h3><span class="lv k2">Advance</span></div></div>
+
+  <p>เมื่อองค์กรมี account/subscription เป็นสิบเป็นร้อย ปัญหาไม่ใช่ว่า deploy ได้หรือไม่ แต่คือ "ใครสร้างอะไรได้ ใครจ่าย ใครรับผิดชอบเมื่อพัง และพิสูจน์กับผู้ตรวจสอบได้อย่างไร". Governance คือชุดนโยบาย กระบวนการ และกลไกบังคับใช้ที่ตอบคำถามเหล่านี้โดยไม่ทำให้ทีมพัฒนาช้าลงจนเกินไป.</p>
+
+  <h4>Landing zone และโครงสร้าง account</h4>
+  <p>Landing zone คือโครงพื้นฐานที่จัดไว้ล่วงหน้าก่อนให้ทีมเริ่มใช้งาน: โครงสร้างการจัดกลุ่ม account (AWS Organizations, Azure management groups/subscriptions, Google Cloud organization/folders/projects), เครือข่ายกลาง, identity และ logging ส่วนกลาง, และ guardrail ที่ใช้กับทุก account. Guardrail แบบ preventive ขัดขวางไม่ให้ทำสิ่งต้องห้าม (เช่น AWS Service Control Policies, Azure Policy ในโหมด deny, Google Organization Policy) ส่วนแบบ detective ตรวจพบแล้วแจ้งเตือน (เช่น config rule, security posture tool). นโยบายควรเขียนเป็นโค้ด (policy as code) ใส่ version control และทดสอบเหมือนซอฟต์แวร์.</p>
+
+  <h4>Identity, cost และ operation ที่ต้องเชื่อมกับองค์กร</h4>
+  <p><b>Identity</b> เชื่อมกับ identity provider ขององค์กรผ่าน SAML หรือ OIDC เพื่อให้ SSO และปิดสิทธิ์พร้อมกันเมื่อพนักงานลาออก ไม่สร้าง user แยกในแต่ละ cloud. <b>Cost</b> ใช้ tagging หรือ label มาตรฐานและโครงสร้าง account เพื่อทำ showback/chargeback ให้ทีมเห็นต้นทุนของตัวเอง ตั้ง budget และ alert, และทำ FinOps อย่างต่อเนื่อง (มองเห็น → ปรับให้เหมาะสม → ดำเนินงาน). <b>Operation</b> เชื่อม log และ alert เข้า SIEM/ระบบ monitoring กลาง และเชื่อม change management/ITSM ให้การเปลี่ยนแปลงผ่านกระบวนการที่องค์กรกำหนด โดยใช้ pipeline อัตโนมัติเป็นตัวบังคับ แทนการอนุมัติด้วยคนทุกครั้ง.</p>
+
+  <h4>Framework ที่ควรรู้ว่าใช้ตอบคำถามแบบไหน</h4>
+  <div class="tw"><table>
+    <tr><th>Framework</th><th>ใช้เมื่อ</th><th>แกนกลาง</th></tr>
+    <tr><td>AWS Well-Architected Framework</td><td>รีวิว workload บน AWS เป็นรายระบบ</td><td>6 pillars: Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, Sustainability</td></tr>
+    <tr><td>Azure Well-Architected Framework</td><td>รีวิว workload บน Azure เป็นรายระบบ</td><td>5 pillars: Reliability, Security, Cost Optimization, Operational Excellence, Performance Efficiency</td></tr>
+    <tr><td>Google Cloud Well-Architected Framework</td><td>รีวิว workload บน Google Cloud</td><td>มี pillar ในหมวดคล้ายกัน (จำนวนและชื่อตรวจกับเอกสารปัจจุบัน)</td></tr>
+    <tr><td>Cloud Adoption Framework (Azure)</td><td>วางแผนระดับองค์กรตั้งแต่ strategy, plan, ready, adopt, govern, manage</td><td>มุ่งที่ portfolio และ governance ขององค์กร ไม่ใช่ระบบเดียว (ชื่อช่วงอาจปรับตามเวอร์ชัน)</td></tr>
+    <tr><td>ISO/IEC 27001, COBIT และกรอบ compliance อื่น</td><td>เมื่อต้องแสดงว่าการใช้ cloud อยู่ภายใต้ระบบบริหารความเสี่ยงขององค์กร</td><td>มีมาตรการควบคุมและหลักฐาน (evidence) ที่ตรวจสอบได้</td></tr>
+  </table></div>
+  <p>ข้อแตกต่างที่ควรแยกให้ออกคือ Well-Architected ตอบ "ระบบนี้ออกแบบดีหรือยัง" ในระดับ workload ส่วน Cloud Adoption Framework ตอบ "องค์กรควรเตรียม ย้าย และกำกับดูแลอย่างไร" ในระดับองค์กร ทั้งสองเสริมกัน. อีกประเด็นคือ pillar มี trade-off ระหว่างกัน เช่น เพิ่ม reliability ด้วย multi-region ทำให้ cost สูงขึ้น การตัดสินใจจึงต้องผูกกับ requirement ทางธุรกิจ.</p>
+
+  <h4>การเชื่อมต่อระหว่างองค์กรกับ cloud</h4>
+  <p>Site-to-site VPN ผ่านอินเทอร์เน็ตตั้งเร็ว ราคาต่ำ แต่ bandwidth และ latency ผันแปรตามเครือข่ายสาธารณะ. Dedicated connection (AWS Direct Connect, Azure ExpressRoute, Google Cloud Interconnect) ให้เส้นทางส่วนตัวที่ latency และ throughput คาดการณ์ได้ แต่ใช้เวลาติดตั้งและมีค่าใช้จ่ายสูงกว่า องค์กรจำนวนมากใช้ VPN เป็นเส้นสำรองของ dedicated connection.</p>
+
+  <div class="tip"><b>รูปแบบคำตอบที่ดี</b>ข้อ governance ที่ให้เหตุผลเป็นขั้น: กำหนดนโยบาย → บังคับใช้อัตโนมัติ (guardrail / policy as code) → วัดผลและรายงาน (log, cost, compliance posture) → ปรับปรุงต่อเนื่อง. ตัวเลือกที่เป็น "ให้ทุกทีมตกลงกันเอง" หรือ "ให้คนกลางอนุมัติด้วยมือทุกคำขอ" มักไม่ขยายตัวและมักเป็นตัวเลือกที่ผิด.</div>
+
+  <div class="quiz" data-topic="t12"></div>
+</section>
+
+<section class="topic" id="deloitte" data-c="5" style="border-top-color:#334155">
+  <div class="t-head"><span class="n" style="background:#334155">D</span><div><h3>แนว Deloitte / HackerRank: รูปแบบข้อสอบและชุดฝึกแบบ scenario</h3></div></div>
+
+  <div class="warn"><b>อ่านก่อน: ข้อมูลส่วนนี้จริงแค่ไหน</b>Deloitte skills taxonomy ที่ใช้ภายในองค์กรไม่ได้เปิดเผยต่อสาธารณะ ผมจึงไม่มีข้อสอบหรือเกณฑ์ตัดสินจริงของ Deloitte มาให้. ข้อสอบในชุดนี้เขียนขึ้นให้ตรงกับนิยามทักษะ 3 ระดับที่คุณให้มา (Beginner / Intermediate / Advance) และใช้โจทย์แบบ scenario ในลักษณะงานให้คำปรึกษาด้าน cloud (เป็นการคาดการณ์แนวข้อสอบของผม ไม่ใช่ข้อมูลจริงจาก Deloitte). ส่วนฝั่ง HackerRank มีรูปแบบที่ตรวจสอบได้จากเอกสารของ HackerRank ตามด้านล่าง.</div>
+
+  <h4>HackerRank มีอะไรสำหรับ cloud บ้าง</h4>
+  <p>จากเอกสารของ HackerRank (knowledge base และ skills directory) ข้อสอบที่เกี่ยวกับ cloud ปรากฏในสามลักษณะ. แบบแรกคือ <b>Multiple Choice</b> ซึ่งตรวจอัตโนมัติ ใช้วัดความเข้าใจ concept เช่นประเภทบริการ, pricing, security. แบบที่สองคือ <b>Cloud hands-on questions</b> ที่ให้ผู้สอบเข้าใช้ AWS console หรือ Azure portal จริงด้วยบัญชีชั่วคราวที่ HackerRank จัดให้ แล้วให้ระบบตรวจอัตโนมัติจาก evaluation criteria ที่มีน้ำหนักต่อข้อ ไม่ใช่ดูแค่ว่ารันผ่านหรือไม่. แบบที่สามคือ <b>DevOps / project-based</b> ซึ่งให้ Linux environment หรือโปรเจกต์ที่มี IDE และตรวจจากผลลัพธ์ เช่นจำนวน unit test ที่ผ่าน. นอกจากนี้ยังมี Code Review และ Debugging ที่ให้ดูโค้ดหรือ config ที่มีปัญหา. สิ่งที่ข้อสอบจริงของแต่ละบริษัทเลือกใช้ขึ้นกับตำแหน่งและบริษัทนั้น ๆ.</p>
+  <p>ดังนั้นเตรียมสี่ทักษะ: (1) ตอบ MCQ แบบเลือกข้อเดียวและเลือกหลายข้อ (2) อ่าน config เช่น IAM policy JSON, Dockerfile, Kubernetes YAML แล้วบอกว่าผิดตรงไหน (3) คิด trade-off จาก scenario (4) ทำ lab ใน console ให้ถูกตาม requirement ภายในเวลา.</p>
+
+  <h4>Checklist ฝึก hands-on (ทำบนบัญชีทดลองของตัวเองเท่านั้น)</h4>
+  <p>โจทย์ lab ที่เจอได้บ่อยในรูปแบบ "ตั้งค่าให้ตรงเงื่อนไข": สร้าง bucket ที่ไม่ public, เปิด versioning และ encryption, สร้าง role ที่ให้อ่านได้เฉพาะ prefix เดียว, จำกัด security group ให้รับเฉพาะพอร์ตและ source ที่ระบุ, ตั้ง alarm ให้แจ้งเมื่อ metric เกินเกณฑ์. ตัวอย่างชุดคำสั่ง AWS CLI สำหรับข้อแรก (เปลี่ยนชื่อ bucket ให้ไม่ซ้ำ และดู flag ล่าสุดใน <code>aws s3api help</code>):</p>
+<pre><span class="pre-lang">bash · AWS CLI</span><code>BUCKET=my-unique-lab-bucket-12345
+REGION=ap-southeast-1
+
+aws s3api create-bucket --bucket "$BUCKET" --region "$REGION" \
+  --create-bucket-configuration LocationConstraint="$REGION"
+
+aws s3api put-public-access-block --bucket "$BUCKET" \
+  --public-access-block-configuration \
+  BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
+
+aws s3api put-bucket-versioning --bucket "$BUCKET" \
+  --versioning-configuration Status=Enabled
+
+aws s3api put-bucket-encryption --bucket "$BUCKET" \
+  --server-side-encryption-configuration \
+  '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"aws:kms"}}]}'</code></pre>
+  <p>อย่าลืมว่า bucket ใหม่ของ S3 ในปัจจุบันถูกเข้ารหัสด้วย SSE-S3 เป็นค่าเริ่มต้นอยู่แล้ว ข้อ lab ที่ระบุ "ใช้ KMS key" จึงต้องตั้งค่าเพิ่มตามนี้เพื่อให้ผ่านเกณฑ์. การอ่านโจทย์ให้ครบทุกเงื่อนไขสำคัญกว่าการพิมพ์คำสั่งเร็ว เพราะระบบตรวจให้คะแนนทีละ criteria.</p>
+
+  <div class="tip"><b>เคล็ดลับเรื่องเวลา</b>ทำข้อ MCQ ที่มั่นใจก่อน, ข้อ scenario ให้ขีดฆ่าตัวเลือกที่ผิดเงื่อนไขตรง ๆ ก่อน (เช่น ผิด compliance, เกิน limit) แล้วค่อยเทียบที่เหลือ, และข้อเลือกหลายข้อให้ตรวจแต่ละตัวเลือกเป็น "จริง/เท็จ" แยกกัน เพราะหลายข้อสอบให้คะแนนเมื่อเลือกครบและไม่มีข้อผิดปน (ควรดูเงื่อนไขการให้คะแนนของแต่ละข้อสอบ).</div>
+
+  <p>ชุดฝึกด้านล่างผสม 3 ระดับ ติดป้ายระบุว่าเป็นแนวไหน. ข้อที่เป็น "เลือกหลายข้อ" จะมีป้ายและปุ่มตรวจคำตอบ ข้ออื่นเลือกแล้วเฉลยทันที.</p>
+  <div class="quiz" data-topic="dl"></div>
+</section>
+
+<section class="topic" id="final" data-c="6" style="border-top-color:var(--c6)">
+  <div class="t-head"><span class="n" style="background:var(--c6)">✓</span><div><h3>ข้อสอบรวม: สุ่มจากทุกหัวข้อ</h3></div></div>
+  <p>เลือกระดับและจำนวนข้อ แล้วกดเริ่ม. ตัวเลือกจะถูกสลับตำแหน่งทุกครั้ง และแต่ละข้อเฉลยทันทีที่ตอบ (ข้อเลือกหลายข้อกด “ตรวจคำตอบ”). จบแล้วดูคะแนนแยกตามระดับได้ที่ด้านล่าง.</p>
+  <div class="exam-ctl">
+    <label>ระดับ <select id="ex-level"><option value="ALL">ทุกระดับ</option><option value="B">Beginner</option><option value="I">Intermediate</option><option value="A">Advance</option></select></label>
+    <label>จำนวนข้อ <select id="ex-count"><option>10</option><option selected>20</option><option>30</option><option value="999">ทั้งหมดในคลัง</option></select></label>
+    <button type="button" class="btn" id="ex-start">เริ่มสุ่มข้อสอบ</button>
+    <span class="score" id="ex-score" aria-live="polite">0 / 0</span>
+  </div>
+  <div class="progress" aria-hidden="true"><i id="ex-prog"></i></div>
+  <div id="ex-box"></div>
+  <div class="result" id="ex-result" aria-live="polite"></div>
+</section>
+
+<section class="topic" id="appendix" data-c="4" style="border-top-color:var(--c4)">
+  <div class="t-head"><span class="n" style="background:var(--c4);color:#3a2700">★</span><div><h3>สรุป 1 หน้าก่อนเข้าสอบ</h3></div></div>
+  <div class="cheat">
+    <div class="b1"><b>Beginner</b>NIST: on-demand self-service, broad network access, resource pooling, rapid elasticity, measured service. Deployment: public / private / hybrid. IaaS (คุณดูแล OS ขึ้นไป) → PaaS (คุณดูแล app + data) → SaaS (คุณดูแล data + สิทธิ์). Container แชร์ kernel, VM มี guest OS. Image = แพ็กเกจ immutable, container = instance ที่รัน. Pod / Deployment / Service. Region ⊃ AZ. Scale up = เครื่องใหญ่ขึ้น, scale out = เครื่องเพิ่ม.</div>
+    <div class="b5"><b>Intermediate</b>อ่าน diagram: ไล่ request path, แยก sync/async, หา SPOF. Queue = at-least-once → idempotent. Pricing: On-Demand / Reserved-Savings Plans (ต้องใช้เกิน break-even) / Spot (ถูกเรียกคืนได้) / serverless (request + duration). มอง egress และ NAT/LB/log ด้วย. IAM: default deny, explicit deny ชนะ, role ดีกว่า access key ถาวร, least privilege. Envelope encryption, secret manager. SLA ≠ รับประกันไม่ล่ม; series คูณกัน, parallel = 1 − (ล้มเหลว × ล้มเหลว). RTO / RPO.</div>
+    <div class="b2"><b>Advance</b>เริ่มจากลักษณะ workload (traffic shape, state, latency, ทักษะทีม) แล้วเลือก VM / container / serverless. Serverless: cold start, timeout, concurrency limit. Microservices แลกความซับซ้อนแบบกระจาย; saga, outbox, circuit breaker, DLQ, idempotency. Multi-cloud ต้องมีเหตุผลชัด; multi-region ใน cloud เดียวมักถูกกว่า; ระวัง shared dependency (IdP, DNS, pipeline) และ egress.</div>
+    <div class="b3"><b>Governance</b>Landing zone + guardrail (preventive / detective) + policy as code. SSO ผ่าน SAML/OIDC. Tagging, budget, showback/chargeback, FinOps. Well-Architected = ระดับ workload (AWS 6 pillars, Azure 5). Cloud Adoption Framework = ระดับองค์กร. VPN = ตั้งเร็วและถูก; dedicated connection = คาดการณ์ latency ได้ แต่แพงกว่าและใช้เวลาติดตั้งนานกว่า.</div>
+  </div>
+</section>
+
+<section class="card" id="refs">
+  <h2>แหล่งอ้างอิง</h2>
+  <p class="muted" style="margin:.2em 0 .6em;font-size:14.5px">ใช้ยืนยันข้อมูลที่เปลี่ยนตามเวอร์ชัน (ชื่อบริการ, limit, ราคา, จำนวน pillar). ตัวเลขราคาและตัวอย่างคำนวณในเอกสารนี้เป็นค่าสมมุติเพื่อฝึกคิด ไม่ใช่ราคาปัจจุบันของ provider ใด.</p>
+  <ul class="refs">
+    <li>NIST SP 800-145, The NIST Definition of Cloud Computing — <a href="https://csrc.nist.gov/pubs/sp/800/145/final" target="_blank" rel="noopener">csrc.nist.gov/pubs/sp/800/145/final</a></li>
+    <li>AWS, Shared Responsibility Model — <a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener">aws.amazon.com/compliance/shared-responsibility-model</a></li>
+    <li>AWS Well-Architected Framework — <a href="https://wa.aws.amazon.com/index.en.html" target="_blank" rel="noopener">wa.aws.amazon.com</a></li>
+    <li>AWS Lambda pricing — <a href="https://aws.amazon.com/lambda/pricing/" target="_blank" rel="noopener">aws.amazon.com/lambda/pricing</a></li>
+    <li>Microsoft Learn, What is the Azure Well-Architected Framework — <a href="https://learn.microsoft.com/azure/well-architected/what-is-well-architected-framework" target="_blank" rel="noopener">learn.microsoft.com/azure/well-architected</a></li>
+    <li>Google Cloud, App Engine environments — <a href="https://docs.cloud.google.com/appengine/docs/the-appengine-environments" target="_blank" rel="noopener">docs.cloud.google.com/appengine/docs/the-appengine-environments</a></li>
+    <li>Google Cloud, Compare App Engine and Cloud Run — <a href="https://docs.cloud.google.com/appengine/migration-center/run/compare-gae-with-run" target="_blank" rel="noopener">docs.cloud.google.com/appengine/migration-center/run/compare-gae-with-run</a></li>
+    <li>Docker, Docker overview — <a href="https://docs.docker.com/get-started/docker-overview/" target="_blank" rel="noopener">docs.docker.com/get-started/docker-overview</a></li>
+    <li>Kubernetes, Overview — <a href="https://kubernetes.io/docs/concepts/overview/" target="_blank" rel="noopener">kubernetes.io/docs/concepts/overview</a></li>
+    <li>HackerRank, Cloud questions — <a href="https://hackerrank-knowledge-base.help.usepylon.com/articles/1938573113-cloud-questions" target="_blank" rel="noopener">HackerRank knowledge base</a></li>
+    <li>HackerRank, Evaluation methods for test questions — <a href="https://hackerrank-knowledge-base.help.usepylon.com/articles/4666032442-scoring-questions-%28overview%29" target="_blank" rel="noopener">HackerRank knowledge base</a></li>
+    <li>HackerRank, Cloud Computing skills directory — <a href="https://www.hackerrank.com/skills-directory/cloud_computing" target="_blank" rel="noopener">hackerrank.com/skills-directory/cloud_computing</a></li>
+  </ul>
+</section>
+
+</main>
+<footer>เอกสารติวสอบนี้เขียนขึ้นจากนิยามทักษะที่ให้มาและเอกสารสาธารณะของ provider; ข้อสอบเป็นข้อที่เขียนขึ้นเพื่อฝึก ไม่ใช่ข้อสอบจริงของ Deloitte หรือ HackerRank.</footer>
+
+<script>
+/* ===================== ENGINE ===================== */
+const Q = {"t1": [{"q": "ทีมผลิตภัณฑ์ขอ VM ผ่าน portal ของ provider แล้วได้เครื่องภายในไม่กี่นาที โดยไม่ต้องเปิด ticket หรือรอเจ้าหน้าที่ฝ่าย IT เข้ามาดำเนินการ ลักษณะของ cloud ข้อใดตรงกับเหตุการณ์นี้มากที่สุด", "o": ["On-demand self-service: ผู้ใช้จัดหาและยกเลิกทรัพยากรเองได้ตามต้องการ", "Resource pooling: provider นำทรัพยากรมารวมกันเพื่อให้บริการหลายผู้ใช้", "Measured service: ระบบวัดการใช้งานเพื่อคิดค่าบริการตามที่ใช้จริง", "Broad network access: เข้าถึงบริการได้จากหลายอุปกรณ์ผ่านเครือข่าย"], "e": "ลักษณะที่เกี่ยวกับการ provision เองโดยไม่ต้องรอคนคือ on-demand self-service. อีกสามข้อเป็นลักษณะจริงของ cloud ตามนิยาม NIST เหมือนกัน แต่ไม่ได้อธิบายสถานการณ์ \"ขอเองได้ทันที\" ในโจทย์."}, {"q": "บริษัทเช่า virtual machine จาก provider แล้วติดตั้ง Java และ patch ระบบปฏิบัติการด้วยตัวเอง ข้อใดคือ service model ที่บริษัทใช้อยู่", "o": ["IaaS เพราะผู้เช่ายังดูแล OS ขึ้นไปเอง", "PaaS เพราะผู้เช่าเขียนแอปแล้วให้ provider ดูแล runtime และ OS ให้ทั้งหมด", "SaaS เพราะผู้เช่าใช้ซอฟต์แวร์สำเร็จรูปโดยไม่ต้องติดตั้งหรือ patch เอง", "Hybrid cloud เพราะผู้เช่าผสมเครื่องของตัวเองกับเครื่องของ provider"], "e": "ตัวตัดสินคือ \"ใครดูแล OS\". เมื่อผู้เช่า patch OS และติดตั้ง runtime เอง นั่นคือ IaaS. PaaS จะให้ provider ดูแลชั้น OS/runtime ส่วน hybrid cloud เป็น deployment model ไม่ใช่ service model."}, {"q": "ข้อความใดเกี่ยวกับ hybrid cloud และ multi-cloud ถูกต้อง (เลือก 2 ข้อ)", "o": ["Hybrid cloud คือการผสม on-premises หรือ private environment เข้ากับ public cloud", "Multi-cloud คือการใช้ public cloud จากผู้ให้บริการตั้งแต่สองรายขึ้นไป", "Hybrid cloud หมายถึงการใช้ AWS ร่วมกับ Azure ในองค์กรเดียวกันเท่านั้น", "Multi-cloud ต้องมี data center ของตัวเองอยู่ด้วยเสมอจึงจะเรียกได้", "องค์กรที่ใช้ hybrid อยู่แล้วจะนำ multi-cloud มาใช้ควบคู่กันไม่ได้"], "c": [0, 1], "multi": true, "e": "Hybrid = on-premises/private + public. Multi-cloud = public cloud หลายเจ้า. สองแนวคิดนี้ใช้ร่วมกันได้ เช่น มี data center ของตัวเอง เชื่อมกับทั้ง AWS และ Azure."}, {"q": "ร้านค้าออนไลน์มี traffic พุ่งสูงในช่วงโปรโมชันสองสามวัน แล้วลดลงมาเป็นปกติ ประโยชน์ของ cloud ข้อใดเกี่ยวข้องโดยตรงที่สุด", "o": ["Elasticity: ขยายทรัพยากรตอนโหลดสูงและหดตอนโหลดลด จึงจ่ายตามที่ใช้", "ค่าบริการต่อหน่วยของ cloud ถูกกว่าการซื้อเครื่องเองในทุกกรณีที่เปรียบเทียบได้", "ไม่ต้องออกแบบแอปให้รองรับการ scale เพราะ provider จัดการให้อัตโนมัติ", "ความรับผิดชอบด้าน security ทั้งหมดถูกโอนให้ provider หลังย้ายขึ้น cloud"], "e": "โหลดที่ขึ้นลงเป็นช่วงคือกรณีที่ elasticity ให้ประโยชน์ชัดที่สุด. ส่วนอีกสามข้อเป็นความเข้าใจผิดที่พบบ่อย: cloud ไม่ได้ถูกกว่าเสมอ, แอปต้องออกแบบให้ scale ได้, และ security เป็นความรับผิดชอบร่วมกัน."}], "t2": [{"q": "ทีมบน Google Cloud ต้องการส่งโค้ดเว็บแอปไปให้แพลตฟอร์มดูแล runtime และการ scale ให้ โดยไม่ต้องสร้าง container เอง บริการใดสอดคล้องกับความต้องการนี้", "o": ["App Engine standard environment ซึ่งรับโค้ดแล้วดูแล runtime ให้", "Compute Engine ที่ต้องติดตั้ง runtime ของแอปและตั้งค่า auto scaling เองทั้งหมดบน VM", "GKE cluster แบบ Standard ที่ดูแล node pool เอง", "Cloud SQL ที่รันแอปไว้ภายใน database instance"], "e": "App Engine เป็น PaaS: ส่งโค้ดแล้ว platform จัดการ runtime และ scaling. Compute Engine เป็น IaaS, GKE Standard ต้องดูแล node, และ Cloud SQL เป็น managed database ไม่ใช่ที่รันแอป."}, {"q": "บริการใดคือ object storage ของ Microsoft Azure", "o": ["Azure Blob Storage", "Azure Virtual Machines", "Azure Cosmos DB", "Azure Service Bus"], "e": "Blob Storage คือ object storage (เทียบเท่า S3 และ Cloud Storage). Virtual Machines เป็น compute, Cosmos DB เป็น NoSQL database และ Service Bus เป็น message broker."}, {"q": "ตามเอกสารของ Google Cloud ข้อใดคือความแตกต่างระหว่าง App Engine standard กับ flexible environment (เลือก 2 ข้อ)", "o": ["Standard รันใน sandbox ส่วน flexible รันใน Docker container บน Compute Engine VM", "Standard เริ่ม instance เป็นระดับวินาที ส่วน flexible เป็นระดับนาที", "Flexible รองรับเฉพาะ runtime ของ Python และ Java ที่ Google กำหนดไว้ล่วงหน้าเท่านั้น", "Standard คิดเงินตาม vCPU, memory และ disk ส่วน flexible คิดตามจำนวน instance hours", "ทั้งสอง environment ไม่อนุญาตให้ติดตั้ง third-party binary ในทุกกรณีที่ใช้งาน"], "c": [0, 1], "multi": true, "e": "ตามตารางเปรียบเทียบของ Google: standard = sandbox + เริ่มเป็นวินาที + คิดตาม instance hours; flexible = Docker บน Compute Engine VM + เริ่มเป็นนาที + คิดตาม vCPU/memory/disk. ทั้งสองแบบติดตั้ง third-party binary ได้."}, {"q": "บริการใดรัน container image แบบ serverless โดยผู้ใช้ไม่ต้องจัดการ node", "o": ["Google Cloud Run ซึ่งรับ container image แล้วจัดการ node ให้", "Amazon EC2 ที่ติดตั้ง Docker engine และดูแล patch ของ OS เอง", "Azure Virtual Machines ที่รัน container ผ่าน systemd บนเครื่องที่ดูแลเอง", "Google Compute Engine ที่ใช้ startup script ดึง image มารันเอง"], "e": "Cloud Run รับ container image แล้วจัดการ infrastructure และ scaling ให้. สามตัวเลือกที่เหลือเป็น VM ที่ผู้ใช้ต้องดูแล OS และ Docker เอง."}], "t3": [{"q": "ข้อใดอธิบายความแตกต่างหลักระหว่าง container กับ virtual machine ได้ถูกต้อง", "o": ["Container แชร์ kernel ของ host ส่วน VM มี guest OS ของตัวเอง", "Container ต้องมี guest OS เต็มชุดต่อหนึ่ง container แต่ VM แชร์ kernel ร่วมกัน", "Container ใช้ได้เฉพาะบนเครื่องจริงและรันบน public cloud ไม่ได้", "VM เริ่มต้นเร็วกว่า container เสมอเพราะมี hypervisor ช่วย"], "e": "Container ใช้ kernel ของ host ร่วมกัน จึงเบาและเริ่มเร็วกว่า. VM จำลองฮาร์ดแวร์และมี guest OS ของตัวเอง ทำให้ isolation ระดับ kernel แน่นกว่า แต่เริ่มช้ากว่าและกินทรัพยากรมากกว่า."}, {"q": "Dockerfile ด้านล่าง build ช้าทุกครั้งที่แก้โค้ดเพียงไฟล์เดียว สาเหตุที่เป็นไปได้มากที่สุดคืออะไร", "o": ["COPY . . มาก่อน npm ci จึงทำให้ cache ของ layer npm ci ใช้ไม่ได้ทุกครั้งที่ไฟล์ใดเปลี่ยน", "ใช้ base image แบบ alpine ซึ่งทำให้ npm ci ต้องดาวน์โหลดใหม่ทุกครั้งเสมอ", "คำสั่ง CMD ต้องอยู่ก่อน RUN ไม่เช่นนั้น Docker จะไม่ใช้ layer cache", "WORKDIR สร้าง layer ใหม่ทุกครั้งที่ build ทำให้ layer ถัดไปถูกล้างทั้งหมด"], "e": "Docker ใช้ cache ตามลำดับ layer. ถ้า COPY . . มาก่อน แล้วไฟล์ใดเปลี่ยน layer นั้นและทุก layer หลังมันจะถูก build ใหม่ รวมถึง npm ci. วิธีแก้คือ COPY package*.json และ RUN npm ci ก่อน แล้วค่อย COPY ส่วนที่เหลือ.", "code": "FROM node:20-alpine\nWORKDIR /app\nCOPY . .\nRUN npm ci\nCMD [\"node\", \"server.js\"]"}, {"q": "ข้อใดเกี่ยวกับ Kubernetes ถูกต้อง (เลือก 2 ข้อ)", "o": ["Deployment ระบุจำนวน replica ของ Pod และวิธีอัปเดตเวอร์ชันแบบ rolling ได้", "Service ให้ endpoint ที่คงที่เพื่อกระจาย traffic ไปยัง Pod ที่เปลี่ยนไปมาตลอดเวลา", "Pod แต่ละตัวมี container ได้เพียงหนึ่งตัวเท่านั้น ไม่สามารถรันหลาย container ในโหนดเดียวกันได้", "Service ใช้สร้าง container image จาก Dockerfile ภายใน cluster โดยตรงทุกครั้งที่ deploy", "Pod ที่ถูกลบจะกลับมาด้วย IP เดิมเสมอโดยไม่ต้องมี Service มาคอยกำกับอีกเลย"], "c": [0, 1], "multi": true, "e": "Deployment จัดการ replica และ rolling update. Service ให้ที่อยู่คงที่เพราะ IP ของ Pod เปลี่ยนได้. Pod มีหลาย container ได้ (เช่น sidecar) และการสร้าง image เป็นหน้าที่ของ build tool ไม่ใช่ Service."}, {"q": "ข้อใดเป็นความเสี่ยงด้านความปลอดภัยของ container image", "o": ["ฝัง secret ไว้ใน layer เพราะลบไฟล์ใน layer ถัดไปก็ยังอยู่ในประวัติ image", "ใช้ multi-stage build เพื่อตัด dev dependency และ source ที่ไม่จำเป็นออกจาก image สุดท้าย", "กำหนด USER เป็น non-root ก่อนรัน process หลักของแอปภายใน container", "ระบุ tag เวอร์ชันเจาะจงของ base image แทนการใช้ latest เพื่อให้ build ซ้ำได้"], "e": "Layer เก็บเนื้อหาไว้ตามลำดับ ใครดึง image ไปก็ย้อนดู layer ที่มี secret ได้. สามข้อที่เหลือเป็นแนวปฏิบัติที่ลดความเสี่ยง ไม่ใช่เพิ่ม."}], "t4": [{"q": "ต้องการให้แอปยังทำงานได้เมื่อ data center หนึ่งแห่งใน region เดียวกันมีปัญหา ควรทำอย่างไร", "o": ["รัน instance ของแอปกระจายอยู่หลาย Availability Zone ภายใต้ load balancer เดียวกัน", "เพิ่มขนาดของ instance เดิมให้ใหญ่ขึ้นภายใน Availability Zone เดิม", "ตั้ง auto scaling ให้เพิ่มจำนวน instance แต่ยังวางทั้งหมดไว้ในโซนเดียวกันเหมือนเดิมทุกตัว", "สำรองข้อมูลลงดิสก์อีกลูกที่ผูกกับ instance ตัวเดิมในโซนเดียวกัน"], "e": "AZ คือหน่วยแยกความเสียหายระดับ data center. การกระจายหลาย AZ ทำให้ AZ หนึ่งล่มแล้วอีก AZ ยังรับ traffic ได้. การเพิ่มขนาดหรือเพิ่มจำนวนใน zone เดียวไม่ช่วยเมื่อ zone นั้นล่มทั้งหมด."}, {"q": "แอปเก็บ session ไว้ใน memory ของแต่ละ instance เมื่อ scale out เป็น 4 instance ผู้ใช้ถูกเด้งออกจากระบบบ่อย แนวทางแก้ที่ตรงสาเหตุที่สุดคืออะไร", "o": ["ย้าย session ไปเก็บใน store ร่วม เช่น Redis แบบ managed", "เพิ่ม CPU ให้ทุก instance เพื่อให้ประมวลผล request ได้เร็วขึ้นกว่าเดิม", "ปิด health check ของ load balancer ไม่ให้ตัด instance ออกจากกลุ่ม", "ลดเหลือ instance เดียวถาวรเพื่อไม่ให้ session กระจัดกระจายไปหลายเครื่อง"], "e": "ปัญหาคือ state ผูกอยู่กับ instance แต่ request ถัดไปไปตกเครื่องอื่น. การแยก state ออกไปไว้ที่ store ร่วมทำให้แอป stateless และ scale out ได้. ส่วนการลดเหลือ instance เดียวแก้อาการได้ แต่เสียประโยชน์ของ scale out ไปทั้งหมด."}, {"q": "ข้อใดเกี่ยวกับ auto scaling ถูกต้อง (เลือก 2 ข้อ)", "o": ["ปรับจำนวน instance ตาม metric เช่น CPU หรือความยาวของ queue ได้", "ถ้าโหลดพุ่งตามเวลาที่คาดได้ ควรใช้ scheduled scaling ล่วงหน้าเพื่อชดเชยเวลา warm-up", "Instance ใหม่พร้อมรับ traffic ทันทีในเสี้ยววินาทีทุกครั้งที่ถูกสร้าง", "Vertical scaling ไม่มีเพดานของขนาดเครื่อง จึงใช้แทน horizontal ได้ทุกกรณี", "Elasticity หมายถึงการซื้อ capacity ล่วงหน้าไว้เท่ากับโหลดสูงสุดตลอดเวลา"], "c": [0, 1], "multi": true, "e": "Auto scaling อิง metric และ instance ใหม่ต้องใช้เวลาเริ่มต้น จึงควรเสริมด้วย scheduled scaling เมื่อรู้ล่วงหน้า. Vertical scaling มีเพดานตามขนาดเครื่อง และ elasticity คือการขยาย/หดตามโหลด ไม่ใช่การจองไว้ตลอด."}, {"q": "ข้อใดอธิบาย durability ของบริการเก็บข้อมูลได้ถูกต้อง", "o": ["โอกาสที่ข้อมูลซึ่งเก็บไว้จะไม่สูญหายหรือเสียหายเมื่อเวลาผ่านไป", "สัดส่วนของเวลาที่บริการตอบสนองต่อคำขอได้ในแต่ละเดือน", "เวลาเฉลี่ยตั้งแต่ client ส่ง request จนได้รับ response กลับมา", "จำนวน request สูงสุดที่ระบบรับได้ต่อวินาทีก่อนเริ่มช้าลง"], "e": "Durability = ข้อมูลไม่สูญหาย. คำอธิบายเรื่องสัดส่วนเวลาที่ตอบได้คือ availability, เวลาตอบสนองคือ latency และจำนวน request ต่อวินาทีคือ throughput/capacity. ระบบหนึ่งอาจ durable สูงแต่ available ชั่วคราวไม่ได้ในช่วงที่บริการมีปัญหา."}], "t5": [{"q": "สถาปัตยกรรมปัจจุบัน: Load balancer → app instance เดียวใน AZ-a → database instance เดียวใน AZ-a ควรปรับอะไรก่อนเพื่อลดจุดล้มเหลวเดี่ยว (SPOF) ของชั้น application", "o": ["รัน app หลาย instance กระจายหลาย AZ โดยมี health check ที่ load balancer", "เพิ่ม CPU และ RAM ของ app instance ตัวเดิมให้ใหญ่ขึ้นอีกหนึ่งขนาดในโซนเดิม", "ย้าย load balancer เข้าไปไว้ใน private subnet ที่ไม่มี route ขาเข้าจากภายนอก", "เพิ่ม TTL ของ cache ให้ยาวขึ้นเพื่อลดจำนวนครั้งที่ต้องเรียก app ซ้ำ"], "e": "SPOF ของชั้น app คือมีเครื่องเดียวใน zone เดียว. การมีหลาย instance ข้าม AZ พร้อม health check คือวิธีตรง. การเพิ่มขนาดเครื่องยังเป็นจุดเดียวเหมือนเดิม และ load balancer ที่ต้องรับ traffic จากภายนอกต้องเข้าถึงได้จากอินเทอร์เน็ต."}, {"q": "ระบบออกใบเสร็จเป็น PDF ใช้เวลาราว 20 วินาทีต่อครั้ง ทำให้หน้าเว็บค้างและเกิด timeout เมื่อผู้ใช้หลายคนกดพร้อมกัน แนวทางที่เหมาะที่สุดคืออะไร", "o": ["ตอบรับ request ทันที แล้วส่งงานเข้า queue ให้ worker ทำเบื้องหลังและแจ้งผลภายหลัง", "เพิ่ม timeout ของ load balancer เป็น 60 วินาทีเพื่อให้ request รอจนงานเสร็จสมบูรณ์", "ย้ายการสร้าง PDF ไปรันใน browser ของผู้ใช้ทุกคนแทนการทำฝั่ง server ทั้งหมด", "ขยาย database เป็น instance ที่ใหญ่ขึ้นเพื่อให้เขียนข้อมูลใบเสร็จได้เร็วขึ้น"], "e": "งานที่ช้าและไม่จำเป็นต้องได้ผลทันทีควรเป็น asynchronous: ตอบรับก่อน แล้วให้ worker ทำเบื้องหลังผ่าน queue. การเพิ่ม timeout แค่ซ่อนปัญหาและยังกินทรัพยากรของ web tier ระหว่างรอ."}, {"q": "ข้อใดเกี่ยวกับ network ใน cloud (ศัพท์ AWS) ถูกต้อง (เลือก 2 ข้อ)", "o": ["Private subnet ไม่มี route ขาเข้าจากอินเทอร์เน็ต และออกไปข้างนอกได้ผ่าน NAT หรือ endpoint", "Security group เป็น stateful และมีเฉพาะกฎประเภท allow", "Security group รองรับกฎ deny สำหรับบล็อก IP เฉพาะรายได้โดยตรง", "Public subnet คือ subnet ที่ไม่ต้องมี route ไปยัง internet gateway", "NAT gateway ใช้เปิดให้ผู้ใช้จากอินเทอร์เน็ตเข้ามาหา instance ใน private subnet"], "c": [0, 1], "multi": true, "e": "Security group เป็น stateful และมีแต่ allow (ค่าเริ่มต้นปฏิเสธทุกอย่างที่ไม่ได้ระบุ). การบล็อก IP แบบ deny ใช้ network ACL. NAT gateway ใช้ให้ private subnet ออกไปข้างนอกฝั่งเดียว ไม่ได้เปิดขาเข้า."}, {"q": "หลังเพิ่ม cache หน้า database ลูกค้ายังเห็นราคาสินค้าเก่าอยู่หลายนาทีทั้งที่ทีมเพิ่งอัปเดตราคาในระบบ สาเหตุที่เป็นไปได้มากที่สุดคืออะไร", "o": ["ข้อมูลใน cache ยังไม่หมดอายุ (TTL) และไม่มีการ invalidate เมื่อราคาถูกแก้", "Database ไม่รองรับการเขียนข้อมูลใหม่หลังมี cache ถูกวางไว้ด้านหน้า", "Load balancer ส่ง request ไปยัง region อื่นที่ยังไม่ได้สร้างตารางราคา", "Queue ส่งข้อความซ้ำจึงทำให้ราคาถูกบันทึกกลับเป็นค่าเดิม"], "e": "Cache แลกความเร็วกับความสดของข้อมูล. ถ้าไม่ได้กำหนด TTL สั้น หรือไม่ได้ลบ/อัปเดต key เมื่อข้อมูลต้นทางเปลี่ยน ผู้ใช้จะเห็นค่าเก่า. ส่วนอีกสามข้อไม่ใช่อาการของโจทย์นี้."}], "t6": [{"q": "ระบบหนึ่งมีโหลดพื้นฐานคงที่ตลอด 24 ชั่วโมงและจะรันต่อเนื่องอย่างน้อย 3 ปี รูปแบบการจ่ายเงินสำหรับ compute ส่วนพื้นฐานนี้ควรพิจารณาแบบใดเป็นอันดับแรก", "o": ["Reserved Instances หรือ Savings Plans เพราะยอมผูกสัญญาแลกกับราคาต่อหน่วยที่ต่ำลง", "Spot Instances สำหรับ database หลักที่ต้องมีข้อมูลต่อเนื่องห้ามหยุดกลางคัน", "On-Demand ทั้งหมด เพื่อไม่ต้องผูกสัญญาแม้ใช้งานเต็มเวลาตลอดทั้งปี", "Serverless function ทุกส่วน โดยไม่คำนึงถึงจำนวน request ต่อเดือน"], "e": "โหลดคงที่และระยะยาวคือเงื่อนไขที่ commitment-based pricing ให้ผลดี. Spot อาจถูกเรียกคืน จึงไม่เหมาะกับ database หลัก, On-Demand ราคาต่อหน่วยสูงสุด, และ serverless อาจแพงกว่าเมื่อโหลดสูงและคงที่."}, {"q": "สมมุติ On-Demand ราคา 0.10 USD ต่อชั่วโมง ส่วนแบบจองคิด 0.06 USD ต่อชั่วโมงตลอด 730 ชั่วโมงต่อเดือนไม่ว่าจะใช้หรือไม่ เครื่องต้องทำงานอย่างน้อยกี่เปอร์เซ็นต์ของเดือนจึงเริ่มคุ้มกว่าการจอง", "o": ["60%", "40%", "73%", "85%"], "e": "จุดคุ้มทุน = ราคาจอง ÷ ราคา On-Demand = 0.06 ÷ 0.10 = 0.60 หรือ 60% ของเวลา (438 ชั่วโมง). ต่ำกว่านี้ On-Demand ถูกกว่า สูงกว่านี้การจองถูกกว่า."}, {"q": "ข้อใดเป็นค่าใช้จ่ายที่มักถูกมองข้ามเมื่อประเมินต้นทุน cloud (เลือก 2 ข้อ)", "o": ["Data transfer ขาออกสู่อินเทอร์เน็ตและการส่งข้อมูลข้าม region หรือ AZ ในบางกรณี", "ค่า NAT gateway, load balancer และการรับเข้า log ที่คิดแยกจากค่า compute", "ค่าสร้าง IAM role ที่คิดเป็นรายครั้งทุกครั้งที่มีการ assume role", "ค่าธรรมเนียมสร้าง tag ต่อ resource ซึ่งคิดเพิ่มทุกครั้งที่ติด tag", "ค่า data transfer ขาเข้าสู่ cloud ซึ่งทุก provider คิดแพงที่สุดในบิล"], "c": [0, 1], "multi": true, "e": "Egress, NAT, load balancer และ log ingestion เป็นรายการที่หลายทีมลืมจนบิลบวม. IAM role และ tag โดยปกติไม่คิดเงิน และ data transfer ขาเข้ามักไม่คิดหรือคิดต่ำ (ควรตรวจเงื่อนไขของแต่ละ provider)."}, {"q": "ฟังก์ชันบน Lambda ถูกเรียก 2,000,000 ครั้งต่อเดือน แต่ละครั้งใช้เวลา 300 ms และตั้ง memory ไว้ 1 GB ปริมาณ duration ที่นำไปคิดเงินคือกี่ GB-second", "o": ["600,000 GB-second", "60,000 GB-second", "6,000,000 GB-second", "200,000 GB-second"], "e": "GB-second = จำนวนครั้ง × เวลาเป็นวินาที × memory เป็น GB = 2,000,000 × 0.3 × 1 = 600,000. นำไปคูณกับราคาต่อ GB-second ของ region นั้น แล้วรวมกับค่า request."}], "t7": [{"q": "แอปบน EC2 ต้องอ่านไฟล์จาก S3 วิธีให้สิทธิ์ที่ปลอดภัยและเหมาะสมที่สุดคือข้อใด", "o": ["แนบ IAM role ที่มีสิทธิ์เท่าที่จำเป็นให้ instance เพื่อใช้ credential ชั่วคราว", "สร้าง IAM user แล้วเก็บ access key ไว้ในไฟล์ config ภายใน instance", "ฝัง access key ของ admin ไว้ใน image เพื่อให้ทุก instance ใช้ร่วมกัน", "ตั้ง bucket เป็น public read เพื่อให้แอปไม่ต้องมีการยืนยันตัวตน"], "e": "Role ให้ credential อายุสั้นที่หมุนเวียนอัตโนมัติ และไม่มี key ถาวรให้หลุด. การเก็บ access key ถาวรในไฟล์หรือ image เสี่ยงต่อการรั่วไหล และการเปิด public ทำให้ใครก็อ่านได้."}, {"q": "ผู้ใช้ถูกแนบ policy ที่มีสอง statement ตามโค้ดด้านล่าง ผู้ใช้คนนี้ลบ object ใน bucket acme-data ได้หรือไม่", "o": ["ไม่ได้ เพราะ explicit Deny มีผลเหนือ Allow ทุกกรณีโดยไม่ขึ้นกับลำดับ", "ได้ เพราะ s3:* ครอบคลุมทุก action และ statement แรกมีผลก่อนเสมอ", "ได้ เฉพาะ object ที่ผู้ใช้คนเดียวกันเป็นผู้อัปโหลดเข้ามาเองเท่านั้น", "ขึ้นอยู่กับลำดับของ statement ว่าอันไหนถูกเขียนไว้ก่อนในไฟล์ policy"], "e": "กติกาของ IAM: ค่าเริ่มต้นคือ deny, ต้องมี allow จึงทำได้ และ explicit deny เหนือกว่า allow ทุกกรณี โดยไม่ขึ้นกับลำดับ statement.", "code": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    { \"Effect\": \"Allow\", \"Action\": \"s3:*\",\n      \"Resource\": \"arn:aws:s3:::acme-data/*\" },\n    { \"Effect\": \"Deny\", \"Action\": \"s3:DeleteObject\",\n      \"Resource\": \"arn:aws:s3:::acme-data/*\" }\n  ]\n}"}, {"q": "ข้อใดเป็นแนวปฏิบัติด้านความปลอดภัยที่เหมาะสม (เลือก 2 ข้อ)", "o": ["ให้ workload ใช้ role ที่ได้ credential อายุสั้นแทน access key ถาวร", "เก็บ secret ใน secret manager แล้วให้ workload ดึงตอนรันด้วยสิทธิ์ของ role", "ฝัง API key ไว้ใน Dockerfile ด้วย ENV แล้ว push image ไป registry ส่วนตัว", "ใช้ root account ในงาน deploy ประจำวัน เพื่อไม่ต้องจัดการสิทธิ์ของผู้ใช้", "เปิด S3 เป็น public ชั่วคราวเพื่อแชร์ไฟล์ แล้วค่อยปิดเมื่อนึกขึ้นได้"], "c": [0, 1], "multi": true, "e": "Role + secret manager ลดความเสี่ยงจาก credential รั่ว. การฝัง key ใน image ทำให้มันอยู่ในประวัติ layer, root account ควรใช้เฉพาะงานที่จำเป็นจริง และการเปิด public แม้ชั่วคราวเสี่ยงต่อการเข้าถึงโดยไม่ตั้งใจ."}, {"q": "ข้อใดอธิบาย envelope encryption ได้ถูกต้อง", "o": ["ข้อมูลถูกเข้ารหัสด้วย data key และ data key ถูกเข้ารหัสอีกชั้นด้วย key ที่อยู่ใน KMS", "KMS key เข้ารหัสข้อมูลทุกไบต์โดยตรงที่ storage และไม่มี data key ใด ๆ เกี่ยวข้อง", "ข้อมูลไม่ถูกเข้ารหัสจริง มีเพียงเมตาดาต้าของไฟล์ที่ถูกห่อด้วย key เพื่อใช้ตรวจสอบความถูกต้อง", "Data key เดียวถูกใช้ร่วมกันทุกลูกค้าของ provider เพื่อลดภาระการจัดการ key"], "e": "Envelope encryption ทำให้ key หลักไม่ต้องออกจาก KMS และหมุนเวียนหรือเพิกถอนได้จากจุดเดียว ขณะที่การเข้ารหัสข้อมูลปริมาณมากใช้ data key ซึ่งเร็วกว่า. Provider ไม่ใช้ data key เดียวร่วมกันข้ามลูกค้า."}], "t8": [{"q": "บริการหนึ่งมี SLA 99.9% ต่อเดือน (30 วัน = 43,200 นาที) downtime สูงสุดที่ยังอยู่ในเกณฑ์ SLA คือประมาณเท่าใด", "o": ["43.2 นาที", "4.32 นาที", "21.6 นาที", "7.2 ชั่วโมง"], "e": "0.1% ของ 43,200 นาที = 43.2 นาที. 4.32 นาทีคือของ 99.99%, 21.6 นาทีคือของ 99.95%, และ 7.2 ชั่วโมงคือของ 99%."}, {"q": "แอปต้องผ่านสองบริการที่ต่อกันแบบอนุกรม ทั้งสองมี availability 99.9% และไม่มีสำเนาสำรอง availability รวมโดยประมาณเป็นเท่าใด", "o": ["ประมาณ 99.8% ซึ่งต่ำกว่าบริการที่แย่สุดในสองตัว", "99.9% เท่าเดิม เพราะบริการทั้งสองเท่ากัน จึงไม่ส่งผลต่อกัน", "ประมาณ 99.95% เพราะค่าเฉลี่ยของทั้งสองบริการดีขึ้นเมื่อรวมกัน", "99.99% เพราะความผิดพลาดของทั้งสองบริการหักล้างกันโดยธรรมชาติ"], "e": "ระบบอนุกรมต้องให้ทุกชิ้นทำงานพร้อมกัน จึงคูณกัน: 0.999 × 0.999 = 0.998001 ≈ 99.8%. ผลรวมไม่มีทางสูงกว่าชิ้นที่ต่ำที่สุด. การเพิ่มความพร้อมใช้งานต้องใช้ redundancy แบบขนาน."}, {"q": "ข้อใดเกี่ยวกับ RTO และ RPO ถูกต้อง (เลือก 2 ข้อ)", "o": ["RPO คือปริมาณข้อมูลที่ยอมสูญเสียได้ จึงกำหนดความถี่ของ backup หรือ replication", "RTO คือระยะเวลาสูงสุดที่ยอมให้ระบบหยุดก่อนต้องกลับมาให้บริการอีกครั้ง", "RTO คือขนาดข้อมูลเป็น GB ที่ต้องกู้คืนก่อนระบบจะเปิดให้ใช้งานได้", "RPO คือเวลาที่ทีมใช้ตอบสนองต่อ incident ครั้งแรกหลังได้รับ alert", "ทั้งสองค่าถูกกำหนดโดย provider ใน SLA โดยลูกค้าปรับเปลี่ยนไม่ได้"], "c": [0, 1], "multi": true, "e": "RPO ตอบว่า \"เสียข้อมูลได้ย้อนหลังกี่นาที\" และ RTO ตอบว่า \"ล่มได้นานแค่ไหน\". สองค่านี้มาจากความต้องการทางธุรกิจ แล้วใช้เลือกกลยุทธ์ DR และออกแบบระบบให้รองรับ."}, {"q": "ธนาคารแห่งหนึ่งมีข้อกำหนดว่าข้อมูลลูกค้าต้องไม่ออกนอกประเทศ สิ่งแรกที่ควรตรวจเมื่อเลือก cloud service คืออะไร", "o": ["region ที่เก็บข้อมูลของบริการนั้น รวมถึง backup และ log ที่มีข้อมูลลูกค้า", "จำนวน pillar ของ Well-Architected Framework ที่ provider ประกาศไว้ในเอกสารหลัก", "ชนิดของ CPU ที่ provider ใช้ใน instance ราคาถูกที่สุดของ region นั้น", "ชื่อทางการค้าของบริการ load balancer ที่ให้บริการอยู่ใน region ดังกล่าว"], "e": "ข้อกำหนดเรื่อง data residency ตัดสินจากที่ตั้งของข้อมูลทั้งหมด ไม่ใช่เฉพาะ database หลัก แต่รวม backup, snapshot, log และการ replicate ข้าม region. ข้ออื่นไม่เกี่ยวกับข้อกำหนดนี้."}], "t9": [{"q": "API ภายในถูกเรียกเป็นช่วงสั้น ๆ ไม่กี่ชั่วโมงต่อวัน ส่วนที่เหลือแทบไม่มี traffic ทีมมีสมาชิกสามคนและไม่อยากดูแลเครื่อง ตัวเลือกใดสมเหตุสมผลที่สุด", "o": ["Serverless function หรือ container แบบ scale-to-zero เช่น Cloud Run เพราะจ่ายตามการใช้จริง", "VM ขนาดใหญ่ที่เปิดตลอดเวลาเพื่อให้พร้อมรับ peak ที่เกิดขึ้นเป็นครั้งคราวในแต่ละวันของสัปดาห์", "Kubernetes cluster ที่ดูแลเองพร้อม node ขั้นต่ำสามเครื่องที่เปิดอยู่ตลอดเวลาทุกวันทุกเดือน", "Reserved Instance ระยะ 3 ปีสำหรับ instance ที่ใช้งานไม่ถึงครึ่งหนึ่งของเวลา"], "e": "โหลดเป็นช่วงสั้นและทีมเล็กตรงกับจุดแข็งของ scale-to-zero: ไม่มีค่าใช้จ่ายตอนว่างและไม่ต้องดูแล server. อีกสามข้อมีค่าใช้จ่ายคงที่หรือภาระ operation สูงเมื่อเทียบกับการใช้งานจริง."}, {"q": "ระบบมี request สม่ำเสมอ 24 ชั่วโมงในระดับสูงมาก ข้อใดอธิบายได้ดีที่สุดว่าทำไม instance ที่จองไว้อาจคุ้มกว่า serverless ต่อ request", "o": ["ต้นทุนคงที่ของ instance ถูกเฉลี่ยลงเมื่อใช้เต็มกำลัง ส่วน serverless คิดเงินทุก request", "Serverless คิดเงินเฉพาะช่วงที่ไม่มี request จึงไม่คุ้มเมื่อโหลดสูงต่อเนื่องตลอดทั้งวันทั้งคืน", "Instance ที่จองไว้ไม่มีเพดาน throughput จึงรองรับทุกโหลดโดยไม่ต้องขยายเพิ่ม", "Serverless ไม่มีค่า network และ logging ทำให้ต้นทุนรวมสูงเกินจริงเสมอ"], "e": "เมื่อ utilization สูงต่อเนื่อง ราคาต่อ request ของ instance ที่จองไว้ต่ำกว่าอัตราคิดต่อ request ของ serverless (เหมือนผลจากโค้ดในหัวข้อ ที่ 200 ล้าน request แพงกว่า). ข้ออื่นระบุข้อเท็จจริงผิดทั้งหมด."}, {"q": "ผู้ใช้ทั่วเอเชียบ่นว่าหน้าเว็บช้า ข้อใดเป็นแนวทางลด latency ที่สมเหตุสมผล (เลือก 2 ข้อ)", "o": ["ใช้ CDN หรือ cache ใกล้ผู้ใช้สำหรับ content ที่แคชได้", "วาง compute ไว้ region เดียวกับ database เพื่อเลี่ยง cross-region call ในทุก request", "ย้าย database ไปยัง region ที่ไกลที่สุดเพื่อกระจายโหลดออกจากผู้ใช้", "ตั้ง retry ให้ครบสิบครั้งทุก request เพื่อให้มั่นใจว่าตอบสนองสำเร็จ", "ปิด connection ทุกครั้งหลังเรียก database เสร็จเพื่อลดภาระของ pool"], "c": [0, 1], "multi": true, "e": "CDN/cache ลดระยะทางและจำนวนครั้งที่ไปถึง origin และการวาง compute ใกล้ data ลดค่า round trip. การย้าย data ไปไกล, retry มากเกินไป และการเปิด-ปิด connection ทุกครั้งล้วนเพิ่ม latency."}, {"q": "ฟังก์ชันที่ไม่มี request มาสักพักเกิด latency พุ่งในครั้งแรกที่ถูกเรียก (cold start) ทีมยอมจ่ายค่าใช้จ่ายคงที่เพิ่มได้ แนวทางที่ตรงที่สุดคืออะไร", "o": ["ใช้ provisioned concurrency หรือกำหนด minimum instances ให้มีตัวอุ่นเครื่องรออยู่", "เพิ่ม memory ให้ database เพื่อให้ตอบสนองหลังฟังก์ชันเริ่มทำงานได้เร็วขึ้นกว่าเดิม", "ย้ายฟังก์ชันไป region ที่ราคาต่ำกว่าเพื่อให้การเริ่มต้นใช้เวลาน้อยลงกว่าเดิม", "ลด timeout ของฟังก์ชันให้สั้นลงเพื่อให้ instance ถูกทำลายทิ้งเร็วขึ้นทุกครั้ง"], "e": "Cold start เกิดเพราะต้องสร้าง execution environment ใหม่. การมี instance ที่อุ่นไว้ล่วงหน้า (provisioned concurrency / min instances) ลดผลกระทบ โดยแลกกับค่าใช้จ่ายคงที่. อีกสามข้อไม่เกี่ยวกับกลไกนี้."}], "t10": [{"q": "Consumer ของ queue ได้รับข้อความ OrderPlaced เดิมซ้ำสองครั้งและตัดสต็อกสองรอบ แนวทางแก้ที่ถูกต้องที่สุดคืออะไร", "o": ["ทำให้ consumer เป็น idempotent เช่นเก็บ message id ที่ทำแล้วหรือใช้ unique constraint", "ปิดการ retry ของ broker ทั้งหมดโดยไม่เปลี่ยน logic แล้วยอมรับว่าข้อความอาจหายได้", "เพิ่มจำนวน consumer ให้มากขึ้นเพื่อให้ข้อความถูกอ่านและประมวลผลได้เร็วขึ้นกว่าเดิม", "เก็บข้อความไว้ใน memory ของ producer จนกว่า consumer จะตอบกลับว่าสำเร็จครบทุกตัว"], "e": "Broker ส่วนใหญ่รับประกัน at-least-once จึงต้องคาดว่าข้อความจะซ้ำ. วิธีแก้คือทำให้การประมวลผลซ้ำไม่มีผลข้างเคียงเพิ่ม. การปิด retry กลายเป็นความเสี่ยงที่ข้อความหาย ส่วนการเพิ่ม consumer ไม่ได้ป้องกันข้อความซ้ำ."}, {"q": "Orders service บันทึกลง database สำเร็จแต่ publish event ไป broker ล้มเหลว ทำให้ระบบอื่นไม่รู้ว่ามีออเดอร์ใหม่ รูปแบบใดแก้ปัญหานี้ตรงที่สุด", "o": ["Transactional outbox ที่เขียน event ลงตารางใน transaction เดียวกับข้อมูลหลัก", "Two-phase commit ข้าม database และ consumer ทุกตัวของระบบในธุรกรรมเดียวกันทั้งหมด", "ลดขนาดของ message ลงเพื่อให้การ publish ไป broker สำเร็จได้ง่ายขึ้นกว่าเดิม", "เพิ่ม timeout ในการ publish เป็นหนึ่งชั่วโมงเพื่อรอให้ broker กลับมาทำงานปกติ"], "e": "ปัญหาคือการเขียนสองที่ (DB กับ broker) ไม่เป็นอะตอมิก. Outbox ทำให้การบันทึกข้อมูลและการ \"จดว่าต้องส่ง event\" อยู่ใน transaction เดียว จากนั้นค่อยส่งอย่างน้อยหนึ่งครั้ง (ซึ่งกลับไปที่ idempotent consumer)."}, {"q": "ข้อใดเป็นรูปแบบที่ช่วยเพิ่ม resilience ได้อย่างถูกต้อง (เลือก 2 ข้อ)", "o": ["Circuit breaker หยุดเรียก dependency ที่ล้มเหลวต่อเนื่องแล้วตอบแบบ fail fast", "Retry แบบ exponential backoff ร่วมกับ jitter ลดการกระแทก service ที่กำลังฟื้นตัว", "Saga ใช้ distributed lock ข้ามบริการเพื่อให้ธุรกรรมเป็น ACID สมบูรณ์เสมอ", "Dead-letter queue ลบข้อความที่ประมวลผลไม่สำเร็จทิ้งทันทีโดยไม่เก็บไว้", "Bulkhead รวมทุก dependency ไว้ใน thread pool เดียวเพื่อประหยัดทรัพยากร"], "c": [0, 1], "multi": true, "e": "Circuit breaker และ backoff+jitter คือรูปแบบมาตรฐานของ resilience. Saga ใช้ compensating action ไม่ใช่ lock ข้ามบริการ, DLQ เก็บข้อความที่พังไว้ตรวจสอบ, และ bulkhead แยก pool เพื่อไม่ให้ตัวหนึ่งลากตัวอื่นล้ม."}, {"q": "ทีมห้าคนกำลังสร้างผลิตภัณฑ์ในโดเมนใหม่ requirement ยังเปลี่ยนบ่อยและ deploy เดือนละครั้ง สถาปัตยกรรมเริ่มต้นแบบใดสมเหตุสมผลที่สุด", "o": ["Modular monolith ที่แบ่งโมดูลชัดเจน แล้วแยกบริการเมื่อมีแรงกดดันจริงด้านการ scale หรือทีม", "แยกเป็น microservices ราว 30 บริการตั้งแต่วันแรกเพื่อให้พร้อม scale ในอนาคตอันใกล้นี้ทันที", "เขียนทุกอย่างเป็น serverless function เล็ก ๆ หลายร้อยตัวโดยไม่มี workflow กลาง", "ใช้ distributed transaction ข้ามทุกบริการเพื่อให้ข้อมูลตรงกันทุกจังหวะ"], "e": "Microservices แลกความซับซ้อนแบบกระจายกับความอิสระของทีมและการ scale. เมื่อโดเมนยังไม่นิ่งและทีมเล็ก ความซับซ้อนนั้นมักเกินประโยชน์ การเริ่มจาก modular monolith แล้วแยกทีหลังตามเหตุผลจริงมีความเสี่ยงต่ำกว่า."}], "t11": [{"q": "ธุรกิจต้องการให้ระบบทนต่อ outage ระดับ region ของ provider รายเดียว งบประมาณจำกัดและทีมมีทักษะเฉพาะ cloud เจ้าเดียว ตัวเลือกใดคุ้มค่าที่สุด", "o": ["ออกแบบ multi-region ภายใน provider เดิมพร้อมทดสอบ failover เป็นระยะ", "ทำ active-active ข้ามสาม provider ด้วย stack ที่ portable ทั้งหมดตั้งแต่เริ่มต้น", "ซื้อฮาร์ดแวร์เองและย้ายทุกอย่างกลับไปรัน on-premises เพื่อความอิสระ", "ใช้ region เดียวต่อไป แล้วเพิ่มขนาด instance เพื่อป้องกันความเสียหายเป็นวงกว้าง"], "e": "เป้าหมายคือทนต่อ outage ระดับ region ซึ่ง multi-region ใน provider เดียวตอบได้ด้วยความซับซ้อนต่ำกว่า multi-cloud มาก. Multi-cloud จะมีเหตุผลเมื่อมีข้อกำหนดที่ provider เดียวตอบไม่ได้."}, {"q": "ส่วนใดต่อไปนี้ย้ายข้ามผู้ให้บริการ cloud ได้ง่ายที่สุด", "o": ["Container image พร้อม Kubernetes manifest ที่ไม่ผูกกับ feature เฉพาะ provider", "ตาราง DynamoDB ที่ออกแบบ access pattern ตาม API เฉพาะของ AWS ตั้งแต่ต้น", "IAM policy ที่อ้างอิง ARN ของ resource ใน account เดียวโดยตรงทั้งหมด", "ข้อมูลหลายร้อยเทราไบต์ที่ต้องย้ายออกผ่านเครือข่ายสาธารณะทั้งหมดในครั้งเดียว"], "e": "Container และ manifest เป็นมาตรฐานเปิดที่รันได้หลายที่ (ยังต้องดูส่วนเสริมอย่าง load balancer และ storage class). อีกสามข้อผูกกับ API, identity model หรือ data gravity ซึ่งเป็นต้นทุนหลักของการย้าย."}, {"q": "ข้อใดเป็นข้อแลกเปลี่ยนหรือต้นทุนของ multi-cloud ที่ควรนำมาพิจารณา (เลือก 2 ข้อ)", "o": ["ต้องมีทักษะและ tooling หลายชุด รวมถึง IAM และ monitoring ที่ไม่เหมือนกัน", "ค่า egress ข้าม cloud และ data gravity ทำให้การย้ายหรือซิงก์ข้อมูลแพงและช้า", "SLA ของแต่ละ provider รวมกันเป็น 100% โดยอัตโนมัติเมื่อใช้มากกว่าหนึ่งราย", "ไม่ต้องออกแบบเครือข่ายเชื่อมระหว่าง cloud เพราะ provider เชื่อมให้เองฟรี", "ใช้ feature เฉพาะทางของทุก provider ได้เต็มที่โดยไม่ต้องแลกกับ portability"], "c": [0, 1], "multi": true, "e": "Multi-cloud เพิ่มความซับซ้อนเรื่องทักษะ เครื่องมือ และค่า transfer. ความพร้อมใช้งานรวมไม่ได้เป็น 100% และการเชื่อมเครือข่ายเป็นงานที่ต้องออกแบบและเสียค่าใช้จ่าย. ถ้าต้อง portable มาก ก็มักต้องเลี่ยง feature เฉพาะทาง."}, {"q": "ระบบมีสำเนาอยู่ใน cloud A และ cloud B แต่ทั้งสองฝั่งใช้ identity provider ตัวเดียวและใช้ DNS จากผู้ให้บริการรายเดียวกัน ข้อสรุปใดถูกต้อง", "o": ["ยังมี single point of failure ที่ชั้น identity และ DNS ซึ่งใช้ร่วมกัน", "ไม่มีปัญหา เพราะสำเนาอยู่คนละ provider ความเสี่ยงจึงแยกจากกันโดยสมบูรณ์", "ปัญหาเดียวที่เหลืออยู่คือค่า license ของซอฟต์แวร์ที่ใช้ร่วมกัน", "ปัญหาอยู่ที่ container image ของสองฝั่งมี format ไม่ตรงกัน"], "e": "Redundancy ได้ผลเมื่อ failure domain แยกกันจริง. ถ้า IdP หรือ DNS ล่ม ทั้งสองฝั่งได้รับผลกระทบพร้อมกัน จึงควรทำ failure mode analysis ของสิ่งที่ใช้ร่วม."}], "t12": [{"q": "องค์กรมี account ราว 80 รายการ และต้องการป้องกันทุกทีมไม่ให้สร้าง resource นอก region ที่ได้รับอนุมัติ กลไกใดตรงเป้าหมายที่สุด", "o": ["Preventive guardrail ระดับ organization เช่น SCP, Azure Policy (deny) หรือ Org Policy", "ส่งอีเมลเตือนทุกทีมทุกเดือนเพื่อขอให้ใช้เฉพาะ region ที่ได้รับอนุมัติให้ใช้งาน", "ให้ทีม security เข้าตรวจ console ของทุก account ด้วยมือทุกเช้าก่อนเริ่มงาน", "รวมทุก workload เข้า account เดียวเพื่อลดจำนวนที่ต้องตรวจสอบในแต่ละรอบ"], "e": "ต้องการ \"ป้องกัน\" ในระดับที่ขยายได้ ต้องบังคับด้วยนโยบายที่ระดับ organization ไม่ใช่พึ่งการเตือนหรือการตรวจมือ. การรวมเป็น account เดียวทำให้ blast radius และการแยกสิทธิ์แย่ลง."}, {"q": "ผู้บริหารต้องการแผนระดับองค์กรครอบคลุม strategy, readiness และ governance ก่อนย้ายระบบจำนวนมาก framework ใดเหมาะกับคำถามนี้มากที่สุด", "o": ["Cloud Adoption Framework เพราะมองระดับ portfolio และการกำกับดูแลขององค์กร", "Well-Architected review ของระบบหนึ่งระบบเพื่อดูความเสี่ยงของ workload นั้น", "Dockerfile best practices เพื่อลดขนาด image ของแอปหลัก", "SLA ของ provider เพื่อเปรียบเทียบเปอร์เซ็นต์ความพร้อมใช้งาน"], "e": "Cloud Adoption Framework ตอบคำถามระดับองค์กร (strategy, plan, ready, adopt, govern, manage). Well-Architected เหมาะกับการรีวิวคุณภาพของ workload รายระบบ ซึ่งทำต่อเนื่องหลังจากมีรากฐานระดับองค์กรแล้ว."}, {"q": "ข้อใดเป็นแนวทางเชื่อม cloud เข้ากับกระบวนการขององค์กรได้เหมาะสม (เลือก 2 ข้อ)", "o": ["เชื่อมกับ IdP ขององค์กรผ่าน SAML หรือ OIDC เพื่อทำ SSO และเพิกถอนสิทธิ์จากจุดเดียว", "กำหนดมาตรฐาน tag และโครงสร้าง account เพื่อทำ showback หรือ chargeback", "สร้าง user แยกในแต่ละ cloud เพื่อให้ทีมจัดการสิทธิ์ของตนเองได้รวดเร็วขึ้นมาก", "ให้แต่ละทีมตั้งชื่อ tag ตามสะดวกเพื่อไม่ให้เป็นภาระต่อการทำงานประจำวัน", "ให้สิทธิ์ admin กับทุกทีมแล้วค่อยทบทวนการใช้งานในการประชุมประจำไตรมาสถัดไป"], "c": [0, 1], "multi": true, "e": "SSO จากแหล่งเดียวทำให้เพิกถอนสิทธิ์ทันทีเมื่อคนลาออก และ tag มาตรฐานทำให้แบ่งต้นทุนได้. อีกสามข้อทำให้สิทธิ์กระจัดกระจาย ต้นทุนไม่โปร่งใส หรือเปิดสิทธิ์เกินจำเป็น."}, {"q": "ทีมเพิ่ม multi-region แบบ active-active เพื่อยกระดับ reliability ของระบบ ตามหลัก Well-Architected ควรประเมินผลกระทบด้านใดควบคู่กัน", "o": ["Cost Optimization และ Operational Excellence เพราะต้นทุนและความซับซ้อนในการดูแลเพิ่มขึ้น", "ไม่มีผลต่อ pillar อื่น เพราะ reliability ถูกประเมินแยกจาก pillar ทั้งหมด", "Cost Optimization เท่านั้น เพราะมีการลดต้นทุนของ hardware ที่ซ้ำซ้อนลง", "Sustainability เท่านั้น เพราะ region ที่เพิ่มขึ้นไม่เกี่ยวกับต้นทุนหรือการดูแลระบบแต่อย่างใดทั้งสิ้น"], "e": "Pillar ของ Well-Architected มี trade-off ระหว่างกัน. การทำ active-active หลาย region เพิ่ม reliability แต่เพิ่มต้นทุน (compute, data transfer, replication) และเพิ่มงานด้าน deployment, monitoring และทดสอบ failover."}], "dl": [{"q": "ลูกค้าธนาคารถามว่า \"ถ้าย้ายระบบขึ้น AWS แล้วข้อมูลลูกค้ารั่วเพราะ bucket ถูกตั้งเป็น public ใครรับผิดชอบ\" คำตอบที่เหมาะสมที่สุดคืออะไร", "o": ["ฝั่งลูกค้ารับผิดชอบ เพราะการตั้งค่าสิทธิ์และปกป้องข้อมูลคือ security \"in\" the cloud", "AWS รับผิดชอบทั้งหมด เพราะเป็นเจ้าของ infrastructure ที่เก็บข้อมูลของลูกค้าอยู่จริง", "รับผิดชอบร่วมกันครึ่งต่อครึ่งโดยไม่ขึ้นกับว่าใครเป็นผู้ตั้งค่า bucket ไว้", "ไม่มีใครรับผิดชอบ เพราะสัญญาบริการ cloud ไม่ครอบคลุมกรณีข้อมูลรั่วไหล"], "e": "ตาม shared responsibility model ของ AWS provider รับผิดชอบ security \"of\" the cloud ส่วนการตั้งค่าบริการ สิทธิ์ และการปกป้องข้อมูลเป็นของลูกค้า. ขอบเขตจริงขึ้นกับบริการที่ใช้ และไม่ได้แบ่งครึ่งต่อครึ่งโดยตัวเลข.", "lv": "B", "src": "Deloitte-style"}, {"q": "บริการใดจัดอยู่ในกลุ่ม PaaS", "o": ["Azure App Service", "Amazon EC2", "Google Compute Engine", "Microsoft 365"], "e": "App Service: ส่งโค้ดแล้ว platform ดูแล runtime และ OS. EC2 และ Compute Engine เป็น IaaS ส่วน Microsoft 365 เป็น SaaS.", "lv": "B", "src": "HackerRank-style"}, {"q": "คำสั่งต่อไปนี้มีความหมายว่าอย่างไร", "o": ["เชื่อมพอร์ต 8080 ของเครื่อง host เข้ากับพอร์ต 3000 ของ container", "เชื่อมพอร์ต 3000 ของเครื่อง host เข้ากับพอร์ต 8080 ของ container", "เปิดให้ container ฟังทั้งสองพอร์ตพร้อมกันบนเครื่อง host โดยอัตโนมัติ", "ตั้ง health check ไว้ที่พอร์ต 8080 และส่ง metrics ออกทางพอร์ต 3000"], "e": "รูปแบบ -p คือ HOST_PORT:CONTAINER_PORT. ผู้ใช้เข้า http://localhost:8080 แล้ว Docker ส่งต่อไปยังพอร์ต 3000 ภายใน container. ส่วน -d คือรันแบบ detached.", "code": "docker run -d -p 8080:3000 myapp:1.0", "lv": "B", "src": "HackerRank-style"}, {"q": "บริษัทอีคอมเมิร์ซแจ้งว่าบิล cloud เดือนนี้สูงกว่าเดือนก่อนราวสามเท่า โดยไม่มี release ใหญ่ ขั้นตอนแรกที่ควรทำคืออะไร", "o": ["แยกค่าใช้จ่ายตามบริการ usage type และ tag ใน cost tool เพื่อหาต้นเหตุก่อนแก้", "ซื้อ Savings Plans ครอบคลุมการใช้งานทั้งหมดทันทีเพื่อลดราคาต่อหน่วยลงให้มากที่สุด", "ย้าย workload ทั้งหมดกลับไปรันบนเครื่องของบริษัทเพื่อหยุดค่าใช้จ่ายใหม่ทันที", "ปิดการเก็บ log ทั้งหมดของทุกระบบเพื่อประหยัดค่าใช้จ่ายให้เร็วที่สุดเท่าที่ทำได้"], "e": "ต้องวินิจฉัยก่อนแก้. การซื้อ commitment หรือย้ายระบบโดยยังไม่รู้สาเหตุอาจทำให้ผูกพันกับต้นทุนที่ไม่จำเป็น และการปิด log ทำลายความสามารถในการตรวจสอบ. ต้นเหตุที่พบบ่อยคือ egress, NAT, log หรือ resource ที่ลืมปิด.", "lv": "I", "src": "Deloitte-style"}, {"q": "ผู้พัฒนาสั่ง kubectl apply กับไฟล์ด้านล่างแล้วเกิด error ที่เกี่ยวกับ selector สาเหตุคืออะไร", "o": ["selector (app: orders) ไม่ตรงกับ labels ใน template (app: order-api)", "จำนวน replicas ต้องเป็นเลขคู่ จึงจะผ่านการตรวจสอบของ Deployment ตัวนี้ได้", "image ที่ระบุต้องใช้ tag latest เท่านั้น ไม่เช่นนั้นจะถูกปฏิเสธตั้งแต่ต้น", "containerPort ต้องตั้งเป็น 80 เท่านั้น Pod จึงจะถูกสร้างขึ้นมาได้"], "e": "Deployment (apps/v1) ต้องมี selector ที่ตรงกับ label ของ Pod template ไม่เช่นนั้นจะไม่ผ่านการตรวจสอบ. แก้โดยทำให้ค่าทั้งสองตรงกัน เช่น เปลี่ยนเป็น app: orders-api ทั้งสองจุด.", "code": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: orders-api\nspec:\n  replicas: 2\n  selector:\n    matchLabels:\n      app: orders\n  template:\n    metadata:\n      labels:\n        app: order-api\n    spec:\n      containers:\n        - name: api\n          image: registry.example.com/orders-api:1.4.2\n          ports:\n            - containerPort: 3000", "lv": "I", "src": "HackerRank-style"}, {"q": "pipeline CI/CD ใช้ role ตาม policy ด้านล่างเพื่อ deploy ไฟล์ static ไปยัง bucket เดียวชื่อ acme-web ข้อเสนอแก้ไขใดดีที่สุดตามหลัก least privilege", "o": ["จำกัด Action เหลือ s3:PutObject กับ s3:ListBucket และจำกัด Resource เป็น bucket acme-web", "คง Action เป็น * แต่เพิ่ม Condition ให้ใช้ได้เฉพาะในเวลาทำการเท่านั้นเพื่อลดความเสี่ยงของ key", "เปลี่ยนเป็น s3:* บน Resource * เพื่อให้ pipeline ทำงานได้ครบทุกกรณีในอนาคต", "ย้าย access key ของ role นี้ไปเก็บในตัวแปร environment ของ pipeline แทน"], "e": "สิทธิ์ควรจำกัดทั้ง action และ resource ให้เท่ากับงานจริง. การใส่เงื่อนไขเวลาไม่ลดขอบเขต action/resource, s3:* บน * กว้างขึ้นอีก, และการย้าย key ไปไว้ใน environment variable ไม่แก้ปัญหาสิทธิ์กว้างเกินไป.", "code": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    { \"Effect\": \"Allow\", \"Action\": \"*\", \"Resource\": \"*\" }\n  ]\n}", "lv": "I", "src": "HackerRank-style"}, {"q": "ลูกค้าต้องการ availability ที่ 99.95% ต่อเดือน แต่ระบบปัจจุบันมี database instance เดียวซึ่งมี SLA 99.9% ข้อเสนอใดสอดคล้องกับเป้าหมายมากที่สุด", "o": ["เพิ่ม redundancy เช่น database แบบ multi-AZ พร้อม failover อัตโนมัติ", "ขอให้ provider เพิ่มตัวเลข SLA ของ instance เดิมเป็น 99.95% ในสัญญาให้บริการ", "เพิ่ม CPU และ RAM ของ instance เดิมเพื่อลดโอกาสที่ระบบจะล่มลงมาก", "เก็บ backup รายสัปดาห์เพิ่มเติมเพื่อให้กู้คืนได้เมื่อเกิดเหตุขัดข้องขึ้นจริง"], "e": "Availability ของ component เดียวไม่เกิน SLA ของมันเอง. การเพิ่มสำเนาที่ทำงานแทนกันได้ (multi-AZ + failover) คือวิธีทำให้ availability รวมสูงขึ้น. Backup ช่วยเรื่อง durability/RPO แต่ไม่ลด downtime ระหว่างเกิดเหตุ.", "lv": "I", "src": "Deloitte-style"}, {"q": "งานประมวลผลรูปภาพแบบ batch ทำงานได้ข้ามคืน สามารถ retry หรือเริ่มต่อจาก checkpoint ได้ และไม่ได้เร่งด่วน ตัวเลือก compute ใดประหยัดที่สุดโดยยังสมเหตุสมผล", "o": ["Spot Instances (หรือ preemptible VM) เพราะงานทนต่อการถูกขัดจังหวะได้", "On-Demand Instances เพราะต้องการให้ไม่ถูกขัดจังหวะเลยแม้งานจะคั่นได้", "Dedicated Host เพราะต้องการเครื่องแยกเฉพาะสำหรับงานที่ไม่มี compliance พิเศษ", "Reserved Instances 3 ปี เพราะงานรันเพียงบางคืนในแต่ละสัปดาห์"], "e": "งาน batch ที่ retry/checkpoint ได้คือกรณีใช้งานหลักของ Spot ซึ่งใช้ความจุส่วนเกินในราคาต่ำและอาจถูกเรียกคืน. Reserved เหมาะกับโหลดคงที่ ไม่ใช่งานเป็นช่วง ๆ.", "lv": "I", "src": "HackerRank-style"}, {"q": "ลูกค้าตั้งเป้าหมาย DR คือ RTO 1 ชั่วโมงและ RPO 5 นาที ข้อใดจำเป็นต้องมีอย่างน้อยเพื่อให้บรรลุเป้านี้ (เลือก 2 ข้อ)", "o": ["การ replicate ข้อมูลต่อเนื่องหรือบ่อยพอให้ข้อมูลที่สูญเสียไม่เกิน 5 นาที", "สภาพแวดล้อมสำรองที่ขึ้นภายใน 1 ชั่วโมง เช่น warm standby หรือ pilot light ที่ automate", "Backup แบบ snapshot รายสัปดาห์ที่เก็บไว้ใน storage ราคาถูกอีก region หนึ่งไว้", "เอกสารขั้นตอนกู้คืนที่เขียนไว้ละเอียดมากแต่ไม่เคยถูกทดสอบหรือ automate", "การซื้อ support plan ระดับสูงสุดแล้วไม่ปรับสถาปัตยกรรมของระบบเลยแม้แต่น้อย"], "c": [0, 1], "multi": true, "e": "RPO 5 นาทีต้องการ replication ที่ถี่พอ และ RTO 1 ชั่วโมงต้องการระบบสำรองที่พร้อมขึ้นเร็ว (และ automate เพื่อไม่ต้องพึ่งคน). Backup รายสัปดาห์เสีย RPO, เอกสารที่ไม่เคยทดสอบไม่การันตี RTO และ support plan ไม่ได้ทำให้ระบบกู้คืนเองได้.", "lv": "I", "src": "Deloitte-style"}, {"q": "ลูกค้าของทีมที่ปรึกษาต้องการทำ multi-cloud แบบ active-active เพราะกลัว vendor lock-in แต่ทีมมี 6 คน งบจำกัด และ requirement ยังไม่ชัด คำแนะนำใดสมเหตุสมผลที่สุด", "o": ["ประเมินความเสี่ยงจริงก่อน แล้วเริ่มจาก multi-region ใน cloud เดียวพร้อมแผน exit", "เริ่มสร้าง active-active ข้ามสอง provider ทันทีเพื่อให้สอดคล้องกับความกังวลของลูกค้า", "ปฏิเสธแนวคิด multi-cloud ทั้งหมดโดยให้เหตุผลว่าไม่เคยมีประโยชน์ในกรณีใดเลย", "เลือก provider ที่ราคาถูกที่สุดแล้วใช้ feature เฉพาะให้มากที่สุดเพื่อประหยัดเวลา"], "e": "คำแนะนำที่ดีเริ่มจากความเสี่ยงและ requirement ที่ชัดเจน. Active-active หลาย provider มีต้นทุนและความซับซ้อนสูงมากสำหรับทีมเล็ก ขณะที่การปฏิเสธทั้งหมดก็ไม่เป็นกลางเพราะบางกรณีมีเหตุผลจริง. แนวทางที่ค่อยเป็นค่อยไปจัดการ lock-in ได้ในราคาที่ยอมรับได้.", "lv": "A", "src": "Deloitte-style"}, {"q": "องค์กรจะย้ายระบบราว 200 ระบบขึ้น cloud ภายใน 3 ปี ข้อใดควรจัดทำก่อนหรือควบคู่กับการย้ายรอบแรก (เลือก 2 ข้อ)", "o": ["Landing zone พร้อม guardrail ที่บังคับด้วย policy as code", "มาตรฐาน tagging และโครงสร้าง account เพื่อทำ cost allocation", "ให้แต่ละทีมออกแบบ network และ identity ของตนเองก่อน แล้วค่อยรวมกันภายหลัง", "ย้ายทุกระบบแบบ lift-and-shift ภายในเดือนแรกก่อนวางนโยบายใด ๆ", "รอให้เกิด incident ก่อนจึงเริ่มเปิดและเก็บ audit log ของทุก account"], "c": [0, 1], "multi": true, "e": "ต้องมีรากฐานที่ใช้ร่วมกันก่อนขยายตัว: guardrail, identity, network, logging และการจัดสรรต้นทุน. การปล่อยให้แต่ละทีมทำเองแล้วค่อยรวมทำให้ต้นทุนการแก้สูงมาก และ audit log ที่เปิดหลังเกิดเหตุย้อนหลังไม่ได้.", "lv": "A", "src": "Deloitte-style"}, {"q": "หลัง deploy consumer เวอร์ชันใหม่ จำนวนข้อความใน dead-letter queue เพิ่มขึ้นเรื่อย ๆ ขั้นตอนแรกที่เหมาะสมที่สุดคืออะไร", "o": ["ตรวจข้อความตัวอย่างใน DLQ และ log เพื่อหาสาเหตุ แล้วแก้ก่อน redrive กลับ", "สั่ง purge DLQ ทั้งหมดทันทีเพื่อให้จำนวนข้อความในคิวกลับมาเป็นศูนย์โดยเร็ว", "เพิ่มจำนวนครั้ง retry เป็นหนึ่งพันครั้งเพื่อให้ข้อความไม่ถูกส่งเข้า DLQ อีกเลย", "ปิดการใช้ DLQ ของ queue นี้เพื่อไม่ให้ alert ดังขึ้นมาซ้ำอีกในภายหลัง"], "e": "DLQ คือหลักฐานว่ามีข้อความที่ประมวลผลไม่ได้ จึงต้องหาสาเหตุ (เช่น schema ใหม่ไม่ตรง) แก้โค้ดหรือ config แล้ว redrive ข้อความเดิมกลับไป. การ purge ทำให้ข้อมูลหาย และการเพิ่ม retry หรือปิด DLQ แค่ซ่อนปัญหา.", "lv": "A", "src": "HackerRank-style"}, {"q": "โค้ด worker ด้านล่างอาจหักเงินลูกค้าซ้ำเมื่อ broker ส่งข้อความเดิมอีกครั้ง แนวทางแก้ใดถูกต้องที่สุด", "o": ["ใช้ idempotency key กับการเรียกชำระเงิน และบันทึกสถานะแบบอะตอมิกในที่เก็บร่วม", "สลับลำดับให้เรียก mark_done ก่อน charge เพื่อไม่ให้ข้อความถูกประมวลผลซ้ำอีก", "เพิ่ม time.sleep ระหว่างสองบรรทัดเพื่อให้ broker ไม่ส่งข้อความเดิมซ้ำมาอีก", "ครอบด้วย try/except แล้วเงียบเมื่อเกิด error เพื่อไม่ให้ worker ล้มกลางทาง"], "e": "ช่องว่างระหว่าง charge กับ mark_done ทำให้ถ้า worker ล้มกลางทางแล้วข้อความถูกส่งใหม่ จะหักเงินซ้ำ. Idempotency key ทำให้การเรียกซ้ำไม่มีผลเพิ่ม. การสลับลำดับเสี่ยงกลายเป็นไม่ได้หักเงินเลยเมื่อ charge ล้มหลัง mark_done.", "code": "def handle(msg):\n    charge(msg[\"customer\"], msg[\"amount\"])\n    mark_done(msg[\"id\"])", "lv": "A", "src": "HackerRank-style"}, {"q": "ข้อใดสรุป trade-off ระหว่าง serverless กับ container platform ได้ถูกต้อง (เลือก 2 ข้อ)", "o": ["Serverless เหมาะกับโหลดกระโดดและงาน event-driven แต่ต้องรองรับ cold start และ limit ต่าง ๆ", "Container platform เหมาะกับบริการที่รันต่อเนื่องและต้องคุม runtime แต่ต้องดูแล image และ config", "Serverless ไม่มีข้อจำกัดด้านเวลารันของฟังก์ชันไม่ว่าจะเป็นบริการของ provider รายใดก็ตาม", "Container platform ถูกกว่า serverless ในทุกกรณีไม่ว่ารูปแบบโหลดของระบบจะเป็นอย่างไรก็ตาม", "ทั้งสองแนวทางไม่ต้องคำนึงถึงการตั้งค่าด้านความปลอดภัยของระบบเพราะ provider จัดการให้ทั้งหมดแล้ว"], "c": [0, 1], "multi": true, "e": "ข้อที่ถูกสองข้อเป็นข้อสรุปที่สมดุลของทั้งสองฝั่ง. Serverless มี limit เช่น execution timeout และ concurrency, ต้นทุนของแต่ละแบบขึ้นกับรูปแบบโหลด, และ security configuration เป็นหน้าที่ของผู้ใช้ทั้งสองแบบ.", "lv": "A", "src": "HackerRank-style"}, {"q": "สตาร์ทอัพต้องการเริ่มโครงการนำร่องภายในสองสัปดาห์ โดยยังไม่ทราบปริมาณ traffic จริง และไม่ต้องการลงทุนล่วงหน้า deployment model ใดเหมาะที่สุด", "o": ["Public cloud แบบ On-Demand เพราะเริ่มเร็วและจ่ายตามการใช้งานจริง", "Private cloud ที่สร้างใหม่ใน data center ของบริษัทเพื่อความควบคุมสูงสุด", "Hybrid cloud ที่ต้องติดตั้งการเชื่อมต่อเครือข่ายเฉพาะระหว่างสองสภาพแวดล้อม", "Public cloud แบบ Reserved 3 ปี เพื่อให้ได้ราคาต่อหน่วยที่ต่ำที่สุดตั้งแต่ต้น"], "e": "เมื่อ traffic ยังไม่แน่นอนและต้องการเริ่มเร็ว On-Demand บน public cloud หลีกเลี่ยงการลงทุนล่วงหน้าและการผูกสัญญา. Reserved เหมาะเมื่อรู้ปริมาณโหลดพื้นฐานแล้ว.", "lv": "B", "src": "Deloitte-style"}]};
+const TOPICS = [["t1", "Cloud models & service types", "B", 1], ["t2", "Providers & core services", "B", 2], ["t3", "Container & Kubernetes", "B", 3], ["t4", "Region, AZ & scaling", "B", 4], ["t5", "Architecture & flow", "I", 5], ["t6", "Managed & pricing", "I", 6], ["t7", "Security: IAM & encryption", "I", 7], ["t8", "SLA & compliance", "I", 8], ["t9", "Trade-offs", "A", 1], ["t10", "Cloud-native design", "A", 2], ["t11", "Hybrid & multi-cloud", "A", 3], ["t12", "Governance & frameworks", "A", 4]];   // [id, ชื่อสั้น, ระดับ B/I/A, สี]
+
+const L = 'กขคงจฉ';
+const LVN = {B:'Beginner', I:'Intermediate', A:'Advance'};
+const LVK = {B:'k1', I:'k5', A:'k2'};
+const lvOfTopic = {}; TOPICS.forEach(t => { lvOfTopic[t[0]] = t[2]; });
+const titleOfTopic = {}; TOPICS.forEach(t => { titleOfTopic[t[0]] = t[1]; });
+
+const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const fmt = s => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>');
+const sameSet = (a, b) => a.length === b.length && [...a].sort((x, y) => x - y).join() === [...b].sort((x, y) => x - y).join();
+
+/* o: ตัวเลือก (ถ้าไม่มี c ข้อแรกคือคำตอบที่ถูก) | c: ดัชนีคำตอบถูกของข้อ multi */
+function prep(item) {
+  const cset = new Set(item.c || [0]);
+  const opts = shuffle(item.o.map((t, i) => ({ t, ok: cset.has(i) })));
+  const ansSet = opts.map((x, i) => x.ok ? i : -1).filter(i => i >= 0);
+  return { ...item, opts, ansSet, multi: !!item.multi };
+}
+
+function qHTML(it, i, prefix, opt) {
+  opt = opt || {};
+  const multiTag = it.multi ? '<span class="tag multi">เลือกหลายข้อ</span>' : '';
+  const lvTag = (opt.showLv && it.lv) ? `<span class="lv ${LVK[it.lv]}">${LVN[it.lv]}</span> ` : '';
+  const srcTag = it.src ? `<span class="tag">${esc(it.src)}</span>` : '';
+  const topicTag = (opt.showTopic && it.topic) ? `<span class="tag">${esc(it.topic)}</span>` : '';
+  const hint = it.multi ? '<p class="hint">เลือกได้หลายข้อ แล้วกด “ตรวจคำตอบ” จะถูกก็ต่อเมื่อเลือกครบทุกข้อที่ถูกและไม่เลือกข้อที่ผิด</p>' : '';
+  const pressed = it.multi ? ' aria-pressed="false"' : '';
+  const check = it.multi ? '<div class="btn-row"><button type="button" class="btn check" disabled>ตรวจคำตอบ</button><span class="qres" aria-live="polite"></span></div>' : '<div class="btn-row" style="margin-top:4px"><span class="qres" aria-live="polite"></span></div>';
+  const code = it.code ? `<pre class="qcode"><code>${esc(it.code)}</code></pre>` : '';
+  return `<div class="q" data-i="${i}">
+    <div class="qt"><span class="qn">${i + 1}.</span>${lvTag}${srcTag}${topicTag}${multiTag}${fmt(it.q)}${code}</div>
+    ${hint}
+    <div class="opts">${it.opts.map((o, k) => `<button type="button" class="opt" data-k="${k}"${pressed}><span class="l">${L[k]}.</span><span>${fmt(o.t)}</span></button>`).join('')}</div>
+    ${check}
+    <div class="exp"><b>เฉลย ${it.ansSet.map(k => L[k]).join(', ')}</b>${fmt(it.e)}</div>
+  </div>`;
+}
+
+/* ผูกพฤติกรรมให้ 1 ข้อ: ข้อเดียวคลิกแล้วเฉลยทันที / หลายข้อกดตรวจคำตอบ */
+function wireQuestion(qe, it, onDone) {
+  const opts = [...qe.querySelectorAll('.opt')];
+  const chk = qe.querySelector('.check');
+  const res = qe.querySelector('.qres');
+  const chosen = new Set();
+  let locked = false;
+  const reveal = picks => {
+    if (locked) return; locked = true;
+    const ok = sameSet(picks, it.ansSet);
+    opts.forEach((x, j) => {
+      x.disabled = true;
+      x.classList.remove('picked');
+      if (it.ansSet.includes(j)) x.classList.add('correct');
+      else if (picks.includes(j)) x.classList.add('wrong');
+    });
+    qe.querySelector('.exp').classList.add('show');
+    if (chk) chk.disabled = true;
+    res.textContent = ok ? 'ถูกต้อง' : 'ยังไม่ถูก';
+    res.className = 'qres ' + (ok ? 'ok' : 'no');
+    onDone(ok);
+  };
+  if (!it.multi) {
+    opts.forEach(b => b.addEventListener('click', () => reveal([+b.dataset.k])));
+  } else {
+    opts.forEach(b => b.addEventListener('click', () => {
+      if (locked) return;
+      const k = +b.dataset.k;
+      chosen.has(k) ? chosen.delete(k) : chosen.add(k);
+      b.classList.toggle('picked', chosen.has(k));
+      b.setAttribute('aria-pressed', String(chosen.has(k)));
+      chk.disabled = chosen.size === 0;
+    }));
+    chk.addEventListener('click', () => reveal([...chosen]));
+  }
+}
+
+/* ---------- แบบฝึกท้ายหัวข้อ ---------- */
+function buildTopicQuiz(box) {
+  const id = box.dataset.topic;
+  if (!Q[id]) return;
+  const isDl = id === 'dl';
+  const items = Q[id].map(prep);
+  let score = 0, done = 0;
+  const nMulti = items.filter(x => x.multi).length;
+  box.innerHTML = `<div class="quiz-h"><h4>${isDl ? 'ชุดฝึกแนว Deloitte / HackerRank' : 'แนวข้อสอบหัวข้อนี้'} (${items.length} ข้อ${nMulti ? ` · เลือกหลายข้อ ${nMulti} ข้อ` : ''})</h4><span class="score" aria-live="polite">0 / ${items.length}</span></div>`
+    + items.map((it, i) => qHTML(it, i, id, { showLv: isDl })).join('')
+    + '<div class="btn-row"><button type="button" class="btn ghost reset">ทำใหม่ (สลับตัวเลือก)</button></div>';
+  const sc = box.querySelector('.score');
+  box.querySelectorAll(':scope > .q').forEach(qe => {
+    const it = items[+qe.dataset.i];
+    wireQuestion(qe, it, ok => {
+      if (ok) score++;
+      done++;
+      sc.textContent = `${score} / ${items.length}` + (done === items.length ? ' · ครบแล้ว' : '');
+    });
+  });
+  box.querySelector(':scope > .btn-row .reset').addEventListener('click', () => buildTopicQuiz(box));
+}
+document.querySelectorAll('.quiz').forEach(buildTopicQuiz);
+
+/* ---------- chip nav ---------- */
+const bar = document.getElementById('chipbar');
+bar.innerHTML = TOPICS.map((t, i) => `<a class="chip k${t[3]}" href="#${t[0]}"><span class="n">${i + 1}</span>${esc(t[1])}</a>`).join('')
+  + '<a class="chip kd" href="#deloitte"><span class="n">D</span>Deloitte / HackerRank</a>'
+  + '<a class="chip k6" href="#final"><span class="n">✓</span>ข้อสอบรวม</a>'
+  + '<a class="chip k4" href="#appendix"><span class="n">★</span>สรุป 1 หน้า</a>';
+const chips = [...bar.querySelectorAll('.chip')];
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (!e.isIntersecting) return;
+    chips.forEach(c => c.classList.toggle('active', c.getAttribute('href') === '#' + e.target.id));
+    const a = bar.querySelector('.chip.active');
+    if (a) {
+      const r = a.getBoundingClientRect(), br = bar.getBoundingClientRect();
+      bar.scrollTo({ left: bar.scrollLeft + (r.left - br.left) - (bar.clientWidth / 2 - r.width / 2) });
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+document.querySelectorAll('section.topic').forEach(s => obs.observe(s));
+bar.addEventListener('click', e => {
+  const a = e.target.closest('a.chip'); if (!a) return;
+  const t = document.getElementById(a.getAttribute('href').slice(1)); if (!t) return;
+  e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  history.replaceState(null, '', a.getAttribute('href'));
+});
+
+/* ---------- สารบัญ ---------- */
+(function buildToc() {
+  const el = document.getElementById('toc'); if (!el) return;
+  const grp = { B: 'Beginner', I: 'Intermediate', A: 'Advance' };
+  const bg = c => c === 4 ? 'var(--c4);color:#3a2700' : `var(--c${c})`;
+  let html = '', cur = '';
+  TOPICS.forEach((t, i) => {
+    if (t[2] !== cur) { cur = t[2]; html += `<div class="grp">${grp[cur]}</div>`; }
+    const n = (Q[t[0]] || []).length;
+    html += `<a href="#${t[0]}"><span class="n" style="background:${bg(t[3])}">${i + 1}</span><span>${esc(t[1])} <span class="muted">· ${n} ข้อ</span></span></a>`;
+  });
+  html += `<div class="grp">ฝึกและทบทวน</div>`
+    + `<a href="#deloitte"><span class="n" style="background:#334155">D</span><span>แนว Deloitte / HackerRank <span class="muted">· ${(Q.dl || []).length} ข้อ</span></span></a>`
+    + `<a href="#final"><span class="n" style="background:var(--c6)">✓</span><span>ข้อสอบรวมแบบสุ่ม</span></a>`
+    + `<a href="#appendix"><span class="n" style="background:var(--c4);color:#3a2700">★</span><span>สรุป 1 หน้าก่อนเข้าสอบ</span></a>`;
+  el.innerHTML = html;
+})();
+
+/* ---------- ข้อสอบรวม: เฉลยทันทีทุกข้อ ---------- */
+(function exam() {
+  const box = document.getElementById('ex-box');
+  const res = document.getElementById('ex-result');
+  const scEl = document.getElementById('ex-score');
+  const prog = document.getElementById('ex-prog');
+  const selLv = document.getElementById('ex-level');
+  const selN = document.getElementById('ex-count');
+  const btn = document.getElementById('ex-start');
+  if (!box) return;
+  let exam = [], answered = 0, correct = 0, byLv = {};
+
+  function pool() {
+    const out = [];
+    Object.keys(Q).forEach(k => Q[k].forEach(it => {
+      const lv = it.lv || lvOfTopic[k];
+      out.push({ ...it, lv, topic: k === 'dl' ? 'Deloitte / HackerRank' : titleOfTopic[k] });
+    }));
+    const f = selLv.value;
+    return f === 'ALL' ? out : out.filter(x => x.lv === f);
+  }
+  function update() {
+    scEl.textContent = `${correct} / ${exam.length}`;
+    prog.style.width = (exam.length ? answered / exam.length * 100 : 0) + '%';
+  }
+  function finish() {
+    const rows = ['B', 'I', 'A'].filter(l => byLv[l] && byLv[l][1] > 0).map(l => {
+      const [ok, n] = byLv[l]; const pct = Math.round(ok / n * 100);
+      return `<div><span>${LVN[l]}</span><span class="bar"><i style="width:${pct}%"></i></span><span>${ok}/${n}</span></div>`;
+    }).join('');
+    const pct = Math.round(correct / exam.length * 100);
+    res.innerHTML = `<h4>สรุปผล: ${correct} / ${exam.length} (${pct}%)</h4><p style="margin:.2em 0">คะแนนแยกตามระดับ ใช้ดูว่าควรกลับไปทบทวนระดับไหน. ข้อที่ตอบไม่ถูกยังเปิดดูเฉลยด้านบนได้.</p><div class="bars">${rows}</div>`;
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  function start() {
+    const p = shuffle(pool());
+    const n = Math.min(+selN.value, p.length);
+    exam = p.slice(0, n).map(prep);
+    answered = 0; correct = 0; byLv = {};
+    exam.forEach(it => { byLv[it.lv] = byLv[it.lv] || [0, 0]; byLv[it.lv][1]++; });
+    res.classList.remove('show'); res.innerHTML = '';
+    box.innerHTML = exam.map((it, i) => qHTML(it, i, 'ex', { showLv: true, showTopic: true })).join('');
+    box.querySelectorAll(':scope > .q').forEach(qe => {
+      const it = exam[+qe.dataset.i];
+      wireQuestion(qe, it, ok => {
+        answered++; if (ok) { correct++; byLv[it.lv][0]++; }
+        update();
+        if (answered === exam.length) finish();
+      });
+    });
+    update();
+    btn.textContent = 'สุ่มชุดใหม่';
+  }
+  btn.addEventListener('click', start);
+  update();
+})();
+
+</script>
+</body>
+</html>
