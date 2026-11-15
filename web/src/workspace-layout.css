@@ -55,7 +55,7 @@ main.workspace-page { width: 100%; max-width: none; }
   .workspace-page .coding-pane {
     display: grid;
     min-height: 0;
-    grid-template-rows: 49px minmax(100px, 1fr) auto minmax(100px, .45fr);
+    grid-template-rows: 49px minmax(160px, 1fr) auto minmax(180px, .85fr);
   }
   .workspace-page .code-editor {
     height: auto;
@@ -73,4 +73,5 @@ main.workspace-page { width: 100%; max-width: none; }
 @media (max-width: 979px), (max-height: 649px) {
   #app[data-layout="workspace"] { height: auto; }
   .workspace-page .workspace { min-height: 0; }
+  .workspace-page .results { max-height: 440px; }
 }
