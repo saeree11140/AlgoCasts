@@ -8,7 +8,7 @@ export interface Detail extends Problem {
 export interface Competency {id:string;title:string;description:string;abbr:string;path:string;sections:string[];sourcePath:string}
 export interface Diagram {id:string;group:string;title:string;category:string;path:string}
 export interface Manifest {version:number;problems:Problem[];competencies:Competency[];diagrams:Diagram[];diagramGroups:Record<string,string>}
-export interface TestResult {name:string;status:'pass'|'fail'|'skip';error?:string;duration?:number}
+export interface TestResult {name:string;status:'pass'|'fail'|'skip';error?:string;duration?:number;logs?:string[]}
 export interface RunResult {tests:TestResult[];logs:string[];error?:string}
 export interface Attempt {at:string;passed:number;total:number;success:boolean}
 export interface Progress {code?:string;solved?:boolean;bookmarked?:boolean;attempts?:Attempt[];updatedAt?:string}

@@ -407,6 +407,12 @@ body {
 .test-case small { font-size: 13px; }
 .test-case pre, .console-output pre { font-size: 14px; }
 
+/* console output printed while a test ran, shown inside that test case */
+.test-log { border-top: 1px solid var(--line); }
+.test-log > span { display: block; padding: 6px 10px; font-size: 12px; color: var(--muted); }
+.test-case .test-log pre { background: var(--surface-2); color: var(--ink); padding: 10px 14px; }
+.test-case .test-log:not(:last-child) pre { border-radius: 0; }
+
 /* Grid children must shrink around scrollable category chips. */
 .library-main, .library-sidebar { min-width: 0; }
 @media (max-width: 768px) {

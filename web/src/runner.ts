@@ -21,7 +21,7 @@ export function runCode(detail:Detail,code:string,sample:boolean):Promise<RunRes
    if(event.data?.type==='result'){
     const data=event.data.result;
     if(!data||!Array.isArray(data.tests)||!Array.isArray(data.logs))return finish({tests:[],logs:[],error:'ผลทดสอบไม่ถูกต้อง'});
-    finish({tests:data.tests.slice(0,300).map((t:any)=>({name:String(t.name).slice(0,500),status:['pass','fail','skip'].includes(t.status)?t.status:'fail',error:t.error?String(t.error).slice(0,3000):undefined,duration:Number(t.duration)||0})),logs:data.logs.slice(0,100).map((s:unknown)=>String(s).slice(0,2000)),error:data.error?String(data.error).slice(0,3000):undefined});
+    finish({tests:data.tests.slice(0,300).map((t:any)=>({name:String(t.name).slice(0,500),status:['pass','fail','skip'].includes(t.status)?t.status:'fail',error:t.error?String(t.error).slice(0,3000):undefined,duration:Number(t.duration)||0,logs:Array.isArray(t.logs)?t.logs.slice(0,100).map((s:unknown)=>String(s).slice(0,2000)):[]})),logs:data.logs.slice(0,100).map((s:unknown)=>String(s).slice(0,2000)),error:data.error?String(data.error).slice(0,3000):undefined});
    }
   };
   let program='';

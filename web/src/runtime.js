@@ -1,6 +1,8 @@
 // Self-contained: serialized into an isolated worker, never evaluated in the app.
 export async function executeSuite(payload) {
   const tests = [], logs = [], restores = [];
+  // console output goes to the running test's own list; outside a test it goes to `logs`.
+  let sink = logs, logCount = 0;
   const root = { name: '', before: [], after: [], parent: null };
   let scope = root;
   const describe = (name, fn) => { const prev = scope; scope = { name, before: [], after: [], parent: prev }; try { fn(); } finally { scope = prev; } };
@@ -50,7 +52,7 @@ export async function executeSuite(payload) {
   globalThis.fetch=async()=>{throw new Error('Network disabled: ใช้ได้เฉพาะ Mock API ของโจทย์');};
   const originalConsole = globalThis.console;
   globalThis.console={...originalConsole};
-  for(const level of ['log','warn','error','info','debug']) globalThis.console[level]=(...args)=>{if(logs.length<100)logs.push(args.map(format).join(' ').slice(0,2000));};
+  for(const level of ['log','warn','error','info','debug']) globalThis.console[level]=(...args)=>{if(logCount<100){logCount++;sink.push(args.map(format).join(' ').slice(0,2000));}};
   const assert={
     equal:(a,b)=>expect(a).toBe(b), strictEqual:(a,b)=>expect(a).toBe(b),
     deepEqual:(a,b)=>expect(a).toEqual(b), deepStrictEqual:(a,b)=>expect(a).toEqual(b),
@@ -101,6 +103,7 @@ export async function executeSuite(payload) {
     if(item.skip){results.push({name:item.name,status:'skip'});continue;}
     const scopes=[];for(let s=item.scope;s;s=s.parent)scopes.unshift(s);
     let failure;
+    const testLogs=[];sink=testLogs;
     const start=performance.now();
     try {
       for(const s of scopes)for(const before of s.before)await before();
@@ -109,8 +112,9 @@ export async function executeSuite(payload) {
     finally {
       for(const s of scopes.slice().reverse())for(const after of s.after){try{await after();}catch(error){failure??=String(error);}}
       for(const restore of restores.splice(0).reverse())restore();
+      sink=logs;
     }
-    results.push({name:scopes.map(s=>s.name).filter(Boolean).concat(item.name).join(' › '),status:failure?'fail':'pass',error:failure,duration:Math.round((performance.now()-start)*100)/100});
+    results.push({name:scopes.map(s=>s.name).filter(Boolean).concat(item.name).join(' › '),status:failure?'fail':'pass',error:failure,duration:Math.round((performance.now()-start)*100)/100,logs:testLogs});
   }
   globalThis.console=originalConsole;
   return {tests:results,logs};

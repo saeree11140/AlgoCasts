@@ -57,5 +57,17 @@ test('ordinary problems cannot access network', async () => {
 test('fixture fetch rejects external destinations and captures console output', async () => {
   const result = await run({ './test': 'const api = require("../api/index"); test("fixture", async()=>{await api.startChocolateApi(); console.log("hello"); await expect(async()=>fetch("https://example.com")).rejects.toThrow() })' });
   assert.equal(result.tests[0].status, 'pass');
-  assert.ok(result.logs.includes('hello'));
+  assert.ok(result.tests[0].logs.includes('hello'));
+});
+
+test('console output is attributed to the test that printed it', async () => {
+  const result = await run({
+    './index': 'module.exports = s => { console.log("got", s); throw new Error("TODO"); }',
+    './test': 'const f = require("./index"); console.log("top level"); test("exists",()=>expect(f).toBeDefined()); test("a",()=>f("abcd")); test("b",()=>f("  ab"));',
+  });
+  // JSON round-trip: arrays built inside the vm context have a different realm's prototype.
+  const plain = v => JSON.parse(JSON.stringify(v));
+  assert.deepEqual(plain(result.logs), ['top level']);
+  assert.deepEqual(plain(result.tests.map(t => t.logs)), [[], ['got abcd'], ['got   ab']]);
+  assert.equal(result.tests[1].status, 'fail');
 });
