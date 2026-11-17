@@ -1,0 +1,144 @@
+web/README.md
+  s_898930fdb0bb1c::t_34c2ba49c0509d 25,29
+exercises/searchmatrix/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-42
+web/scripts/prepare-content.mjs
+  s_898930fdb0bb1c::t_8fd1e3489373a8 33,39,43
+web/src/ui-refinements.css
+  s_898930fdb0bb1c::t_b57427579839a5 1434-1461
+exercises/rotatedsearch/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-34
+web/scripts/practice.mjs
+  s_898930fdb0bb1c::t_8fd1e3489373a8 70
+web/tests/content.test.mjs
+  s_898930fdb0bb1c::t_e2315649603ced 7-10,85-99
+  s_898930fdb0bb1c::t_d928d6e5173208 100
+exercises/icecreamparlor/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-23
+completed_exercises/eatingspeed/index.ts
+  s_898930fdb0bb1c::t_a0224a4b6e9467 1-38
+web/scripts/catalog.mjs
+  s_898930fdb0bb1c::t_8fd1e3489373a8 29-41,64
+completed_exercises/sqrt/index.ts
+  s_898930fdb0bb1c::t_1e785af6ba97ff 1-31
+exercises/sqrt/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-15
+web/src/main.ts
+  s_898930fdb0bb1c::t_8fd1e3489373a8 62,94
+completed_exercises/icecreamparlor/test.ts
+  s_898930fdb0bb1c::t_b087f38261e0a9 16
+  s_898930fdb0bb1c::t_4d2494f6d22da0 1-15,17-23
+completed_exercises/leaderboard/index.ts
+  s_898930fdb0bb1c::t_1bd8cfb3232c38 1-35
+completed_exercises/sqrt/test.ts
+  s_898930fdb0bb1c::t_981fa482c5afb3 1-25
+exercises/pairs/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-29
+exercises/searchrange/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-15
+completed_exercises/searchmatrix/index.ts
+  s_898930fdb0bb1c::t_4bdca72992ea51 1-36
+README.md
+  s_898930fdb0bb1c::t_34c2ba49c0509d 13,18-19,22-25
+  s_898930fdb0bb1c::t_0572fd59b7f2d0 26
+exercises/searchrange/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-31
+exercises/findmin/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-14
+completed_exercises/searchrange/test.ts
+  s_898930fdb0bb1c::t_07f0dd09f163b7 1-31
+web/src/labs/searching.ts
+  s_898930fdb0bb1c::t_073e5dc462fc00 1-32,34-47,49,51-53,55-170,172-194
+  s_898930fdb0bb1c::t_7be96337a317ae 33,48,50,54,171
+completed_exercises/eatingspeed/test.ts
+  s_898930fdb0bb1c::t_edf165e244533b 1-28
+completed_exercises/searchrange/index.ts
+  s_898930fdb0bb1c::t_9fbbdec2316112 1-41
+completed_exercises/firstbadversion/test.ts
+  s_898930fdb0bb1c::t_3679239396f73d 1-37
+exercises/eatingspeed/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-28
+exercises/findmin/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-26
+exercises/firstbadversion/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-37
+exercises/leaderboard/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-16
+completed_exercises/leaderboard/test.ts
+  s_898930fdb0bb1c::t_c1ea62b4d9290b 22
+  s_898930fdb0bb1c::t_ab1e767d1c8d1c 24-25
+  s_898930fdb0bb1c::t_08d6aecee1cad4 1-21,23,26
+web/src/labs/index.ts
+  s_898930fdb0bb1c::t_7be96337a317ae 12,17
+exercises/search/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-54
+exercises/rotatedsearch/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-15
+exercises/search/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-27
+exercises/peakelement/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-41
+exercises/peakelement/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-14
+exercises/leaderboard/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-21,23-26
+  s_898930fdb0bb1c::t_c1ea62b4d9290b 22
+completed_exercises/icecreamparlor/index.ts
+  s_898930fdb0bb1c::t_d47a3730a6e49a 1-30
+exercises/pairs/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-15
+completed_exercises/pairs/test.ts
+  s_898930fdb0bb1c::t_634eb866ff13bd 1-29
+exercises/icecreamparlor/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-15
+exercises/searchmatrix/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-16
+completed_exercises/search/index.ts
+  s_898930fdb0bb1c::t_be07e79fffc2b5 1-66
+completed_exercises/rotatedsearch/test.ts
+  s_898930fdb0bb1c::t_1095d1c4b42a28 1-34
+exercises/eatingspeed/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-16
+completed_exercises/findmin/index.ts
+  s_898930fdb0bb1c::t_d8a3a63dd83d48 1-29
+web/src/guide-content.ts
+  s_898930fdb0bb1c::t_490870d739ca1a 68-72,210-223
+exercises/firstbadversion/index.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-16
+exercises/sqrt/test.ts
+  s_898930fdb0bb1c::t_9c9e4fdd31ef5a 1-25
+completed_exercises/rotatedsearch/index.ts
+  s_898930fdb0bb1c::t_49e5a1486b7fac 1-41
+completed_exercises/firstbadversion/index.ts
+  s_898930fdb0bb1c::t_8c4dc058d4c90a 1-30
+diagrams/11/diagrams.xml
+  s_898930fdb0bb1c::t_248463eb3c768a 1
+completed_exercises/findmin/test.ts
+  s_898930fdb0bb1c::t_d6d9ef76af4676 1-26
+completed_exercises/peakelement/test.ts
+  s_898930fdb0bb1c::t_e1cf0d03e92d4e 1-41
+completed_exercises/peakelement/index.ts
+  s_898930fdb0bb1c::t_e9c25b9bafa0aa 1-28
+completed_exercises/pairs/index.ts
+  s_898930fdb0bb1c::t_9c96cb26aeda28 1-43
+completed_exercises/search/test.ts
+  s_898930fdb0bb1c::t_eccadf98848a2e 1-54
+completed_exercises/searchmatrix/test.ts
+  s_898930fdb0bb1c::t_3310813f84e027 1-42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "6da88500178449d41bd04e00e3730157dc73e0fc",
+  "prompts": {},
+  "sessions": {
+    "s_898930fdb0bb1c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2e8ffeae-8db1-4cf9-b8b4-76448bec0a87",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
