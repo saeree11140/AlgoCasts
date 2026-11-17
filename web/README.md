@@ -22,11 +22,11 @@ pnpm run check  # tests + TypeScript check + production build
 ## สิ่งที่มี
 
 - หน้าหลัก ความคืบหน้า ฝึกต่อจากโจทย์ล่าสุด
-- 34 ข้อฝึก: AlgoCasts 27 หมวด, Chocolate Report และ Coding Practice 6 ข้อ
+- 46 ข้อฝึก: AlgoCasts 28 ข้อ, LeetCode 8 ข้อ, HackerRank 3 ข้อ (สองชุดหลังอยู่ในหมวด Searching), Chocolate Report และ Coding Practice 6 ข้อ
 - ค้นหา กรองระดับ/หมวด/สถานะ บันทึกโจทย์ไว้
 - CodeMirror editor, TypeScript syntax, auto-save, reset, คำใบ้, เฉลย, ชุดทดสอบ และประวัติส่งคำตอบ
 - รันทดสอบ 3 เคสแรก หรือส่งคำตอบตรวจทุกเคส; ผ่านทุกเคสจึงนับว่าสำเร็จ
-- คู่มือภาพ 10 หมวดแปลงจาก draw.io พร้อมคำอธิบายภาษาไทยทุกภาพ และ Lab แบบ interactive ทุกหมวด (เดินทีละขั้น ไฮไลต์บรรทัดโค้ด)
+- คู่มือภาพ 11 หมวดแปลงจาก draw.io (หมวด 11 Searching สร้างใหม่ใน `diagrams/11/diagrams.xml` เปิดแก้ใน draw.io ได้) พร้อมคำอธิบายภาษาไทยทุกภาพ และ Lab แบบ interactive ทุกหมวด (เดินทีละขั้น ไฮไลต์บรรทัดโค้ด)
 - เอกสาร Coding Practice
 - เตรียมสอบ 15 ทักษะ แสดง HTML ต้นฉบับพร้อมแบบทดสอบที่กดทำได้ และ JavaScript PDF
 - Coding Skill: Beginner–Advance, DSA ด้วย JavaScript และ Coding Lab รันเทสต์ในเบราว์เซอร์

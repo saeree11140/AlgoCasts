@@ -67,5 +67,5 @@ export const extraProblems = tasks.map(([id,title,category,difficulty,descriptio
  solution:`export function ${name}(${args}): ${result} {\n  ${body}\n}`,
  modules:{'./test':`import { ${name} as f } from './index';\nfunction norm(groups: string[][]) {return groups.map(g=>g.slice().sort()).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));}\n${cases.map(([label,assertion])=>`test(${JSON.stringify(label)},()=>{${assertion}});`).join('\n')}`},
  directions:`${description}\n\nตัวอย่างและกรณีขอบ ดูแท็บ “ชุดทดสอบ”\n\nข้อฝึกนี้อิงรูปแบบมาตรฐานจาก Coding Practice Session #01 ไม่ใช่ข้อสอบทางการ`,
- sourcePath:'competency/CODING/coding_practice_session_01',guideGroup:category==='Linked List'?'06':'02',
+ sourcePath:'competency/CODING/coding_practice_session_01',guideGroup:category==='Linked List'?'06':category==='Searching'?'11':'02',
 }));

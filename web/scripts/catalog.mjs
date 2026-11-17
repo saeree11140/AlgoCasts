@@ -26,6 +26,19 @@ export const catalog = {
   validate: ['Validate BST','Tree & BST','Medium','ตรวจว่าทุก node เป็นไปตามช่วงค่าที่ BST กำหนด','ส่งขอบเขต min/max ลงไปตรวจแต่ละ subtree','O(n) time · O(h) space'],
   sorting: ['Sorting Algorithms','Sorting','Medium','เขียน Bubble Sort, Selection Sort, Merge Sort และ merge','เริ่มจาก merge สอง array ที่เรียงแล้ว ก่อนใช้กับ recursion','Bubble/Selection O(n²) · Merge O(n log n)'],
   events: ['Event Emitter','Events','Medium','สร้างระบบ on, trigger และ off สำหรับ callback หลายตัว','ใช้ชื่อ event เป็น key และเก็บ callback เป็น array','O(k) trigger · k = subscribers'],
+  // Searching: the 7th field is the problem set the exercise is modelled on (default AlgoCasts).
+  search: ['Linear & Binary Search','Searching','Easy','เขียน linear search, binary search แบบ loop และแบบ recursion ให้คืน index หรือ -1','linear ไล่ทีละตัว ส่วน binary เทียบตัวกลางแล้วทิ้งครึ่งที่ไม่มีทางเจอ','Linear O(n) · Binary O(log n) time · O(1) space (loop)'],
+  searchrange: ['Find First and Last Position','Searching','Medium','หาตำแหน่งแรกและตำแหน่งสุดท้ายของ target ใน array ที่เรียงแล้วและมีค่าซ้ำได้','หา lower bound ของ target และของ target + 1 แล้วลบ 1','O(log n) time · O(1) space','LeetCode'],
+  rotatedsearch: ['Search in Rotated Sorted Array','Searching','Medium','ค้นหา target ใน array ที่เรียงแล้วแต่ถูกหมุนมา คืน index หรือ -1','ทุกครั้งที่แบ่งครึ่ง จะมีครึ่งหนึ่งที่ยังเรียงอยู่เสมอ ดูว่า target อยู่ในช่วงของครึ่งนั้นไหม','O(log n) time · O(1) space','LeetCode'],
+  findmin: ['Find Minimum in Rotated Sorted Array','Searching','Medium','หาค่าน้อยที่สุดใน array ที่เรียงแล้วแต่ถูกหมุนมา','เทียบ nums[mid] กับ nums[right] ถ้ามากกว่า จุดต่ำสุดอยู่ทางขวาของ mid','O(log n) time · O(1) space','LeetCode'],
+  sqrt: ['Sqrt(x)','Searching','Easy','หารากที่สองของจำนวนเต็มแบบปัดเศษลง โดยไม่ใช้ Math.sqrt','ค้นหาคำตอบในช่วง 0 ถึง x หา m ที่มากที่สุดซึ่ง m * m <= x','O(log x) time · O(1) space','LeetCode'],
+  firstbadversion: ['First Bad Version','Searching','Easy','หาเวอร์ชันแรกที่เสียโดยเรียก isBad ให้น้อยที่สุด','คำตอบของ isBad เป็น false ทั้งหมดแล้วตามด้วย true ทั้งหมด ให้หาจุดที่ true เริ่ม','O(log n) calls · O(1) space','LeetCode'],
+  peakelement: ['Find Peak Element','Searching','Medium','หา index ของค่าที่มากกว่าเพื่อนบ้านทั้งสองข้าง ใน O(log n)','ถ้า nums[mid] < nums[mid + 1] แปลว่ากำลังขึ้นเขา ยอดเขาต้องอยู่ทางขวา','O(log n) time · O(1) space','LeetCode'],
+  eatingspeed: ['Koko Eating Bananas','Searching','Medium','หาความเร็วในการกินที่น้อยที่สุด ที่ยังกินกล้วยทุกกองหมดภายใน h ชั่วโมง','binary search บนคำตอบ 1 ถึงกองที่ใหญ่สุด เช็กว่าความเร็ว mid ทันเวลาไหม','O(n log m) time · m = กองที่ใหญ่สุด','LeetCode'],
+  searchmatrix: ['Search a 2D Matrix','Searching','Medium','ค้นหา target ใน matrix ที่เรียงต่อกันทุกแถว','มองเป็น array ยาว rows × cols แล้วแปลง index เป็น row = Math.floor(i / cols), col = i % cols','O(log(m × n)) time · O(1) space','LeetCode'],
+  icecreamparlor: ['Ice Cream Parlor','Searching','Easy','เลือกไอศกรีม 2 รสที่ราคารวมเท่ากับเงินที่มีพอดี คืนเลขรสแบบนับจาก 1','เก็บราคาที่เห็นแล้วใน Map แล้วถามหา money - cost[i]','O(n) time · O(n) space','HackerRank'],
+  pairs: ['Pairs','Searching','Medium','นับจำนวนคู่ใน array ที่ผลต่างเท่ากับ k พอดี','เรียงก่อนแล้ว binary search หา value + k หรือใช้ Set','O(n log n) time · O(n) space (sort + binary search)','HackerRank'],
+  leaderboard: ['Climbing the Leaderboard','Searching','Medium','หาอันดับของผู้เล่นหลังแต่ละเกม บน leaderboard ที่จัดอันดับแบบ dense ranking','ตัดคะแนนซ้ำออก แล้ว binary search หาจำนวนคะแนนที่มากกว่าคะแนนผู้เล่น','O((n + m) log n) time · O(n) space','HackerRank'],
 };
 export const competencyInfo = {
   'Database Design': ['database-design','Database Design','ออกแบบข้อมูล ตั้งแต่ ER Diagram ถึง Sharding','DB'],
@@ -48,4 +61,5 @@ export const diagramGroups = {
  '01': 'เริ่มต้นแก้โจทย์', '02': 'String & Array', '03': 'Loop & Recursion',
  '04': 'Big O & Fibonacci', '05': 'Stack & Queue', '06': 'Linked List',
  '07': 'Linked List Pointers', '08': 'Tree & BST', '09': 'Events & System Design', '10': 'Sorting',
+ '11': 'Searching',
 };

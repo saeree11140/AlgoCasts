@@ -4,8 +4,10 @@ import fs from 'node:fs';
 const content = new URL('../public/content/', import.meta.url);
 const manifest = JSON.parse(fs.readFileSync(new URL('manifest.json', content)));
 test('all source categories imported without losing files', () => {
-  assert.equal(manifest.problems.filter(p=>p.source==='AlgoCasts').length, 27);
-  assert.equal(manifest.problems.length, 34);
+  assert.equal(manifest.problems.filter(p=>p.source==='AlgoCasts').length, 28);
+  assert.equal(manifest.problems.filter(p=>p.source==='LeetCode').length, 8);
+  assert.equal(manifest.problems.filter(p=>p.source==='HackerRank').length, 3);
+  assert.equal(manifest.problems.length, 46);
   assert.equal(manifest.competencies.length, 15);
   assert.ok(manifest.diagrams.length > 100);
   for (const d of manifest.diagrams) {
@@ -79,4 +81,20 @@ test('Sorting diagrams follow draw.io layering and keep free text readable', () 
   }
   assert.match(svg('03-01'), /O\(n²\)/);
   assert.doesNotMatch(svg('03-01'), /&lt;sup/);
+});
+
+test('Searching guide has diagrams, Thai notes, a lab and links to every searching problem', async () => {
+  assert.equal(manifest.diagramGroups['11'], 'Searching');
+  const diagrams = manifest.diagrams.filter(d => d.group === '11');
+  assert.equal(diagrams.length, 12);
+  const source = fs.readFileSync(new URL('../src/guide-content.ts', import.meta.url), 'utf8');
+  for (const d of diagrams) assert.match(source, new RegExp(`'${d.id}': \\{ title:`), `${d.id} needs a Thai note`);
+  assert.match(fs.readFileSync(new URL('../src/labs/index.ts', import.meta.url), 'utf8'), /'11': searchingLab/);
+  const searching = manifest.problems.filter(p => p.category === 'Searching');
+  assert.equal(searching.length, 14);
+  for (const p of searching) {
+    const detail = JSON.parse(fs.readFileSync(new URL(`problems/${p.id}.json`, content)));
+    assert.equal(detail.guideGroup, '11', p.id);
+    assert.match(source, new RegExp(`'${p.id}'`), `${p.id} is listed in the Searching guide`);
+  }
 });

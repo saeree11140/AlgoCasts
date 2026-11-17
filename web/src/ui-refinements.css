@@ -1431,6 +1431,34 @@ h1, h2, h3 { text-wrap: balance; }
 .ptr.is-compare { background: var(--amber); }
 .ptr.is-done { background: var(--green); }
 
+/* Search lab: array cells with left / mid / right tags underneath */
+.search-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.search-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.search-col .cell {
+  min-width: 44px;
+}
+
+.search-tags {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-height: 38px;
+}
+
 /* Queue and stack */
 .queue-view {
   display: flex;

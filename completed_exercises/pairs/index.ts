@@ -1,0 +1,43 @@
+// --- Directions
+// รับ k และ arr ที่ค่าไม่ซ้ำกัน นับจำนวนคู่ (a, b) ใน arr ที่ a - b = k
+// k มากกว่า 0 เสมอ ลำดับใน arr ไม่ได้เรียงมาให้
+// วิธีที่ 1: เรียง arr แล้วใช้ binary search หา value + k
+// วิธีที่ 2: ใส่ทุกค่าลง Set แล้วเช็ก value + k
+// อ้างอิงรูปแบบโจทย์ HackerRank: Pairs
+// --- Examples
+//   pairs(2, [1, 5, 3, 4, 2]) --> 3   (คู่ 3-1, 5-3, 4-2)
+//   pairs(1, [1, 2, 3, 4]) --> 3
+
+function contains(sorted: number[], target: number): boolean {
+  let left = 0;
+  let right = sorted.length - 1;
+
+  while (left <= right) {
+    const mid = left + Math.floor((right - left) / 2);
+
+    if (sorted[mid] === target) {
+      return true;
+    } else if (sorted[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  return false;
+}
+
+function pairs(k: number, arr: number[]): number {
+  const sorted = [...arr].sort((a, b) => a - b);
+  let count = 0;
+
+  for (const value of sorted) {
+    if (contains(sorted, value + k)) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+export = pairs;
