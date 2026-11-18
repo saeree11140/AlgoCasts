@@ -340,23 +340,23 @@ ol.steps-list{padding-left:1.4em}
 <!-- ===== Q55 ===== -->
 <section class="topic" id="q55" data-c="1">
   <div class="t-head"><span class="n" style="background:var(--c1)">55</span><div><h3>Department Salary Report</h3><span class="lv k1">SQL · 10 นาที · 10 คะแนน</span></div></div>
-  <p class="compet">Write a single query that filters groups and prints the result in the exact order and format required.</p>
+  <p class="compet">เขียน query เดียวที่กรองกลุ่มข้อมูล แล้วแสดงผลตามลำดับและรูปแบบที่โจทย์กำหนดให้ตรงทุกจุด</p>
 
-  <p>Find departments with a high average salary.</p>
-  <p>The data for the employees of a company is maintained in the EMPLOYEE table. Print the name of every department that has <b>at least 2 employees</b> and an average salary <b>strictly greater than 50000</b>, together with that average salary rounded to 2 decimal places. Order the results by average salary in descending order. If two departments have the same average salary, order them by department name in ascending order.</p>
-  <p>The output must have two columns, in this order: <code>DEPARTMENT</code> and <code>AVG_SALARY</code>.</p>
+  <p>หาแผนกที่มีเงินเดือนเฉลี่ยสูง</p>
+  <p>ข้อมูลพนักงานของบริษัทเก็บอยู่ในตาราง EMPLOYEE ให้แสดงชื่อทุกแผนกที่มี<b>พนักงานอย่างน้อย 2 คน</b> และมีเงินเดือนเฉลี่ย<b>มากกว่า 50000 (ไม่รวมเท่ากับ)</b> พร้อมเงินเดือนเฉลี่ยนั้นที่ปัดเป็นทศนิยม 2 ตำแหน่ง เรียงผลลัพธ์ตามเงินเดือนเฉลี่ยจากมากไปน้อย ถ้าสองแผนกมีเงินเดือนเฉลี่ยเท่ากัน ให้เรียงตามชื่อแผนกจากน้อยไปมาก (A → Z)</p>
+  <p>ผลลัพธ์ต้องมีสองคอลัมน์ ตามลำดับนี้ <code>DEPARTMENT</code> และ <code>AVG_SALARY</code></p>
 
-  <h4>Input Format</h4>
+  <h4>รูปแบบอินพุต (Input Format)</h4>
   <div class="tbl sample"><table>
     <tr><th colspan="3" style="text-align:center">EMPLOYEE</th></tr>
-    <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-    <tr><td><code>ID</code></td><td><code>Integer</code></td><td>An employee ID in the inclusive range [1, 1000]. This is the primary key.</td></tr>
-    <tr><td><code>NAME</code></td><td><code>String</code></td><td>An employee name. This field contains between 1 and 100 characters (inclusive).</td></tr>
-    <tr><td><code>DEPARTMENT</code></td><td><code>String</code></td><td>The department of the employee. This field contains between 1 and 100 characters (inclusive).</td></tr>
-    <tr><td><code>SALARY</code></td><td><code>Integer</code></td><td>The monthly salary of the employee, in the inclusive range [1, 1000000].</td></tr>
+    <tr><th>ชื่อคอลัมน์</th><th>ชนิดข้อมูล</th><th>คำอธิบาย</th></tr>
+    <tr><td><code>ID</code></td><td><code>Integer</code></td><td>รหัสพนักงาน อยู่ในช่วง [1, 1000] (รวมค่าปลาย) เป็น primary key</td></tr>
+    <tr><td><code>NAME</code></td><td><code>String</code></td><td>ชื่อพนักงาน ยาว 1 ถึง 100 ตัวอักษร (รวมค่าปลาย)</td></tr>
+    <tr><td><code>DEPARTMENT</code></td><td><code>String</code></td><td>แผนกของพนักงาน ยาว 1 ถึง 100 ตัวอักษร (รวมค่าปลาย)</td></tr>
+    <tr><td><code>SALARY</code></td><td><code>Integer</code></td><td>เงินเดือนรายเดือนของพนักงาน อยู่ในช่วง [1, 1000000] (รวมค่าปลาย)</td></tr>
   </table></div>
 
-  <h4>Sample Input</h4>
+  <h4>อินพุตตัวอย่าง (Sample Input)</h4>
   <div class="tbl sample"><table>
     <tr><th colspan="4" style="text-align:center">EMPLOYEE</th></tr>
     <tr><th>ID</th><th>NAME</th><th>DEPARTMENT</th><th>SALARY</th></tr>
@@ -376,13 +376,13 @@ ol.steps-list{padding-left:1.4em}
       <tr><td>14</td><td>Nid</td><td>Operations</td><td>60000</td></tr>
   </table></div>
 
-  <h4>Sample Output</h4>
+  <h4>เอาต์พุตตัวอย่าง (Sample Output)</h4>
   <div class="pbox"><pre><code>Engineering 62333.33
 Finance 53750.00
 Marketing 53750.00</code></pre></div>
 
-  <p><b>Explanation</b><br>
-  Engineering has 3 employees and an average of (60000 + 75000 + 52000) / 3 = 62333.33. Finance (50000 and 57500) and Marketing (51000 and 56500) both average 53750.00, so they are ordered by name. HR has only one employee. Sales (46500) and Support (36000) are below 50000. Operations averages exactly 50000, which is not strictly greater than 50000.</p>
+  <p><b>คำอธิบาย</b><br>
+  Engineering มีพนักงาน 3 คน เฉลี่ย (60000 + 75000 + 52000) / 3 = 62333.33 · Finance (50000 และ 57500) กับ Marketing (51000 และ 56500) เฉลี่ย 53750.00 เท่ากัน จึงเรียงตามชื่อ · HR มีพนักงานคนเดียว · Sales (46500) และ Support (36000) ต่ำกว่า 50000 · Operations เฉลี่ย 50000 พอดี ซึ่งไม่มากกว่า 50000 จึงไม่ผ่าน</p>
 
   <div class="note key"><b class="t">ข้อควรจำตอนทำจริง</b>ลงท้าย query ด้วย <code>;</code> · เลือก DBMS ใดก็ได้ใน 4 ตัวที่ข้อสอบอนุญาต · ข้อมูลที่ใช้ตรวจจริงมีมากกว่าตัวอย่างนี้</div>
   <div class="note tip"><b class="t">เกณฑ์ให้คะแนน (10 คะแนน)</b>เงื่อนไขนับ ≥ 2 ถูก 2 · เงื่อนไขเฉลี่ย &gt; 50000 ถูก (ไม่รวมเท่ากับพอดี) 3 · ปัดเศษ 2 ตำแหน่ง 2 · ลำดับการเรียงรวมกรณีเสมอ 2 · ชื่อและลำดับคอลัมน์ถูก 1</div>
@@ -449,36 +449,36 @@ INSERT INTO EMPLOYEE VALUES
 <!-- ===== Q56 ===== -->
 <section class="topic" id="q56" data-c="5">
   <div class="t-head"><span class="n" style="background:var(--c5)">56</span><div><h3>Page View Statistics</h3><span class="lv k5">Prompt · 15 นาที · 10 เทสต์</span></div></div>
-  <p class="compet">Write one prompt that makes an AI assistant return a precise, machine-checkable answer for every test input.</p>
+  <p class="compet">เขียน prompt หนึ่งชุดที่ทำให้ผู้ช่วย AI ตอบได้แม่นยำ และตรวจด้วยเครื่องได้ ในทุกอินพุตของเทสต์</p>
 
-  <p>A website owner wants to identify the most viewed page in a server log and retrieve the details about the total number of times it has been viewed.</p>
-  <h4>Task</h4>
-  <p>Write a clear and specific prompt for the AI assistant to identify the most viewed page, including the following information:</p>
-  <ul><li>Page Name</li><li>Total View Count</li></ul>
-  <p>The results must be returned as a comma-separated string in the format: <code>&lt;Page Name&gt;,&lt;Total View Count&gt;</code></p>
-  <p>Rules:</p>
+  <p>เจ้าของเว็บไซต์ต้องการหาหน้าที่มีคนเข้าชมมากที่สุดจากล็อกของเซิร์ฟเวอร์ พร้อมจำนวนครั้งที่หน้านั้นถูกเข้าชมทั้งหมด</p>
+  <h4>สิ่งที่ต้องทำ</h4>
+  <p>เขียน prompt ที่ชัดเจนและเจาะจง ให้ผู้ช่วย AI หาหน้าที่มีคนเข้าชมมากที่สุด โดยตอบข้อมูลต่อไปนี้</p>
+  <ul><li>ชื่อหน้า (Page Name)</li><li>จำนวนการเข้าชมรวม (Total View Count)</li></ul>
+  <p>ผลลัพธ์ต้องเป็นข้อความที่คั่นด้วยเครื่องหมายจุลภาค ในรูปแบบ <code>&lt;Page Name&gt;,&lt;Total View Count&gt;</code></p>
+  <p>กติกา</p>
   <ul>
-    <li>A page may appear on several lines. Add all of its views together.</li>
-    <li>Page names are case-sensitive.</li>
-    <li>If two or more pages have the same total, return the one that appears first in the log.</li>
-    <li>Ignore any line that is not in the form <code>&lt;Page Name&gt; - Viewed &lt;N&gt; time(s)</code>.</li>
+    <li>หน้าเดียวกันอาจปรากฏหลายบรรทัด ให้รวมจำนวนการเข้าชมของทุกบรรทัดเข้าด้วยกัน</li>
+    <li>ชื่อหน้าแยกตัวพิมพ์เล็กและตัวพิมพ์ใหญ่ (case-sensitive)</li>
+    <li>ถ้ามีตั้งแต่สองหน้าขึ้นไปที่ยอดรวมเท่ากัน ให้ตอบหน้าที่ปรากฏในล็อกก่อน</li>
+    <li>ข้ามบรรทัดที่ไม่อยู่ในรูปแบบ <code>&lt;Page Name&gt; - Viewed &lt;N&gt; time(s)</code></li>
   </ul>
-  <p>NOTE: The {testcase input} field is a placeholder that will be auto-filled with various inputs to test the prompt.</p>
+  <p>หมายเหตุ: <code>{testcase input}</code> เป็นตัวแทนที่ระบบจะแทนด้วยอินพุตต่าง ๆ โดยอัตโนมัติ เพื่อทดสอบ prompt</p>
 
   <h4>ช่องเขียน prompt ในข้อสอบจริง (Language: Markdown) เริ่มต้นประมาณนี้</h4>
   <div class="pbox"><pre><code>Write your prompt here...
 
 {testcase input}</code></pre></div>
 
-  <details class="sol" open><summary>Sample Case 1</summary><h4>Sample Input</h4><div class="pbox"><pre><code>home.html - Viewed 5 times
+  <details class="sol" open><summary>ตัวอย่างที่ 1 (Sample Case 1)</summary><h4>อินพุตตัวอย่าง</h4><div class="pbox"><pre><code>home.html - Viewed 5 times
 about.html - Viewed 3 times
 contact.html - Viewed 7 times
-home.html - Viewed 4 times</code></pre></div><h4>Sample Output</h4><div class="pbox"><pre><code>home.html,9</code></pre></div><p><b>Explanation</b><br>home.html is viewed 5 + 4 = 9 times, which is more than contact.html (7 times), so it is the most viewed page.</p></details>
-<details class="sol"><summary>Sample Case 2</summary><h4>Sample Input</h4><div class="pbox"><pre><code>a.html - Viewed 6 times
+home.html - Viewed 4 times</code></pre></div><h4>เอาต์พุตตัวอย่าง</h4><div class="pbox"><pre><code>home.html,9</code></pre></div><p><b>คำอธิบาย</b><br>home.html ถูกเข้าชม 5 + 4 = 9 ครั้ง มากกว่า contact.html (7 ครั้ง) จึงเป็นหน้าที่มีคนเข้าชมมากที่สุด</p></details>
+<details class="sol"><summary>ตัวอย่างที่ 2 (Sample Case 2)</summary><h4>อินพุตตัวอย่าง</h4><div class="pbox"><pre><code>a.html - Viewed 6 times
 b.html - Viewed 6 times
 a.html - Viewed 2 times
-b.html - Viewed 2 times</code></pre></div><h4>Sample Output</h4><div class="pbox"><pre><code>a.html,8</code></pre></div><p><b>Explanation</b><br>a.html and b.html are both viewed 6 + 2 = 8 times. The tie is broken by the page that appears first in the log, which is a.html.</p></details>
-<details class="sol"><summary>Sample Case 3</summary><h4>Sample Input</h4><div class="pbox"><pre><code>Report.PDF - Viewed 1 time</code></pre></div><h4>Sample Output</h4><div class="pbox"><pre><code>Report.PDF,1</code></pre></div><p><b>Explanation</b><br>There is only one line, so Report.PDF is the most viewed page with 1 view. Note that the log says &quot;1 time&quot;, not &quot;1 times&quot;.</p></details>
+b.html - Viewed 2 times</code></pre></div><h4>เอาต์พุตตัวอย่าง</h4><div class="pbox"><pre><code>a.html,8</code></pre></div><p><b>คำอธิบาย</b><br>a.html และ b.html ถูกเข้าชม 6 + 2 = 8 ครั้งเท่ากัน จึงตัดสินด้วยหน้าที่ปรากฏในล็อกก่อน คือ a.html</p></details>
+<details class="sol"><summary>ตัวอย่างที่ 3 (Sample Case 3)</summary><h4>อินพุตตัวอย่าง</h4><div class="pbox"><pre><code>Report.PDF - Viewed 1 time</code></pre></div><h4>เอาต์พุตตัวอย่าง</h4><div class="pbox"><pre><code>Report.PDF,1</code></pre></div><p><b>คำอธิบาย</b><br>มีบรรทัดเดียว Report.PDF จึงเป็นหน้าที่มีคนเข้าชมมากที่สุดด้วยยอด 1 ครั้ง สังเกตว่าล็อกเขียนว่า &quot;1 time&quot; ไม่ใช่ &quot;1 times&quot;</p></details>
 
   <div class="note key"><b class="t">กติกาการตรวจ (ข้อสมมติของข้อสอบจำลอง)</b>ผลลัพธ์ของโมเดลต้องตรงกับคำตอบที่คาดแบบ exact match ไม่มีคำนำ คำอธิบาย เครื่องหมายคำพูด หรือบรรทัดเกิน แต่ละเทสต์ผ่านหรือไม่ผ่าน มี 10 เทสต์ (ตัวอย่าง 3 + ซ่อน 7)</div>
   <div class="note tip"><b class="t">เกณฑ์ให้คะแนน</b>70% จากสัดส่วนเทสต์ที่ผ่าน และ 30% จากเช็กลิสต์คุณภาพ prompt ในส่วนเฉลย</div>
@@ -597,20 +597,20 @@ def solve(log: str) -&gt; str:
 <!-- ===== Q57 ===== -->
 <section class="topic" id="q57" data-c="2">
   <div class="t-head"><span class="n" style="background:var(--c2)">57</span><div><h3>Number Labels</h3><span class="lv k2">Coding · 30 นาที · 100 คะแนน</span></div></div>
-  <p class="compet">Write a clean, correct function that prints the right output for every value of n, within the time limit.</p>
+  <p class="compet">เขียนฟังก์ชันที่อ่านง่ายและถูกต้อง พิมพ์ผลลัพธ์ถูกทุกค่า n ภายในเวลาที่กำหนด</p>
 
-  <p>You are given a number <i>n</i>.</p>
+  <p>กำหนดตัวเลข <i>n</i> มาให้</p>
   <ul>
-    <li>For every integer <i>i</i> from 1 to <i>n</i>, print:</li>
-    <li>Prime if <i>i</i> is a prime number</li>
-    <li>Square if <i>i</i> is a perfect square (1, 4, 9, 16, ...) and is not prime</li>
-    <li>Even if <i>i</i> is even and is neither prime nor a perfect square</li>
-    <li>Otherwise, print <i>i</i></li>
+    <li>สำหรับจำนวนเต็ม <i>i</i> ทุกตัวตั้งแต่ 1 ถึง <i>n</i> ให้พิมพ์</li>
+    <li>Prime ถ้า <i>i</i> เป็นจำนวนเฉพาะ</li>
+    <li>Square ถ้า <i>i</i> เป็นจำนวนกำลังสองสมบูรณ์ (1, 4, 9, 16, ...) และไม่ใช่จำนวนเฉพาะ</li>
+    <li>Even ถ้า <i>i</i> เป็นเลขคู่ และไม่ใช่ทั้งจำนวนเฉพาะและจำนวนกำลังสองสมบูรณ์</li>
+    <li>นอกเหนือจากนั้น ให้พิมพ์ <i>i</i></li>
   </ul>
-  <p>Apply the first rule that matches, in the order listed. Print one result per line.</p>
+  <p>ใช้กฎข้อแรกที่ตรง ตามลำดับที่เขียนไว้ พิมพ์ผลลัพธ์บรรทัดละหนึ่งค่า</p>
 
-  <h4>Example</h4>
-  <p>Suppose n = 16.<br>Output:</p>
+  <h4>ตัวอย่าง (Example)</h4>
+  <p>สมมติ n = 16<br>ผลลัพธ์</p>
   <div class="pbox"><pre><code>Square
 Prime
 Prime
@@ -627,13 +627,13 @@ Prime
 Even
 15
 Square</code></pre></div>
-  <h4>Explanation</h4>
-  <p>The numbers 2, 3, 5, 7, 11, and 13 are prime, so print <i>Prime</i> on those lines.<br>
-  The numbers 1, 4, 9, and 16 are perfect squares (1 is not a prime number), so print <i>Square</i> on those lines.<br>
-  The numbers 6, 8, 10, 12, and 14 are even and neither prime nor a perfect square, so print <i>Even</i> on those lines.<br>
-  The number 15 matches none of the rules, so print 15 on that line.</p>
+  <h4>คำอธิบาย</h4>
+  <p>2, 3, 5, 7, 11 และ 13 เป็นจำนวนเฉพาะ จึงพิมพ์ <i>Prime</i> ในบรรทัดเหล่านั้น<br>
+  1, 4, 9 และ 16 เป็นจำนวนกำลังสองสมบูรณ์ (1 ไม่ใช่จำนวนเฉพาะ) จึงพิมพ์ <i>Square</i> ในบรรทัดเหล่านั้น<br>
+  6, 8, 10, 12 และ 14 เป็นเลขคู่ และไม่ใช่ทั้งจำนวนเฉพาะและจำนวนกำลังสองสมบูรณ์ จึงพิมพ์ <i>Even</i> ในบรรทัดเหล่านั้น<br>
+  15 ไม่ตรงกับกฎข้อใดเลย จึงพิมพ์ 15 ในบรรทัดนั้น</p>
 
-  <h4>Constraints</h4>
+  <h4>ข้อจำกัด (Constraints)</h4>
   <ul><li>1 ≤ <i>n</i> ≤ 2 × 10<sup>5</sup></li></ul>
 
   <h4>โครงฟังก์ชันที่ข้อสอบมีให้ (ตัวอย่าง)</h4>
