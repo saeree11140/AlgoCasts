@@ -1,0 +1,19 @@
+web/src/labs/searching.ts
+  s_898930fdb0bb1c::t_23be8bf805b980 48,72,136
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "941b2b75dddf9c065f253d2d7689b5a07ffea22f",
+  "prompts": {},
+  "sessions": {
+    "s_898930fdb0bb1c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2e8ffeae-8db1-4cf9-b8b4-76448bec0a87",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
