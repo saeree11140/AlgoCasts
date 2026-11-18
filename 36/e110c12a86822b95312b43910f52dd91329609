@@ -1,0 +1,25 @@
+web/scripts/prepare-content.mjs
+  s_306efc552ac683::t_0911d2980084b7 59
+web/scripts/catalog.mjs
+  s_306efc552ac683::t_0911d2980084b7 59
+web/README.md
+  s_306efc552ac683::t_0911d2980084b7 31
+web/tests/content.test.mjs
+  s_306efc552ac683::t_0911d2980084b7 11,46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "36e110c12a86822b95312b43910f52dd91329609",
+  "prompts": {},
+  "sessions": {
+    "s_306efc552ac683": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "61f3692c-b480-4e04-bd32-685af3cf30c7",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
