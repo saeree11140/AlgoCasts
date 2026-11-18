@@ -56,7 +56,7 @@ for(const [folder,[id,title,description,abbr]] of Object.entries(competencyInfo)
  const text=s=>s.replace(/<[^>]*>/g,'').trim();
  const levels=[...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)].map(m=>text(m[1]));
  // Most documents group topics under "ระดับ ..." h2 headings; others (Cloud) tag the level inside each topic.
- const topics=[...html.matchAll(/<section class="topic"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)<\/h3>/g)].map(m=>text(m[1]));
+ const topics=[...html.matchAll(/<section class="topic"[^>]*>(?:(?!<\/section>)[\s\S])*?<h3[^>]*>([\s\S]*?)<\/h3>/g)].map(m=>text(m[1]));
  const sections=levels.some(s=>s.startsWith('ระดับ'))?levels:topics;
  competencies.push({id,title,description,abbr,path:`documents/${id}.html`,sections,sourcePath:`competency/${folder}/${file}`});
 }

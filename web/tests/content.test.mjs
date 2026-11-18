@@ -8,7 +8,7 @@ test('all source categories imported without losing files', () => {
   assert.equal(manifest.problems.filter(p=>p.source==='LeetCode').length, 8);
   assert.equal(manifest.problems.filter(p=>p.source==='HackerRank').length, 3);
   assert.equal(manifest.problems.length, 46);
-  assert.equal(manifest.competencies.length, 15);
+  assert.equal(manifest.competencies.length, 16);
   assert.ok(manifest.diagrams.length > 100);
   for (const d of manifest.diagrams) {
     const svg = fs.readFileSync(new URL(d.path, content),'utf8');
@@ -43,6 +43,7 @@ for (const [id, title, source, firstSection, sectionCount] of [
   ['ci-cd', 'CI/CD', 'CICD/ci-cd-review.html', 'ระดับ Beginner', 6],
   ['application-security', 'Application Security', 'Application Security/application-security-review.html', 'ระดับ Beginner', 7],
   ['ai-prompt-engineering', 'AI & Prompt Engineering', 'AI & Prompt engineer/ai-prompt-engineering-review.html', 'ระดับ Beginner', 8],
+  ['mock-exam', 'Mock Exam ข้อสอบจำลองข้อเขียน', 'Mock Exam/mock-exam-q55-q57-v2.html', 'รู้จักหน้าจอสอบจริงก่อนเริ่ม', 4],
 ]) {
   test(`${title} lesson is complete and available from competency navigation`, () => {
     const topic = manifest.competencies.find(item => item.id === id);

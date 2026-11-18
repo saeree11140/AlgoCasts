@@ -28,7 +28,7 @@ pnpm run check  # tests + TypeScript check + production build
 - รันทดสอบ 3 เคสแรก หรือส่งคำตอบตรวจทุกเคส; ผ่านทุกเคสจึงนับว่าสำเร็จ
 - คู่มือภาพ 11 หมวดแปลงจาก draw.io (หมวด 11 Searching สร้างใหม่ใน `diagrams/11/diagrams.xml` เปิดแก้ใน draw.io ได้) พร้อมคำอธิบายภาษาไทยทุกภาพ และ Lab แบบ interactive ทุกหมวด (เดินทีละขั้น ไฮไลต์บรรทัดโค้ด)
 - เอกสาร Coding Practice
-- เตรียมสอบ 15 ทักษะ แสดง HTML ต้นฉบับพร้อมแบบทดสอบที่กดทำได้ และ JavaScript PDF
+- เตรียมสอบ 16 หัวข้อ (15 ทักษะ + ข้อสอบจำลองข้อเขียน) แสดง HTML ต้นฉบับพร้อมแบบทดสอบที่กดทำได้ และ JavaScript PDF
 - Coding Skill: Beginner–Advance, DSA ด้วย JavaScript และ Coding Lab รันเทสต์ในเบราว์เซอร์
 - ธีมสว่าง/มืด หน้าจอมือถือ ส่งออก/นำเข้าความคืบหน้า JSON
 

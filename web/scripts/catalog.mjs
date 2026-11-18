@@ -56,6 +56,7 @@ export const competencyInfo = {
   'Software Engineering and Development': ['web-mobile','Web & Mobile Development','JavaScript, Frontend, Backend และ Mobile','WEB'],
   'Unit & Functional testing (for Developer)': ['testing','Unit & Functional Testing','Test cases, mocking, integration และคุณภาพซอฟต์แวร์','TEST'],
   'AI & Prompt engineer': ['ai-prompt-engineering','AI & Prompt Engineering','LLM, Prompt Engineering, RAG, MLOps และ AI Governance','AI'],
+  'Mock Exam': ['mock-exam','Mock Exam ข้อสอบจำลองข้อเขียน','จำลองข้อเขียน Q55–Q57: SQL, Prompt Engineering และ Coding พร้อมเฉลยและเช็กลิสต์','MOCK'],
 };
 export const diagramGroups = {
  '01': 'เริ่มต้นแก้โจทย์', '02': 'String & Array', '03': 'Loop & Recursion',
