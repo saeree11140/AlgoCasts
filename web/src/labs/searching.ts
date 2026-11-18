@@ -45,7 +45,7 @@ function linear(text: string): Frame[] | string {
   for (let i = 0; i < values.length; i++) {
     const found = values[i] === target;
     const stats: Frame['stats'] = [['เทียบ', `${i + 1} ครั้ง`]];
-    frames.push({ html: stage(values, target, k => (k < i ? 'out' : k === i ? (found ? 'found' : 'mid') : ''), { [i]: [['i', found ? 'is-done' : 'is-compare']] }), message: found ? `arr[${i}] = ${values[i]} เท่ากับ ${target} → คืน ${i}` : `arr[${i}] = ${values[i]} ≠ ${target} ไปตัวถัดไป`, line: 1, stats });
+    frames.push({ html: stage(values, target, k => (k < i ? 'out' : k === i ? (found ? 'found' : 'mid') : ''), { [i]: [['i', found ? 'is-done' : 'is-compare']] }), message: found ? `arr[${i}] = ${values[i]} เท่ากับ ${target} → คืน index ${i}` : `arr[${i}] = ${values[i]} ≠ ${target} ไปตัวถัดไป`, line: 1, stats });
     if (found) {
       frames.push({ html: stage(values, target, k => (k < i ? 'out' : k === i ? 'found' : ''), { [i]: [['i', 'is-done']] }), message: `เจอที่ index ${i} หลังเทียบ ${i + 1} ครั้ง ตัวที่เหลือไม่ต้องดู`, line: 1, stats });
       return frames;
@@ -69,7 +69,7 @@ function binary(text: string): Frame[] | string {
     rounds++;
     frames.push({ html: stage(values, target, range(mid), pointers(left, mid, right)), message: `รอบ ${rounds}: mid = ${left} + floor((${right} - ${left}) / 2) = ${mid} → arr[${mid}] = ${values[mid]}`, line: 2, stats: stats() });
     if (values[mid] === target) {
-      frames.push({ html: stage(values, target, k => (k === mid ? 'found' : k < left || k > right ? 'out' : 'range'), { [mid]: [['mid', 'is-done']] }), message: `${values[mid]} === ${target} → คืน ${mid} ใช้ ${rounds} รอบ`, line: 3, stats: stats() });
+      frames.push({ html: stage(values, target, k => (k === mid ? 'found' : k < left || k > right ? 'out' : 'range'), { [mid]: [['mid', 'is-done']] }), message: `arr[${mid}] = ${values[mid]} === ${target} → คืน index ${mid} (ตำแหน่ง ไม่ใช่ค่า) ใช้ ${rounds} รอบ`, line: 3, stats: stats() });
       return frames;
     }
     if (values[mid] < target) {
@@ -133,7 +133,7 @@ function rotated(text: string): Frame[] | string {
     const stats: Frame['stats'] = [['รอบ', rounds]];
     frames.push({ html: stage(values, target, view(mid), pointers(left, mid, right)), message: `รอบ ${rounds}: mid = ${mid} → nums[${mid}] = ${values[mid]}`, line: 1, stats });
     if (values[mid] === target) {
-      frames.push({ html: stage(values, target, k => (k === mid ? 'found' : k < left || k > right ? 'out' : 'range'), { [mid]: [['mid', 'is-done']] }), message: `${values[mid]} === ${target} → คืน ${mid}`, line: 2, stats });
+      frames.push({ html: stage(values, target, k => (k === mid ? 'found' : k < left || k > right ? 'out' : 'range'), { [mid]: [['mid', 'is-done']] }), message: `nums[${mid}] = ${values[mid]} === ${target} → คืน index ${mid}`, line: 2, stats });
       return frames;
     }
     if (values[left] <= values[mid]) {
