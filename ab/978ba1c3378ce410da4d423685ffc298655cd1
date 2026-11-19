@@ -1,0 +1,25 @@
+web/scripts/prepare-content.mjs
+  s_daa89b1d6078b0::t_7e939d65f20868 71-72
+web/tests/content.test.mjs
+  s_daa89b1d6078b0::t_7e939d65f20868 11,49-50
+web/README.md
+  s_daa89b1d6078b0::t_7e939d65f20868 31
+web/scripts/catalog.mjs
+  s_daa89b1d6078b0::t_3532f3298aad35 60-70
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "ab978ba1c3378ce410da4d423685ffc298655cd1",
+  "prompts": {},
+  "sessions": {
+    "s_daa89b1d6078b0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4f1b71d6-ecdf-47d7-8f06-8e5af4708f98",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
