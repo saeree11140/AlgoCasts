@@ -57,6 +57,15 @@ export const competencyInfo = {
   'Unit & Functional testing (for Developer)': ['testing','Unit & Functional Testing','Test cases, mocking, integration และคุณภาพซอฟต์แวร์','TEST'],
   'AI & Prompt engineer': ['ai-prompt-engineering','AI & Prompt Engineering','LLM, Prompt Engineering, RAG, MLOps และ AI Governance','AI'],
   'Mock Exam': ['mock-exam','Mock Exam ข้อสอบจำลองข้อเขียน','จำลองข้อเขียน Q55–Q57: SQL, Prompt Engineering และ Coding พร้อมเฉลยและเช็กลิสต์','MOCK'],
+  'Mock Exam Keng Wee/dev-practice (Intermediate).html': ['mock-exam-intermediate','Mock Exam ชุดกลาง (Intermediate)','ข้อสอบจำลอง 57 ข้อ ระดับ Intermediate ครบ 14 ทักษะ + SQL, Prompt และ Software Coding พร้อมเฉลย','MOCK-I'],
+  'Mock Exam Keng Wee/dev-practice (advance).html': ['mock-exam-advance','Mock Exam ชุดยาก (Advance)','ข้อสอบจำลอง 57 ข้อ ระดับ Advanced ครบ 14 ทักษะ + SQL, Prompt และ Software Coding พร้อมเฉลย','MOCK-A'],
+  'Mock Exam Keng KK': ['mock-exam-kk','Mock Exam ชุดเก็ง 2026 (Intermediate + Advance)','ปรนัย 73 ข้อตาม weight ของ 14 competency + SQL, Prompt และ Program Coding รวม 100 คะแนน พร้อมเฉลย','MOCK-K'],
+  'Mock Exam Thitima/architecture 1.html': ['mock-exam-thitima-architecture','Mock Exam ชุดซ้อม · Software Design & Architecture','Junior/Senior ระดับละ ฝึก 30 + สอบจับเวลา 20 ข้อ: Microservices, System Design และ Database Design พร้อมสรุปทบทวน','MOCK-ARC'],
+  'Mock Exam Thitima/engineering 1.html': ['mock-exam-thitima-engineering','Mock Exam ชุดซ้อม · Software Engineering & Development','Junior/Senior ระดับละ ฝึก 48 + สอบจับเวลา 32 ข้อ: Git, SQL, OOP, Monitoring, Web & Mobile และ Testing พร้อมสรุปทบทวน','MOCK-ENG'],
+  'Mock Exam Thitima/infrastructure 1.html': ['mock-exam-thitima-infrastructure','Mock Exam ชุดซ้อม · Infrastructure & DevOps','Junior/Senior ระดับละ ฝึก 24 + สอบจับเวลา 16 ข้อ: Container, CI/CD และ Cloud พร้อมสรุปทบทวน','MOCK-INF'],
+  'Mock Exam Thitima/security 1.html': ['mock-exam-thitima-security','Mock Exam ชุดซ้อม · Security','Junior/Senior ระดับละ ฝึก 24 + สอบจับเวลา 20 ข้อ: OWASP, Auth, API Security, Security Testing และ Incident Response','MOCK-SEC'],
+  'Mock Exam Thitima/problem-solving 1.html': ['mock-exam-thitima-problem-solving','Mock Exam ชุดซ้อม · Problem Solving & AI','Junior/Senior ระดับละ ฝึก 30 + สอบจับเวลา 20 ข้อ: Program Coding, SQL Coding และ Prompt & AI พร้อมสรุปทบทวน','MOCK-PS'],
+  'Mock Exam Anchanat': ['mock-exam-anchanat','Mock Exam คลังข้อสอบ 600 ข้อ (L1–L3)','ปรนัย 600 ข้อ (Set 1 + Set 2) ครบ 17 หัวข้อ ระดับ Foundation ถึง Advanced โหมดฝึก สอบจับเวลา และทบทวนข้อที่ผิด · เนื้อหาโดย ANCHANAT PATCHAYA','MOCK-600'],
 };
 export const diagramGroups = {
  '01': 'เริ่มต้นแก้โจทย์', '02': 'String & Array', '03': 'Loop & Recursion',

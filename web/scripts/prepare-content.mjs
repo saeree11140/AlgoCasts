@@ -48,17 +48,28 @@ const chocolateStarter=await read('chocolatestype/client/index.ts');
 const chocolate={id:'chocolate-report',title:'Chocolate Report',category:'API Challenges',difficulty:'Medium',description:'ดึงข้อมูล API ทุกหน้า กรองเปอร์เซ็นต์โกโก้ แล้วสรุป count, avgCacao และ strongest ตาม category',hint:'ส่ง minCacao และ pageSize=50 ไป API; แยก retry ของแต่ละหน้า แล้วสะสมผลก่อนสรุป',complexity:'O(n) time · O(c) aggregation space',source:'API Lab',starter:chocolateStarter,solution:chocolateSolution,modules:{'./test':await read('chocolatestype/client/test.ts')},directions:await read('chocolatestype/README.md'),markdown:true,sourcePath:'chocolatestype/client',guideGroup:'09'};
 await write('problems/chocolate-report.json',chocolate);problems.push(Object.fromEntries(Object.entries(chocolate).filter(([k])=>['id','title','category','difficulty','description','source'].includes(k))));
 for(const p of extraProblems) { await write(`problems/${p.id}.json`,p); problems.push(Object.fromEntries(Object.entries(p).filter(([k])=>['id','title','category','difficulty','description','source'].includes(k)))); }
+// Practice sets list their competencies in exam-data; fall back to the ones the review notes cover.
+const examSections=(exam,review)=>JSON.parse(exam).competencies??[...new Set(Object.values(review?JSON.parse(review).levels:{}).flat().map(r=>r.competency))];
 const competencies=[];
 for(const [folder,[id,title,description,abbr]] of Object.entries(competencyInfo)) {
- const file=(await fs.readdir(path.join(root,'competency',folder))).find(f=>f.endsWith('.html'));
- const html=await read(`competency/${folder}/${file}`);
+ // A key is either a folder (first .html inside) or a specific "folder/file.html" when a folder holds several documents.
+ const [dir,file]=folder.endsWith('.html')?[path.dirname(folder),path.basename(folder)]:[folder,(await fs.readdir(path.join(root,'competency',folder))).find(f=>f.endsWith('.html'))];
+ const html=await read(`competency/${dir}/${file}`);
  await write(`documents/${id}.html`,html);
  const text=s=>s.replace(/<[^>]*>/g,'').trim();
  const levels=[...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)].map(m=>text(m[1]));
  // Most documents group topics under "ระดับ ..." h2 headings; others (Cloud) tag the level inside each topic.
  const topics=[...html.matchAll(/<section class="topic"[^>]*>(?:(?!<\/section>)[\s\S])*?<h3[^>]*>([\s\S]*?)<\/h3>/g)].map(m=>text(m[1]));
- const sections=levels.some(s=>s.startsWith('ระดับ'))?levels:topics;
- competencies.push({id,title,description,abbr,path:`documents/${id}.html`,sections,sourcePath:`competency/${folder}/${file}`});
+ // Script-rendered exam sets keep their content in a JSON question bank instead of headings.
+ const jsonScript=id=>html.match(new RegExp(`<script(?=[^>]*\\bid="${id}")(?=[^>]*\\btype="application/json")[^>]*>([\\s\\S]*?)</script>`))?.[1];
+ const bank=jsonScript('question-bank');
+ const meta=html.match(/^const META = (\{.*\});?$/m)?.[1];
+ const [exam,review]=['exam-data','review-data'].map(jsonScript);
+ const sections=levels.some(s=>s.startsWith('ระดับ'))?levels:topics.length?topics
+  :bank?JSON.parse(bank).competencies.map(c=>c.title)
+  :meta?(({competencies,coding})=>[...competencies,...coding].map(c=>c.name))(JSON.parse(meta))
+  :exam?examSections(exam,review):topics;
+ competencies.push({id,title,description,abbr,path:`documents/${id}.html`,sections,sourcePath:`competency/${dir}/${file}`});
 }
 await fs.copyFile(path.join(root,'competency/exploring-js-screen-2024-09-03.pdf'),path.join(out,'documents/exploring-js.pdf'));
 for(const [from,to] of [['competency/CODING/coding_practice_session_01/Coding_Practice_6_Problems_Explained.md','coding-practice.md'],['competency/CODING/hackerrank-chocolate-pagination.md','chocolate-score.md']]) await write(`documents/${to}`,await read(from));

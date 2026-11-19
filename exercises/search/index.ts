@@ -17,10 +17,23 @@ function linearSearch(arr: number[], target: number): number | undefined {
 }
 
 function binarySearch(arr: number[], target: number): number | undefined {
-  return undefined;
+  let left = 0;
+  let right = arr.length - 1;
+
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+
+  return -1;
 }
 
-function binarySearchRecursive(arr: number[], target: number): number | undefined {
+function binarySearchRecursive(
+  arr: number[],
+  target: number,
+): number | undefined {
   return undefined;
 }
 

@@ -8,7 +8,7 @@ test('all source categories imported without losing files', () => {
   assert.equal(manifest.problems.filter(p=>p.source==='LeetCode').length, 8);
   assert.equal(manifest.problems.filter(p=>p.source==='HackerRank').length, 3);
   assert.equal(manifest.problems.length, 46);
-  assert.equal(manifest.competencies.length, 16);
+  assert.equal(manifest.competencies.length, 25);
   assert.ok(manifest.diagrams.length > 100);
   for (const d of manifest.diagrams) {
     const svg = fs.readFileSync(new URL(d.path, content),'utf8');
@@ -44,6 +44,15 @@ for (const [id, title, source, firstSection, sectionCount] of [
   ['application-security', 'Application Security', 'Application Security/application-security-review.html', 'ระดับ Beginner', 7],
   ['ai-prompt-engineering', 'AI & Prompt Engineering', 'AI & Prompt engineer/ai-prompt-engineering-review.html', 'ระดับ Beginner', 8],
   ['mock-exam', 'Mock Exam ข้อสอบจำลองข้อเขียน', 'Mock Exam/mock-exam-q55-q57-v2.html', 'รู้จักหน้าจอสอบจริงก่อนเริ่ม', 4],
+  ['mock-exam-intermediate', 'Mock Exam ชุดกลาง (Intermediate)', 'Mock Exam Keng Wee/dev-practice (Intermediate).html', 'Microservices', 17],
+  ['mock-exam-advance', 'Mock Exam ชุดยาก (Advance)', 'Mock Exam Keng Wee/dev-practice (advance).html', 'Microservices', 17],
+  ['mock-exam-kk', 'Mock Exam ชุดเก็ง 2026 (Intermediate + Advance)', 'Mock Exam Keng KK/exam-choice.html', 'Microservices', 17],
+  ['mock-exam-thitima-architecture', 'Mock Exam ชุดซ้อม · Software Design & Architecture', 'Mock Exam Thitima/architecture 1.html', 'Microservices', 3],
+  ['mock-exam-thitima-engineering', 'Mock Exam ชุดซ้อม · Software Engineering & Development', 'Mock Exam Thitima/engineering 1.html', 'Git', 6],
+  ['mock-exam-thitima-infrastructure', 'Mock Exam ชุดซ้อม · Infrastructure & DevOps', 'Mock Exam Thitima/infrastructure 1.html', 'Container', 3],
+  ['mock-exam-thitima-security', 'Mock Exam ชุดซ้อม · Security', 'Mock Exam Thitima/security 1.html', 'Application Security', 6],
+  ['mock-exam-thitima-problem-solving', 'Mock Exam ชุดซ้อม · Problem Solving & AI', 'Mock Exam Thitima/problem-solving 1.html', 'Program Coding', 3],
+  ['mock-exam-anchanat', 'Mock Exam คลังข้อสอบ 600 ข้อ (L1–L3)', 'Mock Exam Anchanat/developer-competency-600.html', 'Microservices', 17],
 ]) {
   test(`${title} lesson is complete and available from competency navigation`, () => {
     const topic = manifest.competencies.find(item => item.id === id);
@@ -97,5 +106,19 @@ test('Searching guide has diagrams, Thai notes, a lab and links to every searchi
     const detail = JSON.parse(fs.readFileSync(new URL(`problems/${p.id}.json`, content)));
     assert.equal(detail.guideGroup, '11', p.id);
     assert.match(source, new RegExp(`'${p.id}'`), `${p.id} is listed in the Searching guide`);
+  }
+});
+
+test('Anchanat 600-question bank keeps every question answerable', () => {
+  const html = fs.readFileSync(new URL('documents/mock-exam-anchanat.html', content), 'utf8');
+  const bank = JSON.parse(html.match(/<script type="application\/json" id="question-bank">([\s\S]*?)<\/script>/)[1]);
+  const questions = bank.competencies.flatMap(c => c.questions);
+  assert.equal(questions.length, 600);
+  assert.equal(new Set(questions.map(q => q.id)).size, 600);
+  for (const q of questions) {
+    assert.equal(q.choices.length, 4, q.id);
+    assert.ok(Number.isInteger(q.answer) && q.answer >= 0 && q.answer < 4, q.id);
+    assert.ok([1, 2, 3].includes(q.level), q.id);
+    assert.ok(q.explanation && !/เฉลยข้อ\s*[A-D]/.test(q.explanation), `${q.id} explanation must not name a choice letter (choices are shuffled)`);
   }
 });
