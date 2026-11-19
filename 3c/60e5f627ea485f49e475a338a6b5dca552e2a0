@@ -1,0 +1,37 @@
+web/tests/content.test.mjs
+  s_daa89b1d6078b0::t_8c4b837a1a18bb 50-54
+  s_daa89b1d6078b0::t_5a5876f60fb49a 47-48
+  s_daa89b1d6078b0::t_b304cab98925b2 49
+  s_daa89b1d6078b0::t_6a527ace5b123b 11,55,111-122
+  s_daa89b1d6078b0::t_933f9181344b4c 123-124
+"competency/Mock Exam Anchanat/developer-competency-600.html"
+  s_daa89b1d6078b0::t_25088592c24aff 1-437
+web/README.md
+  s_daa89b1d6078b0::t_6a527ace5b123b 31
+web/scripts/catalog.mjs
+  s_daa89b1d6078b0::t_b304cab98925b2 62
+  s_daa89b1d6078b0::t_6a527ace5b123b 68
+  s_daa89b1d6078b0::t_8c4b837a1a18bb 63-67
+  s_daa89b1d6078b0::t_5a5876f60fb49a 60-61
+web/scripts/prepare-content.mjs
+  s_daa89b1d6078b0::t_b304cab98925b2 66,68-69
+  s_daa89b1d6078b0::t_5a5876f60fb49a 55-57,63,72
+  s_daa89b1d6078b0::t_8c4b837a1a18bb 51-52,67,70-71
+  s_daa89b1d6078b0::t_1fdeb164f978d3 64-65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "3c60e5f627ea485f49e475a338a6b5dca552e2a0",
+  "prompts": {},
+  "sessions": {
+    "s_daa89b1d6078b0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4f1b71d6-ecdf-47d7-8f06-8e5af4708f98",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
