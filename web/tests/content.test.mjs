@@ -8,7 +8,7 @@ test('all source categories imported without losing files', () => {
   assert.equal(manifest.problems.filter(p=>p.source==='LeetCode').length, 8);
   assert.equal(manifest.problems.filter(p=>p.source==='HackerRank').length, 3);
   assert.equal(manifest.problems.length, 46);
-  assert.equal(manifest.competencies.length, 25);
+  assert.equal(manifest.competencies.length, 27);
   assert.ok(manifest.diagrams.length > 100);
   for (const d of manifest.diagrams) {
     const svg = fs.readFileSync(new URL(d.path, content),'utf8');
@@ -46,6 +46,8 @@ for (const [id, title, source, firstSection, sectionCount] of [
   ['mock-exam', 'Mock Exam ข้อสอบจำลองข้อเขียน', 'Mock Exam/mock-exam-q55-q57-v2.html', 'รู้จักหน้าจอสอบจริงก่อนเริ่ม', 4],
   ['mock-exam-intermediate', 'Mock Exam ชุดกลาง (Intermediate)', 'Mock Exam Keng Wee/dev-practice (Intermediate).html', 'Microservices', 17],
   ['mock-exam-advance', 'Mock Exam ชุดยาก (Advance)', 'Mock Exam Keng Wee/dev-practice (advance).html', 'Microservices', 17],
+  ['mock-exam-sql-coding', 'Mock Exam SQL Coding 10 ข้อ', 'Mock Exam Keng Wee/sql-coding-10.html', 'เริ่มฝึก', 12],
+  ['mock-exam-prompt-engineering', 'Mock Exam Prompt Engineering 10 ข้อ', 'Mock Exam Keng Wee/prompt-engineering-10.html', 'วิธีใช้', 13],
   ['mock-exam-kk', 'Mock Exam ชุดเก็ง 2026 (Intermediate + Advance)', 'Mock Exam Keng KK/exam-choice.html', 'Microservices', 17],
   ['mock-exam-thitima-architecture', 'Mock Exam ชุดซ้อม · Software Design & Architecture', 'Mock Exam Thitima/architecture 1.html', 'Microservices', 3],
   ['mock-exam-thitima-engineering', 'Mock Exam ชุดซ้อม · Software Engineering & Development', 'Mock Exam Thitima/engineering 1.html', 'Git', 6],

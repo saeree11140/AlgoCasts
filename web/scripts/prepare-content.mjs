@@ -68,7 +68,8 @@ for(const [folder,[id,title,description,abbr]] of Object.entries(competencyInfo)
  const sections=levels.some(s=>s.startsWith('ระดับ'))?levels:topics.length?topics
   :bank?JSON.parse(bank).competencies.map(c=>c.title)
   :meta?(({competencies,coding})=>[...competencies,...coding].map(c=>c.name))(JSON.parse(meta))
-  :exam?examSections(exam,review):topics;
+  :exam?examSections(exam,review)
+  :levels; // plain documents with one <h2> per part
  competencies.push({id,title,description,abbr,path:`documents/${id}.html`,sections,sourcePath:`competency/${dir}/${file}`});
 }
 await fs.copyFile(path.join(root,'competency/exploring-js-screen-2024-09-03.pdf'),path.join(out,'documents/exploring-js.pdf'));

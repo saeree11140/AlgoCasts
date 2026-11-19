@@ -1,0 +1,402 @@
+<!doctype html><html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SQL Coding · 10 ข้อ | Basic → Advanced</title><style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f5f3ec;color:#243730;font:16px/1.75 system-ui,-apple-system,"Noto Sans Thai",sans-serif}header{background:#173e36;color:#fff;padding:48px max(24px,calc((100vw - 1120px)/2));}header p{max-width:780px;color:#daebe2}h1{font-size:clamp(30px,5vw,48px);line-height:1.2;margin:12px 0}h2,h3{line-height:1.45}main{max-width:1168px;padding:28px 24px 70px;margin:auto}a{color:#176d5b}header a{color:#fff}nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}nav a{background:#e1e9df;border-radius:6px;padding:6px 12px;text-decoration:none;font-weight:600}article,.intro{background:#fff;border:1px solid #d7ddd3;border-radius:10px;padding:28px;margin:22px 0}article{scroll-margin-top:16px}.eyebrow,.meta{font-size:13px;font-weight:750;letter-spacing:.04em}.meta{color:#477666}pre{overflow-x:auto;background:#edf2ee;border:1px solid #d7e0d7;padding:18px;border-radius:6px;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;tab-size:2}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}summary{cursor:pointer;font-weight:700;padding:14px;background:#e7eee3;border-radius:5px}details{margin:18px 0}details[open]>summary{margin-bottom:18px}.table-wrap{overflow-x:auto;margin:16px 0}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;border-bottom:1px solid #d9dfd6;padding:10px 12px;white-space:nowrap}th{background:#eff2ec;color:#275144}li{margin:6px 0}.note{border-left:4px solid #c28f37;padding:12px 16px;background:#fff5df}.toolrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.toolrow label{font-weight:650}select{font:inherit;padding:8px;border:1px solid #9db0a1;border-radius:4px;background:white;color:#173e36}button{font:inherit;background:#173e36;color:white;border:0;border-radius:4px;padding:9px 16px;cursor:pointer}footer{font-size:13px;color:#52665c}p,li{overflow-wrap:anywhere}@media(max-width:600px){main{padding:16px 12px 40px}article,.intro{padding:18px 14px}header{padding:30px 20px}pre{font-size:12px;padding:12px}th,td{padding:8px}h2{font-size:23px}}@media print{body{background:white;color:black}header{background:white;color:black;padding:10px}header p{color:black}main{padding:0}.toolrow,nav,button{display:none}article,.intro{border:0;padding:0}article{break-before:page}pre{white-space:pre-wrap;font-size:10px}details:not([open]){display:none}a{color:black}.table-wrap{overflow:visible}}</style><header><div class="eyebrow">DEVELOPER PRACTICE / SQL CODING</div><h1>อ่านโจทย์ให้ขาด<br>ก่อนเขียน query</h1><p>10 ข้อ · Basic 3 / Intermediate 4 / Advanced 3<br>Schema → Sample → แนวคิด → SQL → จุดพลาด</p></header><main><section class="intro"><h2>เริ่มฝึก</h2><p>ฝึกเขียน SQL 10 ข้อ: Basic 3 / Intermediate 4 / Advanced 3 เริ่มจากระดับที่เหมาะกับคุณ ไม่จำกัดเวลา</p><p>ลองเขียนคำตอบก่อน แล้วค่อยเปิดแนวคิดและเฉลย แต่ละข้อมีตารางและผลลัพธ์ตัวอย่างให้เทียบ ใช้ PostgreSQL 16 รัน SQL ในโปรแกรมของคุณ ไฟล์นี้ใช้อ่านโจทย์และเฉลย</p><div class="toolrow"><label for="level">ระดับ</label><select id="level"><option value="all">ทุกระดับ</option><option>Basic</option><option>Intermediate</option><option>Advanced</option></select><button id="collapse" type="button">พับแนวคิดและเฉลยทั้งหมด</button></div><p id="count" role="status">แสดง 10 ข้อ</p><nav aria-label="ไปยังข้อ"><a href="#Q01" data-level="Basic">Q01</a><a href="#Q02" data-level="Basic">Q02</a><a href="#Q03" data-level="Basic">Q03</a><a href="#Q04" data-level="Intermediate">Q04</a><a href="#Q05" data-level="Intermediate">Q05</a><a href="#Q06" data-level="Intermediate">Q06</a><a href="#Q07" data-level="Intermediate">Q07</a><a href="#Q08" data-level="Advanced">Q08</a><a href="#Q09" data-level="Advanced">Q09</a><a href="#Q10" data-level="Advanced">Q10</a></nav><details><summary>วิธีคิดก่อนเขียน SQL และข้อควรจำเรื่องฐานข้อมูล</summary><ol><li>ดูว่าต้องแสดงข้อมูลอะไร และหนึ่งแถวในคำตอบหมายถึงอะไร เช่น หนึ่งคนหรือหนึ่งวัน</li><li>ดูว่าต้องใช้ตารางใด และเชื่อมกันด้วยรหัสไหน (key) ถ้ารหัสหนึ่งมีหลายแถวในทั้งสองตาราง ต้องระวังยอดถูกนับซ้ำหลังเชื่อม (JOIN)</li><li>จดเงื่อนไขที่พลาดง่าย: ค่าขอบเขต ค่าที่ไม่มี (NULL) ข้อมูลซ้ำ และวิธีเรียงเมื่อค่าเท่ากัน (tie-break)</li><li>ถ้าต้องรวมหลายขั้น ให้คิดทีละขั้นว่าหนึ่งแถวต้องแทนอะไร เช่น เลือกคะแนนดีที่สุดต่อคนต่อข้อก่อน แล้วค่อยรวมคะแนนต่อคน (aggregate)</li><li>ลองคำนวณผลจากตัวอย่างด้วยมือ แล้วเช็กกรณีไม่มีข้อมูล มีแถวเดียว ข้อมูลซ้ำ และค่าเท่ากัน (edge cases)</li><li>ก่อนส่ง เช็กว่าชื่อและจำนวนคอลัมน์ตรงโจทย์ รวมถึงลำดับแถวด้วย (ORDER BY)</li></ol><p>เฉลยใช้ PostgreSQL 16 ฐานข้อมูลแต่ละชนิดเขียนคำสั่งบางอย่างต่างกัน (SQL dialect) ถ้าใช้ MySQL หรือ SQL Server ต้องปรับคำสั่งก่อนรัน</p><p>จุดที่ควรเช็กเมื่อเปลี่ยนฐานข้อมูล: การเลือกจำนวนแถว (LIMIT / TOP), การคำนวณวันที่, กฎเรียงตัวอักษร (COLLATE) และการสร้างรายการวัน (generate_series) เฉลยยังไม่ได้ตรวจบน MySQL หรือ SQL Server</p><p>ถ้าสั่งพิมพ์ จะแสดงเฉลยเฉพาะข้อที่เปิดไว้</p></details></section><article id="Q01" data-level="Basic"><div class="meta">Q01 · Basic · 8 MIN</div><h2>พนักงานที่ผ่านเกณฑ์</h2><p>แสดงพนักงานแผนก Platform ซึ่งยัง active และมี salary มากกว่า 50000 โดยคืนเฉพาะ employee_id กับ name</p><h3>ข้อกำหนด / Output</h3><ul><li>salary = 50000 ไม่ผ่าน; salary เป็น NULL ไม่ผ่าน</li><li>เรียง employee_id ASC; คืนศูนย์แถวถ้าไม่มีคนผ่าน</li><li>name ใช้ ASCII A–Z/a–z ไม่มีช่องว่าง; ไม่ต้องจัดการ case ของชื่อ</li></ul><p><strong>Columns:</strong> <code>employee_id, name</code></p><details class="assumptions"><summary>ข้อตกลงของข้อมูล</summary><p>แต่ละตารางมีได้ 0–100000 แถว ข้อมูลอ้างอิงระหว่างตารางถูกต้อง (foreign key) รหัสเป็นจำนวนเต็มบวก (integer) และชื่อมีค่าเสมอ (text, NOT NULL) เว้นแต่ข้อกำหนดของข้อนั้นระบุเพิ่ม ในตารางตัวอย่าง NULL หมายถึงไม่มีค่า และ “ไม่มีแถว” หมายถึงไม่พบผลลัพธ์</p></details><h3>Schema</h3><pre><code>CREATE TABLE employees (
+  employee_id integer PRIMARY KEY,
+  name text NOT NULL,
+  department text NOT NULL,
+  active boolean NOT NULL,
+  salary integer CHECK (salary &gt;= 0)
+);</code></pre><h3>Sample Input</h3><h4>employees</h4><div class="table-wrap"><table><thead><tr><th>employee_id</th><th>name</th><th>department</th><th>active</th><th>salary</th></tr></thead><tbody><tr><td>1</td><td>Ada</td><td>Platform</td><td>True</td><td>60000</td></tr><tr><td>2</td><td>Ben</td><td>Platform</td><td>True</td><td>50000</td></tr><tr><td>3</td><td>Cam</td><td>Data</td><td>True</td><td>90000</td></tr><tr><td>4</td><td>Dee</td><td>Platform</td><td>False</td><td>70000</td></tr><tr><td>5</td><td>Eli</td><td>Platform</td><td>True</td><td>NULL</td></tr><tr><td>6</td><td>Fay</td><td>Platform</td><td>True</td><td>50001</td></tr></tbody></table></div><h3>Sample Output</h3><div class="table-wrap"><table><thead><tr><th>employee_id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>Ada</td></tr><tr><td>6</td><td>Fay</td></tr></tbody></table></div><p>คน 1 และ 6 ผ่านครบสามเงื่อนไข คน 2 อยู่ตรงขอบจึงไม่ผ่าน คน 5 ไม่มี salary</p><details class="hint"><summary>เปิดแนวคิดทีละขั้น</summary><ol><li>ดูว่าพนักงานแต่ละคนอยู่แผนก Platform, ยังทำงาน และได้เงินเดือนมากกว่า 50000 ครบหรือไม่</li><li>เก็บเฉพาะคนที่ผ่านทุกเงื่อนไข (WHERE และ AND) แล้วแสดงรหัสกับชื่อ (SELECT)</li><li>เรียงรหัสพนักงานจากน้อยไปมาก (ORDER BY employee_id) แม้ข้อมูลตัวอย่างจะเรียงมาแล้ว</li></ol></details><details class="answer"><summary>เปิดเฉลย · จุดพลาด · เช็กก่อนส่ง</summary><h3>Reference SQL · PostgreSQL 16</h3><pre><code>SELECT employee_id, name
+FROM employees
+WHERE department = &#x27;Platform&#x27;
+  AND active = TRUE
+  AND salary &gt; 50000
+ORDER BY employee_id;</code></pre><h3>จุดพลาด</h3><ul><li>ใช้ &gt;= จะรับค่าขอบ 50000 ผิด</li><li>ใช้ OR รับคนต่างแผนกหรือ inactive</li><li>salary NULL เปรียบเทียบแล้วเป็น UNKNOWN จึงไม่ผ่าน WHERE</li></ul><h3>เช็กก่อนส่ง</h3><ul><li>คืนเฉพาะสอง column</li><li>ทดสอบค่าขอบ, NULL, inactive และตารางว่าง</li></ul><p>สแกน employees; index ตามเงื่อนไขช่วยบาง workload แต่ต้องดู selectivity และ EXPLAIN จริง</p><p>Research: <a href="https://www.hackerrank.com/challenges/revising-the-select-query/problem" target="_blank" rel="noopener">Revising the Select Query I</a> · ต้นแบบ Easy</p></details><details class="setup"><summary>SQL สำหรับโหลด sample ใน database แยก</summary><p>ใช้ database/schema สำหรับฝึกที่ยังไม่มีตารางชื่อเดียวกัน รันครั้งเดียวแล้วตามด้วย query ของคุณ</p><pre><code>CREATE TABLE employees (
+  employee_id integer PRIMARY KEY,
+  name text NOT NULL,
+  department text NOT NULL,
+  active boolean NOT NULL,
+  salary integer CHECK (salary &gt;= 0)
+);
+INSERT INTO employees VALUES
+(1, &#x27;Ada&#x27;, &#x27;Platform&#x27;, TRUE, 60000),
+(2, &#x27;Ben&#x27;, &#x27;Platform&#x27;, TRUE, 50000),
+(3, &#x27;Cam&#x27;, &#x27;Data&#x27;, TRUE, 90000),
+(4, &#x27;Dee&#x27;, &#x27;Platform&#x27;, FALSE, 70000),
+(5, &#x27;Eli&#x27;, &#x27;Platform&#x27;, TRUE, NULL),
+(6, &#x27;Fay&#x27;, &#x27;Platform&#x27;, TRUE, 50001);
+</code></pre></details></article><article id="Q02" data-level="Basic"><div class="meta">Q02 · Basic · 10 MIN</div><h2>ชื่อ depot สั้นสุดและยาวสุด</h2><p>คืนชื่อ depot สั้นที่สุดหนึ่งชื่อและยาวที่สุดหนึ่งชื่อ พร้อมจำนวนตัวอักษร ใส่ kind เป็น shortest หรือ longest</p><h3>ข้อกำหนด / Output</h3><ul><li>ชื่อเป็น ASCII A–Z ตัวพิมพ์ใหญ่ 1–30 ตัว ไม่มีช่องว่าง; ชื่อซ้ำได้</li><li>ถ้าความยาวเท่ากันเลือกชื่อเรียงอักษรก่อน ใช้ collation &quot;C&quot;</li><li>คืน shortest ก่อน longest; ถ้าทุกชื่อเหมือนกันยังคืนสองแถว; ตารางว่างคืนศูนย์แถว</li></ul><p><strong>Columns:</strong> <code>kind, name, name_length</code></p><details class="assumptions"><summary>ข้อตกลงของข้อมูล</summary><p>แต่ละตารางมีได้ 0–100000 แถว ข้อมูลอ้างอิงระหว่างตารางถูกต้อง (foreign key) รหัสเป็นจำนวนเต็มบวก (integer) และชื่อมีค่าเสมอ (text, NOT NULL) เว้นแต่ข้อกำหนดของข้อนั้นระบุเพิ่ม ในตารางตัวอย่าง NULL หมายถึงไม่มีค่า และ “ไม่มีแถว” หมายถึงไม่พบผลลัพธ์</p></details><h3>Schema</h3><pre><code>CREATE TABLE depots (
+  depot_id integer PRIMARY KEY,
+  name text NOT NULL CHECK (name ~ &#x27;^[A-Z]{1,30}$&#x27;)
+);</code></pre><h3>Sample Input</h3><h4>depots</h4><div class="table-wrap"><table><thead><tr><th>depot_id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>DELTA</td></tr><tr><td>2</td><td>AX</td></tr><tr><td>3</td><td>BO</td></tr><tr><td>4</td><td>GAMMA</td></tr><tr><td>5</td><td>AX</td></tr></tbody></table></div><h3>Sample Output</h3><div class="table-wrap"><table><thead><tr><th>kind</th><th>name</th><th>name_length</th></tr></thead><tbody><tr><td>shortest</td><td>AX</td><td>2</td></tr><tr><td>longest</td><td>DELTA</td><td>5</td></tr></tbody></table></div><p>AX กับ BO ยาว 2 จึงเลือก AX; DELTA กับ GAMMA ยาว 5 จึงเลือก DELTA</p><details class="hint"><summary>เปิดแนวคิดทีละขั้น</summary><ol><li>นับตัวอักษรของแต่ละชื่อ (CHAR_LENGTH) แล้วหาชื่อสั้นที่สุดกับยาวที่สุดแยกกัน</li><li>ถ้าหลายชื่อยาวเท่ากัน ให้เลือกชื่อที่มาก่อนตามลำดับอักษร ใช้กฎเรียงอักษรเดียวกันทุกครั้ง (COLLATE &quot;C&quot;)</li><li>นำสองคำตอบมาต่อกันโดยเก็บไว้ทั้งคู่ (UNION ALL) ถ้าตารางมีชื่อเดียว ชื่อนั้นจะเป็นทั้งคำตอบสั้นสุดและยาวสุด</li><li>ใส่เลขลำดับภายใน 1 และ 2 เพื่อเรียง shortest ก่อน longest แต่ไม่แสดงเลขนี้ในคำตอบ</li></ol></details><details class="answer"><summary>เปิดเฉลย · จุดพลาด · เช็กก่อนส่ง</summary><h3>Reference SQL · PostgreSQL 16</h3><pre><code>WITH shortest AS (
+  SELECT name, CHAR_LENGTH(name) AS name_length
+  FROM depots
+  ORDER BY CHAR_LENGTH(name), name COLLATE &quot;C&quot;
+  LIMIT 1
+), longest AS (
+  SELECT name, CHAR_LENGTH(name) AS name_length
+  FROM depots
+  ORDER BY CHAR_LENGTH(name) DESC, name COLLATE &quot;C&quot;
+  LIMIT 1
+), picked AS (
+  SELECT 1 AS position, &#x27;shortest&#x27; AS kind, name, name_length FROM shortest
+  UNION ALL
+  SELECT 2, &#x27;longest&#x27;, name, name_length FROM longest
+)
+SELECT kind, name, name_length FROM picked ORDER BY position;</code></pre><h3>จุดพลาด</h3><ul><li>MIN(name) วัดลำดับอักษร ไม่ใช่ความยาว</li><li>เลือก longest แล้ว sort ชื่อ DESC ผิด tie-break</li><li>อย่าพึ่งลำดับของ UNION ALL โดยไม่มี ORDER BY ภายนอก</li></ul><h3>เช็กก่อนส่ง</h3><ul><li>ทดสอบชื่อยาวเท่ากันและชื่อซ้ำ</li><li>ตารางหนึ่งแถวต้องได้สองแถว</li></ul><p>สองส่วนใช้ top-N sort; CHAR_LENGTH นับตัวอักษร ต่างจาก OCTET_LENGTH ที่นับ byte</p><p>Research: <a href="https://www.hackerrank.com/challenges/weather-observation-station-5/problem" target="_blank" rel="noopener">Weather Observation Station 5</a> · ต้นแบบ Easy</p></details><details class="setup"><summary>SQL สำหรับโหลด sample ใน database แยก</summary><p>ใช้ database/schema สำหรับฝึกที่ยังไม่มีตารางชื่อเดียวกัน รันครั้งเดียวแล้วตามด้วย query ของคุณ</p><pre><code>CREATE TABLE depots (
+  depot_id integer PRIMARY KEY,
+  name text NOT NULL CHECK (name ~ &#x27;^[A-Z]{1,30}$&#x27;)
+);
+INSERT INTO depots VALUES
+(1, &#x27;DELTA&#x27;),
+(2, &#x27;AX&#x27;),
+(3, &#x27;BO&#x27;),
+(4, &#x27;GAMMA&#x27;),
+(5, &#x27;AX&#x27;);
+</code></pre></details></article><article id="Q03" data-level="Basic"><div class="meta">Q03 · Basic · 10 MIN</div><h2>มูลค่ารายการสูงสุด</h2><p>คำนวณ gross = quantity × unit_price ของแต่ละ sale แล้วคืน max_gross และจำนวนรายการที่ได้ค่าสูงสุดเป็น sale_count</p><h3>ข้อกำหนด / Output</h3><ul><li>quantity และ unit_price เป็น integer 0–1000000 ไม่เป็น NULL</li><li>คืนหนึ่งแถวเสมอ; ตารางว่างคืน max_gross เป็น SQL NULL และ sale_count = 0</li><li>นับ sale_id แม้หลายรายการมี gross เท่ากัน</li></ul><p><strong>Columns:</strong> <code>max_gross, sale_count</code></p><details class="assumptions"><summary>ข้อตกลงของข้อมูล</summary><p>แต่ละตารางมีได้ 0–100000 แถว ข้อมูลอ้างอิงระหว่างตารางถูกต้อง (foreign key) รหัสเป็นจำนวนเต็มบวก (integer) และชื่อมีค่าเสมอ (text, NOT NULL) เว้นแต่ข้อกำหนดของข้อนั้นระบุเพิ่ม ในตารางตัวอย่าง NULL หมายถึงไม่มีค่า และ “ไม่มีแถว” หมายถึงไม่พบผลลัพธ์</p></details><h3>Schema</h3><pre><code>CREATE TABLE sales (
+  sale_id integer PRIMARY KEY,
+  quantity integer NOT NULL CHECK (quantity BETWEEN 0 AND 1000000),
+  unit_price integer NOT NULL CHECK (unit_price BETWEEN 0 AND 1000000)
+);</code></pre><h3>Sample Input</h3><h4>sales</h4><div class="table-wrap"><table><thead><tr><th>sale_id</th><th>quantity</th><th>unit_price</th></tr></thead><tbody><tr><td>1</td><td>3</td><td>200</td></tr><tr><td>2</td><td>2</td><td>300</td></tr><tr><td>3</td><td>1</td><td>500</td></tr><tr><td>4</td><td>0</td><td>900</td></tr></tbody></table></div><h3>Sample Output</h3><div class="table-wrap"><table><thead><tr><th>max_gross</th><th>sale_count</th></tr></thead><tbody><tr><td>600</td><td>2</td></tr></tbody></table></div><p>sale 1 และ 2 มี gross 600 เท่ากัน จึงคืน 600 | 2</p><details class="hint"><summary>เปิดแนวคิดทีละขั้น</summary><ol><li>คำนวณมูลค่าของแต่ละรายการ โดยเปลี่ยน quantity เป็นจำนวนเต็มขนาดใหญ่ก่อนคูณ (::bigint) เพื่อรองรับค่าถึงหนึ่งล้านล้าน</li><li>หามูลค่าสูงสุดจากค่าที่คำนวณได้ (MAX) ถ้าตารางว่าง ค่านี้จะเป็น NULL</li><li>นับรายการที่มีมูลค่าเท่ากับค่าสูงสุด (COUNT) และเก็บแถวสรุปไว้แม้ไม่มีรายการขาย (LEFT JOIN)</li><li>นับค่าจากฝั่งรายการขาย (COUNT(a.gross)) เพื่อให้ตารางว่างได้จำนวน 0</li></ol></details><details class="answer"><summary>เปิดเฉลย · จุดพลาด · เช็กก่อนส่ง</summary><h3>Reference SQL · PostgreSQL 16</h3><pre><code>WITH amounts AS (
+  SELECT quantity::bigint * unit_price AS gross FROM sales
+), peak AS (
+  SELECT MAX(gross) AS max_gross FROM amounts
+)
+SELECT p.max_gross, COUNT(a.gross) AS sale_count
+FROM peak p LEFT JOIN amounts a ON a.gross = p.max_gross
+GROUP BY p.max_gross;</code></pre><h3>จุดพลาด</h3><ul><li>คูณ integer ก่อน cast เสี่ยง overflow</li><li>COUNT(*) บน LEFT JOIN จะนับหนึ่งแม้ไม่มี sale</li><li>COUNT(DISTINCT gross) ได้ 1 แทนจำนวน sale ที่เสมอ</li></ul><h3>เช็กก่อนส่ง</h3><ul><li>ตรวจตารางว่างและทุกค่าเป็นศูนย์</li><li>ตรวจ 1000000 × 1000000 = 1000000000000</li></ul><p>aggregate และ join แบบเชิงเส้นเป็นแนวทางทั่วไป; planner อาจเลือกต่างกัน</p><p>Research: <a href="https://www.hackerrank.com/challenges/earnings-of-employees/problem" target="_blank" rel="noopener">Top Earners</a> · ต้นแบบ Easy</p></details><details class="setup"><summary>SQL สำหรับโหลด sample ใน database แยก</summary><p>ใช้ database/schema สำหรับฝึกที่ยังไม่มีตารางชื่อเดียวกัน รันครั้งเดียวแล้วตามด้วย query ของคุณ</p><pre><code>CREATE TABLE sales (
+  sale_id integer PRIMARY KEY,
+  quantity integer NOT NULL CHECK (quantity BETWEEN 0 AND 1000000),
+  unit_price integer NOT NULL CHECK (unit_price BETWEEN 0 AND 1000000)
+);
+INSERT INTO sales VALUES
+(1, 3, 200),
+(2, 2, 300),
+(3, 1, 500),
+(4, 0, 900);
+</code></pre></details></article><article id="Q04" data-level="Intermediate"><div class="meta">Q04 · Intermediate · 15 MIN</div><h2>รายงานระดับผู้เรียน</h2><p>จับคะแนน learner เข้าช่วง grade แล้วคืน learner_id, display_name, grade, marks ถ้า grade ต่ำกว่า 3 ให้ display_name เป็น SQL NULL</p><h3>ข้อกำหนด / Output</h3><ul><li>grades มี 4 ช่วงตายตัว [0,49]→1, [50,69]→2, [70,84]→3, [85,100]→4 ไม่ทับซ้อนและครอบคลุม marks ทั้งหมด</li><li>เรียง grade DESC; grade 3–4 เรียง name ASC ด้วย collation &quot;C&quot;; grade 1–2 เรียง marks ASC; สุดท้าย learner_id ASC</li><li>name เป็น ASCII A–Z/a–z 1–30 ตัว ซ้ำได้; marks integer 0–100</li></ul><p><strong>Columns:</strong> <code>learner_id, display_name, grade, marks</code></p><details class="assumptions"><summary>ข้อตกลงของข้อมูล</summary><p>แต่ละตารางมีได้ 0–100000 แถว ข้อมูลอ้างอิงระหว่างตารางถูกต้อง (foreign key) รหัสเป็นจำนวนเต็มบวก (integer) และชื่อมีค่าเสมอ (text, NOT NULL) เว้นแต่ข้อกำหนดของข้อนั้นระบุเพิ่ม ในตารางตัวอย่าง NULL หมายถึงไม่มีค่า และ “ไม่มีแถว” หมายถึงไม่พบผลลัพธ์</p></details><h3>Schema</h3><pre><code>CREATE TABLE learners (
+  learner_id integer PRIMARY KEY,
+  name text NOT NULL,
+  marks integer NOT NULL CHECK (marks BETWEEN 0 AND 100)
+);
+CREATE TABLE grades (
+  grade integer PRIMARY KEY,
+  min_mark integer NOT NULL,
+  max_mark integer NOT NULL
+);</code></pre><h3>Sample Input</h3><h4>learners</h4><div class="table-wrap"><table><thead><tr><th>learner_id</th><th>name</th><th>marks</th></tr></thead><tbody><tr><td>1</td><td>Zoe</td><td>90</td></tr><tr><td>2</td><td>Amy</td><td>85</td></tr><tr><td>3</td><td>Ben</td><td>84</td></tr><tr><td>4</td><td>Cam</td><td>69</td></tr><tr><td>5</td><td>Dee</td><td>50</td></tr><tr><td>6</td><td>Eli</td><td>49</td></tr></tbody></table></div><h4>grades</h4><div class="table-wrap"><table><thead><tr><th>grade</th><th>min_mark</th><th>max_mark</th></tr></thead><tbody><tr><td>1</td><td>0</td><td>49</td></tr><tr><td>2</td><td>50</td><td>69</td></tr><tr><td>3</td><td>70</td><td>84</td></tr><tr><td>4</td><td>85</td><td>100</td></tr></tbody></table></div><h3>Sample Output</h3><div class="table-wrap"><table><thead><tr><th>learner_id</th><th>display_name</th><th>grade</th><th>marks</th></tr></thead><tbody><tr><td>2</td><td>Amy</td><td>4</td><td>85</td></tr><tr><td>1</td><td>Zoe</td><td>4</td><td>90</td></tr><tr><td>3</td><td>Ben</td><td>3</td><td>84</td></tr><tr><td>5</td><td>NULL</td><td>2</td><td>50</td></tr><tr><td>4</td><td>NULL</td><td>2</td><td>69</td></tr><tr><td>6</td><td>NULL</td><td>1</td><td>49</td></tr></tbody></table></div><p>grade 4 เลือก Amy ก่อน Zoe แม้ Amy คะแนนน้อยกว่า; grade 2 เลือก Dee ก่อน Cam ตาม marks</p><details class="hint"><summary>เปิดแนวคิดทีละขั้น</summary><ol><li>นำคะแนนของผู้เรียนไปเทียบช่วงคะแนนในตาราง grades (JOIN และ BETWEEN) คะแนนที่เท่าขอบช่วงยังอยู่ในช่วงนั้น</li><li>เลือกแสดงชื่อเฉพาะ grade ตั้งแต่ 3 ขึ้นไป ส่วน grade ต่ำกว่านี้ให้เป็น NULL (CASE)</li><li>เรียง grade จากมากไปน้อยก่อน แล้วแยกวิธีเรียงภายในกลุ่ม: grade 3–4 เรียงชื่อ ส่วน grade 1–2 เรียงคะแนน</li><li>ถ้ายังเสมอกัน ให้เรียงรหัสผู้เรียนจากน้อยไปมาก เพื่อให้ได้ลำดับแน่นอนทุกครั้ง (ORDER BY learner_id)</li></ol></details><details class="answer"><summary>เปิดเฉลย · จุดพลาด · เช็กก่อนส่ง</summary><h3>Reference SQL · PostgreSQL 16</h3><pre><code>SELECT l.learner_id,
+       CASE WHEN g.grade &gt;= 3 THEN l.name END AS display_name,
+       g.grade, l.marks
+FROM learners l
+JOIN grades g ON l.marks BETWEEN g.min_mark AND g.max_mark
+ORDER BY g.grade DESC,
+         CASE WHEN g.grade &gt;= 3 THEN l.name END COLLATE &quot;C&quot; ASC,
+         CASE WHEN g.grade &lt; 3 THEN l.marks END ASC,
+         l.learner_id;</code></pre><h3>จุดพลาด</h3><ul><li>join ด้วยเท่ากับ min_mark จะตกคะแนนกลางช่วง</li><li>ใช้ข้อความ &#x27;NULL&#x27; แทน SQL NULL ผิดชนิดข้อมูล</li><li>เรียงทุก grade ด้วย marks ทำให้ Amy/Zoe ผิดเงื่อนไข</li></ul><h3>เช็กก่อนส่ง</h3><ul><li>ตรวจทุกปลายช่วง 0,49,50,69,70,84,85,100</li><li>ตรวจชื่อซ้ำ คะแนนซ้ำ และ learners ว่าง</li></ul><p>grades มีเพียง 4 แถว; ไม่ควร hard-code CASE คะแนนแทน lookup หากช่วงเป็นข้อมูลในตาราง</p><p>Research: <a href="https://www.hackerrank.com/challenges/the-report/problem" target="_blank" rel="noopener">The Report</a> · ต้นแบบ Medium</p></details><details class="setup"><summary>SQL สำหรับโหลด sample ใน database แยก</summary><p>ใช้ database/schema สำหรับฝึกที่ยังไม่มีตารางชื่อเดียวกัน รันครั้งเดียวแล้วตามด้วย query ของคุณ</p><pre><code>CREATE TABLE learners (
+  learner_id integer PRIMARY KEY,
+  name text NOT NULL,
+  marks integer NOT NULL CHECK (marks BETWEEN 0 AND 100)
+);
+CREATE TABLE grades (
+  grade integer PRIMARY KEY,
+  min_mark integer NOT NULL,
+  max_mark integer NOT NULL
+);
+INSERT INTO learners VALUES
+(1, &#x27;Zoe&#x27;, 90),
+(2, &#x27;Amy&#x27;, 85),
+(3, &#x27;Ben&#x27;, 84),
+(4, &#x27;Cam&#x27;, 69),
+(5, &#x27;Dee&#x27;, 50),
+(6, &#x27;Eli&#x27;, 49);
+INSERT INTO grades VALUES
+(1, 0, 49),
+(2, 50, 69),
+(3, 70, 84),
+(4, 85, 100);
+</code></pre></details></article><article id="Q05" data-level="Intermediate"><div class="meta">Q05 · Intermediate · 18 MIN</div><h2>ผู้ผ่านหลาย task</h2><p>คืน participant_id, name ของคนที่ทำได้ full_score ในอย่างน้อยสอง task ที่ต่างกัน แต่ละคนส่ง task เดิมซ้ำได้</p><h3>ข้อกำหนด / Output</h3><ul><li>tasks อ้างถึง difficulties; difficulties.full_score เป็นจำนวนบวก</li><li>attempts.score อยู่ระหว่าง 0 ถึง full_score ของ task; FK ทุกตัวถูกต้อง</li><li>เรียงจำนวน task ที่ได้เต็ม DESC แล้ว participant_id ASC; ไม่แสดงจำนวนใน output</li></ul><p><strong>Columns:</strong> <code>participant_id, name</code></p><details class="assumptions"><summary>ข้อตกลงของข้อมูล</summary><p>แต่ละตารางมีได้ 0–100000 แถว ข้อมูลอ้างอิงระหว่างตารางถูกต้อง (foreign key) รหัสเป็นจำนวนเต็มบวก (integer) และชื่อมีค่าเสมอ (text, NOT NULL) เว้นแต่ข้อกำหนดของข้อนั้นระบุเพิ่ม ในตารางตัวอย่าง NULL หมายถึงไม่มีค่า และ “ไม่มีแถว” หมายถึงไม่พบผลลัพธ์</p></details><h3>Schema</h3><pre><code>CREATE TABLE participants (
+  participant_id integer PRIMARY KEY,
+  name text NOT NULL
+);
+CREATE TABLE difficulties (
+  level integer PRIMARY KEY,
+  full_score integer NOT NULL CHECK (full_score &gt; 0)
+);
+CREATE TABLE tasks (
+  task_id integer PRIMARY KEY,
+  level integer NOT NULL REFERENCES difficulties
+);
+CREATE TABLE attempts (
+  attempt_id integer PRIMARY KEY,
+  participant_id integer NOT NULL REFERENCES participants,
+  task_id integer NOT NULL REFERENCES tasks,
+  score integer NOT NULL CHECK (score &gt;= 0)
+);</code></pre><h3>Sample Input</h3><h4>participants</h4><div class="table-wrap"><table><thead><tr><th>participant_id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>Ari</td></tr><tr><td>2</td><td>Bo</td></tr><tr><td>3</td><td>Cy</td></tr></tbody></table></div><h4>difficulties</h4><div class="table-wrap"><table><thead><tr><th>level</th><th>full_score</th></tr></thead><tbody><tr><td>1</td><td>50</td></tr><tr><td>2</td><td>100</td></tr></tbody></table></div><h4>tasks</h4><div class="table-wrap"><table><thead><tr><th>task_id</th><th>level</th></tr></thead><tbody><tr><td>11</td><td>1</td></tr><tr><td>12</td><td>2</td></tr><tr><td>13</td><td>1</td></tr></tbody></table></div><h4>attempts</h4><div class="table-wrap"><table><thead><tr><th>attempt_id</th><th>participant_id</th><th>task_id</th><th>score</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>11</td><td>50</td></tr><tr><td>2</td><td>1</td><td>11</td><td>50</td></tr><tr><td>3</td><td>1</td><td>12</td><td>100</td></tr><tr><td>4</td><td>2</td><td>11</td><td>50</td></tr><tr><td>5</td><td>2</td><td>12</td><td>90</td></tr><tr><td>6</td><td>3</td><td>11</td><td>50</td></tr><tr><td>7</td><td>3</td><td>13</td><td>50</td></tr></tbody></table></div><h3>Sample Output</h3><div class="table-wrap"><table><thead><tr><th>participant_id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>Ari</td></tr><tr><td>3</td><td>Cy</td></tr></tbody></table></div><p>Ari ส่งเต็มสามครั้งแต่มีสอง task; Cy มีสอง task; Bo ได้เต็ม task เดียว</p><details class="hint"><summary>เปิดแนวคิดทีละขั้น</summary><ol><li>เชื่อมข้อมูลการส่งคำตอบกับผู้ทำ ข้อสอบ และระดับความยาก (JOIN) เพื่อรู้คะแนนเต็มของแต่ละข้อ</li><li>เก็บเฉพาะครั้งที่ได้คะแนนเท่าคะแนนเต็มของข้อนั้น (WHERE score = full_score)</li><li>นับจำนวนข้อที่ได้เต็มของแต่ละคน โดยนับข้อเดิมเพียงครั้งเดียว แม้ส่งเต็มหลายครั้ง (COUNT(DISTINCT task_id))</li><li>เลือกคนที่ได้เต็มอย่างน้อยสองข้อ (HAVING) แล้วเรียงจำนวนข้อจากมากไปน้อย ถ้าเท่ากันเรียงรหัสคนจากน้อยไปมาก</li></ol></details><details class="answer"><summary>เปิดเฉลย · จุดพลาด · เช็กก่อนส่ง</summary><h3>Reference SQL · PostgreSQL 16</h3><pre><code>SELECT p.participant_id, p.name
+FROM participants p
+JOIN attempts a ON a.participant_id = p.participant_id
+JOIN tasks t ON t.task_id = a.task_id
+JOIN difficulties d ON d.level = t.level
+WHERE a.score = d.full_score
+GROUP BY p.participant_id, p.name
+HAVING COUNT(DISTINCT a.task_id) &gt;= 2
+ORDER BY COUNT(DISTINCT a.task_id) DESC, p.participant_id;</code></pre><h3>จุดพลาด</h3><ul><li>COUNT(*) นับการส่งซ้ำเป็นหลาย task</li><li>MAX(score) เทียบกับ 100 ตายตัวทำให้ task 50 คะแนนหาย</li><li>ใช้ WHERE COUNT(...) ไม่ได้ เพราะ aggregate เกิดหลัง WHERE</li></ul><h3>เช็กก่อนส่ง</h3><ul><li>คนส่งเต็ม task เดิมหลายครั้งต้องไม่ผ่าน</li><li>คะแนนเต็มต่างระดับ, tie และไม่มีผู้ผ่าน</li></ul><p>ยุบ (participant_id, task_id) ก่อนก็ได้; index บน join keys ช่วยตามแผนจริง</p><p>Research: <a href="https://www.hackerrank.com/challenges/full-score/problem" target="_blank" rel="noopener">Top Competitors</a> · ต้นแบบ Medium</p></details><details class="setup"><summary>SQL สำหรับโหลด sample ใน database แยก</summary><p>ใช้ database/schema สำหรับฝึกที่ยังไม่มีตารางชื่อเดียวกัน รันครั้งเดียวแล้วตามด้วย query ของคุณ</p><pre><code>CREATE TABLE participants (
+  participant_id integer PRIMARY KEY,
+  name text NOT NULL
+);
+CREATE TABLE difficulties (
+  level integer PRIMARY KEY,
+  full_score integer NOT NULL CHECK (full_score &gt; 0)
+);
+CREATE TABLE tasks (
+  task_id integer PRIMARY KEY,
+  level integer NOT NULL REFERENCES difficulties
+);
+CREATE TABLE attempts (
+  attempt_id integer PRIMARY KEY,
+  participant_id integer NOT NULL REFERENCES participants,
+  task_id integer NOT NULL REFERENCES tasks,
+  score integer NOT NULL CHECK (score &gt;= 0)
+);
+INSERT INTO participants VALUES
+(1, &#x27;Ari&#x27;),
+(2, &#x27;Bo&#x27;),
+(3, &#x27;Cy&#x27;);
+INSERT INTO difficulties VALUES
+(1, 50),
+(2, 100);
+INSERT INTO tasks VALUES
+(11, 1),
+(12, 2),
+(13, 1);
+INSERT INTO attempts VALUES
+(1, 1, 11, 50),
+(2, 1, 11, 50),
+(3, 1, 12, 100),
+(4, 2, 11, 50),
+(5, 2, 12, 90),
+(6, 3, 11, 50),
+(7, 3, 13, 50);
+</code></pre></details></article><article id="Q06" data-level="Intermediate"><div class="meta">Q06 · Intermediate · 18 MIN</div><h2>อันดับจากคะแนนดีที่สุด</h2><p>คำนวณ total_score ของแต่ละ coder โดยเลือกคะแนนสูงสุดต่อ problem แล้วบวกทุก problem คืน coder_id, name, total_score เฉพาะคนที่รวมได้มากกว่า 0</p><h3>ข้อกำหนด / Output</h3><ul><li>scores.score integer 0–100; coder อาจไม่มี submission; problem_id เป็นเลขบวก</li><li>เรียง total_score DESC แล้ว coder_id ASC</li><li>coder คนละคนอาจชื่อซ้ำ ห้ามรวมด้วย name อย่างเดียว</li></ul><p><strong>Columns:</strong> <code>coder_id, name, total_score</code></p><details class="assumptions"><summary>ข้อตกลงของข้อมูล</summary><p>แต่ละตารางมีได้ 0–100000 แถว ข้อมูลอ้างอิงระหว่างตารางถูกต้อง (foreign key) รหัสเป็นจำนวนเต็มบวก (integer) และชื่อมีค่าเสมอ (text, NOT NULL) เว้นแต่ข้อกำหนดของข้อนั้นระบุเพิ่ม ในตารางตัวอย่าง NULL หมายถึงไม่มีค่า และ “ไม่มีแถว” หมายถึงไม่พบผลลัพธ์</p></details><h3>Schema</h3><pre><code>CREATE TABLE coders (
+  coder_id integer PRIMARY KEY,
+  name text NOT NULL
+);
+CREATE TABLE scores (
+  submission_id integer PRIMARY KEY,
+  coder_id integer NOT NULL REFERENCES coders,
+  problem_id integer NOT NULL CHECK (problem_id &gt; 0),
+  score integer NOT NULL CHECK (score BETWEEN 0 AND 100)
+);</code></pre><h3>Sample Input</h3><h4>coders</h4><div class="table-wrap"><table><thead><tr><th>coder_id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>Ana</td></tr><tr><td>2</td><td>Bo</td></tr><tr><td>3</td><td>Cy</td></tr><tr><td>4</td><td>Di</td></tr></tbody></table></div><h4>scores</h4><div class="table-wrap"><table><thead><tr><th>submission_id</th><th>coder_id</th><th>problem_id</th><th>score</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>10</td><td>30</td></tr><tr><td>2</td><td>1</td><td>10</td><td>70</td></tr><tr><td>3</td><td>1</td><td>20</td><td>20</td></tr><tr><td>4</td><td>2</td><td>10</td><td>90</td></tr><tr><td>5</td><td>3</td><td>10</td><td>0</td></tr></tbody></table></div><h3>Sample Output</h3><div class="table-wrap"><table><thead><tr><th>coder_id</th><th>name</th><th>total_score</th></tr></thead><tbody><tr><td>1</td><td>Ana</td><td>90</td></tr><tr><td>2</td><td>Bo</td><td>90</td></tr></tbody></table></div><p>Ana: max(30,70) + 20 = 90; Bo = 90 ใช้ coder_id ตัดสินอันดับ; Cy และ Di ไม่แสดง</p><details class="hint"><summary>เปิดแนวคิดทีละขั้น</summary><ol><li>แยกข้อมูลตามผู้ทำและข้อสอบ แล้วเลือกคะแนนที่ดีที่สุดของแต่ละคู่ (GROUP BY coder_id, problem_id และ MAX)</li><li>นำคะแนนที่เลือกแล้วทุกข้อของคนเดียวกันมาบวกกัน (SUM) เช่น ได้ดีที่สุดข้อแรก 70 และข้อสอง 20 รวมเป็น 90</li><li>เก็บเฉพาะคนที่คะแนนรวมมากกว่า 0 แล้วนำชื่อมาใส่ (JOIN)</li><li>เรียงคะแนนรวมจากมากไปน้อย ถ้าเท่ากันให้รหัสผู้ทำที่น้อยกว่าอยู่ก่อน (ORDER BY)</li></ol></details><details class="answer"><summary>เปิดเฉลย · จุดพลาด · เช็กก่อนส่ง</summary><h3>Reference SQL · PostgreSQL 16</h3><pre><code>WITH best AS (
+  SELECT coder_id, problem_id, MAX(score) AS best_score
+  FROM scores GROUP BY coder_id, problem_id
+), totals AS (
+  SELECT coder_id, SUM(best_score) AS total_score
+  FROM best GROUP BY coder_id HAVING SUM(best_score) &gt; 0
+)
+SELECT c.coder_id, c.name, t.total_score
+FROM totals t JOIN coders c ON c.coder_id = t.coder_id
+ORDER BY t.total_score DESC, c.coder_id;</code></pre><h3>จุดพลาด</h3><ul><li>SUM ทุก submission ทำให้คะแนนพอง</li><li>MAX ต่อ coder ทิ้งคะแนน problem อื่น</li><li>ชื่อซ้ำไม่ใช่ key และไม่ควรใช้แยกกลุ่มลำพัง</li></ul><h3>เช็กก่อนส่ง</h3><ul><li>หลาย submission ต่อ problem และหลาย problem ต่อคน</li><li>ชื่อซ้ำ, total 0, tie, coder ไม่มี submission</li></ul><p>aggregate scores ก่อน join ตารางชื่อช่วยลดแถวกลางทาง</p><p>Research: <a href="https://www.hackerrank.com/challenges/contest-leaderboard/problem" target="_blank" rel="noopener">Contest Leaderboard</a> · ต้นแบบ Medium</p></details><details class="setup"><summary>SQL สำหรับโหลด sample ใน database แยก</summary><p>ใช้ database/schema สำหรับฝึกที่ยังไม่มีตารางชื่อเดียวกัน รันครั้งเดียวแล้วตามด้วย query ของคุณ</p><pre><code>CREATE TABLE coders (
+  coder_id integer PRIMARY KEY,
+  name text NOT NULL
+);
+CREATE TABLE scores (
+  submission_id integer PRIMARY KEY,
+  coder_id integer NOT NULL REFERENCES coders,
+  problem_id integer NOT NULL CHECK (problem_id &gt; 0),
+  score integer NOT NULL CHECK (score BETWEEN 0 AND 100)
+);
+INSERT INTO coders VALUES
+(1, &#x27;Ana&#x27;),
+(2, &#x27;Bo&#x27;),
+(3, &#x27;Cy&#x27;),
+(4, &#x27;Di&#x27;);
+INSERT INTO scores VALUES
+(1, 1, 10, 30),
+(2, 1, 10, 70),
+(3, 1, 20, 20),
+(4, 2, 10, 90),
+(5, 3, 10, 0);
+</code></pre></details></article><article id="Q07" data-level="Intermediate"><div class="meta">Q07 · Intermediate · 15 MIN</div><h2>เงินเดือนเหนือหัวหน้า</h2><p>คืน employee_id, name, salary_gap ของพนักงานที่ salary มากกว่าหัวหน้าโดยตรง โดย salary_gap = salary พนักงาน − salary หัวหน้า</p><h3>ข้อกำหนด / Output</h3><ul><li>manager_id เป็น NULL หรืออ้าง employee_id ที่มีจริง ไม่อ้างตัวเอง; salary integer &gt;= 0 ไม่เป็น NULL</li><li>ไม่มีหัวหน้าให้ตัดออก; เท่ากันไม่ผ่าน; เปรียบเทียบหัวหน้าโดยตรงเท่านั้น</li><li>เรียง salary_gap DESC แล้ว employee_id ASC; ไม่ต้องเดิน hierarchy</li></ul><p><strong>Columns:</strong> <code>employee_id, name, salary_gap</code></p><details class="assumptions"><summary>ข้อตกลงของข้อมูล</summary><p>แต่ละตารางมีได้ 0–100000 แถว ข้อมูลอ้างอิงระหว่างตารางถูกต้อง (foreign key) รหัสเป็นจำนวนเต็มบวก (integer) และชื่อมีค่าเสมอ (text, NOT NULL) เว้นแต่ข้อกำหนดของข้อนั้นระบุเพิ่ม ในตารางตัวอย่าง NULL หมายถึงไม่มีค่า และ “ไม่มีแถว” หมายถึงไม่พบผลลัพธ์</p></details><h3>Schema</h3><pre><code>CREATE TABLE staff (
+  employee_id integer PRIMARY KEY,
+  name text NOT NULL,
+  salary integer NOT NULL CHECK (salary &gt;= 0),
+  manager_id integer REFERENCES staff
+);</code></pre><h3>Sample Input</h3><h4>staff</h4><div class="table-wrap"><table><thead><tr><th>employee_id</th><th>name</th><th>salary</th><th>manager_id</th></tr></thead><tbody><tr><td>1</td><td>Lead</td><td>70000</td><td>NULL</td></tr><tr><td>2</td><td>Ada</td><td>80000</td><td>1</td></tr><tr><td>3</td><td>Ben</td><td>70000</td><td>1</td></tr><tr><td>4</td><td>Cam</td><td>90000</td><td>1</td></tr><tr><td>5</td><td>Dee</td><td>100000</td><td>4</td></tr></tbody></table></div><h3>Sample Output</h3><div class="table-wrap"><table><thead><tr><th>employee_id</th><th>name</th><th>salary_gap</th></tr></thead><tbody><tr><td>4</td><td>Cam</td><td>20000</td></tr><tr><td>2</td><td>Ada</td><td>10000</td></tr><tr><td>5</td><td>Dee</td><td>10000</td></tr></tbody></table></div><p>Cam เหนือ Lead 20000; Ada เหนือ Lead 10000; Dee เหนือ Cam 10000 จึงเรียงหลัง Ada ตาม ID</p><details class="hint"><summary>เปิดแนวคิดทีละขั้น</summary><ol><li>อ่านตาราง staff สองบทบาท: พนักงานใช้ชื่อย่อ e และหัวหน้าใช้ชื่อย่อ m (alias)</li><li>จับคู่พนักงานกับหัวหน้าจาก e.manager_id = m.employee_id (JOIN) คนไม่มีหัวหน้าจะไม่ติดมา</li><li>เลือกเฉพาะพนักงานที่ได้เงินเดือนมากกว่าหัวหน้า แล้วลบเงินเดือนหัวหน้าออกเพื่อหาส่วนต่าง</li><li>เรียงส่วนต่างจากมากไปน้อย ถ้าเท่ากันเรียงรหัสพนักงานจากน้อยไปมาก (ORDER BY)</li></ol></details><details class="answer"><summary>เปิดเฉลย · จุดพลาด · เช็กก่อนส่ง</summary><h3>Reference SQL · PostgreSQL 16</h3><pre><code>SELECT e.employee_id, e.name, e.salary - m.salary AS salary_gap
+FROM staff e JOIN staff m ON m.employee_id = e.manager_id
+WHERE e.salary &gt; m.salary
+ORDER BY salary_gap DESC, e.employee_id;</code></pre><h3>จุดพลาด</h3><ul><li>join e.employee_id = m.manager_id กลับทิศ</li><li>เทียบกับหัวหน้าสูงสุดแทนหัวหน้าโดยตรง</li><li>ใช้ &gt;= รับเงินเดือนเท่ากันผิด</li></ul><h3>เช็กก่อนส่ง</h3><ul><li>root, เงินเดือนเท่ากัน, หลายชั้น และ gap เสมอ</li><li>สองคนชื่อเดียวกันต้องยังเป็นคนละแถว</li></ul><p>self join ไม่ต้อง recursive CTE เพราะโจทย์ขอหนึ่งระดับ</p><p>Research: <a href="https://www.hackerrank.com/challenges/placements/problem" target="_blank" rel="noopener">Placements</a> · ต้นแบบ Medium</p></details><details class="setup"><summary>SQL สำหรับโหลด sample ใน database แยก</summary><p>ใช้ database/schema สำหรับฝึกที่ยังไม่มีตารางชื่อเดียวกัน รันครั้งเดียวแล้วตามด้วย query ของคุณ</p><pre><code>CREATE TABLE staff (
+  employee_id integer PRIMARY KEY,
+  name text NOT NULL,
+  salary integer NOT NULL CHECK (salary &gt;= 0),
+  manager_id integer REFERENCES staff
+);
+INSERT INTO staff VALUES
+(1, &#x27;Lead&#x27;, 70000, NULL),
+(2, &#x27;Ada&#x27;, 80000, 1),
+(3, &#x27;Ben&#x27;, 70000, 1),
+(4, &#x27;Cam&#x27;, 90000, 1),
+(5, &#x27;Dee&#x27;, 100000, 4);
+</code></pre></details></article><article id="Q08" data-level="Advanced"><div class="meta">Q08 · Advanced · 25 MIN</div><h2>ช่วงวัน deploy ต่อเนื่อง</h2><p>รวมวัน deploy ที่ติดกันเป็นช่วงของแต่ละ service คืน service_id, start_date, end_date, day_count โดยนับวันแบบ inclusive</p><h3>ข้อกำหนด / Output</h3><ul><li>events อาจมีหลาย deploy ใน service และวันเดียวกัน ให้วันนั้นนับครั้งเดียว</li><li>วันติดกันหมายถึงต่างกันหนึ่ง calendar day; แยก service เสมอ; ช่วงอาจข้ามเดือน/ปี</li><li>เรียง day_count ASC, start_date ASC, service_id ASC; ไม่มี event คืนศูนย์แถว</li></ul><p><strong>Columns:</strong> <code>service_id, start_date, end_date, day_count</code></p><details class="assumptions"><summary>ข้อตกลงของข้อมูล</summary><p>แต่ละตารางมีได้ 0–100000 แถว ข้อมูลอ้างอิงระหว่างตารางถูกต้อง (foreign key) รหัสเป็นจำนวนเต็มบวก (integer) และชื่อมีค่าเสมอ (text, NOT NULL) เว้นแต่ข้อกำหนดของข้อนั้นระบุเพิ่ม ในตารางตัวอย่าง NULL หมายถึงไม่มีค่า และ “ไม่มีแถว” หมายถึงไม่พบผลลัพธ์</p></details><h3>Schema</h3><pre><code>CREATE TABLE deploys (
+  event_id integer PRIMARY KEY,
+  service_id integer NOT NULL,
+  deploy_date date NOT NULL
+);</code></pre><h3>Sample Input</h3><h4>deploys</h4><div class="table-wrap"><table><thead><tr><th>event_id</th><th>service_id</th><th>deploy_date</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>2026-01-01</td></tr><tr><td>2</td><td>1</td><td>2026-01-01</td></tr><tr><td>3</td><td>1</td><td>2026-01-02</td></tr><tr><td>4</td><td>1</td><td>2026-01-04</td></tr><tr><td>5</td><td>2</td><td>2026-01-01</td></tr><tr><td>6</td><td>2</td><td>2026-01-02</td></tr><tr><td>7</td><td>2</td><td>2026-01-03</td></tr></tbody></table></div><h3>Sample Output</h3><div class="table-wrap"><table><thead><tr><th>service_id</th><th>start_date</th><th>end_date</th><th>day_count</th></tr></thead><tbody><tr><td>1</td><td>2026-01-04</td><td>2026-01-04</td><td>1</td></tr><tr><td>1</td><td>2026-01-01</td><td>2026-01-02</td><td>2</td></tr><tr><td>2</td><td>2026-01-01</td><td>2026-01-03</td><td>3</td></tr></tbody></table></div><p>service 1 มี unique days 1,2,4; ลบลำดับ 1,2,3 ได้ key เท่ากันเฉพาะวัน 1,2 ส่วน service 2 เป็นช่วงสามวัน</p><details class="hint"><summary>เปิดแนวคิดทีละขั้น</summary><ol><li>เก็บแต่ละ service ให้เหลือวันละหนึ่งแถวก่อน วันเดียวมีหลาย deploy ให้นับครั้งเดียว (DISTINCT)</li><li>เรียงวันของแต่ละ service แล้วใส่เลขลำดับ 1, 2, 3, … แยกกัน (ROW_NUMBER และ PARTITION BY)</li><li>นำวันที่ลบเลขลำดับ วันติดกันจะได้ค่าเดียวกัน เช่น 1 ม.ค. ลบ 1 กับ 2 ม.ค. ลบ 2 ได้วันเดียวกัน ใช้ค่านี้เป็นรหัสกลุ่มช่วงวัน (island)</li><li>รวมแถวที่เป็น service เดียวกันและอยู่ช่วงเดียวกัน (GROUP BY) แล้วหาวันแรก วันสุดท้าย และจำนวนวัน (MIN, MAX, COUNT)</li></ol></details><details class="answer"><summary>เปิดเฉลย · จุดพลาด · เช็กก่อนส่ง</summary><h3>Reference SQL · PostgreSQL 16</h3><pre><code>WITH days AS (
+  SELECT DISTINCT service_id, deploy_date FROM deploys
+), numbered AS (
+  SELECT service_id, deploy_date,
+         deploy_date - (ROW_NUMBER() OVER (
+           PARTITION BY service_id ORDER BY deploy_date
+         ))::integer AS island
+  FROM days
+)
+SELECT service_id, MIN(deploy_date) AS start_date,
+       MAX(deploy_date) AS end_date, COUNT(*) AS day_count
+FROM numbered GROUP BY service_id, island
+ORDER BY day_count, start_date, service_id;</code></pre><h3>จุดพลาด</h3><ul><li>window ก่อน DISTINCT ทำให้ deploy ซ้ำแยกช่วงผิด</li><li>ลืม PARTITION BY รวมวันของหลาย service</li><li>end − start ไม่มี +1 และคืน 0 สำหรับช่วงวันเดียว</li></ul><h3>เช็กก่อนส่ง</h3><ul><li>วันซ้ำ, ข้ามเดือน/ปี, leap day, หลาย service วันเดียวกัน</li><li>ตรวจ day_count และ sort ของช่วงยาวเท่ากัน</li></ul><p>DISTINCT และ window ต้องจัดกลุ่ม/sort; index (service_id, deploy_date) เป็นตัวเลือกให้ทดลอง</p><p>Research: <a href="https://www.hackerrank.com/challenges/sql-projects/problem" target="_blank" rel="noopener">SQL Project Planning</a> · ต้นแบบ Medium</p></details><details class="setup"><summary>SQL สำหรับโหลด sample ใน database แยก</summary><p>ใช้ database/schema สำหรับฝึกที่ยังไม่มีตารางชื่อเดียวกัน รันครั้งเดียวแล้วตามด้วย query ของคุณ</p><pre><code>CREATE TABLE deploys (
+  event_id integer PRIMARY KEY,
+  service_id integer NOT NULL,
+  deploy_date date NOT NULL
+);
+INSERT INTO deploys VALUES
+(1, 1, &#x27;2026-01-01&#x27;),
+(2, 1, &#x27;2026-01-01&#x27;),
+(3, 1, &#x27;2026-01-02&#x27;),
+(4, 1, &#x27;2026-01-04&#x27;),
+(5, 2, &#x27;2026-01-01&#x27;),
+(6, 2, &#x27;2026-01-02&#x27;),
+(7, 2, &#x27;2026-01-03&#x27;);
+</code></pre></details></article><article id="Q09" data-level="Advanced"><div class="meta">Q09 · Advanced · 28 MIN</div><h2>สรุป campaign โดยยอดไม่คูณ</h2><p>รวม views, clicks, orders, revenue ของแต่ละ campaign จาก ads โดย view_stats และ order_stats เก็บยอดจาก batch แยกกัน คืน campaign_id, name และยอดทั้งสี่</p><h3>ข้อกำหนด / Output</h3><ul><li>หนึ่ง ad สังกัดหนึ่ง campaign; แต่ละ stats table มีหลาย batch ต่อ ad และไม่จำเป็นต้องมีอีกฝั่ง</li><li>ยอด integer &gt;= 0 ไม่เป็น NULL; revenue เป็นจำนวนเต็มหน่วยบาท; แต่ละ batch นับเพิ่มได้ ไม่ใช่ snapshot</li><li>รวมค่าหายเป็น 0; ตัด campaign เมื่อยอดทั้งสี่เป็น 0; เรียง campaign_id ASC</li><li>ยอด views/clicks ไม่ได้เป็น distinct ข้าม batch; campaign ไม่มี ad ต้องไม่แสดง</li></ul><p><strong>Columns:</strong> <code>campaign_id, name, views, clicks, orders, revenue</code></p><details class="assumptions"><summary>ข้อตกลงของข้อมูล</summary><p>แต่ละตารางมีได้ 0–100000 แถว ข้อมูลอ้างอิงระหว่างตารางถูกต้อง (foreign key) รหัสเป็นจำนวนเต็มบวก (integer) และชื่อมีค่าเสมอ (text, NOT NULL) เว้นแต่ข้อกำหนดของข้อนั้นระบุเพิ่ม ในตารางตัวอย่าง NULL หมายถึงไม่มีค่า และ “ไม่มีแถว” หมายถึงไม่พบผลลัพธ์</p></details><h3>Schema</h3><pre><code>CREATE TABLE campaigns (
+  campaign_id integer PRIMARY KEY,
+  name text NOT NULL
+);
+CREATE TABLE ads (
+  ad_id integer PRIMARY KEY,
+  campaign_id integer NOT NULL REFERENCES campaigns
+);
+CREATE TABLE view_stats (
+  batch_id integer PRIMARY KEY,
+  ad_id integer NOT NULL REFERENCES ads,
+  views integer NOT NULL CHECK (views &gt;= 0),
+  clicks integer NOT NULL CHECK (clicks &gt;= 0)
+);
+CREATE TABLE order_stats (
+  batch_id integer PRIMARY KEY,
+  ad_id integer NOT NULL REFERENCES ads,
+  orders integer NOT NULL CHECK (orders &gt;= 0),
+  revenue integer NOT NULL CHECK (revenue &gt;= 0)
+);</code></pre><h3>Sample Input</h3><h4>campaigns</h4><div class="table-wrap"><table><thead><tr><th>campaign_id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>Launch</td></tr><tr><td>2</td><td>Quiet</td></tr><tr><td>3</td><td>Sales</td></tr><tr><td>4</td><td>NoAds</td></tr></tbody></table></div><h4>ads</h4><div class="table-wrap"><table><thead><tr><th>ad_id</th><th>campaign_id</th></tr></thead><tbody><tr><td>11</td><td>1</td></tr><tr><td>12</td><td>1</td></tr><tr><td>21</td><td>2</td></tr><tr><td>31</td><td>3</td></tr></tbody></table></div><h4>view_stats</h4><div class="table-wrap"><table><thead><tr><th>batch_id</th><th>ad_id</th><th>views</th><th>clicks</th></tr></thead><tbody><tr><td>1</td><td>11</td><td>10</td><td>2</td></tr><tr><td>2</td><td>11</td><td>10</td><td>1</td></tr><tr><td>3</td><td>12</td><td>5</td><td>1</td></tr><tr><td>4</td><td>21</td><td>0</td><td>0</td></tr></tbody></table></div><h4>order_stats</h4><div class="table-wrap"><table><thead><tr><th>batch_id</th><th>ad_id</th><th>orders</th><th>revenue</th></tr></thead><tbody><tr><td>1</td><td>11</td><td>1</td><td>100</td></tr><tr><td>2</td><td>11</td><td>2</td><td>200</td></tr><tr><td>3</td><td>31</td><td>1</td><td>50</td></tr></tbody></table></div><h3>Sample Output</h3><div class="table-wrap"><table><thead><tr><th>campaign_id</th><th>name</th><th>views</th><th>clicks</th><th>orders</th><th>revenue</th></tr></thead><tbody><tr><td>1</td><td>Launch</td><td>25</td><td>4</td><td>3</td><td>300</td></tr><tr><td>3</td><td>Sales</td><td>0</td><td>0</td><td>1</td><td>50</td></tr></tbody></table></div><p>ad 11: views 10+10=20, clicks 3, orders 3, revenue 300; ad 12 เพิ่ม views 5/clicks 1; Sales มีเฉพาะ order ยังแสดง</p><details class="hint"><summary>เปิดแนวคิดทีละขั้น</summary><ol><li>รวมยอดดูและคลิกให้เหลือหนึ่งแถวต่อโฆษณาก่อน (GROUP BY ad_id) แล้วรวมยอดสั่งซื้อและรายได้แยกอีกตารางด้วยวิธีเดียวกัน</li><li>นำยอดสองฝั่งมาเชื่อมกับโฆษณา (LEFT JOIN) ตอนนี้แต่ละฝั่งเหลืออย่างมากหนึ่งแถวต่อโฆษณา ยอดจึงไม่ถูกนับซ้ำเพราะแถวจับคู่กันหลายครั้ง</li><li>รวมยอดโฆษณาทั้งหมดของแต่ละ campaign แล้วแทนยอดที่ไม่มีด้วย 0 (SUM และ COALESCE)</li><li>แสดง campaign ที่มียอดใดอย่างน้อยหนึ่งค่ามากกว่า 0 แล้วเรียงรหัส campaign จากน้อยไปมาก</li></ol></details><details class="answer"><summary>เปิดเฉลย · จุดพลาด · เช็กก่อนส่ง</summary><h3>Reference SQL · PostgreSQL 16</h3><pre><code>WITH v AS (
+  SELECT ad_id, SUM(views) AS views, SUM(clicks) AS clicks
+  FROM view_stats GROUP BY ad_id
+), o AS (
+  SELECT ad_id, SUM(orders) AS orders, SUM(revenue) AS revenue
+  FROM order_stats GROUP BY ad_id
+), totals AS (
+  SELECT c.campaign_id, c.name,
+         COALESCE(SUM(v.views), 0) AS views,
+         COALESCE(SUM(v.clicks), 0) AS clicks,
+         COALESCE(SUM(o.orders), 0) AS orders,
+         COALESCE(SUM(o.revenue), 0) AS revenue
+  FROM campaigns c JOIN ads a ON a.campaign_id = c.campaign_id
+  LEFT JOIN v ON v.ad_id = a.ad_id
+  LEFT JOIN o ON o.ad_id = a.ad_id
+  GROUP BY c.campaign_id, c.name
+)
+SELECT campaign_id, name, views, clicks, orders, revenue
+FROM totals WHERE views &gt; 0 OR clicks &gt; 0 OR orders &gt; 0 OR revenue &gt; 0
+ORDER BY campaign_id;</code></pre><h3>จุดพลาด</h3><ul><li>join raw child tables ได้ m×n แถว ทำให้ยอดคูณ</li><li>SUM(DISTINCT views) ทิ้ง batch ที่บังเอิญมียอดเท่ากัน</li><li>INNER JOIN ทั้งสอง stats ทำให้ ad ที่มีเพียงฝั่งเดียวหาย</li><li>ใช้ AND แทน OR ทำให้ campaign ที่มีเฉพาะ orders หาย</li></ul><h3>เช็กก่อนส่ง</h3><ul><li>อย่างน้อย 2×2 batches ของ ad เดียว</li><li>ยอดซ้ำที่ต้องบวก, stats ขาดฝั่ง, zero campaign, campaign ไม่มี ad</li></ul><p>ยุบ stats ก่อน join ลด intermediate cardinality; อย่าแก้ fan-out ด้วย DISTINCT แบบครอบจักรวาล</p><p>Research: <a href="https://www.hackerrank.com/challenges/interviews/problem" target="_blank" rel="noopener">Interviews</a> · ต้นแบบ Hard</p></details><details class="setup"><summary>SQL สำหรับโหลด sample ใน database แยก</summary><p>ใช้ database/schema สำหรับฝึกที่ยังไม่มีตารางชื่อเดียวกัน รันครั้งเดียวแล้วตามด้วย query ของคุณ</p><pre><code>CREATE TABLE campaigns (
+  campaign_id integer PRIMARY KEY,
+  name text NOT NULL
+);
+CREATE TABLE ads (
+  ad_id integer PRIMARY KEY,
+  campaign_id integer NOT NULL REFERENCES campaigns
+);
+CREATE TABLE view_stats (
+  batch_id integer PRIMARY KEY,
+  ad_id integer NOT NULL REFERENCES ads,
+  views integer NOT NULL CHECK (views &gt;= 0),
+  clicks integer NOT NULL CHECK (clicks &gt;= 0)
+);
+CREATE TABLE order_stats (
+  batch_id integer PRIMARY KEY,
+  ad_id integer NOT NULL REFERENCES ads,
+  orders integer NOT NULL CHECK (orders &gt;= 0),
+  revenue integer NOT NULL CHECK (revenue &gt;= 0)
+);
+INSERT INTO campaigns VALUES
+(1, &#x27;Launch&#x27;),
+(2, &#x27;Quiet&#x27;),
+(3, &#x27;Sales&#x27;),
+(4, &#x27;NoAds&#x27;);
+INSERT INTO ads VALUES
+(11, 1),
+(12, 1),
+(21, 2),
+(31, 3);
+INSERT INTO view_stats VALUES
+(1, 11, 10, 2),
+(2, 11, 10, 1),
+(3, 12, 5, 1),
+(4, 21, 0, 0);
+INSERT INTO order_stats VALUES
+(1, 11, 1, 100),
+(2, 11, 2, 200),
+(3, 31, 1, 50);
+</code></pre></details></article><article id="Q10" data-level="Advanced"><div class="meta">Q10 · Advanced · 35 MIN</div><h2>ผู้ส่งต่อเนื่องและผู้ส่งสูงสุดรายวัน</h2><p>ช่วงฝึก 2026-06-01 ถึง 2026-06-04 คืนทุกวันพร้อม retained_count (คนส่งอย่างน้อยหนึ่งครั้งทุกวันตั้งแต่วันเริ่มจนถึงวันนั้น) และ winner_id, winner_name ของผู้ส่งมากสุดในวันนั้น</p><h3>ข้อกำหนด / Output</h3><ul><li>winner พิจารณาทุกคนที่ส่งวันนั้น ไม่จำกัดคน retained; จำนวนส่งเสมอเลือก member_id ต่ำสุด</li><li>วันที่ไม่มี submission ยังต้องคืนแถว retained_count=0 และ winner ทั้งสองเป็น SQL NULL</li><li>ละเลย submission นอกช่วง; การส่งหลายครั้งวันเดียวช่วย winner แต่ retained นับเป็นวันเดียว</li><li>members มี FK ถูกต้อง; เรียง day ASC; ผู้ที่ขาดวันก่อนกลับมา retained ไม่ได้</li></ul><p><strong>Columns:</strong> <code>day, retained_count, winner_id, winner_name</code></p><details class="assumptions"><summary>ข้อตกลงของข้อมูล</summary><p>แต่ละตารางมีได้ 0–100000 แถว ข้อมูลอ้างอิงระหว่างตารางถูกต้อง (foreign key) รหัสเป็นจำนวนเต็มบวก (integer) และชื่อมีค่าเสมอ (text, NOT NULL) เว้นแต่ข้อกำหนดของข้อนั้นระบุเพิ่ม ในตารางตัวอย่าง NULL หมายถึงไม่มีค่า และ “ไม่มีแถว” หมายถึงไม่พบผลลัพธ์</p></details><h3>Schema</h3><pre><code>CREATE TABLE members (
+  member_id integer PRIMARY KEY,
+  name text NOT NULL
+);
+CREATE TABLE submissions (
+  submission_id integer PRIMARY KEY,
+  member_id integer NOT NULL REFERENCES members,
+  submitted_on date NOT NULL
+);</code></pre><h3>Sample Input</h3><h4>members</h4><div class="table-wrap"><table><thead><tr><th>member_id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>Ari</td></tr><tr><td>2</td><td>Bo</td></tr><tr><td>3</td><td>Cy</td></tr></tbody></table></div><h4>submissions</h4><div class="table-wrap"><table><thead><tr><th>submission_id</th><th>member_id</th><th>submitted_on</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>2026-06-01</td></tr><tr><td>2</td><td>2</td><td>2026-06-01</td></tr><tr><td>3</td><td>1</td><td>2026-06-02</td></tr><tr><td>4</td><td>2</td><td>2026-06-02</td></tr><tr><td>5</td><td>2</td><td>2026-06-02</td></tr><tr><td>6</td><td>3</td><td>2026-06-02</td></tr><tr><td>7</td><td>2</td><td>2026-06-03</td></tr><tr><td>8</td><td>3</td><td>2026-06-03</td></tr><tr><td>9</td><td>3</td><td>2026-06-03</td></tr><tr><td>10</td><td>1</td><td>2026-06-04</td></tr><tr><td>11</td><td>2</td><td>2026-06-04</td></tr><tr><td>12</td><td>1</td><td>2026-05-31</td></tr></tbody></table></div><h3>Sample Output</h3><div class="table-wrap"><table><thead><tr><th>day</th><th>retained_count</th><th>winner_id</th><th>winner_name</th></tr></thead><tbody><tr><td>2026-06-01</td><td>2</td><td>1</td><td>Ari</td></tr><tr><td>2026-06-02</td><td>2</td><td>2</td><td>Bo</td></tr><tr><td>2026-06-03</td><td>1</td><td>3</td><td>Cy</td></tr><tr><td>2026-06-04</td><td>1</td><td>1</td><td>Ari</td></tr></tbody></table></div><p>วันที่ 3 เหลือ Bo ต่อเนื่องคนเดียว แต่ Cy ส่งสองครั้งจึงเป็น winner; วันที่ 4 Ari กลับมาได้ winner ด้วย ID ต่ำกว่า แต่ไม่กลับเป็น retained</p><details class="hint"><summary>เปิดแนวคิดทีละขั้น</summary><ol><li>สร้างรายการวันที่ 1–4 มิ.ย. ไว้ก่อน เพื่อให้คำตอบมีครบทุกวัน แม้วันนั้นไม่มีคนส่ง (calendar)</li><li>ใช้เฉพาะข้อมูลในช่วงนี้ แล้วนับจำนวนครั้งที่แต่ละคนส่งในแต่ละวัน ให้เหลือหนึ่งแถวต่อคนต่อวัน (GROUP BY)</li><li>หาคนที่ส่งต่อเนื่อง (retained): เรียงวันส่งของแต่ละคนแล้วใส่ลำดับ 1, 2, 3, … วันที่ 3 มิ.ย. ต้องเป็นวันส่งลำดับที่ 3 จึงแปลว่าส่งครบตั้งแต่วันแรก</li><li>หาผู้ส่งมากที่สุดของแต่ละวัน (winner) จากทุกคน ไม่จำกัดเฉพาะคนส่งต่อเนื่อง ถ้าจำนวนส่งเท่ากัน เลือกรหัสคนน้อยกว่า (ROW_NUMBER)</li><li>นำจำนวนคนส่งต่อเนื่องและผู้ชนะมาใส่ในรายการวัน (LEFT JOIN) วันไม่มีข้อมูลให้จำนวนเป็น 0 และชื่อกับรหัสผู้ชนะเป็น NULL</li></ol></details><details class="answer"><summary>เปิดเฉลย · จุดพลาด · เช็กก่อนส่ง</summary><h3>Reference SQL · PostgreSQL 16</h3><pre><code>WITH calendar AS (
+  SELECT DATE &#x27;2026-06-01&#x27; + i AS day FROM generate_series(0, 3) AS g(i)
+), daily AS (
+  SELECT submitted_on AS day, member_id, COUNT(*) AS submission_count
+  FROM submissions
+  WHERE submitted_on BETWEEN DATE &#x27;2026-06-01&#x27; AND DATE &#x27;2026-06-04&#x27;
+  GROUP BY submitted_on, member_id
+), progress AS (
+  SELECT day, member_id,
+         ROW_NUMBER() OVER (PARTITION BY member_id ORDER BY day) AS active_days
+  FROM daily
+), retained AS (
+  SELECT day, COUNT(*) AS retained_count FROM progress
+  WHERE active_days = day - DATE &#x27;2026-06-01&#x27; + 1
+  GROUP BY day
+), ranked AS (
+  SELECT day, member_id,
+         ROW_NUMBER() OVER (
+           PARTITION BY day ORDER BY submission_count DESC, member_id
+         ) AS position
+  FROM daily
+)
+SELECT c.day, COALESCE(r.retained_count, 0) AS retained_count,
+       w.member_id AS winner_id, m.name AS winner_name
+FROM calendar c LEFT JOIN retained r ON r.day = c.day
+LEFT JOIN ranked w ON w.day = c.day AND w.position = 1
+LEFT JOIN members m ON m.member_id = w.member_id
+ORDER BY c.day;</code></pre><h3>จุดพลาด</h3><ul><li>COUNT(*) raw submission แทน unique day ทำให้คนส่งหลายครั้งดูต่อเนื่อง</li><li>เลือก winner จาก retained ทำให้ Cy วันที่ 3 หาย</li><li>กรอง w.position=1 ใน WHERE ทำให้วันไม่มี winner หาย</li><li>ลืมตัดก่อนวันเริ่มทำให้เลขลำดับ active_days ผิด</li></ul><h3>เช็กก่อนส่ง</h3><ul><li>คนเริ่มช้าและกลับมาหลังขาดวัน</li><li>วันว่างกลางช่วง, winner ไม่ retained, tie และ submission นอกช่วง</li></ul><p>daily ลดจำนวนแถวก่อน window; ช่วงใหญ่ควรใช้ calendar table และดู EXPLAIN ตามขนาดจริง</p><p>Research: <a href="https://www.hackerrank.com/challenges/15-days-of-learning-sql/problem" target="_blank" rel="noopener">15 Days of Learning SQL</a> · ต้นแบบ Hard</p></details><details class="setup"><summary>SQL สำหรับโหลด sample ใน database แยก</summary><p>ใช้ database/schema สำหรับฝึกที่ยังไม่มีตารางชื่อเดียวกัน รันครั้งเดียวแล้วตามด้วย query ของคุณ</p><pre><code>CREATE TABLE members (
+  member_id integer PRIMARY KEY,
+  name text NOT NULL
+);
+CREATE TABLE submissions (
+  submission_id integer PRIMARY KEY,
+  member_id integer NOT NULL REFERENCES members,
+  submitted_on date NOT NULL
+);
+INSERT INTO members VALUES
+(1, &#x27;Ari&#x27;),
+(2, &#x27;Bo&#x27;),
+(3, &#x27;Cy&#x27;);
+INSERT INTO submissions VALUES
+(1, 1, &#x27;2026-06-01&#x27;),
+(2, 2, &#x27;2026-06-01&#x27;),
+(3, 1, &#x27;2026-06-02&#x27;),
+(4, 2, &#x27;2026-06-02&#x27;),
+(5, 2, &#x27;2026-06-02&#x27;),
+(6, 3, &#x27;2026-06-02&#x27;),
+(7, 2, &#x27;2026-06-03&#x27;),
+(8, 3, &#x27;2026-06-03&#x27;),
+(9, 3, &#x27;2026-06-03&#x27;),
+(10, 1, &#x27;2026-06-04&#x27;),
+(11, 2, &#x27;2026-06-04&#x27;),
+(12, 1, &#x27;2026-05-31&#x27;);
+</code></pre></details></article><section class="intro"><h2>Research และขอบเขต</h2><p>อ้าง public challenges ของ HackerRank แต่ง scenario และ sample data ใหม่ ระดับชุดนี้จัดเพื่อฝึก ไม่ใช่การรับรองระดับของ HackerRank</p><ul></ul><ol><li>Q01: <a href="https://www.hackerrank.com/challenges/revising-the-select-query/problem" target="_blank" rel="noopener">Revising the Select Query I</a> · Easy — filter และ projection</li><li>Q02: <a href="https://www.hackerrank.com/challenges/weather-observation-station-5/problem" target="_blank" rel="noopener">Weather Observation Station 5</a> · Easy — ความยาว string และ tie-break</li><li>Q03: <a href="https://www.hackerrank.com/challenges/earnings-of-employees/problem" target="_blank" rel="noopener">Top Earners</a> · Easy — aggregate ค่าสูงสุดและจำนวนผู้เสมอ</li><li>Q04: <a href="https://www.hackerrank.com/challenges/the-report/problem" target="_blank" rel="noopener">The Report</a> · Medium — range join, CASE และ conditional ordering</li><li>Q05: <a href="https://www.hackerrank.com/challenges/full-score/problem" target="_blank" rel="noopener">Top Competitors</a> · Medium — multi-table join และนับ distinct</li><li>Q06: <a href="https://www.hackerrank.com/challenges/contest-leaderboard/problem" target="_blank" rel="noopener">Contest Leaderboard</a> · Medium — aggregate สองระดับ: best ต่อ task แล้วรวมต่อคน</li><li>Q07: <a href="https://www.hackerrank.com/challenges/placements/problem" target="_blank" rel="noopener">Placements</a> · Medium — join entity เดียวกันสองบทบาทแล้วเปรียบเทียบ</li><li>Q08: <a href="https://www.hackerrank.com/challenges/sql-projects/problem" target="_blank" rel="noopener">SQL Project Planning</a> · Medium — gaps and islands จากวันที่ต่อเนื่อง</li><li>Q09: <a href="https://www.hackerrank.com/challenges/interviews/problem" target="_blank" rel="noopener">Interviews</a> · Hard — pre-aggregate child tables ก่อน join</li><li>Q10: <a href="https://www.hackerrank.com/challenges/15-days-of-learning-sql/problem" target="_blank" rel="noopener">15 Days of Learning SQL</a> · Hard — ผู้ส่งทุกวันตั้งแต่เริ่ม + ผู้ส่งสูงสุดรายวัน</li></ol><p>Q08 ขยาย pattern จาก Medium เป็นโจทย์หลาย service พร้อมวันซ้ำ ส่วน Q09/Q10 อ้าง pattern จาก Hard ตรวจแหล่งวันที่ 19 Nov 2026 รายละเอียด mapping อยู่ใน research.md</p></section><footer>Bank sql-coding-20261119 · Codex authored · Offline worksheet · รอ human content/difficulty review</footer></main><script>const level=document.querySelector("#level");level.addEventListener("change",()=>{let count=0;document.querySelectorAll("article").forEach(a=>{a.hidden=level.value!=="all"&&a.dataset.level!==level.value;if(!a.hidden)count++});document.querySelectorAll("nav a").forEach(a=>a.hidden=level.value!=="all"&&a.dataset.level!==level.value);document.querySelector("#count").textContent="แสดง "+count+" ข้อ"});document.querySelector("#collapse").addEventListener("click",()=>document.querySelectorAll("article details").forEach(d=>d.open=false));</script></html>
