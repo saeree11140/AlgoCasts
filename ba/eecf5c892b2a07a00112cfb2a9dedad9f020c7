@@ -1,0 +1,65 @@
+web/scripts/prepare-content.mjs
+  s_7858dd3ed99f87::t_937163b42df444 88-89,91-96
+web/src/sql-practice/sql-worker.ts
+  s_7858dd3ed99f87::t_5527dae4b583e4 1-2,4-18,20-24
+  s_7858dd3ed99f87::t_4faff97975416f 3
+  s_7858dd3ed99f87::t_a186d0f87480ce 19
+web/src/editor.ts
+  s_7858dd3ed99f87::t_74c48e5b2d7bb5 2,14-16
+web/deploy/nginx.conf
+  s_7858dd3ed99f87::t_ad6138dfe7a4c8 14,44-50,66
+web/scripts/catalog.mjs
+  s_7858dd3ed99f87::t_937163b42df444 57
+web/src/sql-practice/practice.css
+  s_7858dd3ed99f87::t_ad6138dfe7a4c8 1-132
+web/src/ui-refinements.css
+  s_7858dd3ed99f87::t_ad6138dfe7a4c8 1638-1640
+  s_7858dd3ed99f87::t_d659f49cef9078 1637
+web/src/sql-practice/exercises.ts
+  s_7858dd3ed99f87::t_5527dae4b583e4 3-131
+  s_7858dd3ed99f87::t_4faff97975416f 1-2
+web/tests/sql-practice.test.mjs
+  s_7858dd3ed99f87::t_ed1728e6d7cf0b 1-56
+web/src/main.ts
+  s_7858dd3ed99f87::t_0fb4fb3f8b2574 126,128-134,138-139,142,146
+  s_7858dd3ed99f87::t_74c48e5b2d7bb5 22,136,140-141,150-152,155,197,206
+  s_7858dd3ed99f87::t_4faff97975416f 153-154
+  s_7858dd3ed99f87::t_d659f49cef9078 143-145
+web/tests/storage.test.mjs
+  s_7858dd3ed99f87::t_d659f49cef9078 25-34
+web/src/types.ts
+  s_7858dd3ed99f87::t_74c48e5b2d7bb5 15-16
+web/src/storage.ts
+  s_7858dd3ed99f87::t_74c48e5b2d7bb5 16,18-19,21,23
+  s_7858dd3ed99f87::t_4faff97975416f 17,20,22
+web/tests/content.test.mjs
+  s_7858dd3ed99f87::t_937163b42df444 87-104
+  s_7858dd3ed99f87::t_d659f49cef9078 11
+web/src/sql-practice/judge.ts
+  s_7858dd3ed99f87::t_5527dae4b583e4 1-78
+web/src/sql-practice/index.ts
+  s_7858dd3ed99f87::t_e0ad7bbe40a08e 1-236
+web/package.json
+  s_7858dd3ed99f87::t_3c830efac6029c 29,34
+  s_7858dd3ed99f87::t_ae6ec02192bb6b 20
+web/pnpm-lock.yaml
+  s_7858dd3ed99f87::t_c5771fe31d1c11 14-16,41-43,51-53,69-71,410-412,419-421,483-485,570-578,797-798,805-809,913-914
+"competency/The JavaScript language.pdf"
+  s_7858dd3ed99f87::t_a88b74a4511a45 1-2199611
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "baeecf5c892b2a07a00112cfb2a9dedad9f020c7",
+  "prompts": {},
+  "sessions": {
+    "s_7858dd3ed99f87": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f963-0b54-7ed3-9637-6f9e5dab6422",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
