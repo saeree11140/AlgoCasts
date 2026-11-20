@@ -1,0 +1,23 @@
+web/src/main.ts
+  s_7858dd3ed99f87::t_529f99cde78b63 157,160,164-166,190-197,200-205,221
+web/content/guides/javascript-algorithms.md
+  s_7858dd3ed99f87::t_317d925b78dc0d 1-235
+web/scripts/prepare-content.mjs
+  s_7858dd3ed99f87::t_529f99cde78b63 117
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "da06b0fd14357fc814e794506e009c7b3f0c93df",
+  "prompts": {},
+  "sessions": {
+    "s_7858dd3ed99f87": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f963-0b54-7ed3-9637-6f9e5dab6422",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
