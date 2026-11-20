@@ -1,0 +1,65 @@
+exercises/palindrome/test.ts
+  s_daa89b1d6078b0::t_4a2c4b89248d42 1,3-20,24,27-28,31-32,35-40,43-44,47-52,55-56
+competency/CODING/tent_packing/README.md
+  s_daa89b1d6078b0::t_7334d8a46c407c 1-280
+competency/CODING/tent_packing/test/tentPacking.test.ts
+  s_daa89b1d6078b0::t_7334d8a46c407c 1-37
+web/scripts/catalog.mjs
+  s_daa89b1d6078b0::t_bf22e876922bd1 72
+  s_daa89b1d6078b0::t_89ea78f956370a 64
+  s_daa89b1d6078b0::t_4a2c4b89248d42 4
+competency/Microservices/Microservices_Competency_Review.html
+  s_daa89b1d6078b0::t_aca7784e5ba0d3 2067
+  s_daa89b1d6078b0::t_e39f645e9ff0ce 2073-2075
+web/scripts/prepare-content.mjs
+  s_daa89b1d6078b0::t_5620c37d73aa01 51-82
+competency/SQL/sql-review.html
+  s_daa89b1d6078b0::t_7011881c72d238 224,1898
+  s_daa89b1d6078b0::t_4be81c4ea0aeb4 214-223,225,261,1405,1410-1441,1453,1455-1505,1522,1525-1575,1600,1602-1646,1669,1671-1724,1746,1749-1771,1790,1792-1826,1850,1852-1883,1894-1897,1899-1908,1950-1953
+web/tests/content.test.mjs
+  s_daa89b1d6078b0::t_bf22e876922bd1 11,59
+  s_daa89b1d6078b0::t_5356989fe5088b 129-135,139-142,151-152
+  s_daa89b1d6078b0::t_7462bb1f558dd3 10
+  s_daa89b1d6078b0::t_51cd1ef80dcaf6 136-138,143-150
+  s_daa89b1d6078b0::t_89ea78f956370a 51
+web/src/main.ts
+  s_daa89b1d6078b0::t_26f080ff7fe0a2 126
+  s_daa89b1d6078b0::t_d3c6b7471882b2 130
+completed_exercises/palindrome/index.ts
+  s_daa89b1d6078b0::t_4a2c4b89248d42 2-16,18-37,40,42-44
+"competency/Mock Exam Assessment 13/developer-assessment-13.html"
+  s_daa89b1d6078b0::t_e349f1ea11049d 1-323
+exercises/palindrome/index.ts
+  s_daa89b1d6078b0::t_4a2c4b89248d42 2-16,18,22
+"competency/Mock Exam Keng Wee/prompt-engineering-10.html"
+  s_daa89b1d6078b0::t_51cd1ef80dcaf6 386
+completed_exercises/palindrome/test.ts
+  s_daa89b1d6078b0::t_4a2c4b89248d42 1,3-20,24,27-28,31-32,35-40,43-44,47-52,55-56
+"competency/Mock Exam Keng Wee/program-coding-12.html"
+  s_daa89b1d6078b0::t_51cd1ef80dcaf6 620
+  s_daa89b1d6078b0::t_4e7b6274ceebd6 1-619,621-669
+competency/CODING/tent_packing/src/tentPacking.ts
+  s_daa89b1d6078b0::t_7334d8a46c407c 1-56
+"competency/Coding Skill/coding-skill-review.html"
+  s_daa89b1d6078b0::t_51cd1ef80dcaf6 2584-2590
+web/README.md
+  s_daa89b1d6078b0::t_bf22e876922bd1 31
+competency/CODING/tent_packing/web-practice-suite.ts
+  s_daa89b1d6078b0::t_783326ad35ef3a 1-92
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "b668705869493ff7aa9ac167a8abf478c51e2518",
+  "prompts": {},
+  "sessions": {
+    "s_daa89b1d6078b0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4f1b71d6-ecdf-47d7-8f06-8e5af4708f98",
+        "model": "unknown"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
