@@ -154,13 +154,16 @@ async function competencyReader(id:string,params:URLSearchParams,version:number)
   disposeSqlPractice=mountSqlPractice(document.querySelector('#sql-practice-slot')!,progress,()=>save(state));
  }
 }
+const javascriptAlgorithmsGuide={title:'JavaScript สำหรับ Algorithms',file:'javascript-algorithms.md'};
 function guides(params:URLSearchParams){
  const selected=params.get('group')||'';
+ const overview=!selected||!Object.hasOwn(manifest.diagramGroups,selected);
  const groups=Object.entries(manifest.diagramGroups).sort(([a],[b])=>a.localeCompare(b));
  const visible=(group:string)=>manifest.diagrams.filter(d=>d.group===group&&!guideNotes[d.id]?.hidden);
  const tabs=`<div class="guide-tabs"><a class="button ${!selected?'primary':''}" href="#/guides">ทั้งหมด</a>${groups.map(([key,title])=>`<a class="button ${selected===key?'primary':''}" href="#/guides?group=${key}">${e(title)}</a>`).join('')}</div>`;
- const top=heading('คู่มือและภาพอธิบาย','เข้าใจวิธีคิดก่อนเขียนโค้ด เชื่อมภาพประกอบกับโจทย์ที่กำลังฝึก')+tabs;
- if(!selected||!manifest.diagramGroups[selected]){
+ const javascriptGuide=overview?`<section class="guide-intro panel resources"><div><h2>${javascriptAlgorithmsGuide.title}</h2><p>เลือกใช้ Array, String, Map และ Set ให้ตรงโจทย์ พร้อมตัวอย่าง Binary Search, Sliding Window และ BFS</p></div><a class="button primary" href="#/reading/javascript-algorithms">${icon('book')} อ่านคู่มือ JavaScript</a></section>`:'';
+ const top=heading('คู่มือและภาพอธิบาย','เข้าใจวิธีคิดก่อนเขียนโค้ด เชื่อมภาพประกอบกับโจทย์ที่กำลังฝึก')+javascriptGuide+tabs;
+ if(overview){
   shell('guides',`${top}<section class="guide-intro panel prose"><h2>ฝึกอย่างไรให้เข้าใจ</h2><div class="learning-steps"><div><span>01</span><h3>อ่านโจทย์</h3><p>ระบุ Input, Output และกรณีขอบให้ชัด</p></div><div><span>02</span><h3>วาดวิธีคิด</h3><p>ไล่ข้อมูลทีละขั้น แล้วเลือกโครงสร้างที่เหมาะ</p></div><div><span>03</span><h3>เขียนและทดสอบ</h3><p>เริ่มจากคำตอบที่ถูก แล้วค่อยลดเวลาและพื้นที่</p></div></div><p><strong>Big O:</strong> O(1) คงที่ · O(log n) ลดช่วงครึ่งหนึ่ง · O(n) อ่านทุกสมาชิก · O(n log n) เช่น Merge Sort · O(n²) เช่น loop ซ้อนที่ขึ้นกับ n ทั้งคู่</p><div class="button-row"><a class="button" href="#/reading/coding-practice">คู่มือ Coding Practice 6 ข้อ</a><a class="button" href="#/reading/chocolate-score">โจทย์ Chocolate API: Score</a></div></section><div class="section-title"><h2>เลือกหมวดที่อยากเรียน</h2><span class="muted">${groups.length} หมวด · ${manifest.diagrams.filter(d=>!guideNotes[d.id]?.hidden).length} ภาพ</span></div><div class="guide-group-grid">${groups.map(([key,title])=>{const g=guideGroups[key];const first=visible(key)[0];return `<a class="guide-group-card" href="#/guides?group=${key}"><span class="guide-group-thumb">${first?`<img src="/content/${first.path}" alt="" loading="lazy">`:''}</span><span class="guide-group-body"><span class="eyebrow">หมวด ${key}</span><strong>${e(title)}</strong><span>${e(g?.summary??'')}</span><small>${visible(key).length} ภาพ · มี Lab ให้ลองเอง ${icon('arrow')}</small></span></a>`;}).join('')}</div>`);
   return;
  }
@@ -184,12 +187,22 @@ function guides(params:URLSearchParams){
   if(params.get('lab'))lab.scrollIntoView({block:'start'});
  }).catch(()=>{slot.innerHTML='<p class="loading">โหลด Lab ไม่สำเร็จ ลองรีเฟรชหน้านี้</p>';});
 }
-async function reading(id:string,version:number){
- const files:Record<string,[string,string]>={'coding-practice':['Coding Practice — คู่มือ 6 โจทย์','coding-practice.md'],'chocolate-score':['Chocolate API — Pagination & Score','chocolate-score.md']};
- if(!files[id])return notFound();
- const [title,file]=files[id];shell('guides','<p class="loading">กำลังเปิดคู่มือ…</p>');
+const readingGuides:Record<string,{title:string;file:string}>={
+ 'coding-practice':{title:'Coding Practice — คู่มือ 6 โจทย์',file:'coding-practice.md'},
+ 'chocolate-score':{title:'Chocolate API — Pagination & Score',file:'chocolate-score.md'},
+ 'javascript-algorithms':javascriptAlgorithmsGuide,
+};
+async function reading(id:string,sectionId:string|null,version:number){
+ if(!Object.hasOwn(readingGuides,id))return notFound();
+ const {title,file}=readingGuides[id];shell('guides','<p class="loading">กำลังเปิดคู่มือ…</p>');
  const response=await fetch('/content/documents/'+file);if(!response.ok)throw new Error('เปิดคู่มือไม่สำเร็จ');const text=await response.text();if(version!==routeVersion)return;
  shell('guides',`<a class="text-link" href="#/guides">← คู่มือทั้งหมด</a><article class="reading-article panel prose"><h1>${title}</h1>${markdown(text)}</article>`);
+ const section=sectionId?document.getElementById(sectionId):null;
+ if(section?.closest('.reading-article')){
+  section.tabIndex=-1;
+  section.focus({preventScroll:true});
+  section.scrollIntoView({block:'start'});
+ }
 }
 function notFound(){shell('',`<div class="empty-state"><h1>ไม่พบหน้านี้</h1><p>ลิงก์อาจไม่ถูกต้อง หรือเนื้อหาถูกย้าย</p><a class="button primary" href="#/">กลับหน้าหลัก</a></div>`);}
 async function render(){
@@ -205,7 +218,7 @@ async function render(){
   else if(parts[0]==='problem'&&parts[1])await workspace(parts[1],params,version);
   else if(parts[0]==='competency')parts[1]?await competencyReader(parts[1],params,version):competencies();
   else if(parts[0]==='guides')guides(params);
-  else if(parts[0]==='reading')await reading(parts[1],version);
+  else if(parts[0]==='reading')await reading(parts[1],params.get('section'),version);
   else notFound();
  }catch(error){if(version===routeVersion)shell('',`<div class="empty-state"><h1>เปิดหน้านี้ไม่สำเร็จ</h1><p>${e(error)}</p><button class="button" id="retry-page">ลองใหม่</button></div>`);document.querySelector('#retry-page')?.addEventListener('click',render);}
 }

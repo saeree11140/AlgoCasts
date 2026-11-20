@@ -114,6 +114,7 @@ for(const [entry,[id,title,description,abbr]] of Object.entries(competencyInfo))
  competencies.push({id,title,description,abbr,path:`documents/${id}.html`,sections,sourcePath});
 }
 await fs.copyFile(path.join(root,'competency/exploring-js-screen-2024-09-03.pdf'),path.join(out,'documents/exploring-js.pdf'));
+await fs.copyFile(path.join(web,'content/guides/javascript-algorithms.md'),path.join(out,'documents/javascript-algorithms.md'));
 for(const [from,to] of [['competency/CODING/coding_practice_session_01/Coding_Practice_6_Problems_Explained.md','coding-practice.md'],['competency/CODING/hackerrank-chocolate-pagination.md','chocolate-score.md']]) await write(`documents/${to}`,await read(from));
 const escape = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
 const decode = s => s.replace(/&(?:amp|lt|gt|quot|apos|nbsp|#\d+|#x[\da-f]+);/gi,c=> {const named={'&amp;':'&','&lt;':'<','&gt;':'>','&quot;':'"','&apos;':"'",'&nbsp;':' '};return named[c]??String.fromCodePoint(c.startsWith('&#x')?parseInt(c.slice(3),16):parseInt(c.slice(2),10));});
