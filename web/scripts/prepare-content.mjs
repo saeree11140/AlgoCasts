@@ -48,6 +48,38 @@ const chocolateStarter=await read('chocolatestype/client/index.ts');
 const chocolate={id:'chocolate-report',title:'Chocolate Report',category:'API Challenges',difficulty:'Medium',description:'ดึงข้อมูล API ทุกหน้า กรองเปอร์เซ็นต์โกโก้ แล้วสรุป count, avgCacao และ strongest ตาม category',hint:'ส่ง minCacao และ pageSize=50 ไป API; แยก retry ของแต่ละหน้า แล้วสะสมผลก่อนสรุป',complexity:'O(n) time · O(c) aggregation space',source:'API Lab',starter:chocolateStarter,solution:chocolateSolution,modules:{'./test':await read('chocolatestype/client/test.ts')},directions:await read('chocolatestype/README.md'),markdown:true,sourcePath:'chocolatestype/client',guideGroup:'09'};
 await write('problems/chocolate-report.json',chocolate);problems.push(Object.fromEntries(Object.entries(chocolate).filter(([k])=>['id','title','category','difficulty','description','source'].includes(k))));
 for(const p of extraProblems) { await write(`problems/${p.id}.json`,p); problems.push(Object.fromEntries(Object.entries(p).filter(([k])=>['id','title','category','difficulty','description','source'].includes(k)))); }
+// Tent Packing: copied from the exam-dev-2025 prep project (README + reference solution) with a web test suite.
+const tentSolution=await read('competency/CODING/tent_packing/src/tentPacking.ts');
+const tentDirections=[
+ 'บริษัทจะจัดแคมป์พนักงาน มีพนักงานทั้งหมด `numPeople` คน และมีเต็นท์หลายขนาดใน `tentSizes` (เช่น `[2, 5, 6]`) เต็นท์แต่ละขนาดใช้ได้ไม่จำกัดจำนวน',
+ 'จงจัดคนลงเต็นท์ให้พอดีทุกเต็นท์ (exact fit) โดยใช้จำนวนเต็นท์น้อยที่สุด ห้ามใส่เกินความจุ และต้องจัดครบทุกคน',
+ '','### Input',
+ '- `numPeople: number` — จำนวนพนักงาน เป็นจำนวนเต็มตั้งแต่ 0 ขึ้นไป',
+ '- `tentSizes: number[]` — ความจุของเต็นท์แต่ละแบบ เป็นจำนวนเต็มบวก ไม่เรียงลำดับ อาจมีค่าซ้ำ หรือเป็น array ว่าง',
+ '','### Output',
+ '- `{ count: number; sizes: number[] }` — `count` คือจำนวนเต็นท์ที่น้อยที่สุด ส่วน `sizes` คือขนาดเต็นท์ที่ใช้ เรียงจากมากไปน้อย ผลรวมต้องเท่ากับ `numPeople` พอดี',
+ '- `-1` — ถ้าจัดให้พอดีไม่ได้',
+ '','### ตัวอย่าง','```ts',
+ 'minTentPacking(10, [2, 5, 6])\n// → { count: 2, sizes: [5, 5] }   (6+2+2 ก็พอดี แต่ใช้ 3 เต็นท์)',
+ '','minTentPacking(9, [5, 6])\n// → -1   (ไม่มีชุดไหนรวมได้ 9 พอดี)',
+ '','minTentPacking(11, [5, 6])\n// → { count: 2, sizes: [6, 5] }   (ต้องผสมหลายขนาด)',
+ '```',
+ '','### เงื่อนไขและกรณีขอบ',
+ '- `numPeople` เป็น 0 ให้คืน `{ count: 0, sizes: [] }`',
+ '- `tentSizes` อาจมีค่าซ้ำ เช่น `[2, 5, 5, 6]` ให้ถือเป็นขนาดเดียวกัน',
+ '- ถ้ามีหลายชุดที่ใช้จำนวนเต็นท์น้อยที่สุดเท่ากัน คืนชุดไหนก็ได้ แต่ `sizes` ต้องเรียงจากมากไปน้อย',
+ '- เลือกเต็นท์ใหญ่สุดก่อนเสมอ (Greedy) ไม่ผ่านทุกเคส เช่น `minTentPacking(12, [9, 6, 1])` Greedy ได้ 9+1+1+1 แต่คำตอบคือ 6+6',
+ '- มีเคสที่ `numPeople` ใหญ่ถึงหลักหมื่น ควรทำได้ใน O(numPeople × จำนวนขนาดเต็นท์)',
+ '- ดูทุกเคสได้ที่แท็บ “ชุดทดสอบ”',
+ '','> โจทย์และเคส 1–10 มาจากชุดเตรียมสอบ Tent Packing (exam-dev-2025) ไม่ใช่ข้อสอบทางการ',
+].join('\n');
+const tent={id:'tent-packing',title:'Tent Packing',category:'Dynamic Programming',difficulty:'Medium',
+ description:'จัดพนักงานลงเต็นท์ให้พอดีทุกคนโดยใช้เต็นท์น้อยที่สุด ถ้าจัดพอดีไม่ได้ให้คืน -1',
+ hint:'ให้ dp[i] คือจำนวนเต็นท์น้อยที่สุดที่จัด i คนได้พอดี เริ่มจาก dp[0] = 0 แล้ว dp[i] = min(dp[i - size] + 1) ทุกขนาด เก็บว่าใช้ขนาดไหนไว้ใน parent[i] เพื่อย้อนหาชุดเต็นท์ ลบขนาดที่ซ้ำและเรียงจากมากไปน้อยก่อน',
+ complexity:'O(n · k) time · O(n) space (n = numPeople, k = จำนวนขนาดเต็นท์ที่ไม่ซ้ำ)',source:'Coding Practice',
+ starter:cleanStarter(tentSolution),solution:tentSolution,modules:{'./test':await read('competency/CODING/tent_packing/web-practice-suite.ts')},
+ directions:tentDirections,markdown:true,sourcePath:'competency/CODING/tent_packing',guideGroup:'04'};
+await write('problems/tent-packing.json',tent);problems.push(Object.fromEntries(Object.entries(tent).filter(([k])=>['id','title','category','difficulty','description','source'].includes(k))));
 // Practice sets list their competencies in exam-data; fall back to the ones the review notes cover.
 const examSections=(exam,review)=>JSON.parse(exam).competencies??[...new Set(Object.values(review?JSON.parse(review).levels:{}).flat().map(r=>r.competency))];
 const competencies=[];

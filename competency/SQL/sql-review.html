@@ -211,6 +211,18 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:30px 20px 5
 .nm{color:#f5b97a}.fn{color:#c7a6ff}
 .exp .sk{margin-top:6px;font-size:.82rem;color:var(--muted)}
 
+
+/* Sample Input / Expected Output in the SQL Lab */
+.io-label{font-weight:600;margin:18px 0 6px;color:var(--ink)}
+.io-note{margin:14px 0;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}
+.io-grid{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start}
+.io-table{max-width:100%}
+.io-table .tbl{margin:0}
+.io-table table{min-width:0;width:auto;font-size:.86rem}
+.io-table th,.io-table td{padding:6px 12px;white-space:nowrap}
+.io-cap{margin:0 0 4px;font-size:.85rem}
+.io-table.wrap td{white-space:normal}
+.null{color:var(--muted);font-style:italic}
 </style>
 </head>
 <body>
@@ -246,7 +258,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:30px 20px 5
   <div class="t-head"><span class="n" style="background:var(--c1)">1</span><div><h3>Relational Model, Primary Key และ Normalization</h3><span class="lv k1">Beginner</span></div></div>
   <p class="compet">Apply basic SQL queries and relational concepts such as primary keys and normalization.</p>
   <p>ลองนึกถึงทีมที่เก็บออเดอร์ไว้ในตารางเดียว มีชื่อลูกค้า เมือง ชื่อสินค้า ราคา ครบอยู่ในแถวเดียว วันหนึ่งลูกค้าชื่อ Arisa ย้ายจากกรุงเทพไปเชียงใหม่ ถ้าคุณเคยสั่งของไปแล้ว 500 ออเดอร์ ก็ต้องแก้ 500 แถว และถ้าพลาดไปแถวเดียว ข้อมูลของคนเดียวกันจะมีสองเมืองอยู่ในตารางเดียวกัน หัวข้อนี้ว่าด้วยการออกแบบตารางไม่ให้เกิดปัญหาแบบนี้ ซึ่งเป็นพื้นฐานที่ทุกข้อสอบ SQL ถือว่าคุณรู้อยู่แล้ว</p>
-<h4>ฐานข้อมูลตัวอย่างที่ใช้ทั้งหน้า</h4>
+<h4 id="sampledb">ฐานข้อมูลตัวอย่างที่ใช้ทั้งหน้า</h4>
 <p>ทุกตัวอย่างและโจทย์ในหน้านี้ใช้ฐานข้อมูลชุดเดียวกัน เป็นร้านขายอุปกรณ์คอมพิวเตอร์ที่มีตารางพนักงานรวมอยู่ด้วย ข้อมูลน้อยพอให้นับผลด้วยมือได้ และเขียนทดสอบกับ PostgreSQL 16 แล้ว ส่วนที่ต่างกันใน MySQL หรือ SQL Server จะบอกไว้ตรงจุดนั้น</p>
 <pre><code class="text">departments 1 ──&lt; employees            (employees.manager_id ชี้กลับมาที่ employees เอง)
 customers   1 ──&lt; orders 1 ──&lt; order_items &gt;── 1 products</code></pre>
@@ -1390,10 +1402,43 @@ COMMIT;</code></pre>
 <h4>ก่อนลงมือ: สิ่งที่โจทย์แนวนี้ตรวจจริง</h4>
 <p>โจทย์แนวนี้ตรวจโดยเทียบผลลัพธ์ที่ query คืนมากับผลที่คาดไว้ ดังนั้น query ที่ "ถูกความหมาย" แต่ผลต่างจากที่คาดแม้นิดเดียวก็ไม่ผ่าน จุดที่คนพลาดบ่อยมีดังนี้</p>
 <ul><li><b>ลำดับคอลัมน์และชื่อคอลัมน์</b> ต้องตามที่โจทย์สั่ง ถ้าสั่งให้ตั้งชื่อ <code>direct_reports</code> ก็ต้องตั้งตามนั้น</li><li><b>ORDER BY ต้องกำหนดลำดับได้แน่นอน</b> ใส่ tie-breaker เสมอ ไม่เช่นนั้นผลอาจต่างกันในแต่ละครั้งที่รัน</li><li><b>ชนิดและการปัดเศษ</b> ถ้าโจทย์ให้ปัดทศนิยมสองตำแหน่ง ใช้ <code>ROUND(x, 2)</code> และระวังการหารจำนวนเต็ม (<code>5 / 2</code> ได้ 2 ใน PostgreSQL ให้เขียน <code>5 / 2.0</code> หรือ <code>CAST</code>)</li><li><b>NULL</b> ต้องถามว่าโจทย์ต้องการเห็นแถวที่เป็น NULL หรือไม่ และ JOIN ที่เลือกเก็บแถวเหล่านั้นไว้หรือเปล่า</li><li><b>Edge case</b> ตารางว่าง กลุ่มที่ไม่มีแถว ค่าซ้ำที่เท่ากัน ข้อมูลที่ตรวจจริงมักมีกรณีเหล่านี้ซ่อนอยู่ ซึ่งข้อมูลตัวอย่างในโจทย์อาจไม่แสดงให้เห็น</li></ul>
+<p class="io-note">ทุก Task ใช้ฐานข้อมูลตัวอย่างชุดเดียวกับ<a href="#sampledb">หัวข้อ 1</a> ตาราง Sample Input ด้านล่างตัดมาเฉพาะคอลัมน์ที่ Task นั้นใช้ ส่วน Expected Output ได้จากการรันเฉลยกับข้อมูลชุดนี้บน PostgreSQL 16 query ที่ถูกต้องต้องได้ผลตรงกันทั้งคอลัมน์ ลำดับแถว และค่า NULL</p>
 <h4>Task 1: จัดบทบาทพนักงาน (Advanced Select)</h4>
 <p><b>Input</b> ตาราง <code>employees(emp_id, emp_name, manager_id, ...)</code></p>
 <p><b>Output</b> คอลัมน์ <code>emp_id</code>, <code>emp_name</code>, <code>role</code> เรียงตาม <code>emp_id</code> โดย <code>role</code> เป็น <code>Boss</code> ถ้าไม่มีหัวหน้า (<code>manager_id</code> เป็น NULL), <code>Manager</code> ถ้ามีหัวหน้าและมีคนรายงานต่ออย่างน้อยหนึ่งคน และ <code>Staff</code> ถ้านอกเหนือจากนั้น</p>
 <p><b>Edge cases</b> คนที่ไม่มีทั้งหัวหน้าและลูกน้อง (Wirat, Tanawat) ให้เป็น <code>Boss</code> ตามนิยามข้อแรก</p>
+<p class="io-label">Sample Input</p>
+<div class="io-grid">
+<div class="io-table"><p class="io-cap"><code>employees</code></p><div class="tbl"><table>
+<tr><th>emp_id</th><th>emp_name</th><th>manager_id</th></tr>
+<tr><td>1</td><td>Somchai</td><td><span class="null">NULL</span></td></tr>
+<tr><td>2</td><td>Malee</td><td>1</td></tr>
+<tr><td>3</td><td>Anan</td><td>1</td></tr>
+<tr><td>4</td><td>Nida</td><td><span class="null">NULL</span></td></tr>
+<tr><td>5</td><td>Preecha</td><td>4</td></tr>
+<tr><td>6</td><td>Kanya</td><td>4</td></tr>
+<tr><td>7</td><td>Wirat</td><td><span class="null">NULL</span></td></tr>
+<tr><td>8</td><td>Suda</td><td>1</td></tr>
+<tr><td>9</td><td>Tanawat</td><td><span class="null">NULL</span></td></tr>
+<tr><td>10</td><td>Pim</td><td>2</td></tr>
+</table></div></div>
+</div>
+<p class="io-label">Expected Output</p>
+<div class="io-grid">
+<div class="io-table"><div class="tbl"><table>
+<tr><th>emp_id</th><th>emp_name</th><th>role</th></tr>
+<tr><td>1</td><td>Somchai</td><td>Boss</td></tr>
+<tr><td>2</td><td>Malee</td><td>Manager</td></tr>
+<tr><td>3</td><td>Anan</td><td>Staff</td></tr>
+<tr><td>4</td><td>Nida</td><td>Boss</td></tr>
+<tr><td>5</td><td>Preecha</td><td>Staff</td></tr>
+<tr><td>6</td><td>Kanya</td><td>Staff</td></tr>
+<tr><td>7</td><td>Wirat</td><td>Boss</td></tr>
+<tr><td>8</td><td>Suda</td><td>Staff</td></tr>
+<tr><td>9</td><td>Tanawat</td><td>Boss</td></tr>
+<tr><td>10</td><td>Pim</td><td>Staff</td></tr>
+</table></div></div>
+</div>
 <details class="sol"><summary>ดูเฉลย Task 1</summary>
 <pre><code class="sql">SELECT emp_id, emp_name,
        CASE WHEN manager_id IS NULL THEN 'Boss'
@@ -1405,7 +1450,59 @@ ORDER BY emp_id;</code></pre>
 <p>ผลที่ได้คือ Somchai, Nida, Wirat, Tanawat เป็น Boss, Malee เป็น Manager (มี Pim รายงานต่อ) และที่เหลือเป็น Staff ลำดับของ <code>WHEN</code> สำคัญ เงื่อนไขแรกที่เป็นจริงชนะ จึงเช็ก Boss ก่อน ใช้ <code>EXISTS</code> แทน <code>emp_id IN (SELECT manager_id ...)</code> ก็ได้ผลเหมือนกัน แต่ถ้าเขียนในทิศตรงข้ามด้วย <code>NOT IN</code> จะเจอปัญหา NULL ที่ <code>manager_id</code> มีค่า NULL อยู่หลายตัว ซึ่งเป็นกับดักเดียวกับหัวข้อ 2</p>
 </details>
 <h4>Task 2: หมวดสินค้าที่ขายดีที่สุด (Aggregation)</h4>
+<p><b>Input</b> ตาราง <code>products(product_id, product_name, category)</code>, <code>orders(order_id, status)</code> และ <code>order_items(order_id, product_id, qty, unit_price)</code> ยอดขายของแต่ละรายการคือ <code>qty * unit_price</code></p>
 <p><b>Output</b> หมวดสินค้า (<code>category</code>) และยอดขายรวม (<code>revenue</code>) ของหมวดที่ทำยอดสูงที่สุด นับเฉพาะออเดอร์สถานะ <code>paid</code> และ <code>shipped</code> ถ้ามีหมวดที่ยอดเท่ากันที่หนึ่ง ให้แสดงทุกหมวดนั้น เรียงตามชื่อหมวด</p>
+<p class="io-label">Sample Input</p>
+<div class="io-grid">
+<div class="io-table"><p class="io-cap"><code>products</code></p><div class="tbl"><table>
+<tr><th>product_id</th><th>product_name</th><th>category</th></tr>
+<tr><td>1</td><td>Keyboard</td><td>Accessories</td></tr>
+<tr><td>2</td><td>Mouse</td><td>Accessories</td></tr>
+<tr><td>3</td><td>Monitor</td><td>Display</td></tr>
+<tr><td>4</td><td>Laptop</td><td>Computer</td></tr>
+<tr><td>5</td><td>Webcam</td><td>Accessories</td></tr>
+<tr><td>6</td><td>Desk</td><td>Furniture</td></tr>
+</table></div></div>
+<div class="io-table"><p class="io-cap"><code>orders</code></p><div class="tbl"><table>
+<tr><th>order_id</th><th>status</th></tr>
+<tr><td>101</td><td>paid</td></tr>
+<tr><td>102</td><td>paid</td></tr>
+<tr><td>103</td><td>cancelled</td></tr>
+<tr><td>104</td><td>paid</td></tr>
+<tr><td>105</td><td>shipped</td></tr>
+<tr><td>106</td><td>paid</td></tr>
+<tr><td>107</td><td>paid</td></tr>
+<tr><td>108</td><td>paid</td></tr>
+<tr><td>109</td><td>pending</td></tr>
+<tr><td>110</td><td>paid</td></tr>
+</table></div></div>
+<div class="io-table"><p class="io-cap"><code>order_items</code></p><div class="tbl"><table>
+<tr><th>order_id</th><th>product_id</th><th>qty</th><th>unit_price</th></tr>
+<tr><td>101</td><td>1</td><td>1</td><td>1200.00</td></tr>
+<tr><td>101</td><td>2</td><td>2</td><td>600.00</td></tr>
+<tr><td>102</td><td>4</td><td>1</td><td>32000.00</td></tr>
+<tr><td>103</td><td>3</td><td>1</td><td>7500.00</td></tr>
+<tr><td>104</td><td>2</td><td>1</td><td>600.00</td></tr>
+<tr><td>104</td><td>5</td><td>1</td><td>1500.00</td></tr>
+<tr><td>105</td><td>3</td><td>2</td><td>7500.00</td></tr>
+<tr><td>106</td><td>1</td><td>1</td><td>1200.00</td></tr>
+<tr><td>106</td><td>3</td><td>1</td><td>7500.00</td></tr>
+<tr><td>107</td><td>4</td><td>1</td><td>32000.00</td></tr>
+<tr><td>107</td><td>5</td><td>1</td><td>1500.00</td></tr>
+<tr><td>108</td><td>2</td><td>3</td><td>600.00</td></tr>
+<tr><td>109</td><td>1</td><td>2</td><td>1200.00</td></tr>
+<tr><td>110</td><td>1</td><td>1</td><td>1200.00</td></tr>
+<tr><td>110</td><td>2</td><td>1</td><td>600.00</td></tr>
+<tr><td>110</td><td>3</td><td>1</td><td>7500.00</td></tr>
+</table></div></div>
+</div>
+<p class="io-label">Expected Output</p>
+<div class="io-grid">
+<div class="io-table"><div class="tbl"><table>
+<tr><th>category</th><th>revenue</th></tr>
+<tr><td>Computer</td><td>64000.00</td></tr>
+</table></div></div>
+</div>
 <details class="sol"><summary>ดูเฉลย Task 2</summary>
 <pre><code class="sql">WITH rev AS (
   SELECT p.category, SUM(oi.qty * oi.unit_price) AS revenue
@@ -1422,8 +1519,60 @@ ORDER BY category;</code></pre>
 <p>ผลคือ Computer ยอด 64000.00 (ออเดอร์ 102 และ 107 อย่างละ 32000) เหตุที่ไม่ใช้ <code>ORDER BY revenue DESC LIMIT 1</code> เพราะโจทย์สั่งให้แสดงทุกหมวดที่เสมอกัน <code>LIMIT 1</code> จะตัดทิ้งแบบสุ่มเลือก การเทียบกับ <code>MAX(revenue)</code> จึงตรงกว่า ถ้าเขียนด้วย <code>RANK() OVER (ORDER BY revenue DESC)</code> แล้วเอา <code>rk = 1</code> ก็ได้ผลเหมือนกัน</p>
 </details>
 <h4>Task 3: สินค้าที่ไม่เคยถูกขายจริง (Basic Join)</h4>
+<p><b>Input</b> ตาราง <code>products(product_id, product_name)</code>, <code>orders(order_id, status)</code> และ <code>order_items(order_id, product_id)</code></p>
 <p><b>Output</b> <code>product_id</code>, <code>product_name</code> ของสินค้าที่ไม่เคยอยู่ในออเดอร์สถานะ <code>paid</code> หรือ <code>shipped</code> เลย เรียงตาม <code>product_id</code></p>
 <p><b>Edge cases</b> สินค้าที่ไม่เคยอยู่ในออเดอร์ใดเลย กับสินค้าที่เคยอยู่แต่ในออเดอร์ที่ยกเลิกหรือค้างอยู่ ต้องถูกนับเหมือนกัน</p>
+<p class="io-label">Sample Input</p>
+<div class="io-grid">
+<div class="io-table"><p class="io-cap"><code>products</code></p><div class="tbl"><table>
+<tr><th>product_id</th><th>product_name</th></tr>
+<tr><td>1</td><td>Keyboard</td></tr>
+<tr><td>2</td><td>Mouse</td></tr>
+<tr><td>3</td><td>Monitor</td></tr>
+<tr><td>4</td><td>Laptop</td></tr>
+<tr><td>5</td><td>Webcam</td></tr>
+<tr><td>6</td><td>Desk</td></tr>
+</table></div></div>
+<div class="io-table"><p class="io-cap"><code>orders</code></p><div class="tbl"><table>
+<tr><th>order_id</th><th>status</th></tr>
+<tr><td>101</td><td>paid</td></tr>
+<tr><td>102</td><td>paid</td></tr>
+<tr><td>103</td><td>cancelled</td></tr>
+<tr><td>104</td><td>paid</td></tr>
+<tr><td>105</td><td>shipped</td></tr>
+<tr><td>106</td><td>paid</td></tr>
+<tr><td>107</td><td>paid</td></tr>
+<tr><td>108</td><td>paid</td></tr>
+<tr><td>109</td><td>pending</td></tr>
+<tr><td>110</td><td>paid</td></tr>
+</table></div></div>
+<div class="io-table"><p class="io-cap"><code>order_items</code></p><div class="tbl"><table>
+<tr><th>order_id</th><th>product_id</th></tr>
+<tr><td>101</td><td>1</td></tr>
+<tr><td>101</td><td>2</td></tr>
+<tr><td>102</td><td>4</td></tr>
+<tr><td>103</td><td>3</td></tr>
+<tr><td>104</td><td>2</td></tr>
+<tr><td>104</td><td>5</td></tr>
+<tr><td>105</td><td>3</td></tr>
+<tr><td>106</td><td>1</td></tr>
+<tr><td>106</td><td>3</td></tr>
+<tr><td>107</td><td>4</td></tr>
+<tr><td>107</td><td>5</td></tr>
+<tr><td>108</td><td>2</td></tr>
+<tr><td>109</td><td>1</td></tr>
+<tr><td>110</td><td>1</td></tr>
+<tr><td>110</td><td>2</td></tr>
+<tr><td>110</td><td>3</td></tr>
+</table></div></div>
+</div>
+<p class="io-label">Expected Output</p>
+<div class="io-grid">
+<div class="io-table"><div class="tbl"><table>
+<tr><th>product_id</th><th>product_name</th></tr>
+<tr><td>6</td><td>Desk</td></tr>
+</table></div></div>
+</div>
 <details class="sol"><summary>ดูเฉลย Task 3</summary>
 <pre><code class="sql">-- แบบ NOT EXISTS (อ่านตรงกับโจทย์ที่สุด)
 SELECT p.product_id, p.product_name
@@ -1448,7 +1597,53 @@ ORDER BY p.product_id;</code></pre>
 <p>ผลคือ Desk (สินค้ารหัส 6) เงื่อนไขสถานะต้องอยู่ใน <code>ON</code> ของ JOIN ตัวที่สอง ถ้าย้ายไปไว้ใน <code>WHERE</code> เช่น <code>WHERE o.status IN (...)</code> ผลลัพธ์จะว่างเปล่า เพราะแถวที่หาคู่ไม่เจอมี <code>o.status</code> เป็น NULL แล้วถูกกรองทิ้งหมด ซึ่งลองรันแล้วได้ 0 แถวจริง นี่คือกับดัก ON กับ WHERE ที่เล่าไว้ในหัวข้อ 4</p>
 </details>
 <h4>Task 4: ออเดอร์ที่ยอดสูงสุดของลูกค้าแต่ละคน (Advanced Join + window)</h4>
+<p><b>Input</b> ตาราง <code>orders(order_id, customer_id, order_date, status)</code> และ <code>order_items(order_id, product_id, qty, unit_price)</code> ยอดรวมของออเดอร์คือผลรวมของ <code>qty * unit_price</code> ทุกรายการในออเดอร์นั้น</p>
 <p><b>Output</b> <code>customer_id</code>, <code>order_id</code>, <code>total</code> ของออเดอร์ที่มียอดรวมสูงสุดของลูกค้าแต่ละคน นับเฉพาะสถานะ <code>paid</code> และ <code>shipped</code> ถ้ายอดเท่ากันให้เลือกออเดอร์ที่ใหม่กว่า (วันที่ล่าสุด และถ้าวันเดียวกันให้ <code>order_id</code> มากกว่า) ลูกค้าที่ไม่มีออเดอร์ที่เข้าเงื่อนไขไม่ต้องแสดง เรียงตาม <code>customer_id</code></p>
+<p class="io-label">Sample Input</p>
+<div class="io-grid">
+<div class="io-table"><p class="io-cap"><code>orders</code></p><div class="tbl"><table>
+<tr><th>order_id</th><th>customer_id</th><th>order_date</th><th>status</th></tr>
+<tr><td>101</td><td>1</td><td>2026-01-05</td><td>paid</td></tr>
+<tr><td>102</td><td>1</td><td>2026-01-20</td><td>paid</td></tr>
+<tr><td>103</td><td>2</td><td>2026-01-22</td><td>cancelled</td></tr>
+<tr><td>104</td><td>3</td><td>2026-02-02</td><td>paid</td></tr>
+<tr><td>105</td><td>3</td><td>2026-02-14</td><td>shipped</td></tr>
+<tr><td>106</td><td>1</td><td>2026-02-20</td><td>paid</td></tr>
+<tr><td>107</td><td>4</td><td>2026-03-01</td><td>paid</td></tr>
+<tr><td>108</td><td>2</td><td>2026-03-05</td><td>paid</td></tr>
+<tr><td>109</td><td>4</td><td>2026-03-09</td><td>pending</td></tr>
+<tr><td>110</td><td>3</td><td>2026-03-15</td><td>paid</td></tr>
+</table></div></div>
+<div class="io-table"><p class="io-cap"><code>order_items</code></p><div class="tbl"><table>
+<tr><th>order_id</th><th>product_id</th><th>qty</th><th>unit_price</th></tr>
+<tr><td>101</td><td>1</td><td>1</td><td>1200.00</td></tr>
+<tr><td>101</td><td>2</td><td>2</td><td>600.00</td></tr>
+<tr><td>102</td><td>4</td><td>1</td><td>32000.00</td></tr>
+<tr><td>103</td><td>3</td><td>1</td><td>7500.00</td></tr>
+<tr><td>104</td><td>2</td><td>1</td><td>600.00</td></tr>
+<tr><td>104</td><td>5</td><td>1</td><td>1500.00</td></tr>
+<tr><td>105</td><td>3</td><td>2</td><td>7500.00</td></tr>
+<tr><td>106</td><td>1</td><td>1</td><td>1200.00</td></tr>
+<tr><td>106</td><td>3</td><td>1</td><td>7500.00</td></tr>
+<tr><td>107</td><td>4</td><td>1</td><td>32000.00</td></tr>
+<tr><td>107</td><td>5</td><td>1</td><td>1500.00</td></tr>
+<tr><td>108</td><td>2</td><td>3</td><td>600.00</td></tr>
+<tr><td>109</td><td>1</td><td>2</td><td>1200.00</td></tr>
+<tr><td>110</td><td>1</td><td>1</td><td>1200.00</td></tr>
+<tr><td>110</td><td>2</td><td>1</td><td>600.00</td></tr>
+<tr><td>110</td><td>3</td><td>1</td><td>7500.00</td></tr>
+</table></div></div>
+</div>
+<p class="io-label">Expected Output</p>
+<div class="io-grid">
+<div class="io-table"><div class="tbl"><table>
+<tr><th>customer_id</th><th>order_id</th><th>total</th></tr>
+<tr><td>1</td><td>102</td><td>32000.00</td></tr>
+<tr><td>2</td><td>108</td><td>1800.00</td></tr>
+<tr><td>3</td><td>105</td><td>15000.00</td></tr>
+<tr><td>4</td><td>107</td><td>33500.00</td></tr>
+</table></div></div>
+</div>
 <details class="sol"><summary>ดูเฉลย Task 4</summary>
 <pre><code class="sql">WITH t AS (
   SELECT o.customer_id, o.order_id, o.order_date,
@@ -1471,7 +1666,62 @@ ORDER BY customer_id;</code></pre>
 <p>ได้ลูกค้า 1 → ออเดอร์ 102 (32000), 2 → 108 (1800), 3 → 105 (15000), 4 → 107 (33500) ขั้นแรกต้องรวมยอดต่อออเดอร์ก่อน ไม่เช่นนั้นจะได้ "รายการที่แพงที่สุด" ไม่ใช่ "ออเดอร์ที่แพงที่สุด" ที่เลือก <code>ROW_NUMBER</code> เพราะโจทย์ต้องการหนึ่งแถวต่อลูกค้า และ <code>order_id</code> ท้ายสุดของ <code>ORDER BY</code> ทำให้ไม่มีออเดอร์ไหนเสมอกันได้เลย ใช้ <code>RANK</code> ก็ได้ผลเหมือนกันกับข้อมูลชุดนี้ แต่ <code>ROW_NUMBER</code> สื่อเจตนา "หนึ่งแถวต่อลูกค้า" ชัดกว่า</p>
 </details>
 <h4>Task 5: ยอดซื้อรายเดือนของลูกค้า แบบ pivot</h4>
+<p><b>Input</b> ตาราง <code>customers(customer_id, name)</code>, <code>orders(order_id, customer_id, order_date, status)</code> และ <code>order_items(order_id, product_id, qty, unit_price)</code></p>
 <p><b>Output</b> <code>name</code>, <code>jan</code>, <code>feb</code>, <code>mar</code> เป็นยอดซื้อรวมของลูกค้าแต่ละคนในแต่ละเดือนของปี 2026 นับเฉพาะ <code>paid</code> และ <code>shipped</code> เดือนที่ไม่มียอดให้เป็น 0 แสดงเฉพาะลูกค้าที่มียอดอย่างน้อยหนึ่งเดือน เรียงตามชื่อ</p>
+<p class="io-label">Sample Input</p>
+<div class="io-grid">
+<div class="io-table"><p class="io-cap"><code>customers</code></p><div class="tbl"><table>
+<tr><th>customer_id</th><th>name</th></tr>
+<tr><td>1</td><td>Arisa</td></tr>
+<tr><td>2</td><td>Boonmee</td></tr>
+<tr><td>3</td><td>Chai</td></tr>
+<tr><td>4</td><td>Dao</td></tr>
+<tr><td>5</td><td>Ek</td></tr>
+<tr><td>6</td><td>Fah</td></tr>
+</table></div></div>
+<div class="io-table"><p class="io-cap"><code>orders</code></p><div class="tbl"><table>
+<tr><th>order_id</th><th>customer_id</th><th>order_date</th><th>status</th></tr>
+<tr><td>101</td><td>1</td><td>2026-01-05</td><td>paid</td></tr>
+<tr><td>102</td><td>1</td><td>2026-01-20</td><td>paid</td></tr>
+<tr><td>103</td><td>2</td><td>2026-01-22</td><td>cancelled</td></tr>
+<tr><td>104</td><td>3</td><td>2026-02-02</td><td>paid</td></tr>
+<tr><td>105</td><td>3</td><td>2026-02-14</td><td>shipped</td></tr>
+<tr><td>106</td><td>1</td><td>2026-02-20</td><td>paid</td></tr>
+<tr><td>107</td><td>4</td><td>2026-03-01</td><td>paid</td></tr>
+<tr><td>108</td><td>2</td><td>2026-03-05</td><td>paid</td></tr>
+<tr><td>109</td><td>4</td><td>2026-03-09</td><td>pending</td></tr>
+<tr><td>110</td><td>3</td><td>2026-03-15</td><td>paid</td></tr>
+</table></div></div>
+<div class="io-table"><p class="io-cap"><code>order_items</code></p><div class="tbl"><table>
+<tr><th>order_id</th><th>product_id</th><th>qty</th><th>unit_price</th></tr>
+<tr><td>101</td><td>1</td><td>1</td><td>1200.00</td></tr>
+<tr><td>101</td><td>2</td><td>2</td><td>600.00</td></tr>
+<tr><td>102</td><td>4</td><td>1</td><td>32000.00</td></tr>
+<tr><td>103</td><td>3</td><td>1</td><td>7500.00</td></tr>
+<tr><td>104</td><td>2</td><td>1</td><td>600.00</td></tr>
+<tr><td>104</td><td>5</td><td>1</td><td>1500.00</td></tr>
+<tr><td>105</td><td>3</td><td>2</td><td>7500.00</td></tr>
+<tr><td>106</td><td>1</td><td>1</td><td>1200.00</td></tr>
+<tr><td>106</td><td>3</td><td>1</td><td>7500.00</td></tr>
+<tr><td>107</td><td>4</td><td>1</td><td>32000.00</td></tr>
+<tr><td>107</td><td>5</td><td>1</td><td>1500.00</td></tr>
+<tr><td>108</td><td>2</td><td>3</td><td>600.00</td></tr>
+<tr><td>109</td><td>1</td><td>2</td><td>1200.00</td></tr>
+<tr><td>110</td><td>1</td><td>1</td><td>1200.00</td></tr>
+<tr><td>110</td><td>2</td><td>1</td><td>600.00</td></tr>
+<tr><td>110</td><td>3</td><td>1</td><td>7500.00</td></tr>
+</table></div></div>
+</div>
+<p class="io-label">Expected Output</p>
+<div class="io-grid">
+<div class="io-table"><div class="tbl"><table>
+<tr><th>name</th><th>jan</th><th>feb</th><th>mar</th></tr>
+<tr><td>Arisa</td><td>34400.00</td><td>8700.00</td><td>0</td></tr>
+<tr><td>Boonmee</td><td>0</td><td>0</td><td>1800.00</td></tr>
+<tr><td>Chai</td><td>0</td><td>17100.00</td><td>9300.00</td></tr>
+<tr><td>Dao</td><td>0</td><td>0</td><td>33500.00</td></tr>
+</table></div></div>
+</div>
 <details class="sol"><summary>ดูเฉลย Task 5</summary>
 <pre><code class="sql">SELECT c.name,
        SUM(CASE WHEN EXTRACT(MONTH FROM o.order_date) = 1 THEN oi.qty * oi.unit_price ELSE 0 END) AS jan,
@@ -1493,8 +1743,32 @@ ORDER BY c.name;</code></pre>
 <p>Pivot ในโจทย์ SQL ทำด้วย conditional aggregation ซึ่งใช้ได้ทุก DBMS (ตัวอย่างนี้ใช้ <code>EXTRACT(MONTH FROM ...)</code> ได้ทั้ง PostgreSQL และ MySQL ส่วน SQL Server ใช้ <code>MONTH(o.order_date)</code>) การกรองปีไว้ใน <code>WHERE</code> ด้วยช่วงวันที่ ทำให้ใช้ index ของ <code>order_date</code> ได้ และทำให้ปีอื่นไม่ถูกนับรวมเข้าเดือนเดียวกัน ถ้าต้องการเดือนที่เพิ่มแบบไดนามิก ต้องสร้าง SQL แบบ dynamic หรือใช้ <code>PIVOT</code> ของ SQL Server / <code>crosstab</code> ของ PostgreSQL ซึ่งคอลัมน์ต้องกำหนดล่วงหน้าเช่นกัน</p>
 </details>
 <h4>Task 6: เงินเดือนมัธยฐาน (Alternative Queries)</h4>
+<p><b>Input</b> ตาราง <code>employees(emp_id, emp_name, salary, ...)</code></p>
 <p><b>Output</b> ค่ามัธยฐาน (median) ของ <code>salary</code> ของพนักงานทุกคน ถ้าจำนวนข้อมูลเป็นเลขคู่ ให้เฉลี่ยสองค่ากลาง</p>
 <p><b>Edge cases</b> จำนวนข้อมูลเป็นเลขคี่และเลขคู่ ค่าที่ซ้ำกัน</p>
+<p class="io-label">Sample Input</p>
+<div class="io-grid">
+<div class="io-table"><p class="io-cap"><code>employees</code></p><div class="tbl"><table>
+<tr><th>emp_id</th><th>emp_name</th><th>salary</th></tr>
+<tr><td>1</td><td>Somchai</td><td>90000.00</td></tr>
+<tr><td>2</td><td>Malee</td><td>70000.00</td></tr>
+<tr><td>3</td><td>Anan</td><td>70000.00</td></tr>
+<tr><td>4</td><td>Nida</td><td>65000.00</td></tr>
+<tr><td>5</td><td>Preecha</td><td>50000.00</td></tr>
+<tr><td>6</td><td>Kanya</td><td>55000.00</td></tr>
+<tr><td>7</td><td>Wirat</td><td>48000.00</td></tr>
+<tr><td>8</td><td>Suda</td><td>40000.00</td></tr>
+<tr><td>9</td><td>Tanawat</td><td>80000.00</td></tr>
+<tr><td>10</td><td>Pim</td><td>60000.00</td></tr>
+</table></div></div>
+</div>
+<p class="io-label">Expected Output</p>
+<div class="io-grid">
+<div class="io-table"><div class="tbl"><table>
+<tr><th>median</th></tr>
+<tr><td>62500</td></tr>
+</table></div></div>
+</div>
 <details class="sol"><summary>ดูเฉลย Task 6</summary>
 <pre><code class="sql">-- PostgreSQL: มีฟังก์ชันสำเร็จรูป
 SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY salary) AS median
@@ -1513,7 +1787,43 @@ WHERE rn IN (FLOOR((n + 1) / 2.0), CEIL((n + 1) / 2.0));</code></pre>
 <p>พนักงาน 10 คน เรียงเงินเดือนแล้วค่ากลางคือลำดับที่ 5 และ 6 (60000 กับ 65000) จึงได้ 62500 ถ้ามี 9 คนคือลำดับที่ 5 เพียงตำแหน่งเดียว เพราะ <code>FLOOR</code> กับ <code>CEIL</code> ของ <code>(9+1)/2.0</code> เท่ากันที่ 5 <code>AVG</code> จึงเฉลี่ยค่าเดียวกันกับตัวเอง เมื่อลองตัดพนักงานคนแรกออกให้เหลือ 9 คน ผลคือ 60000 ตรงกับค่าที่คำนวณด้วยมือ ข้อควรระวังคือ MySQL ไม่มี <code>percentile_cont</code> จึงต้องใช้แบบพกพา และใน <code>(n + 1) / 2.0</code> ต้องหารด้วยเลขทศนิยม ไม่เช่นนั้นบางระบบหารจำนวนเต็มแล้วตัดเศษทิ้งก่อน</p>
 </details>
 <h4>Task 7: เงินเดือนสูงสุดอันดับสองของแต่ละแผนก</h4>
+<p><b>Input</b> ตาราง <code>departments(dept_id, dept_name)</code> และ <code>employees(emp_id, emp_name, dept_id, salary, ...)</code></p>
 <p><b>Output</b> <code>dept_name</code>, <code>second_salary</code> ของทุกแผนกในตาราง <code>departments</code> (รวมแผนกที่ไม่มีพนักงาน) โดย <code>second_salary</code> คือเงินเดือนที่สูงเป็นอันดับสอง <b>ไม่นับซ้ำค่าเท่ากัน</b> ถ้าแผนกมีเงินเดือนต่างกันน้อยกว่าสองระดับให้เป็น NULL เรียงตาม <code>dept_name</code></p>
+<p class="io-label">Sample Input</p>
+<div class="io-grid">
+<div class="io-table"><p class="io-cap"><code>departments</code></p><div class="tbl"><table>
+<tr><th>dept_id</th><th>dept_name</th></tr>
+<tr><td>1</td><td>Engineering</td></tr>
+<tr><td>2</td><td>Sales</td></tr>
+<tr><td>3</td><td>HR</td></tr>
+<tr><td>4</td><td>Finance</td></tr>
+<tr><td>5</td><td>Legal</td></tr>
+</table></div></div>
+<div class="io-table"><p class="io-cap"><code>employees</code></p><div class="tbl"><table>
+<tr><th>emp_id</th><th>emp_name</th><th>dept_id</th><th>salary</th></tr>
+<tr><td>1</td><td>Somchai</td><td>1</td><td>90000.00</td></tr>
+<tr><td>2</td><td>Malee</td><td>1</td><td>70000.00</td></tr>
+<tr><td>3</td><td>Anan</td><td>1</td><td>70000.00</td></tr>
+<tr><td>4</td><td>Nida</td><td>2</td><td>65000.00</td></tr>
+<tr><td>5</td><td>Preecha</td><td>2</td><td>50000.00</td></tr>
+<tr><td>6</td><td>Kanya</td><td>2</td><td>55000.00</td></tr>
+<tr><td>7</td><td>Wirat</td><td>3</td><td>48000.00</td></tr>
+<tr><td>8</td><td>Suda</td><td><span class="null">NULL</span></td><td>40000.00</td></tr>
+<tr><td>9</td><td>Tanawat</td><td>4</td><td>80000.00</td></tr>
+<tr><td>10</td><td>Pim</td><td>1</td><td>60000.00</td></tr>
+</table></div></div>
+</div>
+<p class="io-label">Expected Output</p>
+<div class="io-grid">
+<div class="io-table"><div class="tbl"><table>
+<tr><th>dept_name</th><th>second_salary</th></tr>
+<tr><td>Engineering</td><td>70000.00</td></tr>
+<tr><td>Finance</td><td><span class="null">NULL</span></td></tr>
+<tr><td>HR</td><td><span class="null">NULL</span></td></tr>
+<tr><td>Legal</td><td><span class="null">NULL</span></td></tr>
+<tr><td>Sales</td><td>55000.00</td></tr>
+</table></div></div>
+</div>
 <details class="sol"><summary>ดูเฉลย Task 7</summary>
 <pre><code class="sql">WITH r AS (
   SELECT dept_id, salary,
@@ -1537,7 +1847,40 @@ ORDER BY d.dept_name;</code></pre>
 <p>Engineering มีเงินเดือน 90000, 70000, 70000, 60000 ถ้าใช้ <code>ROW_NUMBER</code> หรือ <code>RANK</code> อันดับสองจะเพี้ยนเพราะ Malee กับ Anan เท่ากัน <code>DENSE_RANK</code> ให้ 70000 เป็นอันดับสองตรงตามนิยามโจทย์ ที่ต้อง <code>LEFT JOIN</code> จาก <code>departments</code> เพื่อให้ Finance, HR และ Legal ยังแสดงด้วยค่า NULL ซึ่งถ้าเริ่มจาก <code>employees</code> แผนกเหล่านั้นจะหายไป และ <code>MAX(CASE ...)</code> ทำหน้าที่เลือกค่าเดียวจากกลุ่ม โดยกลุ่มที่ไม่มีอันดับสองจะได้ NULL ให้เอง</p>
 </details>
 <h4>Task 8: นับลูกน้องตรง (Self join)</h4>
+<p><b>Input</b> ตาราง <code>employees(emp_id, emp_name, manager_id, ...)</code></p>
 <p><b>Output</b> <code>emp_id</code>, <code>emp_name</code>, <code>direct_reports</code> ของพนักงานทุกคน (ลูกน้องตรงคือคนที่ <code>manager_id</code> ชี้มาที่เขา) คนที่ไม่มีลูกน้องแสดง 0 เรียงตามจำนวนลูกน้องมากไปน้อย แล้วตาม <code>emp_id</code></p>
+<p class="io-label">Sample Input</p>
+<div class="io-grid">
+<div class="io-table"><p class="io-cap"><code>employees</code></p><div class="tbl"><table>
+<tr><th>emp_id</th><th>emp_name</th><th>manager_id</th></tr>
+<tr><td>1</td><td>Somchai</td><td><span class="null">NULL</span></td></tr>
+<tr><td>2</td><td>Malee</td><td>1</td></tr>
+<tr><td>3</td><td>Anan</td><td>1</td></tr>
+<tr><td>4</td><td>Nida</td><td><span class="null">NULL</span></td></tr>
+<tr><td>5</td><td>Preecha</td><td>4</td></tr>
+<tr><td>6</td><td>Kanya</td><td>4</td></tr>
+<tr><td>7</td><td>Wirat</td><td><span class="null">NULL</span></td></tr>
+<tr><td>8</td><td>Suda</td><td>1</td></tr>
+<tr><td>9</td><td>Tanawat</td><td><span class="null">NULL</span></td></tr>
+<tr><td>10</td><td>Pim</td><td>2</td></tr>
+</table></div></div>
+</div>
+<p class="io-label">Expected Output</p>
+<div class="io-grid">
+<div class="io-table"><div class="tbl"><table>
+<tr><th>emp_id</th><th>emp_name</th><th>direct_reports</th></tr>
+<tr><td>1</td><td>Somchai</td><td>3</td></tr>
+<tr><td>4</td><td>Nida</td><td>2</td></tr>
+<tr><td>2</td><td>Malee</td><td>1</td></tr>
+<tr><td>3</td><td>Anan</td><td>0</td></tr>
+<tr><td>5</td><td>Preecha</td><td>0</td></tr>
+<tr><td>6</td><td>Kanya</td><td>0</td></tr>
+<tr><td>7</td><td>Wirat</td><td>0</td></tr>
+<tr><td>8</td><td>Suda</td><td>0</td></tr>
+<tr><td>9</td><td>Tanawat</td><td>0</td></tr>
+<tr><td>10</td><td>Pim</td><td>0</td></tr>
+</table></div></div>
+</div>
 <details class="sol"><summary>ดูเฉลย Task 8</summary>
 <pre><code class="sql">SELECT m.emp_id, m.emp_name, COUNT(e.emp_id) AS direct_reports
 FROM employees m
@@ -1548,6 +1891,21 @@ ORDER BY direct_reports DESC, m.emp_id;</code></pre>
 </details>
 <h4>Task 9: ออกแบบตารางระบบจองห้องประชุม (Data modeling)</h4>
 <p><b>โจทย์</b> ต้องออกแบบตารางเก็บห้องประชุม สมาชิก และการจอง ตามกติกาเหล่านี้ ห้องหนึ่งห้องจองซ้อนช่วงเวลากันไม่ได้ เวลาสิ้นสุดต้องอยู่หลังเวลาเริ่ม ห้องต้องมีความจุมากกว่า 0 และอีเมลสมาชิกห้ามซ้ำ ตอบด้วย DDL และบอกว่ากติกาแต่ละข้อถูกบังคับด้วยอะไร</p>
+<p class="io-label">Sample Input</p>
+<p>เริ่มจากห้อง <code>Room A</code> (ความจุ 8) และสมาชิกสองคน <code>a@example.com</code>, <code>b@example.com</code> แล้วส่งคำสั่งต่อไปนี้ตามลำดับ (ทุกช่วงเวลาอยู่ในวันเดียวกัน)</p>
+<p class="io-label">Expected Output</p>
+<div class="io-grid">
+<div class="io-table wrap"><div class="tbl"><table>
+<tr><th>ลำดับ</th><th>คำสั่ง</th><th>ผลที่ต้องได้</th></tr>
+<tr><td>1</td><td>Room A จอง 09:00–10:00</td><td>สำเร็จ</td></tr>
+<tr><td>2</td><td>Room A จอง 10:00–11:00</td><td>สำเร็จ เพราะแค่ชนปลายกับการจองแรก ไม่ได้ซ้อนกัน</td></tr>
+<tr><td>3</td><td>Room A จอง 09:30–10:30</td><td>ถูกปฏิเสธ เพราะซ้อนกับการจองที่ 1 และ 2</td></tr>
+<tr><td>4</td><td>Room A จองเริ่ม 14:00 สิ้นสุด 13:00</td><td>ถูกปฏิเสธ เพราะเวลาสิ้นสุดอยู่ก่อนเวลาเริ่ม</td></tr>
+<tr><td>5</td><td>เพิ่มห้อง Room B ความจุ 0</td><td>ถูกปฏิเสธ เพราะความจุต้องมากกว่า 0</td></tr>
+<tr><td>6</td><td>เพิ่มสมาชิกอีเมล a@example.com ซ้ำ</td><td>ถูกปฏิเสธ เพราะอีเมลซ้ำกับสมาชิกที่มีอยู่</td></tr>
+</table></div></div>
+</div>
+<p>ตารางที่ออกแบบต้องให้ผลตามนี้ด้วยตัวฐานข้อมูลเอง ไม่ต้องพึ่งการตรวจในโค้ดแอป</p>
 <details class="sol"><summary>ดูเฉลย Task 9</summary>
 <pre><code class="sql">CREATE EXTENSION IF NOT EXISTS btree_gist;
 
@@ -1589,6 +1947,10 @@ FROM orders
 WHERE customer_id = ? AND status = 'paid' AND order_date &gt;= ?
 ORDER BY order_date DESC
 LIMIT 20;</code></pre>
+<p class="io-label">Input</p>
+<p>ตาราง <code>orders(order_id, customer_id, order_date, status, amount, ...)</code> ของระบบจริงที่มีหลายสิบล้านแถว ต่างจากฐานข้อมูลตัวอย่างตรงที่มีคอลัมน์ <code>amount</code> เก็บยอดของออเดอร์ไว้แล้ว ลูกค้าแต่ละคนมีออเดอร์หลายร้อยถึงหลายพันรายการ และออเดอร์ส่วนใหญ่มีสถานะ <code>paid</code></p>
+<p class="io-label">Expected Output</p>
+<p>คำสั่ง <code>CREATE INDEX</code> หนึ่งคำสั่ง พร้อมเหตุผลว่าทำไมเลือกคอลัมน์และเรียงคอลัมน์แบบนั้น index ที่ดีต้องทำให้ query นี้หาแถวของลูกค้าคนเดียวได้ตรง ๆ อ่านตามลำดับ <code>order_date</code> ที่ต้องการ และหยุดเมื่อครบ 20 แถว โดยไม่ต้องเรียงข้อมูลเองและไม่ต้องกลับไปอ่านตาราง</p>
 <details class="sol"><summary>ดูเฉลย Task 10</summary>
 <pre><code class="sql">CREATE INDEX idx_orders_cust_status_date
   ON orders (customer_id, status, order_date DESC)

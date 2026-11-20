@@ -7,8 +7,8 @@ test('all source categories imported without losing files', () => {
   assert.equal(manifest.problems.filter(p=>p.source==='AlgoCasts').length, 28);
   assert.equal(manifest.problems.filter(p=>p.source==='LeetCode').length, 8);
   assert.equal(manifest.problems.filter(p=>p.source==='HackerRank').length, 3);
-  assert.equal(manifest.problems.length, 46);
-  assert.equal(manifest.competencies.length, 27);
+  assert.equal(manifest.problems.length, 47);
+  assert.equal(manifest.competencies.length, 29);
   assert.ok(manifest.diagrams.length > 100);
   for (const d of manifest.diagrams) {
     const svg = fs.readFileSync(new URL(d.path, content),'utf8');
@@ -48,6 +48,7 @@ for (const [id, title, source, firstSection, sectionCount] of [
   ['mock-exam-advance', 'Mock Exam ชุดยาก (Advance)', 'Mock Exam Keng Wee/dev-practice (advance).html', 'Microservices', 17],
   ['mock-exam-sql-coding', 'Mock Exam SQL Coding 10 ข้อ', 'Mock Exam Keng Wee/sql-coding-10.html', 'เริ่มฝึก', 12],
   ['mock-exam-prompt-engineering', 'Mock Exam Prompt Engineering 10 ข้อ', 'Mock Exam Keng Wee/prompt-engineering-10.html', 'วิธีใช้', 13],
+  ['mock-exam-program-coding', 'Mock Exam Program Coding 12 ข้อ', 'Mock Exam Keng Wee/program-coding-12.html', 'ข้อ 01', 12],
   ['mock-exam-kk', 'Mock Exam ชุดเก็ง 2026 (Intermediate + Advance)', 'Mock Exam Keng KK/exam-choice.html', 'Microservices', 17],
   ['mock-exam-thitima-architecture', 'Mock Exam ชุดซ้อม · Software Design & Architecture', 'Mock Exam Thitima/architecture 1.html', 'Microservices', 3],
   ['mock-exam-thitima-engineering', 'Mock Exam ชุดซ้อม · Software Engineering & Development', 'Mock Exam Thitima/engineering 1.html', 'Git', 6],
@@ -55,6 +56,7 @@ for (const [id, title, source, firstSection, sectionCount] of [
   ['mock-exam-thitima-security', 'Mock Exam ชุดซ้อม · Security', 'Mock Exam Thitima/security 1.html', 'Application Security', 6],
   ['mock-exam-thitima-problem-solving', 'Mock Exam ชุดซ้อม · Problem Solving & AI', 'Mock Exam Thitima/problem-solving 1.html', 'Program Coding', 3],
   ['mock-exam-anchanat', 'Mock Exam คลังข้อสอบ 600 ข้อ (L1–L3)', 'Mock Exam Anchanat/developer-competency-600.html', 'Microservices', 17],
+  ['mock-exam-assessment-13', 'Mock Exam คลังข้อสอบ 13 ข้อ พร้อมเฉลย', 'Mock Exam Assessment 13/developer-assessment-13.html', 'SW Testing', 6],
 ]) {
   test(`${title} lesson is complete and available from competency navigation`, () => {
     const topic = manifest.competencies.find(item => item.id === id);
@@ -122,5 +124,29 @@ test('Anchanat 600-question bank keeps every question answerable', () => {
     assert.ok(Number.isInteger(q.answer) && q.answer >= 0 && q.answer < 4, q.id);
     assert.ok([1, 2, 3].includes(q.level), q.id);
     assert.ok(q.explanation && !/เฉลยข้อ\s*[A-D]/.test(q.explanation), `${q.id} explanation must not name a choice letter (choices are shuffled)`);
+  }
+});
+
+test('Document frame lets exam pages start from a <form> submit without leaving the frame', () => {
+  const main = fs.readFileSync(new URL('../src/main.ts', import.meta.url), 'utf8');
+  const sandbox = main.match(/class="document-frame"[^>]*sandbox="([^"]+)"/)?.[1];
+  assert.ok(sandbox, 'document iframe must stay sandboxed');
+  // dev-practice (Intermediate/advance) and the Anchanat bank start a set inside a form submit handler.
+  assert.match(sandbox, /\ballow-forms\b/);
+  // Eight lesson quizzes ask confirm() before submitting with unanswered questions; without allow-modals it returns false.
+  assert.match(sandbox, /\ballow-modals\b/);
+  assert.match(main, /class="document-frame"[^>]*allow="clipboard-write"/);
+  assert.doesNotMatch(sandbox, /allow-same-origin/);
+  for (const file of ['mock-exam-intermediate', 'mock-exam-advance', 'mock-exam-anchanat']) {
+    const html = fs.readFileSync(new URL(`documents/${file}.html`, content), 'utf8');
+    assert.match(html, /form-action 'none'/, `${file} must keep forms from posting anywhere`);
+  }
+});
+
+test('External links in competency documents open in a new tab instead of inside the sandboxed frame', () => {
+  for (const c of manifest.competencies) {
+    const html = fs.readFileSync(new URL(c.path, content), 'utf8');
+    const framed = [...html.matchAll(/<a\s(?![^>]*target=)[^>]*href="https?:\/\/[^"]*"/g)].map(m => m[0]);
+    assert.deepEqual(framed, [], `${c.id} has external links without target`);
   }
 });

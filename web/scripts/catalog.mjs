@@ -1,7 +1,7 @@
 export const catalog = {
   reversestring: ['Reverse String','String & Array','Easy','กลับลำดับตัวอักษร โดยคืน string ใหม่','ลองสะสมตัวอักษรจากท้ายมาหน้า หรือใช้ reduce','O(n) time · O(n) space'],
   reverseint: ['Reverse Integer','String & Array','Easy','กลับลำดับตัวเลข โดยรักษาเครื่องหมายลบ','แยกเครื่องหมายออกก่อน แล้วจัดการเลขศูนย์นำหน้า','O(d) time · O(d) space'],
-  palindrome: ['Palindrome','String & Array','Easy','ตรวจว่าข้อความอ่านจากหน้าและหลังได้เหมือนกัน','เปรียบเทียบตัวอักษรตำแหน่ง i กับ length - 1 - i','O(n) time · O(n) space (reverse approach)'],
+  palindrome: ['Palindrome','String & Array','Easy','ตรวจว่าข้อความเป็น palindrome เมื่อไม่สนตัวพิมพ์เล็ก/ใหญ่ และตัดตัวที่ไม่ใช่ตัวอักษรหรือตัวเลขออก','ใช้ two pointers จากหัวและท้าย ข้ามตัวที่ไม่ใช่ a-z/0-9 แล้วเทียบด้วย toLowerCase()','O(n) time · O(1) space (two pointers)'],
   maxchar: ['Max Character','String & Array','Easy','หาตัวอักษรที่พบมากที่สุดในข้อความ','ใช้ Map นับความถี่ แล้วเก็บตัวที่มีจำนวนสูงสุด','O(n) time · O(k) space'],
   vowels: ['Count Vowels','String & Array','Easy','นับจำนวนสระ a e i o u ทั้งตัวพิมพ์เล็กและใหญ่','แปลงเป็นตัวพิมพ์เล็กก่อนเทียบกับชุดสระ','O(n) time · O(1) space'],
   anagrams: ['Anagrams','String & Array','Easy','ตรวจว่าข้อความสองชุดมีตัวอักษรและจำนวนตรงกัน โดยละเว้นเครื่องหมายและตัวพิมพ์','ทำข้อความให้เป็นรูปแบบเดียวกัน แล้วเทียบความถี่','O(n log n + m log m) time · O(n + m) space (sort approach)'],
@@ -61,6 +61,7 @@ export const competencyInfo = {
   'Mock Exam Keng Wee/dev-practice (advance).html': ['mock-exam-advance','Mock Exam ชุดยาก (Advance)','ข้อสอบจำลอง 57 ข้อ ระดับ Advanced ครบ 14 ทักษะ + SQL, Prompt และ Software Coding พร้อมเฉลย','MOCK Keng Wee'],
   'Mock Exam Keng Wee/sql-coding-10.html': ['mock-exam-sql-coding','Mock Exam SQL Coding 10 ข้อ','โจทย์เขียน SQL 10 ข้อ Basic → Advanced: schema, sample input/output, reference SQL (PostgreSQL 16) และจุดพลาด','MOCK Keng Wee'],
   'Mock Exam Keng Wee/prompt-engineering-10.html': ['mock-exam-prompt-engineering','Mock Exam Prompt Engineering 10 ข้อ','โจทย์เขียน prompt 10 ข้อ: contract, test cases, prompt ก่อน/หลัง และ reference prompt ภาษาอังกฤษ + ไทย','MOCK Keng Wee'],
+  'Mock Exam Keng Wee/program-coding-12.html': ['mock-exam-program-coding','Mock Exam Program Coding 12 ข้อ','โจทย์เขียนโปรแกรม TypeScript 12 ข้อ (DSA): starter ดาวน์โหลดได้ โหมดจำลองสอบ 30 นาที hints เฉลย และ checklist ประเมินตัวเอง','MOCK Keng Wee'],
   'Mock Exam Keng KK': ['mock-exam-kk','Mock Exam ชุดเก็ง 2026 (Intermediate + Advance)','ปรนัย 73 ข้อตาม weight ของ 14 competency + SQL, Prompt และ Program Coding รวม 100 คะแนน พร้อมเฉลย','MOCK Keng KK'],
   'Mock Exam Thitima/architecture 1.html': ['mock-exam-thitima-architecture','Mock Exam ชุดซ้อม · Software Design & Architecture','Junior/Senior ระดับละ ฝึก 30 + สอบจับเวลา 20 ข้อ: Microservices, System Design และ Database Design พร้อมสรุปทบทวน','MOCK Thitima'],
   'Mock Exam Thitima/engineering 1.html': ['mock-exam-thitima-engineering','Mock Exam ชุดซ้อม · Software Engineering & Development','Junior/Senior ระดับละ ฝึก 48 + สอบจับเวลา 32 ข้อ: Git, SQL, OOP, Monitoring, Web & Mobile และ Testing พร้อมสรุปทบทวน','MOCK Thitima'],
@@ -68,6 +69,7 @@ export const competencyInfo = {
   'Mock Exam Thitima/security 1.html': ['mock-exam-thitima-security','Mock Exam ชุดซ้อม · Security','Junior/Senior ระดับละ ฝึก 24 + สอบจับเวลา 20 ข้อ: OWASP, Auth, API Security, Security Testing และ Incident Response','MOCK Thitima'],
   'Mock Exam Thitima/problem-solving 1.html': ['mock-exam-thitima-problem-solving','Mock Exam ชุดซ้อม · Problem Solving & AI','Junior/Senior ระดับละ ฝึก 30 + สอบจับเวลา 20 ข้อ: Program Coding, SQL Coding และ Prompt & AI พร้อมสรุปทบทวน','MOCK Thitima'],
   'Mock Exam Anchanat': ['mock-exam-anchanat','Mock Exam คลังข้อสอบ 600 ข้อ (L1–L3)','ปรนัย 600 ข้อ (Set 1 + Set 2) ครบ 17 หัวข้อ ระดับ Foundation ถึง Advanced โหมดฝึก สอบจับเวลา และทบทวนข้อที่ผิด · เนื้อหาโดย ANCHANAT PATCHAYA','MOCK Anchanat'],
+  'Mock Exam Assessment 13': ['mock-exam-assessment-13','Mock Exam คลังข้อสอบ 13 ข้อ พร้อมเฉลย','ข้อสอบ 13 ข้อจาก 6 หมวด (Web, Security, Agile, DevOps, Testing, DB) ตรวจทีละข้อหรือส่งทั้งชุด พร้อมเฉลยและเหตุผล','MOCK Assessment 13'],
 };
 export const diagramGroups = {
  '01': 'เริ่มต้นแก้โจทย์', '02': 'String & Array', '03': 'Loop & Recursion',

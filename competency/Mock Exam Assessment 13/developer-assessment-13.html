@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>Developer Assessment · คลังข้อสอบ 13 ข้อ พร้อมเฉลย</title>
+<style>
+:root{
+  color-scheme:light dark;
+  --font:"IBM Plex Sans Thai","Noto Sans Thai","Sarabun",Tahoma,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --bg:#eef3fb;--surface:#fff;--surface-2:#f5f8fd;--ink:#172345;--ink-2:#2d3a5c;--muted:#646d87;--line:#dde5f1;
+  --blue:#1f6fe5;--blue-ink:#1d69da;--blue-bg:#eef4fd;--blue-line:#d6e4fa;
+  --green:#187c43;--green-bg:#e9f6ee;--red:#c12c3c;--red-bg:#fdeef0;--amber:#8a5a00;--amber-bg:#fff4dc;
+  --shadow:0 6px 22px #17234508;--radius:18px
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0f1524;--surface:#171f33;--surface-2:#1d2740;--ink:#e8edf8;--ink-2:#c8d1e6;--muted:#9aa5bf;--line:#2b3753;
+    --blue:#6ea2ff;--blue-ink:#8ab4ff;--blue-bg:#1b2a4a;--blue-line:#2c4170;--green:#5fd08f;--green-bg:#15301f;--red:#ff7d8a;--red-bg:#3a1a20;--amber:#f2c063;--amber-bg:#382a10;--shadow:none}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 var(--font)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.5}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+[hidden]{display:none!important}
+code{font-family:var(--mono);font-size:.9em;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.shell{width:min(1120px,calc(100% - 32px));margin:0 auto}
+.hero{padding:34px 0 24px}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-ink)}
+h1{font-size:clamp(26px,4vw,38px);line-height:1.3;letter-spacing:-.02em;margin:8px 0 8px}
+.lede{color:var(--muted);margin:0;max-width:760px}
+.stats{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 16px;min-width:130px}
+.stat strong{display:block;font-size:24px;line-height:1.3;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.toolbar-panel{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 0}
+.search{flex:1 1 220px;height:42px;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 14px}
+select{height:42px;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 12px;max-width:100%}
+.btn{min-height:42px;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px;font-weight:600;font-size:14px}
+.btn:hover{border-color:var(--blue-line);background:var(--blue-bg)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{filter:brightness(1.05)}
+.btn.warn{color:var(--red)}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:start;padding:24px 0 64px}
+.side{position:sticky;top:84px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.side h2{font-size:14px;margin:0 0 4px}
+.side p{font-size:12px;color:var(--muted);margin:0 0 12px}
+.bar{height:7px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:var(--blue);width:0;transition:width .2s}
+.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.nav a{height:36px;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);text-decoration:none;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums}
+.nav a.answered{border-color:var(--blue-line);background:var(--blue-bg);color:var(--blue-ink)}
+.nav a.ok{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.nav a.bad{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+.nav a.dim{opacity:.35}
+.legend{margin-top:14px;font-size:12px;color:var(--muted);display:grid;gap:4px}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.list-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
+.list-head h2{margin:0;font-size:20px}
+.list-head span{color:var(--muted);font-size:13px}
+.cards{display:grid;gap:16px}
+.card{scroll-margin-top:90px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;box-shadow:var(--shadow)}
+.card.ok{border-color:var(--green)}
+.card.bad{border-color:var(--red)}
+.meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.num{font-weight:800;color:var(--blue-ink);font-variant-numeric:tabular-nums}
+.tag{font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.status{margin-left:auto;font-size:12px;font-weight:700}
+.status.ok{color:var(--green)}
+.status.bad{color:var(--red)}
+.q{font-weight:600;color:var(--ink);margin-bottom:14px;overflow-wrap:anywhere}
+.q p{margin:0 0 8px}
+.q p+p{font-weight:400;color:var(--ink-2)}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:11px 14px;background:var(--surface);cursor:pointer;overflow-wrap:anywhere}
+.opt:hover{border-color:var(--blue-line);background:var(--blue-bg)}
+.opt input{margin:6px 0 0;accent-color:var(--blue);width:17px;height:17px;flex:0 0 auto}
+.opt .key{flex:0 0 24px;height:24px;border-radius:7px;background:var(--surface-2);display:grid;place-items:center;font-weight:700;font-size:13px;margin-top:2px}
+.opt:has(input:checked){border-color:var(--blue);background:var(--blue-bg)}
+.opt.correct{border-color:var(--green);background:var(--green-bg)}
+.opt.wrong{border-color:var(--red);background:var(--red-bg)}
+.opt.correct .key{background:var(--green);color:#fff}
+.opt.wrong .key{background:var(--red);color:#fff}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.answer{margin-top:14px;border-radius:14px;padding:14px 16px;background:var(--surface-2);border:1px solid var(--line)}
+.answer h3{margin:0 0 6px;font-size:15px}
+.answer p{margin:0;color:var(--ink-2)}
+.answer.ok h3{color:var(--green)}
+.answer.bad h3{color:var(--red)}
+.empty{text-align:center;padding:32px;border:1px dashed var(--line);border-radius:var(--radius);color:var(--muted)}
+.foot{color:var(--muted);font-size:12px;text-align:center;margin-top:24px}
+@media (max-width:820px){
+  .layout{grid-template-columns:1fr;gap:14px}
+  .side{position:relative;top:auto}
+  .nav{grid-template-columns:repeat(auto-fill,minmax(40px,1fr))}
+  .toolbar-panel{position:relative}
+}
+@media (max-width:560px){
+  .card{padding:18px 16px}
+  .btn{flex:1 1 auto}
+}
+</style>
+</head>
+<body>
+<header class="shell hero">
+  <div class="kicker">Developer Assessment · Question Bank</div>
+  <h1>คลังข้อสอบสาย Software Development 13 ข้อ พร้อมเฉลย</h1>
+  <p class="lede">ข้อสอบ 13 ข้อจาก 6 หมวด เรียงตามหมายเลขข้อในต้นฉบับ เลือกคำตอบแล้วกด “ตรวจคำตอบ” เพื่อดูว่าถูกหรือผิดพร้อมเหตุผล หรือทำให้ครบแล้วกด “ส่งทั้งหมด” เพื่อดูคะแนนรวม</p>
+  <div class="stats">
+    <div class="stat"><strong id="stat-answered">0/13</strong><span>ข้อที่เลือกคำตอบแล้ว</span></div>
+    <div class="stat"><strong id="stat-checked">0</strong><span>ข้อที่ตรวจแล้ว</span></div>
+    <div class="stat"><strong id="stat-score">0</strong><span>ตอบถูก</span></div>
+  </div>
+</header>
+
+<div class="toolbar-panel"><div class="shell toolbar">
+  <input id="search" class="search" type="search" placeholder="ค้นหาคำถาม เช่น JWT, Docker, DMZ" aria-label="ค้นหาข้อสอบ">
+  <select id="category" aria-label="กรองหมวดวิชา"><option value="all">ทุกหมวดวิชา</option></select>
+  <button id="check-all" class="btn primary" type="button">ส่งทั้งหมดและดูคะแนน</button>
+  <button id="toggle-answers" class="btn" type="button" aria-pressed="false">แสดงเฉลยทุกข้อ</button>
+  <button id="reset" class="btn warn" type="button">ล้างคำตอบ</button>
+</div></div>
+
+<div class="shell layout">
+  <aside class="side" aria-label="นำทางข้อสอบ">
+    <h2>ความคืบหน้า <span id="progress-label">0/13</span></h2>
+    <p>กดหมายเลขเพื่อไปที่ข้อนั้น</p>
+    <div class="bar"><i id="progress-bar"></i></div>
+    <nav class="nav" id="nav" aria-label="หมายเลขข้อสอบ"></nav>
+    <div class="legend"><span><b style="background:var(--blue-bg);border:1px solid var(--blue-line)"></b>เลือกคำตอบแล้ว</span><span><b style="background:var(--green)"></b>ตรวจแล้ว ถูก</span><span><b style="background:var(--red)"></b>ตรวจแล้ว ผิด</span></div>
+  </aside>
+  <main>
+    <div class="list-head"><h2>คำถามทั้งหมด</h2><span id="showing">แสดง 13 จาก 13 ข้อ</span></div>
+    <div class="cards" id="cards"></div>
+    <div class="empty" id="empty" hidden>ไม่พบข้อสอบที่ตรงกับคำค้นหา ลองเปลี่ยนคำค้นหรือหมวดวิชา</div>
+    <p class="foot">ต้นฉบับ: ไฟล์ developer_assessment_questions_13.html (รวบรวมจากภาพข้อสอบ) · เฉลยและคำอธิบายเรียบเรียงเพิ่มเพื่อการฝึก ไม่ใช่เฉลยทางการ · ทำงาน offline ไม่ส่งข้อมูลออกจากเครื่อง</p>
+  </main>
+</div>
+
+<noscript>เปิด JavaScript ใน browser เพื่อใช้ชุดข้อสอบนี้</noscript>
+<script type="application/json" id="question-bank">{"schemaVersion":1,"id":"developer-assessment-13","competencies":[
+{"title":"SW Testing","questions":[
+ {"number":5,"prompt":["ใน Control-flow code coverage ชนิดใด เมื่อมี test cases ครอบคลุม 100% แล้ว ชนิดอื่นก็จะครอบคลุม 100% ไปด้วย"],
+  "choices":["Statement coverage","Branch coverage","Node coverage","Path coverage"],"answer":4,
+  "explanation":"Path coverage ต้องผ่านทุกเส้นทางที่เป็นไปได้ใน control flow graph เมื่อครบทุกเส้นทาง ทุก statement (node) และทุก branch ก็ถูกผ่านไปด้วย ทิศกลับไม่จริง statement หรือ node coverage 100% อาจยังไม่เคยวิ่งเข้ากรณี false ของ if และ branch coverage 100% ก็ยังไม่ครบทุกการผสมของ if หลายตัวที่ต่อกันหรือจำนวนรอบของลูป (node coverage คือชื่อเรียก statement coverage บนกราฟ)"}]},
+{"title":"Security","questions":[
+ {"number":15,"prompt":["ในกรณีที่มีการละเมิดความปลอดภัย (security breach) ในเครือข่ายของบริษัทของคุณ ขั้นตอนใดต่อไปนี้ควรได้รับการจัดลำดับความสำคัญให้ดำเนินการก่อน ในระหว่างการวิเคราะห์หลังเหตุการณ์ (post-incident analysis) เพื่อเพิ่มความปลอดภัยของเครือข่าย"],
+  "choices":["ปรับใช้กฎไฟร์วอลล์ใหม่","การอัพเกรดฮาร์ดแวร์เครือข่ายทั้งหมด","การระบุสาเหตุของการละเมิด","การดำเนินการรีเซ็ตรหัสผ่านทั่วทั้งองค์กร"],"answer":3,
+  "explanation":"post-incident analysis ต้องเริ่มจากหาว่าผู้โจมตีเข้ามาทางไหน (root cause) ถ้ายังไม่รู้สาเหตุ การเปลี่ยนกฎ firewall รีเซ็ตรหัสผ่าน หรือเปลี่ยนฮาร์ดแวร์อาจไม่ได้ปิดช่องโหว่ที่ถูกใช้จริง และอาจเสียเงินเปล่า เมื่อรู้สาเหตุแล้วจึงเลือกมาตรการที่ตรงจุดได้"},
+ {"number":21,"prompt":["ประโยชน์หลักของการแยกบริการที่สำคัญใน DMZ คืออะไร"],
+  "choices":["ลดการเปิดเผยพื้นผิวการโจมตีบนอินเทอร์เน็ตให้น้อยลง","อนุญาตให้ผู้ใช้ภายในเข้าถึงอินเทอร์เน็ตได้โดยตรง","เพิ่มความเร็วการเชื่อมต่ออินเทอร์เน็ตสำหรับผู้ใช้ภายใน","ขจัดความจำเป็นในการใช้ไฟร์วอลล์"],"answer":1,
+  "explanation":"DMZ เป็นเครือข่ายกันชนระหว่างอินเทอร์เน็ตกับเครือข่ายภายใน วางเฉพาะบริการที่ต้องเปิดให้คนนอกเข้าถึง เช่น web หรือ mail server ถ้าบริการเหล่านี้ถูกเจาะ ผู้โจมตียังเข้าเครือข่ายภายในตรง ๆ ไม่ได้ ส่วนที่เปิดรับการโจมตีจึงเหลือน้อยลง DMZ ไม่ได้ทำให้อินเทอร์เน็ตเร็วขึ้น และยังต้องใช้ firewall คุมทั้งฝั่งที่ติดอินเทอร์เน็ตและฝั่งที่ติดเครือข่ายภายใน"}]},
+{"title":"Web Development","questions":[
+ {"number":19,"prompt":["บริษัทแห่งหนึ่งใช้ monolithic backend application มานานและไม่มีปัญหาใดๆ วันหนึ่งได้ขอให้ programmer เปลี่ยนภาพ logo Programmer ตัดสินใจ refactor codes ในการจัดการข้อมูลที่ถูกดึงมาจาก database (ก่อนส่งไปยัง front-end) ด้วยโครงสร้างข้อมูล (data structure) ใหม่เพื่อให้มีประสิทธิภาพมากขึ้น","ปรากฏว่า software สามารถทำงานได้เร็วขึ้น แต่จะเริ่มช้าลงเมื่อใช้ไปสักพัก ปัญหานี้สามารถแก้ไขได้โดยการ reboot backend server ข้อใดน่าจะเป็นสาเหตุและวิธีค้นหาต้นตอของปัญหา"],
+  "choices":["โครงสร้างข้อมูลน่าจะมีการเขียน file ลง disks มากขึ้น ควรตรวจสอบค่า I/O เพื่อเปรียบเทียบกับก่อนการเปลี่ยนแปลง","ไฟล์ภาพมีขนาดใหญ่กว่าเดิม ต้องลดขนาดภาพลง อาจต้องเปรียบเทียบกับไฟล์ภาพเดิม","น่าจะเกิด memory leaks ควรใช้เครื่องมือตรวจสอบ memory leaks","โครงสร้างข้อมูลน่าจะซับซ้อนเกินไปทำให้เมื่อใช้ไปนานๆ อาจช้าลง ต้อง monitor CPU"],"answer":3,
+  "explanation":"ตอนแรกเร็วขึ้น ใช้ไปสักพักช้าลง แล้วหายเมื่อ reboot เป็นอาการของ memory leak เช่น โครงสร้างข้อมูลใหม่เก็บ cache หรือ reference ไว้โดยไม่ปล่อย หน่วยความจำจึงโตขึ้นเรื่อย ๆ จน garbage collector ทำงานหนักหรือเครื่องต้อง swap วิธีหาต้นตอคือดูกราฟ memory ของ process ตามเวลา แล้วใช้ heap snapshot หรือ memory profiler หา object ที่ค้างอยู่ การเปลี่ยน logo เป็นงานฝั่ง front-end ไม่เกี่ยวกับ backend ส่วนปัญหา disk I/O หรือ CPU จากโครงสร้างข้อมูลที่ซับซ้อนจะไม่หายไปเพราะการ reboot"},
+ {"number":22,"prompt":["ข้อใดเป็นวิธีการที่ควรเลือกใช้ในการตรวจสอบสิทธิ์ (Authentication) เพื่อรักษาความปลอดภัย API ในการพัฒนา Backend มีข้อจำกัดที่ไม่สามารถเก็บข้อมูล user session ในฐานข้อมูล (database) ที่ server ได้"],
+  "choices":["Basic Authentication","JWT (JSON Web Token)","OAuth","API Key"],"answer":2,
+  "explanation":"JWT เก็บข้อมูลตัวตนและเวลาหมดอายุไว้ใน token ที่ server ลงลายเซ็นไว้ ทุก request ที่ส่ง token มา server ตรวจลายเซ็นได้เองโดยไม่ต้องเก็บ session ในฐานข้อมูล (stateless) Basic Authentication ต้องส่ง username กับ password ทุก request และ API Key ใช้ระบุแอปหรือระบบที่เรียกมากกว่าระบุผู้ใช้ ส่วน OAuth เป็นกรอบการมอบสิทธิ์ ไม่ได้บอกว่าจะเก็บ session อย่างไร และในทางปฏิบัติมักใช้ JWT เป็น access token อยู่ดี"},
+ {"number":26,"prompt":["ในกรณีที่ internal web server application ที่สำคัญของบริษัทสามารถรองรับ http เท่านั้น ข้อใดเป็นวิธีที่เร็วที่สุดในการแก้ปัญหา เพื่อให้รองรับ https ได้"],
+  "choices":["ขอและติดตั้ง digital certificate จาก certificate authority (CA)","ติดตั้ง Reverse proxy เพื่อแปลง https เป็น http","ติดตั้ง Forward proxy เพื่อแปลง https เป็น http","config firewall ที่ server เพื่อให้รับ traffic จาก https"],"answer":2,
+  "explanation":"เมื่อตัวแอปรองรับแค่ http ทางที่เร็วที่สุดคือวาง reverse proxy เช่น Nginx ไว้หน้าแอป ให้ proxy รับ https จาก client ถอดรหัส แล้วส่งต่อเป็น http ไปยังแอปในเครือข่ายภายใน (TLS termination) โดยไม่ต้องแก้โค้ดแอปเลย certificate ยังจำเป็น แต่ติดตั้งที่ proxy การติดตั้ง certificate ที่แอปตรง ๆ ใช้ไม่ได้เพราะแอปไม่รองรับ https ส่วน forward proxy ใช้กับ client ที่ออกไปหาเว็บภายนอก และ firewall แค่อนุญาต port ไม่ได้เข้ารหัสให้"},
+ {"number":27,"prompt":["ข้อใดคือแนวคิดของ Authentication Middleware ใน Express.js"],
+  "choices":["เพื่อใช้ดำเนินการยืนยันตัวตน การบันทึก และการจัดการข้อผิดพลาด ก่อนการเข้าถึง Route นั้นๆ","เพื่อ Render หน้า Authentication HTML Template ให้กับ User","เพื่อแยกการวิเคราะห์ข้อมูลจากการ Request เช่นการ Query Parameters และ Request Body","เพื่อกำหนดตัวจัดการ Route กำหนด Routing Structure สำหรับ Endpoint ในรูปแบบต่างๆ"],"answer":1,
+  "explanation":"middleware ใน Express คือฟังก์ชัน (req, res, next) ที่ทำงานก่อนถึง route handler middleware สำหรับ authentication จะตรวจ token หรือ session ถ้าผ่านก็เรียก next() ให้ไปต่อ ถ้าไม่ผ่านก็ตอบ 401 ทันที middleware แบบเดียวกันนี้ใช้ทำ logging และจัดการ error ได้ด้วย ตัวเลือกอื่นเป็นหน้าที่ของ template engine, body/query parser และ router ตามลำดับ"},
+ {"number":32,"prompt":["นักพัฒนาได้รับโจทย์การสร้าง Backend API สำหรับจัดการ Authentication โดยตรวจสอบสิทธิ์ (Authenticate) ผ่าน Google และจัดเก็บข้อมูลผู้ใช้ผ่านฐานข้อมูลของตนเอง จงเรียงลำดับขั้นตอนการทำงานของระบบเว็บแอปพลิเคชันเมื่อผู้ใช้งานทำการ Login เข้าสู่ระบบ","ขั้นตอน a. Backend API ตรวจสอบข้อมูลผู้ใช้งานในฐานข้อมูลของระบบ หากเจอจะส่งผลลัพธ์กลับมา หากไม่เจอสร้างผู้ใช้ใหม่","ขั้นตอน b. Login Request ถูกส่งไปที่ Authentication Endpoint ใน Backend API นี้","ขั้นตอน c. Route สำหรับ Authentication ของระบบจัดการเชื่อมไปยัง Google API"],
+  "choices":["b. a. c.","a. b. c.","b. c. a.","c. b. a."],"answer":3,
+  "explanation":"เมื่อผู้ใช้กด login คำขอจะไปที่ authentication endpoint ของ backend ก่อน (b) จากนั้น route นี้พาไปยืนยันตัวตนกับ Google (c) เมื่อ Google ยืนยันแล้วและส่งข้อมูลผู้ใช้กลับมา backend จึงค้นหาผู้ใช้ในฐานข้อมูลของตัวเอง ถ้าไม่เจอก็สร้างผู้ใช้ใหม่ (a) ขั้น a มาก่อน c ไม่ได้ เพราะระบบยังไม่รู้ว่าผู้ใช้เป็นใครจนกว่า Google จะยืนยัน"}]},
+{"title":"Agile Scrum","questions":[
+ {"number":20,"prompt":["ข้อใดเลือกใช้เมตริก ไม่เหมาะสม"],
+  "choices":["ใช้เมตริก Release Stability วัดประสิทธิภาพการพัฒนาซอฟต์แวร์จากเวลาและทรัพยากรที่ใช้ในโครงการ","ใช้เมตริก Defect Density วัดคุณภาพของโค้ดและพฤติกรรมในการพัฒนาซอฟต์แวร์","ใช้เมตริก Lead Time วัดเวลาที่ใช้ในการพัฒนาแต่ละงาน ในวงจรการพัฒนาระบบ","ใช้เมตริก Customer Satisfaction Score วัดความพึงพอใจของลูกค้าเมื่อใช้ผลิตภัณฑ์หรือบริการซอฟต์แวร์ขององค์กร"],"answer":1,
+  "explanation":"Release Stability วัดว่าแต่ละ release เสถียรแค่ไหน เช่น จำนวน incident, จำนวนครั้งที่ต้อง rollback หรือ change failure rate หลังปล่อย ไม่ได้วัดประสิทธิภาพการพัฒนาจากเวลาและทรัพยากร ซึ่งควรดูจากเมตริกอย่าง velocity, cycle time หรือต้นทุนของโครงการ อีกสามข้อจับคู่เมตริกกับสิ่งที่วัดได้ถูกต้อง"},
+ {"number":35,"prompt":["ข้อใดผิด"],
+  "choices":["Code review เป็นกระบวนการรวบรวมรหัสโปรแกรมที่พัฒนาแล้วเข้าสู่ระบบควบคุมเวอร์ชั่น","การระบุความต้องการเป็นขั้นตอนแรกในวงจรการพัฒนาซอฟต์แวร์","User Stories เป็นรูปแบบการระบุความต้องการจากมุมมองของผู้ใช้","ลักษณะการทำงานของ Kanban จะมีบอร์ดสำหรับติดตาม User Stories และขั้นตอนการทำงาน"],"answer":1,
+  "explanation":"code review คือการให้คนอื่นอ่านและตรวจโค้ดก่อนรวมเข้า branch หลัก เพื่อหาข้อผิดพลาดและแลกเปลี่ยนความรู้ในทีม ส่วนการรวมโค้ดเข้าระบบควบคุมเวอร์ชันคือการ commit, merge หรือ integration ข้ออื่นถูกต้อง: การเก็บความต้องการเป็นขั้นแรกของ SDLC, user story เขียนความต้องการจากมุมมองผู้ใช้ และ Kanban ใช้บอร์ดติดตามงานตามขั้นตอน"}]},
+{"title":"DevOps","questions":[
+ {"number":29,"prompt":["ถ้าเราต้องการจะเรียกใช้ containers image เพียง image เดียว เราจะต้องใช้เครื่องมือใด และใช้คำสั่งใด"],
+  "choices":["Docker ใช้คำสั่ง docker run image_name","Docker ใช้คำสั่ง docker pull image_name","Kubernetes ใช้คำสั่ง kubectl get","Kubernetes ใช้คำสั่ง kubectl apply"],"answer":1,
+  "explanation":"docker run image_name สร้างและเริ่ม container จาก image นั้น ถ้าในเครื่องยังไม่มี image ก็จะ pull ให้เอง ส่วน docker pull แค่ดาวน์โหลด image มาเก็บไว้ ไม่ได้รัน Kubernetes เหมาะกับการจัดการหลาย container บนหลายเครื่อง ซึ่งเกินความจำเป็นสำหรับ image เดียว และ kubectl get ใช้แสดงรายการ resource ไม่ได้รันอะไร"},
+ {"number":33,"prompt":["จากข้อความต่อไปนี้","A) Gitlab CI ใช้คอนฟิกูเรชั่นในไฟล์ .gitlab-ci.yml เพื่อกำหนดการทำงานของ CI/CD pipelines","B) GitHub Actions ใช้ไฟล์คอนฟิกูเรชั่นในชื่อ .github.workflow เพื่อกำหนดการทำงานของ Workflows","C) คำสั่ง git commit -m \"Message\" ใน Git มีวัตถุประสงค์เพื่อบันทึกการเปลี่ยนแปลงที่มีอยู่ใน version control","D) เราสามารถสร้าง jenkin pipeline เพื่อสร้างและทดสอบ application Node.js โดยใช้ npm ใน GitHub repository ได้","ข้อใดต่อไปนี้ถูกต้อง"],
+  "choices":["A), C) และ D) เท่านั้น","A) และ C) เท่านั้น","ทั้ง A), B), C) และ D)","A) และ B) เท่านั้น"],"answer":1,
+  "explanation":"A ถูก GitLab CI อ่าน pipeline จากไฟล์ .gitlab-ci.yml ที่ root ของ repository B ผิด GitHub Actions อ่านไฟล์ YAML ที่อยู่ในโฟลเดอร์ .github/workflows/ ไม่มีไฟล์ชื่อ .github.workflow C ถูก git commit บันทึกการเปลี่ยนแปลงที่ stage ไว้เป็น commit ใหม่ใน repository D ถูก Jenkins ดึงโค้ดจาก GitHub แล้วรัน npm install กับ npm test ใน pipeline ได้ จึงถูกเฉพาะ A, C และ D"}]},
+{"title":"DB Design","questions":[
+ {"number":30,"prompt":["การประเมินค่า Selectivity ตามหลักการ Cost-based Optimization ในข้อใดไม่ถูกต้อง"],
+  "choices":["สำหรับเงื่อนไข A=c หาก A เป็น non-key attribute ที่มีค่าแตกต่างกัน n ค่าแล้ว ค่า selectivity ของ A=c จะเท่ากับ 1/n","สำหรับ query SELECT * FROM customers WHERE gender='Male' AND age >= 75 ค่า selectivity ของเงื่อนไข 'age >= 75' มีค่าน้อยกว่า 'gender=Male' เนื่องจากคนที่อายุ 75 ปีขึ้นไปมีจำนวนน้อยมาก เมื่อเทียบกับคนที่เป็นเพศชาย","ตาราง Customer เก็บรวบรวมข้อมูลลูกค้าจาก 77 จังหวัดทั่วประเทศไทย หากพบว่า 90% ของลูกค้าในตาราง Customers มาจาก 'Bangkok' ดังนั้นค่า selectivity ของเงื่อนไข city='Bangkok' จะเท่ากับ 1/77","ค่า Selectivity ของเงื่อนไข gender='Male' and age>40 มีค่าเท่ากับ ค่า Selectivity ของ gender='Male' * selectivity of age>40"],"answer":3,
+  "explanation":"selectivity คือสัดส่วนของแถวที่ผ่านเงื่อนไข ถ้ารู้แล้วว่า 90% ของลูกค้ามาจาก Bangkok ค่า selectivity ของ city='Bangkok' ควรประมาณ 0.9 ไม่ใช่ 1/77 สูตร 1/n ใช้เมื่อสมมติว่าทุกค่ากระจายเท่ากัน เมื่อ optimizer มีสถิติหรือ histogram บอกการกระจายจริงก็จะใช้ค่านั้นแทน ข้อ 1 คือสูตรมาตรฐานภายใต้สมมติฐานการกระจายเท่ากัน ข้อ 2 ถูกเพราะคนอายุ 75 ขึ้นไปมีสัดส่วนน้อยกว่าเพศชาย และข้อ 4 คือการคูณ selectivity ภายใต้สมมติฐานว่าสองเงื่อนไขเป็นอิสระต่อกัน ซึ่งเป็นหลักที่ optimizer ใช้"}]}
+]}</script>
+<script>
+(() => {
+  'use strict';
+  const bank = JSON.parse(document.getElementById('question-bank').textContent);
+  const questions = bank.competencies.flatMap(c => c.questions.map(q => ({ ...q, category: c.title }))).sort((a, b) => a.number - b.number);
+  const total = questions.length;
+  const STORE = 'developer-assessment-13-v1';
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  // Progress lives in this browser only. Storage is blocked inside sandboxed frames; the page still works without it.
+  let state = { picks: {}, checked: {} };
+  try { const saved = JSON.parse(window.localStorage.getItem(STORE)); if (saved && saved.picks) state = { picks: saved.picks, checked: saved.checked || {} }; } catch (e) { /* storage unavailable */ }
+  const save = () => { try { window.localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) { /* storage unavailable */ } };
+  let showAll = false;
+
+  const category = $('category');
+  for (const c of bank.competencies) category.insertAdjacentHTML('beforeend', `<option value="${esc(c.title)}">${esc(c.title)} (${c.questions.length})</option>`);
+
+  $('cards').innerHTML = questions.map(q => `
+    <article class="card" id="q${q.number}" data-number="${q.number}">
+      <div class="meta"><span class="num">ข้อ ${String(q.number).padStart(2, '0')}</span><span class="tag">${esc(q.category)}</span><span class="status" data-status></span></div>
+      <fieldset><legend>คำถามข้อ ${q.number}</legend>
+        <div class="q">${q.prompt.map(p => `<p>${esc(p)}</p>`).join('')}</div>
+        <div class="opts">${q.choices.map((c, i) => `<label class="opt" data-choice="${i + 1}"><input type="radio" name="q${q.number}" value="${i + 1}"><span class="key">${i + 1}</span><span>${esc(c)}</span></label>`).join('')}</div>
+      </fieldset>
+      <div class="actions"><button type="button" class="btn primary" data-check>ตรวจคำตอบ</button><button type="button" class="btn" data-reveal>ดูเฉลย</button></div>
+      <div class="answer" data-answer hidden></div>
+    </article>`).join('');
+  $('nav').innerHTML = questions.map(q => `<a href="#q${q.number}" data-nav="${q.number}">${q.number}</a>`).join('');
+
+  function render() {
+    let answered = 0, checked = 0, score = 0;
+    for (const q of questions) {
+      const card = document.getElementById('q' + q.number);
+      const pick = state.picks[q.number];
+      const isChecked = Boolean(state.checked[q.number]) && pick != null;
+      const reveal = isChecked || showAll || card.dataset.reveal === '1';
+      const ok = pick === q.answer;
+      if (pick != null) answered++;
+      if (isChecked) { checked++; if (ok) score++; }
+      card.querySelectorAll('input').forEach(input => { input.checked = Number(input.value) === pick; });
+      card.querySelectorAll('.opt').forEach(opt => {
+        const n = Number(opt.dataset.choice);
+        opt.classList.toggle('correct', reveal && n === q.answer);
+        opt.classList.toggle('wrong', isChecked && !ok && n === pick);
+      });
+      card.classList.toggle('ok', isChecked && ok);
+      card.classList.toggle('bad', isChecked && !ok);
+      const status = card.querySelector('[data-status]');
+      status.className = 'status' + (isChecked ? (ok ? ' ok' : ' bad') : '');
+      status.textContent = isChecked ? (ok ? '✓ ตอบถูก' : '✗ ตอบผิด') : pick != null ? 'เลือกแล้ว ยังไม่ตรวจ' : '';
+      card.querySelector('[data-check]').disabled = pick == null || isChecked;
+      card.querySelector('[data-reveal]').hidden = reveal;
+      const box = card.querySelector('[data-answer]');
+      box.hidden = !reveal;
+      box.className = 'answer' + (isChecked ? (ok ? ' ok' : ' bad') : '');
+      box.innerHTML = reveal ? `<h3>${isChecked ? (ok ? 'ถูกต้อง' : `ยังไม่ถูก คุณเลือกข้อ ${pick}`) + ' · ' : ''}เฉลย: ข้อ ${q.answer} ${esc(q.choices[q.answer - 1])}</h3><p>${esc(q.explanation)}</p>` : '';
+      const nav = document.querySelector(`[data-nav="${q.number}"]`);
+      nav.className = isChecked ? (ok ? 'ok' : 'bad') : pick != null ? 'answered' : '';
+      nav.classList.toggle('dim', card.hidden);
+      nav.setAttribute('aria-label', `ข้อ ${q.number}${isChecked ? (ok ? ' ตอบถูก' : ' ตอบผิด') : pick != null ? ' เลือกคำตอบแล้ว' : ''}`);
+    }
+    $('stat-answered').textContent = `${answered}/${total}`;
+    $('stat-checked').textContent = checked;
+    $('stat-score').textContent = checked ? `${score}/${checked}` : '0';
+    $('progress-label').textContent = `${answered}/${total}`;
+    $('progress-bar').style.width = `${(answered / total) * 100}%`;
+    $('toggle-answers').textContent = showAll ? 'ซ่อนเฉลยที่ยังไม่ตรวจ' : 'แสดงเฉลยทุกข้อ';
+    $('toggle-answers').setAttribute('aria-pressed', String(showAll));
+  }
+
+  function filter() {
+    const query = $('search').value.trim().toLocaleLowerCase('th');
+    let shown = 0;
+    for (const q of questions) {
+      const card = document.getElementById('q' + q.number);
+      const text = [q.category, ...q.prompt, ...q.choices].join(' ').toLocaleLowerCase('th');
+      card.hidden = !((!query || text.includes(query)) && (category.value === 'all' || q.category === category.value));
+      if (!card.hidden) shown++;
+    }
+    $('showing').textContent = `แสดง ${shown} จาก ${total} ข้อ`;
+    $('empty').hidden = shown !== 0;
+    render();
+  }
+
+  $('cards').addEventListener('change', e => {
+    if (!e.target.matches('input[type=radio]')) return;
+    const n = Number(e.target.closest('.card').dataset.number);
+    state.picks[n] = Number(e.target.value);
+    delete state.checked[n];
+    save(); render();
+  });
+  $('cards').addEventListener('click', e => {
+    const card = e.target.closest('.card');
+    if (!card) return;
+    const n = Number(card.dataset.number);
+    if (e.target.closest('[data-check]')) { state.checked[n] = true; save(); render(); card.querySelector('[data-answer]').focus?.(); }
+    if (e.target.closest('[data-reveal]')) { card.dataset.reveal = '1'; render(); }
+  });
+  $('check-all').addEventListener('click', () => {
+    for (const q of questions) if (state.picks[q.number] != null) state.checked[q.number] = true;
+    save(); render();
+    const answered = questions.filter(q => state.picks[q.number] != null).length;
+    const score = questions.filter(q => state.picks[q.number] === q.answer).length;
+    $('check-all').textContent = `ได้ ${score}/${total} คะแนน${answered < total ? ` (ยังไม่ตอบ ${total - answered} ข้อ)` : ''}`;
+  });
+  $('toggle-answers').addEventListener('click', () => { showAll = !showAll; render(); });
+  // confirm() is blocked inside the app's sandboxed frame, so reset asks twice on the button itself.
+  $('reset').addEventListener('click', () => {
+    const btn = $('reset');
+    if (!btn.dataset.confirm) { btn.dataset.confirm = '1'; btn.textContent = 'กดอีกครั้งเพื่อล้างทุกข้อ'; setTimeout(() => { delete btn.dataset.confirm; btn.textContent = 'ล้างคำตอบ'; }, 4000); return; }
+    delete btn.dataset.confirm; btn.textContent = 'ล้างคำตอบ';
+    state = { picks: {}, checked: {} }; showAll = false;
+    document.querySelectorAll('.card').forEach(c => delete c.dataset.reveal);
+    $('check-all').textContent = 'ส่งทั้งหมดและดูคะแนน';
+    save(); render();
+  });
+  $('search').addEventListener('input', filter);
+  category.addEventListener('change', filter);
+  $('nav').addEventListener('click', e => {
+    const link = e.target.closest('[data-nav]');
+    if (link && document.getElementById('q' + link.dataset.nav).hidden) { $('search').value = ''; category.value = 'all'; filter(); }
+  });
+  filter();
+})();
+</script>
+</body>
+</html>

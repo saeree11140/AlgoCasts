@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>ฝึก Program Coding · 12 ข้อ</title>
+<style>
+:root{font-family:Tahoma,"Thonburi",system-ui,sans-serif;color:#172b4d;background:#edf2f7;font-size:16px;line-height:1.8;--blue:#1257c7;--line:#c8d3e1}
+*{box-sizing:border-box}body{margin:0}a{color:var(--blue)}button,select{font:inherit;color:inherit}button,select,summary{cursor:pointer}button{border:1px solid var(--line);background:#fff;padding:.5rem .85rem;border-radius:6px}button:hover{background:#eaf1fc}button:disabled{cursor:default;opacity:.45}button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #1257c7;outline-offset:3px}button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}[hidden]{display:none!important}
+.skip{position:absolute;top:-80px;left:12px;background:white;z-index:5}.skip:focus{top:8px}.shell{max-width:1200px;margin:0 auto;padding:40px 32px 70px}header{max-width:850px;margin-bottom:24px}h1{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.35;letter-spacing:-.02em;margin:0 0 14px}h2{font-size:1.5rem;margin:0 0 20px}h3{font-size:1.1rem;margin:22px 0 8px}p{margin:0 0 14px}.muted{color:#45566d}.intro{max-width:76ch}.toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:20px 0}select{padding:9px;border:1px solid var(--line);border-radius:5px;background:white;max-width:100%}.guide{max-width:850px;margin-bottom:24px}.guide>summary{padding:10px 0;font-weight:bold}.guide-content{padding:12px 0}.layout{display:grid;grid-template-columns:160px minmax(0,1fr);gap:26px;align-items:start}nav{position:sticky;top:20px}.nav-label{font-size:.9rem;margin-bottom:10px}#nav-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}nav button[aria-current="true"]{background:#172b4d;color:white;border-color:#172b4d}.worksheet{background:white;min-width:0;border-top:5px solid #1257c7;padding:30px 38px}.question{max-width:80ch;margin:0 auto}.question-body{overflow-wrap:anywhere}pre{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font: .9rem/1.65 "SFMono-Regular",Consolas,monospace;background:#f1f5fa;border:1px solid #dce4ee;border-radius:5px;padding:16px;max-width:100%;margin:12px 0 22px}code{font-family:"SFMono-Regular",Consolas,monospace;font-size:.9em}p code,li code{background:#edf2f7;padding:1px 4px;border-radius:3px}ul,ol{padding-left:24px;margin:10px 0 18px}li+li{margin-top:7px}.help-area{border-left:4px solid #1257c7;background:#f3f7fe;padding:8px 18px;margin-top:26px}.help-area details{border-bottom:1px solid #c8d3e1}.help-area details:last-child{border-bottom:0}.help-area summary{font-weight:bold;padding:12px 0}.help-area .details-body{padding-bottom:12px}.help-area .answer pre{background:white}.complexity{color:#45566d}.sample-label{font-weight:bold}.starter-action{margin:20px 0}.mock-bar{border-left:4px solid #1257c7;background:#e4eefc;padding:14px 18px;margin-bottom:24px}.bottom-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}.checklist label{display:flex;align-items:start;gap:10px;margin:8px 0}.checklist input{margin-top:8px;width:17px;height:17px;flex-shrink:0}footer{color:#45566d;font-size:.88rem;margin:26px 0 0 186px;max-width:80ch}#status{margin-top:12px;color:#126447;min-height:1.8em}noscript p{padding:12px;background:white}
+@media(max-width:760px){.shell{padding:24px 16px 40px}.layout{grid-template-columns:1fr;gap:16px}nav{position:static}#nav-buttons{grid-template-columns:repeat(6,1fr)}nav button{padding:8px 0}.worksheet{padding:24px 20px}footer{margin-left:0}.help-area{padding:6px 12px}.toolbar{gap:8px}pre{padding:12px;font-size:.82rem}}
+@media(max-width:380px){#nav-buttons{grid-template-columns:repeat(4,1fr)}.worksheet{padding:20px 15px}}
+@media print{body{background:white}.shell{padding:0}.toolbar,nav,.bottom-nav,.starter-action,#status,.mock-bar{display:none!important}.layout{display:block}.worksheet{border:0;padding:0}.question{page-break-before:always}.question:first-child{page-break-before:auto}footer{margin-left:0}pre{break-inside:avoid}.help-area{background:white}header{margin-bottom:20px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#question-heading">ข้ามไปโจทย์</a>
+<div class="shell">
+<header>
+<h1>ฝึก Program Coding</h1>
+<div class="intro"><p>12 ข้อสำหรับฝึก data structures และ algorithms ด้วย TypeScript เริ่มจากพื้นฐาน 2 ข้อ ต่อด้วย Intermediate 8 ข้อ และข้อเสริม BFS / DP อีก 2 ข้อ</p>
+<p class="muted">อ่านโจทย์แล้วลองเขียนใน editor ก่อนเปิดคำใบ้ ข้อ 09–10 ใช้จำลองสอบครั้งละ 30 นาที ตั้งเวลาภายนอกและเปิดเฉลยเมื่อทำเสร็จ</p></div>
+</header>
+<details class="guide"><summary>วิธีฝึกและสิ่งที่ควรรู้ก่อนเริ่ม</summary><div class="guide-content">
+<p>อ่าน output และ constraints ให้ชัด เขียนวิธีตรงไปตรงมาก่อน แล้วดูว่า input ใหญ่สุดทำให้ต้องลดจำนวนรอบหรือไม่ ลอง input เล็กสุด ค่าซ้ำ และค่าที่ชนขอบเงื่อนไข</p>
+<p>ทุกข้อห้ามแก้ input ใช้ standard library ได้ ไม่ใช้ external packages ข้อมูลเลขเป็นจำนวนเต็มและอยู่ในช่วงที่ <code>number</code> เก็บได้ตรง ตัวอย่างใช้ JSON แทน parameters ของ function</p>
+<p>หน้านี้ใช้สำหรับอ่านและทบทวน ไม่รัน code และไม่บันทึก progress อัตโนมัติ ดาวน์โหลด starter ของข้อนี้แล้วทดสอบในเครื่องด้วยไฟล์จาก ZIP ตาม README คะแนน local cases เป็นเกณฑ์ฝึก แยกจากคะแนนสอบจริง</p>
+<p>กรอบเวลา mock: อ่านโจทย์ 4 นาที → วางวิธี 4 → code 14 → edge cases 6 → ตรวจ output/submit 2 หากเคยอ่านเฉลยแล้วให้ใช้เป็น practice แทนการวัดโจทย์ใหม่</p>
+<p>ชุดนี้เขียนโจทย์ใหม่จากแนวสาธารณะ HackerRank ระดับเป็นเป้าหมายฝึก ไม่ใช่ข้อยืนยันของข้อสอบบริษัท ดูแหล่งอ้างอิงท้ายหน้า</p>
+</div></details>
+<div class="toolbar"><label for="mode">รูปแบบฝึก</label><select id="mode"><option value="practice">ฝึกทีละข้อ</option><option value="mock">จำลองสอบ ข้อ 09–10</option></select></div>
+<div id="mock-bar" class="mock-bar" hidden><p id="mock-message"></p><button id="finish" class="primary" type="button">จบข้อนี้และเปิดทบทวน</button></div>
+<noscript><p>JavaScript ปิดอยู่: อ่านโจทย์ทั้งหมดด้านล่างได้ เปิด JavaScript เพื่อเลือกข้อและใช้โหมดจำลองสอบ</p><style>.question[hidden]{display:block!important}.layout{display:block}nav,.toolbar,.starter-action,.bottom-nav{display:none}</style></noscript>
+<div class="layout">
+<nav aria-label="เลือกข้อ"><p class="nav-label">เลือกข้อฝึก</p><div id="nav-buttons"><button type="button" data-question="Q01" aria-label="ข้อ 01" aria-current="true">01</button>
+<button type="button" data-question="Q02" aria-label="ข้อ 02" aria-current="false">02</button>
+<button type="button" data-question="Q03" aria-label="ข้อ 03" aria-current="false">03</button>
+<button type="button" data-question="Q04" aria-label="ข้อ 04" aria-current="false">04</button>
+<button type="button" data-question="Q05" aria-label="ข้อ 05" aria-current="false">05</button>
+<button type="button" data-question="Q06" aria-label="ข้อ 06" aria-current="false">06</button>
+<button type="button" data-question="Q07" aria-label="ข้อ 07" aria-current="false">07</button>
+<button type="button" data-question="Q08" aria-label="ข้อ 08" aria-current="false">08</button>
+<button type="button" data-question="Q09" aria-label="ข้อ 09" aria-current="false">09</button>
+<button type="button" data-question="Q10" aria-label="ข้อ 10" aria-current="false">10</button>
+<button type="button" data-question="Q11" aria-label="ข้อ 11" aria-current="false">11</button>
+<button type="button" data-question="Q12" aria-label="ข้อ 12" aria-current="false">12</button></div></nav>
+<main class="worksheet" id="main"><article id="Q01" class="question"><h2 tabindex="-1">ข้อ 01</h2><div class="question-body"><p>ให้ <code>statuses</code> เป็นผล request ตามลำดับเวลา <code>1</code> หมายถึงสำเร็จ <code>0</code> หมายถึงล้มเหลว<br>คืนจำนวน request สำเร็จทั้งหมด และความยาวของช่วงสำเร็จติดต่อกันที่ยาวที่สุด<br>ถ้าไม่มี request หรือไม่มีผลสำเร็จ ให้ทั้งสองค่าเป็น <code>0</code></p>
+<pre><code>function summarizeRequests(statuses: number[]): { successCount: number; longestRun: number }</code></pre>
+<p>Constraints: <code>0 &lt;= statuses.length &lt;= 200000</code>; สมาชิกเป็น <code>0</code> หรือ <code>1</code> เท่านั้น</p>
+<p>ตัวอย่าง 1: ช่วงสำเร็จยาวสุดคือ request ตำแหน่ง 3–5 (นับจาก 0)</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;statuses&quot;: [
+      1,
+      1,
+      0,
+      1,
+      1,
+      1,
+      0
+    ]
+  },
+  &quot;output&quot;: {
+    &quot;successCount&quot;: 5,
+    &quot;longestRun&quot;: 3
+  }
+}</code></pre>
+<p>ตัวอย่าง 2: ไม่มีข้อมูล</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;statuses&quot;: []
+  },
+  &quot;output&quot;: {
+    &quot;successCount&quot;: 0,
+    &quot;longestRun&quot;: 0
+  }
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q01">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>run จบเมื่อไร</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>ตัวนับสะสมกับตัวนับช่วงแยกกัน</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>success เพิ่ม count/run; failure reset run; อัปเดต max ทุกครั้ง</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>ตั้ง count, run และ best เป็น 0 เพราะยังไม่อ่าน request</li><li>อ่านทีละค่า: ถ้าเป็น 1 เพิ่ม count และ run; ถ้าเป็น 0 เริ่ม run ใหม่ที่ 0</li><li>อัปเดต best ทุกครั้งที่ run เพิ่ม ไม่รอจนเจอ 0 เพื่อไม่ตกหล่นช่วงท้าย</li><li>คืน count และ best หลังอ่านครบ</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>[1,1] ทำให้ count=2, run=2, best=2</li><li>เจอ 0: run=0 แต่ count และ best คงเดิม</li><li>ช่วง [1,1,1] ต่อมาได้ count=5 และ best=3</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>หลังอ่านแต่ละตำแหน่ง run คือจำนวน 1 ติดต่อกันที่ลงท้ายตรงนี้ ส่วน best คือค่าสูงสุดในทุกตำแหน่งที่อ่านแล้ว จึงครอบคลุมทุกช่วงสำเร็จ</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>ไล่ทุกช่วงแล้วเช็กว่าเป็น 1 ทั้งหมดทำงานซ้ำมาก ใช้ตัวนับช่วงเดียวพอ</p><p class="complexity">Time: O(n)<br>Extra space: O(1)</p><h3>Reference TypeScript</h3><pre><code>export function summarizeRequests(statuses: number[]): { successCount: number; longestRun: number } {
+  let successCount = 0;
+  let longestRun = 0;
+  let run = 0;
+  for (const status of statuses) {
+    if (status === 1) {
+      successCount++;
+      run++;
+      longestRun = Math.max(longestRun, run);
+    } else {
+      run = 0;
+    }
+  }
+  return { successCount, longestRun };
+}</code></pre><h3>จุดพลาด</h3><ol><li>ลืมอัปเดต run ท้าย input</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><span></span><button type="button" data-target="Q02">ข้อถัดไป</button></div></article>
+<article id="Q02" class="question" hidden><h2 tabindex="-1">ข้อ 02</h2><div class="question-body"><p>ให้ <code>codes</code> เป็น string ของรหัสหนึ่งตัวอักษรตามลำดับที่ได้รับ<br>คืนอักษรตัวแรกตามลำดับ input ที่ปรากฏครั้งเดียวใน string ทั้งหมด หากไม่มีคืน <code>null</code></p>
+<pre><code>function firstUniqueCode(codes: string): string | null</code></pre>
+<p>Constraints: <code>0 &lt;= codes.length &lt;= 200000</code>; อักษร <code>a</code>–<code>z</code> เท่านั้น</p>
+<p>ตัวอย่าง 1: <code>s</code> ซ้ำ ส่วน <code>w</code> และ <code>i</code> ไม่ซ้ำ เลือก <code>w</code> เพราะอยู่ก่อน</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;codes&quot;: &quot;swiss&quot;
+  },
+  &quot;output&quot;: &quot;w&quot;
+}</code></pre>
+<p>ตัวอย่าง 2: ไม่มีอักษรเกิดครั้งเดียว</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;codes&quot;: &quot;aabb&quot;
+  },
+  &quot;output&quot;: null
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q02">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>ต้องรู้ทั้งจำนวนและลำดับหรือไม่</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>นับก่อน เลือกทีหลัง</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>frequency pass → scan input หา count=1</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>นับอักษรทั้ง string ก่อน เพราะตัวที่ดูไม่ซ้ำตอนต้นอาจซ้ำในภายหลัง</li><li>ใช้ array 26 ช่อง ตำแหน่ง charCodeAt(0)-97 แทน a ถึง z</li><li>เดิน string เดิมอีกครั้ง คืนตัวแรกที่จำนวนเป็น 1 เพื่อรักษาลำดับ</li><li>ถ้าเดินจนจบยังไม่พบ คืน null รวมกรณี string ว่าง</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>swiss มี s=3, w=1, i=1</li><li>scan ตาม input ข้าม s แล้วพบ w</li><li>คืน w ก่อน i แม้ทั้งคู่ไม่ซ้ำ</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>frequency สรุปจำนวนจริงทั้ง input แล้ว pass ที่สองตรวจตามลำดับเดิม จึงได้สมาชิกไม่ซ้ำตัวแรกตาม contract</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>นับทั้ง string ซ้ำสำหรับทุกอักษรเป็น O(n²); เก็บ frequency ช่วยลดเป็น O(n)</p><p class="complexity">Time: O(n)<br>Extra space: O(1) เพราะ alphabet คงที่ 26 ตัว</p><h3>Reference TypeScript</h3><pre><code>export function firstUniqueCode(codes: string): string | null {
+  const counts = new Array&lt;number&gt;(26).fill(0);
+  for (const c of codes) counts[c.charCodeAt(0) - 97]++;
+  for (const c of codes) {
+    if (counts[c.charCodeAt(0) - 97] === 1) return c;
+  }
+  return null;
+}</code></pre><h3>จุดพลาด</h3><ol><li>คืนตัวอักษรน้อยสุดแทนตัวแรก</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><button type="button" data-target="Q01">ข้อก่อนหน้า</button><button type="button" data-target="Q03">ข้อถัดไป</button></div></article>
+<article id="Q03" class="question" hidden><h2 tabindex="-1">ข้อ 03</h2><div class="question-body"><p>ให้ยอดรายการ <code>amounts</code> และจำนวนเต็ม <code>target</code> นับคู่ index <code>(i,j)</code> ที่ <code>i &lt; j</code> และ <code>amounts[i] + amounts[j] === target</code><br>รายการมูลค่าเท่ากันคนละ index ถือเป็นคนละรายการ ห้ามจับรายการเดียวกับตัวเอง และแต่ละคู่ index นับครั้งเดียว<br>คืนจำนวนคู่ทั้งหมด ไม่มีคู่คืน <code>0</code></p>
+<pre><code>function countTargetPairs(amounts: number[], target: number): number</code></pre>
+<p>Constraints: <code>0 &lt;= amounts.length &lt;= 200000</code>; <code>-1000000000 &lt;= amounts[i], target &lt;= 1000000000</code></p>
+<p>ตัวอย่าง 1: คู่ <code>1+5</code> มี 2 คู่ และ <code>3+3</code> มี 1 คู่</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;amounts&quot;: [
+      1,
+      5,
+      3,
+      3,
+      5
+    ],
+    &quot;target&quot;: 6
+  },
+  &quot;output&quot;: 3
+}</code></pre>
+<p>ตัวอย่าง 2: <code>-2</code> จับกับ <code>2</code> ได้สอง index; <code>0</code> มีตัวเดียว</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;amounts&quot;: [
+      -2,
+      0,
+      2,
+      2
+    ],
+    &quot;target&quot;: 0
+  },
+  &quot;output&quot;: 2
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q03">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>เมื่อเห็น x ต้องรู้ค่าใดจากอดีต</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>Map เก็บ frequency</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>answer += seen[target-x] แล้วค่อย seen[x]++</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>Map เก็บจำนวนครั้งของค่าที่อยู่ก่อน index ปัจจุบัน</li><li>เมื่ออ่าน x คู่ที่ต้องการคือ target-x บวกจำนวนค่านั้นเข้า answer</li><li>ค่อยเพิ่มความถี่ของ x หลังนับคู่ เพื่อไม่จับ index เดียวกับตัวเอง</li><li>ไม่ต้องหารคำตอบด้วย 2 เพราะแต่ละคู่ถูกนับตอนเจอ index ด้านขวาเพียงครั้งเดียว</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>target=6 อ่าน 1 ยังไม่มี 5 จึงได้ 0 คู่</li><li>อ่าน 5 ตัวแรกพบ 1 เพิ่มเป็น 1; อ่าน 3 สองตัวเพิ่มอีก 1 คู่</li><li>อ่าน 5 ตัวสุดท้ายพบ 1 อีกครั้ง ได้ทั้งหมด 3 คู่</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>ทุกคู่ i&lt;j ถูกนับเมื่อเดินถึง j เท่านั้น Map มี i ครบและไม่มี j จึงไม่มีคู่หายหรือถูกนับซ้ำ</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>nested loops ตรวจทุกคู่เป็น O(n²) จำนวน 200000 รายการมีเกือบ 2 หมื่นล้านคู่</p><p class="complexity">Time: expected O(n)<br>Extra space: O(u) โดย u คือจำนวนค่าต่างกัน</p><h3>Reference TypeScript</h3><pre><code>export function countTargetPairs(amounts: number[], target: number): number {
+  const seen = new Map&lt;number, number&gt;();
+  let answer = 0;
+  for (const value of amounts) {
+    // Only earlier indices are eligible; insert after counting.
+    answer += seen.get(target - value) ?? 0;
+    seen.set(value, (seen.get(value) ?? 0) + 1);
+  }
+  return answer;
+}</code></pre><h3>จุดพลาด</h3><ol><li>ใช้ Set แล้วจำนวนซ้ำหาย</li><li>เก็บ x ก่อน lookup แล้วจับตัวเอง</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><button type="button" data-target="Q02">ข้อก่อนหน้า</button><button type="button" data-target="Q04">ข้อถัดไป</button></div></article>
+<article id="Q04" class="question" hidden><h2 tabindex="-1">ข้อ 04</h2><div class="question-body"><p>ให้รายการ <code>codes</code> จัดกลุ่ม string ที่มีอักษรชนิดเดียวกันและจำนวนเท่ากันโดยไม่สนลำดับอักษร<br>คืน array ของกลุ่ม: เรียงกลุ่มตามตำแหน่งสมาชิกตัวแรกที่พบ และสมาชิกในกลุ่มตามลำดับ input<br>เก็บสมาชิกซ้ำไว้ครบ string ว่างจัดกลุ่มด้วยกัน ไม่มีรายการคืน <code>[]</code></p>
+<pre><code>function groupCodes(codes: string[]): string[][]</code></pre>
+<p>Constraints: <code>0 &lt;= codes.length &lt;= 100000</code>; string แต่ละตัวมี <code>0–100</code> อักษร <code>a</code>–<code>z</code>; ความยาว string รวมไม่เกิน <code>200000</code></p>
+<p>ตัวอย่าง 1: กลุ่ม <code>eat</code> พบก่อน <code>tan</code> แล้วจึง <code>bat</code></p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;codes&quot;: [
+      &quot;eat&quot;,
+      &quot;tea&quot;,
+      &quot;tan&quot;,
+      &quot;ate&quot;,
+      &quot;nat&quot;,
+      &quot;bat&quot;
+    ]
+  },
+  &quot;output&quot;: [
+    [
+      &quot;eat&quot;,
+      &quot;tea&quot;,
+      &quot;ate&quot;
+    ],
+    [
+      &quot;tan&quot;,
+      &quot;nat&quot;
+    ],
+    [
+      &quot;bat&quot;
+    ]
+  ]
+}</code></pre>
+<p>ตัวอย่าง 2: ต้องไม่ลบ string ซ้ำออก</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;codes&quot;: [
+      &quot;&quot;,
+      &quot;&quot;,
+      &quot;a&quot;,
+      &quot;a&quot;
+    ]
+  },
+  &quot;output&quot;: [
+    [
+      &quot;&quot;,
+      &quot;&quot;
+    ],
+    [
+      &quot;a&quot;,
+      &quot;a&quot;
+    ]
+  ]
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q04">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>จะเปลี่ยนคำให้เป็น key ที่เท่ากันเมื่อจัดกลุ่มเดียวกันอย่างไร</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>counts 26 ช่อง</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>สร้าง key แล้ว append เข้ากลุ่มที่ Map ชี้</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>แต่ละคำสร้างจำนวน a ถึง z ครบ 26 ช่อง</li><li>ใช้ counts.join(&quot;,&quot;) เป็น key ตัวคั่นทำให้จำนวนหลายหลักไม่ชนกัน</li><li>Map ชี้ key ไป index กลุ่ม ถ้ายังไม่มีกลุ่มให้สร้างต่อท้าย</li><li>append คำทุกครั้งตามลำดับ input แม้คำซ้ำ จึงรักษาทั้งลำดับกลุ่มและสมาชิก</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>eat เปิดกลุ่ม 0; tea มี key เดียวกันจึงเข้ากลุ่ม 0</li><li>tan เปิดกลุ่ม 1; ate ย้อนเข้า 0 แต่ไม่ย้ายตำแหน่งกลุ่ม</li><li>nat เข้า 1; bat เปิดกลุ่ม 2</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>คำสองคำมีจำนวนตัวอักษรทั้ง 26 ชนิดเท่ากันก็ต่อเมื่อสลับเป็นกันได้ การ append ตาม input รักษาลำดับโดยไม่ต้อง sort กลุ่ม</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>sort อักษรแต่ละคำเพื่อเป็น key ก็ถูก แต่ frequency key มีต้นทุน O(length+26) และไม่ต้องเปลี่ยนลำดับคำ</p><p class="complexity">Time: O(C+26n)<br>Extra space: O(26u) นอก output; C คืออักษรรวม u คือจำนวนกลุ่ม</p><h3>Reference TypeScript</h3><pre><code>export function groupCodes(codes: string[]): string[][] {
+  const groups: string[][] = [];
+  const indexByKey = new Map&lt;string, number&gt;();
+  for (const code of codes) {
+    const counts = new Array&lt;number&gt;(26).fill(0);
+    for (const c of code) counts[c.charCodeAt(0) - 97]++;
+    const key = counts.join(&quot;,&quot;);
+    let index = indexByKey.get(key);
+    if (index === undefined) {
+      index = groups.length;
+      indexByKey.set(key, index);
+      groups.push([]);
+    }
+    groups[index].push(code);
+  }
+  return groups;
+}</code></pre><h3>จุดพลาด</h3><ol><li>ต่อ count โดยไม่มีตัวคั่น, มอง aab กับ abb เป็นกลุ่มเดียว, ลบ duplicates</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><button type="button" data-target="Q03">ข้อก่อนหน้า</button><button type="button" data-target="Q05">ข้อถัดไป</button></div></article>
+<article id="Q05" class="question" hidden><h2 tabindex="-1">ข้อ 05</h2><div class="question-body"><p>ให้ราคา <code>prices</code> และงบ <code>limit</code> นับคู่สินค้า index <code>(i,j)</code> ที่ <code>i &lt; j</code> และ <code>prices[i] + prices[j] &lt;= limit</code><br>สินค้าราคาเท่ากันคนละ index ถือเป็นคนละชิ้น คืนจำนวนคู่ทั้งหมด ไม่มีคู่คืน <code>0</code></p>
+<pre><code>function countAffordablePairs(prices: number[], limit: number): number</code></pre>
+<p>Constraints: <code>0 &lt;= prices.length &lt;= 200000</code>; <code>0 &lt;= prices[i] &lt;= 1000000000</code>; <code>0 &lt;= limit &lt;= 2000000000</code></p>
+<p>ตัวอย่าง 1: คู่ราคา <code>(1,2), (1,3), (1,4), (2,3)</code></p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;prices&quot;: [
+      4,
+      1,
+      2,
+      3
+    ],
+    &quot;limit&quot;: 5
+  },
+  &quot;output&quot;: 4
+}</code></pre>
+<p>ตัวอย่าง 2: เลือก 2 ชิ้นจาก 3 ชิ้นได้ 3 คู่</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;prices&quot;: [
+      2,
+      2,
+      2
+    ],
+    &quot;limit&quot;: 4
+  },
+  &quot;output&quot;: 3
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q05">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>หลังเรียง หากคู่ปลายสองด้านผ่าน มีคู่ใดผ่านตามทันที</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>two pointers</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>ผ่านเพิ่ม r-l แล้วเลื่อน l; ไม่ผ่านลด r</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>สร้างสำเนาราคาแล้ว sort ด้วย comparator ตัวเลข ห้าม sort input โดยตรง</li><li>ตั้ง left ที่ราคาน้อยสุด right ที่มากสุด</li><li>ถ้าราคาปลายรวมไม่เกินงบ ทุกตัวระหว่าง left+1 ถึง right จับกับ left ได้ เพิ่ม right-left แล้วเลื่อน left</li><li>ถ้าเกินงบ ลด right เพราะจับราคาสูงสุดกับค่าที่เหลือก็ไม่ช่วย; หยุดเมื่อ left&gt;=right</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>เรียง [4,1,2,3] เป็น [1,2,3,4] งบ 5</li><li>1+4 ผ่าน เพิ่ม 3 คู่ เพราะ 1 จับได้กับ 2,3,4</li><li>2+4 ไม่ผ่าน ลด right; 2+3 ผ่าน เพิ่ม 1 รวม 4 คู่</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>เมื่อ a[left]+a[right] ผ่าน ทุก a[j] ที่ j&lt;=right ก็ผ่านกับ left; เมื่อไม่ผ่าน a[right] จับกับตัวที่มากกว่า left ก็ยิ่งเกิน จึงตัด right ได้</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>nested loops นับคู่ถูกแต่ช้า; sort ทำให้ขยายผลหนึ่งเงื่อนไขไปได้หลายคู่พร้อมกัน</p><p class="complexity">Time: O(n log n)<br>Extra space: O(n) สำหรับสำเนาและ sort ตาม runtime</p><h3>Reference TypeScript</h3><pre><code>export function countAffordablePairs(prices: number[], limit: number): number {
+  const sorted = [...prices].sort((a, b) =&gt; a - b);
+  let left = 0;
+  let right = sorted.length - 1;
+  let answer = 0;
+  while (left &lt; right) {
+    if (sorted[left] + sorted[right] &lt;= limit) {
+      answer += right - left;
+      left++;
+    } else {
+      right--;
+    }
+  }
+  return answer;
+}</code></pre><h3>จุดพลาด</h3><ol><li>ผ่านแล้วเพิ่มแค่ 1</li><li>ใช้ &lt; แทน &lt;=</li><li>sort input ต้นฉบับ</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><button type="button" data-target="Q04">ข้อก่อนหน้า</button><button type="button" data-target="Q06">ข้อถัดไป</button></div></article>
+<article id="Q06" class="question" hidden><h2 tabindex="-1">ข้อ 06</h2><div class="question-body"><p>ให้ string <code>text</code> มีเฉพาะวงเล็บ <code>()[]{}</code> คืน <code>true</code> เมื่อทุกวงเล็บปิดจับกับวงเล็บเปิดชนิดเดียวกันและซ้อนกันถูกลำดับ<br>ห้ามมีวงเล็บเปิดหรือปิดเหลือ string ว่างถือว่าถูกต้อง</p>
+<pre><code>function isValidConfiguration(text: string): boolean</code></pre>
+<p>Constraints: <code>0 &lt;= text.length &lt;= 200000</code></p>
+<p>ตัวอย่าง 1: ซ้อนครบและตรงชนิด</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;text&quot;: &quot;{[()]}&quot;
+  },
+  &quot;output&quot;: true
+}</code></pre>
+<p>ตัวอย่าง 2: ปิดข้ามลำดับ</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;text&quot;: &quot;([)]&quot;
+  },
+  &quot;output&quot;: false
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q06">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>วงเล็บปิดต้องจับกับตัวเปิดใด</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>stack</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>pop ต้องตรงชนิด; ปิดบน stack ว่างผิด; จบต้องว่าง</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>ใช้ stack เก็บวงเล็บเปิดที่ยังรอจับคู่</li><li>ถ้าเจอวงเล็บปิด pop ตัวบนสุดแล้วเทียบชนิด ถ้าไม่ตรงหรือ stack ว่างคืน false</li><li>ลำดับ stack บังคับให้ปิดคู่ที่เปิดล่าสุดก่อน จึงไม่ยอมรับวงเล็บไขว้</li><li>อ่านครบแล้วคืน true เฉพาะ stack ว่าง เพื่อจับวงเล็บเปิดค้าง</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>([)] เก็บ ( แล้ว [ ลง stack</li><li>เจอ ) ต้องการ ( แต่ stack top เป็น [</li><li>คืน false ทันที แม้จำนวนเปิดปิดแต่ละชนิดจะเท่ากัน</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>วงเล็บปิดต้องตรงกับวงเล็บเปิดที่ยังไม่ปิดตัวล่าสุด stack จำลำดับนั้นพอดี และเมื่อจบต้องไม่มีตัวรอปิด</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>นับวงเล็บเปิดปิดอย่างเดียวไม่รู้ลำดับ; ลบคู่ซ้ำทำได้แต่เสี่ยง O(n²)</p><p class="complexity">Time: O(n)<br>Extra space: O(n)</p><h3>Reference TypeScript</h3><pre><code>export function isValidConfiguration(text: string): boolean {
+  const stack: string[] = [];
+  const opener: Record&lt;string, string&gt; = { &quot;)&quot;: &quot;(&quot;, &quot;]&quot;: &quot;[&quot;, &quot;}&quot;: &quot;{&quot; };
+  for (const c of text) {
+    if (c === &quot;(&quot; || c === &quot;[&quot; || c === &quot;{&quot;) stack.push(c);
+    else if (stack.pop() !== opener[c]) return false;
+  }
+  return stack.length === 0;
+}</code></pre><h3>จุดพลาด</h3><ol><li>นับเปิด/ปิดอย่างเดียวจนยอมรับ ([)]</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><button type="button" data-target="Q05">ข้อก่อนหน้า</button><button type="button" data-target="Q07">ข้อถัดไป</button></div></article>
+<article id="Q07" class="question" hidden><h2 tabindex="-1">ข้อ 07</h2><div class="question-body"><p>ให้ <code>timestamps</code> เป็นเวลา request หน่วยมิลลิวินาที เรียงจากน้อยไปมากแล้ว และจำนวนเต็มบวก <code>duration</code><br>คืนจำนวน request มากที่สุดที่อยู่ในช่วงเวลาใดช่วงหนึ่ง <code>[s,s+duration)</code> คือรวมจุดเริ่ม แต่ไม่รวมจุดสิ้นสุด<br>request เวลาเดียวกันนับแยกกัน ไม่มี request คืน <code>0</code></p>
+<pre><code>function peakRequests(timestamps: number[], duration: number): number</code></pre>
+<p>Constraints: <code>0 &lt;= timestamps.length &lt;= 200000</code>; <code>0 &lt;= timestamps[i] &lt;= 1000000000</code>; <code>1 &lt;= duration &lt;= 1000000000</code></p>
+<p>ตัวอย่าง 1: ช่วง <code>[0,5)</code> มี 3 request; เวลา <code>5</code> อยู่นอกช่วงนี้</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;timestamps&quot;: [
+      0,
+      0,
+      4,
+      5,
+      9
+    ],
+    &quot;duration&quot;: 5
+  },
+  &quot;output&quot;: 3
+}</code></pre>
+<p>ตัวอย่าง 2: request แต่ละคู่ห่างกันเท่า duration จึงไม่อยู่ในช่วงเดียวกัน</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;timestamps&quot;: [
+      1,
+      6,
+      11
+    ],
+    &quot;duration&quot;: 5
+  },
+  &quot;output&quot;: 1
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q07">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>request เก่าหลุดหน้าต่างเมื่อไร</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>sliding window</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>while ส่วนต่าง &gt;= duration ให้เลื่อน left</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>input เรียงแล้ว right จึงเลื่อนไปข้างหน้าได้ทีละ request</li><li>เมื่อ time[right]-time[left] &gt;= duration request ซ้ายเก่าเกินช่วง ให้เลื่อน left ด้วย while จนเงื่อนไขถูก</li><li>ช่วง left..right ปัจจุบันมีจำนวน right-left+1 เก็บค่าสูงสุด</li><li>left และ right แต่ละตัวขยับไม่เกิน n ครั้ง รวมเป็น O(n) แม้มี while ซ้อน</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>เวลา [0,0,4] อยู่ใน [0,5) ได้ 3 request</li><li>เมื่อ right เป็น 5 ต้องเลื่อนผ่าน 0 ทั้งสองตัว เพราะส่วนต่างเท่ากับ 5</li><li>ช่วงใหม่ [4,5] มี 2 ตัว; best ยังคง 3</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>สำหรับ right แต่ละตัว left เป็นขอบซ้ายที่เล็กสุดที่ยังอยู่ในช่วง duration จึงได้ช่วงยาวสุดที่จบตรง right; max ครอบคลุมคำตอบทั้งหมด</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>เริ่มนับใหม่ทุก request เป็น O(n²); หน้าต่างเลื่อนใช้ข้อมูลเดิมและไม่ถอย pointers</p><p class="complexity">Time: O(n)<br>Extra space: O(1)</p><h3>Reference TypeScript</h3><pre><code>export function peakRequests(timestamps: number[], duration: number): number {
+  let left = 0;
+  let answer = 0;
+  for (let right = 0; right &lt; timestamps.length; right++) {
+    while (timestamps[right] - timestamps[left] &gt;= duration) left++;
+    answer = Math.max(answer, right - left + 1);
+  }
+  return answer;
+}</code></pre><h3>จุดพลาด</h3><ol><li>ใช้ &gt; แทน &gt;= ตอนหดหน้าต่าง</li><li>ใช้ if แทน while</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><button type="button" data-target="Q06">ข้อก่อนหน้า</button><button type="button" data-target="Q08">ข้อถัดไป</button></div></article>
+<article id="Q08" class="question" hidden><h2 tabindex="-1">ข้อ 08</h2><div class="question-body"><p>ให้ <code>jobs</code> แต่ละรายการเป็น <code>[start,end]</code> แทนช่วงเวลาทำงาน <code>[start,end)</code> โดย <code>start &lt; end</code><br>ทำได้ครั้งละหนึ่งงาน ต้องทำครบช่วง ห้ามแบ่งงาน และทุกงานมีค่าเท่ากัน<br>คืนจำนวนงานมากที่สุดที่เลือกทำได้ งานหนึ่งจบตรงกับอีกงานเริ่มถือว่าไม่ทับกัน รายการซ้ำเป็นงานคนละงานแต่ยังต้องใช้ช่วงเวลาเดิม</p>
+<pre><code>function maxJobs(jobs: [number, number][]): number</code></pre>
+<p>Constraints: <code>0 &lt;= jobs.length &lt;= 200000</code>; <code>0 &lt;= start &lt; end &lt;= 1000000000</code>; input ไม่จำเป็นต้องเรียง</p>
+<p>ตัวอย่าง 1: เลือก <code>[1,2], [2,4], [4,6]</code> ได้ 3 งาน</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;jobs&quot;: [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        6
+      ]
+    ]
+  },
+  &quot;output&quot;: 3
+}</code></pre>
+<p>ตัวอย่าง 2: รับงาน <code>[1,4]</code> ได้เพียงหนึ่งรายการ แล้วต่อด้วย <code>[4,5]</code></p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;jobs&quot;: [
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        4,
+        5
+      ]
+    ]
+  },
+  &quot;output&quot;: 2
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q08">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>งานแบบไหนเหลือเวลารับงานต่อมากสุด</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>greedy ตาม end</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>sort end แล้วเลือกงานที่ start &gt;= lastEnd</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>sort สำเนารายการงานตามเวลาจบจากน้อยไปมาก</li><li>เก็บ lastEnd ของงานล่าสุด เริ่ม -Infinity เพื่อรับงานแรกได้</li><li>รับงานเมื่อ start&gt;=lastEnd แล้วเพิ่มจำนวนและตั้ง lastEnd=end</li><li>เลือกงานจบเร็วสุดเหลือช่วงเวลาภายหลังมากสุด งานทุกชิ้นมีค่าเท่ากันจึงไม่ต้องถ่วงน้ำหนัก</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>เรียงตาม end ได้ [1,2], [0,3], [2,4], [3,5], [4,6]</li><li>รับ [1,2] และ [2,4]; ข้าม [0,3] และ [3,5] เพราะทับงานที่เลือก</li><li>รับ [4,6] รวม 3 งาน</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>แทนงานแรกของคำตอบที่ดีที่สุดด้วยงานที่จบเร็วสุดได้โดยจำนวนงานไม่ลดและไม่เบียดงานถัดไป ทำซ้ำกับงานที่เหลือจึงได้จำนวนสูงสุด</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>enumerate subsets มี 2^n แบบ; greedy ถูกเพราะทุกงานมีค่าเท่ากัน กรณีงานมีน้ำหนักต่างกันต้องใช้วิธีอื่น</p><p class="complexity">Time: O(n log n)<br>Extra space: O(n) สำหรับสำเนาและ sort ตาม runtime</p><h3>Reference TypeScript</h3><pre><code>export function maxJobs(jobs: [number, number][]): number {
+  const sorted = [...jobs].sort((a, b) =&gt; a[1] - b[1] || a[0] - b[0]);
+  let lastEnd = -Infinity;
+  let answer = 0;
+  for (const [start, end] of sorted) {
+    if (start &gt;= lastEnd) {
+      answer++;
+      lastEnd = end;
+    }
+  }
+  return answer;
+}</code></pre><h3>จุดพลาด</h3><ol><li>sort ตาม start หรือ duration</li><li>ไม่ยอมรับงานที่เริ่มตรง end</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><button type="button" data-target="Q07">ข้อก่อนหน้า</button><button type="button" data-target="Q09">ข้อถัดไป</button></div></article>
+<article id="Q09" class="question" hidden><h2 tabindex="-1">ข้อ 09</h2><div class="question-body"><p>มีพัสดุน้ำหนัก <code>weights</code> ตามลำดับคิว ต้องส่งให้ครบภายในไม่เกิน <code>days</code> วัน<br>รถมี capacity เท่ากันทุกวัน แต่ละวันขนพัสดุจากคิวที่เหลือตามลำดับ ห้ามข้ามชิ้น ห้ามแบ่งน้ำหนัก และน้ำหนักรวมวันนั้นต้องไม่เกิน capacity<br>แต่ละชิ้นส่งครั้งเดียว อนุญาตให้ใช้วันน้อยกว่า <code>days</code> คืน capacity จำนวนเต็มบวกต่ำสุดที่ทำได้</p>
+<pre><code>function minimumCapacity(weights: number[], days: number): number</code></pre>
+<p>Constraints: <code>1 &lt;= weights.length &lt;= 100000</code>; <code>1 &lt;= weights[i] &lt;= 1000000000</code>; <code>1 &lt;= days &lt;= 100000</code></p>
+<p>ตัวอย่าง 1: capacity <code>18</code> ส่ง <code>[7,2,5]</code> วันแรก และ <code>[10,8]</code> วันที่สอง; capacity ต่ำกว่านี้ส่งไม่ทัน</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;weights&quot;: [
+      7,
+      2,
+      5,
+      10,
+      8
+    ],
+    &quot;days&quot;: 2
+  },
+  &quot;output&quot;: 18
+}</code></pre>
+<p>ตัวอย่าง 2: มีวันพอแยกแต่ละชิ้น แต่ capacity ต้องรับชิ้นน้ำหนัก <code>5</code> ได้</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;weights&quot;: [
+      5,
+      1,
+      2
+    ],
+    &quot;days&quot;: 5
+  },
+  &quot;output&quot;: 5
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q09">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>ถ้า capacity c ทำได้ เพิ่ม capacity จะทำไม่ได้หรือไม่</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>binary search on answer</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>จำลอง days เป็น predicate; feasible ลด upper bound</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>capacity ต่ำสุดต้องไม่น้อยกว่าพัสดุหนักสุด ส่วนผลรวมน้ำหนักส่งทั้งหมดได้ในวันเดียว จึงใช้เป็นขอบเขต search</li><li>สำหรับ capacity หนึ่งค่า ไล่น้ำหนักตามคิว เติมวันปัจจุบันจนชิ้นถัดไปไม่พอแล้วเปิดวันใหม่</li><li>ถ้าจำนวนวันที่ใช้ไม่เกิน days ถือว่าทำได้; เพิ่ม capacity จะไม่ทำให้ต้องใช้วันมากขึ้น</li><li>binary search: ทำได้ให้ high=mid เพื่อหาค่าต่ำลง; ทำไม่ได้ให้ low=mid+1; ใช้ Math.floor ไม่ใช้ bitwise ที่ตัดเลขเหลือ 32-bit</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>[7,2,5,10,8] มีขอบเขต capacity [10,32]</li><li>capacity 17 ต้องแบ่ง [7,2,5], [10], [8] ใช้ 3 วัน จึงไม่ผ่าน days=2</li><li>capacity 18 แบ่ง [7,2,5], [10,8] ใช้ 2 วัน ผ่าน และเป็นค่าต่ำสุด</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>การเติมคิวในแต่ละวันจนเต็มส่งจำนวนชิ้นได้มากที่สุดสำหรับ capacity นั้น และ predicate ทำได้เป็น monotonic; binary search จึงหา feasible แรกได้</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>ลอง capacity ทุกจำนวนช้าเมื่อผลรวมน้ำหนักสูงถึง 10^14; binary search ลดเหลือประมาณ log2(W) รอบ</p><p class="complexity">Time: O(n log W) โดย W คือผลรวมน้ำหนัก<br>Extra space: O(1)</p><h3>Reference TypeScript</h3><pre><code>export function minimumCapacity(weights: number[], days: number): number {
+  let low = 0;
+  let high = 0;
+  for (const weight of weights) {
+    low = Math.max(low, weight);
+    high += weight;
+  }
+  const feasible = (capacity: number): boolean =&gt; {
+    let usedDays = 1;
+    let load = 0;
+    for (const weight of weights) {
+      if (load + weight &gt; capacity) {
+        usedDays++;
+        load = 0;
+      }
+      load += weight;
+      if (usedDays &gt; days) return false;
+    }
+    return true;
+  };
+  while (low &lt; high) {
+    const mid = low + Math.floor((high - low) / 2);
+    if (feasible(mid)) high = mid;
+    else low = mid + 1;
+  }
+  return low;
+}</code></pre><h3>จุดพลาด</h3><ol><li>ใช้ค่าเฉลี่ยอย่างเดียว, reorder น้ำหนัก, ต้องใช้ครบ days, off-by-one ใน search</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><button type="button" data-target="Q08">ข้อก่อนหน้า</button><button type="button" data-target="Q10">ข้อถัดไป</button></div></article>
+<article id="Q10" class="question" hidden><h2 tabindex="-1">ข้อ 10</h2><div class="question-body"><p>ให้ยอดรายวัน <code>values</code> ในรอบบัญชีที่วนจากวันสุดท้ายกลับวัน <code>0</code> และรายการคำถาม <code>queries</code> แต่ละรายการเป็น <code>[left,right]</code><br>คืนยอดรวมตามลำดับ queries รวมวันปลายทั้งสองด้าน:</p>
+<ul><li>ถ้า <code>left &lt;= right</code> รวมวัน <code>left</code> ถึง <code>right</code></li><li>ถ้า <code>left &gt; right</code> รวมวัน <code>left</code> ถึงวันสุดท้าย แล้วต่อวัน <code>0</code> ถึง <code>right</code> วนเพียงครั้งเดียว</li><li>ถ้า <code>left === right</code> รวมวันเดียว ไม่ใช่ทั้งรอบ ไม่มีการเปลี่ยนยอดระหว่าง queries</li></ul>
+<pre><code>function circularTotals(values: number[], queries: [number, number][]): number[]</code></pre>
+<p>Constraints: <code>1 &lt;= values.length &lt;= 200000</code>; <code>-1000000000 &lt;= values[i] &lt;= 1000000000</code>; <code>0 &lt;= queries.length &lt;= 200000</code>; index ทุกตัวอยู่ในช่วง <code>0..values.length-1</code></p>
+<p>ตัวอย่าง 1: query <code>[2,1]</code> รวม <code>5+1+3-2</code>; query <code>[3,3]</code> รวมเพียง <code>1</code></p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;values&quot;: [
+      3,
+      -2,
+      5,
+      1
+    ],
+    &quot;queries&quot;: [
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ]
+  },
+  &quot;output&quot;: [
+    6,
+    7,
+    1
+  ]
+}</code></pre>
+<p>ตัวอย่าง 2: ต้องเก็บเครื่องหมายลบและค่า 0 ให้ถูก</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;values&quot;: [
+      0,
+      -4
+    ],
+    &quot;queries&quot;: [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ]
+    ]
+  },
+  &quot;output&quot;: [
+    -4,
+    0,
+    -4
+  ]
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q10">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>ยอดช่วงใดใช้ผลรวมสะสมสองจุดได้</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>prefix sums</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>แยกช่วง wrap เป็นท้ายรอบ + ต้นรอบ</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>สร้าง prefix ยาว n+1 โดย prefix[0]=0 และ prefix[i+1]=prefix[i]+values[i]</li><li>ช่วงปกติ left&lt;=right ใช้ prefix[right+1]-prefix[left] ซึ่งรวมวันปลายทั้งสอง</li><li>ช่วงวน left&gt;right แบ่งเป็นท้ายรอบและต้นรอบ: prefix[n]-prefix[left]+prefix[right+1]</li><li>ทำแต่ละ query ใน O(1) แล้วคืน array ตามลำดับเดิม; left=right เข้าแขนงปกติจึงได้วันเดียว</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>values=[3,-2,5,1] ได้ prefix=[0,3,1,6,7]</li><li>query [0,2] ใช้ prefix[3]-prefix[0]=6</li><li>query [2,1] ใช้ (7-1)+1=7; [3,3] ใช้ 7-6=1</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>prefix[b]-prefix[a] คือผลรวม index a..b-1 ช่วงวนแยกเป็นสองส่วนที่ไม่ทับกัน จึงรวมครบโดยไม่มีวันซ้ำ</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>วนรวมแต่ละ query เป็น O(nq); prefix ใช้ O(n) เตรียมแล้ว O(1) ต่อ query</p><p class="complexity">Time: O(n+q)<br>Extra space: O(n) นอก output ของ q queries</p><h3>Reference TypeScript</h3><pre><code>export function circularTotals(values: number[], queries: [number, number][]): number[] {
+  const prefix = new Array&lt;number&gt;(values.length + 1).fill(0);
+  for (let i = 0; i &lt; values.length; i++) prefix[i + 1] = prefix[i] + values[i];
+  return queries.map(([left, right]) =&gt; {
+    if (left &lt;= right) return prefix[right + 1] - prefix[left];
+    return prefix[values.length] - prefix[left] + prefix[right + 1];
+  });
+}</code></pre><h3>จุดพลาด</h3><ol><li>รวมต่อ query O(n), ลืม +1, l=r ถูกตีเป็นเต็มรอบ</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><button type="button" data-target="Q09">ข้อก่อนหน้า</button><button type="button" data-target="Q11">ข้อถัดไป</button></div></article>
+<article id="Q11" class="question" hidden><h2 tabindex="-1">ข้อ 11</h2><div class="question-body"><p>มี service จำนวน <code>n</code> ตัว หมายเลข <code>0..n-1</code> และ <code>edges</code> แต่ละคู่ <code>[u,v]</code> เป็นการเชื่อมต่อสองทิศทาง<br>ข้ามหนึ่ง edge นับเป็นหนึ่ง hop คืนจำนวน hops ต่ำสุดจาก <code>source</code> ไป <code>target</code><br>ถ้าไปไม่ถึงคืน <code>-1</code>; ถ้า source และ target เดียวกันคืน <code>0</code> อนุญาต cycle, edge ซ้ำ และ self-loop</p>
+<pre><code>function minimumHops(n: number, edges: [number, number][], source: number, target: number): number</code></pre>
+<p>Constraints: <code>1 &lt;= n &lt;= 100000</code>; <code>0 &lt;= edges.length &lt;= 200000</code>; endpoint/source/target อยู่ใน <code>0..n-1</code></p>
+<p>ตัวอย่าง 1: เส้นทาง <code>0→1→2→4</code> ใช้ 3 hops</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;n&quot;: 6,
+    &quot;edges&quot;: [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    &quot;source&quot;: 0,
+    &quot;target&quot;: 4
+  },
+  &quot;output&quot;: 3
+}</code></pre>
+<p>ตัวอย่าง 2: service <code>2</code> แยกจากกลุ่มของ <code>0</code></p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;n&quot;: 3,
+    &quot;edges&quot;: [
+      [
+        0,
+        1
+      ]
+    ],
+    &quot;source&quot;: 0,
+    &quot;target&quot;: 2
+  },
+  &quot;output&quot;: -1
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q11">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>สำรวจตามจำนวน hop เพิ่มทีละชั้นอย่างไร</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>BFS</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>enqueue source ระยะ 0; เพื่อนที่ยังไม่พบได้ระยะ +1</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>สร้าง adjacency list โดยเพิ่มทั้ง u→v และ v→u</li><li>กำหนด distance ของทุก node เป็น -1 และ source เป็น 0 จากนั้น enqueue source</li><li>BFS อ่าน queue ด้วย head index เมื่อเจอเพื่อนที่ยังไม่พบ กำหนดระยะ current+1 ทันทีแล้ว enqueue</li><li>พบ target ครั้งแรกคือระยะต่ำสุด; ถ้าหมด queue ยังไม่พบคืน -1; source=target คืน 0 ตั้งแต่ต้น</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>จาก 0 พบ 1 และ 3 ที่ระยะ 1</li><li>พบ 2 ที่ระยะ 2 และ mark ทันที ไม่ enqueue ซ้ำเมื่อมาจากอีกทาง</li><li>จาก 2 พบ 4 ที่ระยะ 3 จึงคืน 3</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>BFS ประมวล node ตามระยะเพิ่มทีละชั้น เพื่อนที่พบครั้งแรกจึงไม่มีเส้นทางที่สั้นกว่าเหลือให้ค้น; visited ป้องกัน cycle และ duplicate edges</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>DFS ที่หยุดเมื่อพบ target ครั้งแรกไม่รับประกันระยะต่ำสุดในกราฟที่มีหลายเส้นทาง</p><p class="complexity">Time: O(V+E)<br>Extra space: O(V+E)</p><h3>Reference TypeScript</h3><pre><code>export function minimumHops(n: number, edges: [number, number][], source: number, target: number): number {
+  if (source === target) return 0;
+  const graph: number[][] = Array.from({ length: n }, () =&gt; []);
+  for (const [u, v] of edges) {
+    graph[u].push(v);
+    graph[v].push(u);
+  }
+  const distance = new Array&lt;number&gt;(n).fill(-1);
+  distance[source] = 0;
+  const queue = [source];
+  for (let head = 0; head &lt; queue.length; head++) {
+    const u = queue[head];
+    for (const v of graph[u]) {
+      if (distance[v] !== -1) continue;
+      distance[v] = distance[u] + 1;
+      if (v === target) return distance[v];
+      queue.push(v);
+    }
+  }
+  return -1;
+}</code></pre><h3>จุดพลาด</h3><ol><li>DFS เส้นทางแรก, mark ช้า, queue.shift() ซ้ำบนข้อมูลใหญ่</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><button type="button" data-target="Q10">ข้อก่อนหน้า</button><button type="button" data-target="Q12">ข้อถัดไป</button></div></article>
+<article id="Q12" class="question" hidden><h2 tabindex="-1">ข้อ 12</h2><div class="question-body"><p>ให้ <code>rewards</code> เป็นผลตอบแทนของงานแต่ละวัน เลือกทำหรือข้ามแต่ละวันได้ แต่ห้ามทำงานสองวันที่ติดกัน<br>คืนผลตอบแทนรวมสูงสุด อนุญาตไม่รับงานเลยและได้ <code>0</code>; ผลตอบแทนติดลบหมายถึงต้นทุนสุทธิ<br>วันแรกและวันสุดท้ายไม่ถือว่าติดกัน ตารางวันเป็นเส้นตรง</p>
+<pre><code>function maximumReward(rewards: number[]): number</code></pre>
+<p>Constraints: <code>0 &lt;= rewards.length &lt;= 200000</code>; <code>-1000000000 &lt;= rewards[i] &lt;= 1000000000</code></p>
+<p>ตัวอย่าง 1: เลือกวัน index <code>0,2,4</code> ได้ <code>2+9+1 = 12</code></p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;rewards&quot;: [
+      2,
+      7,
+      9,
+      3,
+      1
+    ]
+  },
+  &quot;output&quot;: 12
+}</code></pre>
+<p>ตัวอย่าง 2: ไม่รับงานเลยดีกว่ารับงานที่มีต้นทุน</p>
+<pre><code>{
+  &quot;input&quot;: {
+    &quot;rewards&quot;: [
+      -4,
+      -2,
+      -7
+    ]
+  },
+  &quot;output&quot;: 0
+}</code></pre></div><div class="starter-action"><button type="button" data-download="Q12">ดาวน์โหลด starter ข้อนี้</button></div><section class="help-area" aria-label="คำใบ้และเฉลย"><details class="hint"><summary>คำใบ้ชั้น 1</summary><div class="details-body"><p>วันสุดท้ายเลือก/ไม่เลือกได้ผลอย่างไร</p><details class="hint"><summary>คำใบ้ชั้น 2</summary><div class="details-body"><p>DP สอง state</p><details class="hint"><summary>คำใบ้ชั้น 3</summary><div class="details-body"><p>max(ดีที่สุดถึงเมื่อวาน, ดีที่สุดถึงวันก่อนหน้า+วันนี้)</p></div></details></div></details></div></details><details class="answer"><summary>เฉลยและวิธีคิด</summary><div class="details-body"><h3>วิธีคิดทีละขั้น</h3><ol><li>คำตอบที่รวมถึงวันนี้แบ่งได้สองทาง: ข้ามวันนี้ หรือเลือกวันนี้</li><li>ถ้าข้ามใช้ดีที่สุดถึงเมื่อวาน; ถ้าเลือกใช้ดีที่สุดถึงวันก่อนเมื่อวานบวก reward วันนี้</li><li>เลือก max ของสองทาง เก็บ today ก่อนขยับ state เพื่อไม่ใช้วันที่ติดกัน</li><li>เริ่มทั้งสอง state ที่ 0 รองรับการไม่เลือกงานเลยและค่าติดลบทั้งหมด</li></ol><h3>ไล่ตัวอย่าง</h3><ol><li>rewards=[2,7,9,3,1] ได้ best รายวันเป็น [2,7,11,11,12]</li><li>ถึงวัน index 2 เลือก 2+9=11 ดีกว่าเลือกเพียง 7</li><li>วันสุดท้ายเลือก best ถึง index 2 บวก 1 ได้ 12</li></ol><h3>เหตุผลที่วิธีนี้ถูก</h3><p>ทุกชุดวันที่ถูกต้องต้องเลือกหรือไม่เลือกวันสุดท้าย ถ้าเลือกห้ามวันก่อนหน้า สองทางของ recurrence จึงครอบคลุมและไม่ละเมิดเงื่อนไข</p><h3>เทียบวิธีตรงไปตรงมา</h3><p>ลอง subsets เป็น exponential; เลือกวันที่ค่าสูงสุดก่อนก็ผิดได้เพราะอาจกีดกันสองวันที่รวมกันดีกว่า</p><p class="complexity">Time: O(n)<br>Extra space: O(1)</p><h3>Reference TypeScript</h3><pre><code>export function maximumReward(rewards: number[]): number {
+  let twoDaysBack = 0;
+  let yesterday = 0;
+  for (const reward of rewards) {
+    const today = Math.max(yesterday, twoDaysBack + reward);
+    twoDaysBack = yesterday;
+    yesterday = today;
+  }
+  return yesterday;
+}</code></pre><h3>จุดพลาด</h3><ol><li>เลือกวันค่ามากสุดก่อน, ห้ามข้ามทุกวัน, update state ผิดลำดับ</li></ol><h3>Checklist ทบทวน</h3><div class="checklist"><label><input type="checkbox"> <span>คืนชนิดและลำดับผลลัพธ์ตรง signature</span></label><label><input type="checkbox"> <span>ผ่าน samples และ boundary ที่โจทย์อนุญาต</span></label><label><input type="checkbox"> <span>ไม่แก้ input และไม่ print debug ลง output</span></label><label><input type="checkbox"> <span>อธิบายวิธีคิดและ time/space complexity ได้</span></label></div></div></details></section><div class="bottom-nav"><button type="button" data-target="Q11">ข้อก่อนหน้า</button><span></span></div></article></main>
+</div>
+<div id="status" role="status" aria-live="polite"></div>
+<footer><p>อ้างอิง: <a href="https://www.hackerrank.com/interview/interview-preparation-kit" target="_blank" rel="noopener noreferrer">Interview Preparation Kit</a>, <a href="https://www.hackerrank.com/skills-directory/problem_solving_intermediate" target="_blank" rel="noopener noreferrer">Problem Solving Intermediate</a>, <a href="https://support.hackerrank.com/articles/3245197419-test-cases-in-coding-questions" target="_blank" rel="noopener noreferrer">test cases</a>. เปิดลิงก์ต้องใช้อินเทอร์เน็ต ส่วนชุดฝึกเปิด offline ได้</p><p>โจทย์และเฉลย: Codex · ข้อมูลอ้างอิง 19 พ.ย. 2026 · Bank program-coding-dsa-20261119</p></footer>
+</div>
+<script id="bank" type="application/json">{"bank": "program-coding-dsa-20261119", "questions": [{"id": "Q01", "starter": "export function summarizeRequests(statuses: number[]): { successCount: number; longestRun: number } {\n  throw new Error(\"TODO: Q01\");\n}\n"}, {"id": "Q02", "starter": "export function firstUniqueCode(codes: string): string | null {\n  throw new Error(\"TODO: Q02\");\n}\n"}, {"id": "Q03", "starter": "export function countTargetPairs(amounts: number[], target: number): number {\n  throw new Error(\"TODO: Q03\");\n}\n"}, {"id": "Q04", "starter": "export function groupCodes(codes: string[]): string[][] {\n  throw new Error(\"TODO: Q04\");\n}\n"}, {"id": "Q05", "starter": "export function countAffordablePairs(prices: number[], limit: number): number {\n  throw new Error(\"TODO: Q05\");\n}\n"}, {"id": "Q06", "starter": "export function isValidConfiguration(text: string): boolean {\n  throw new Error(\"TODO: Q06\");\n}\n"}, {"id": "Q07", "starter": "export function peakRequests(timestamps: number[], duration: number): number {\n  throw new Error(\"TODO: Q07\");\n}\n"}, {"id": "Q08", "starter": "export function maxJobs(jobs: [number, number][]): number {\n  throw new Error(\"TODO: Q08\");\n}\n"}, {"id": "Q09", "starter": "export function minimumCapacity(weights: number[], days: number): number {\n  throw new Error(\"TODO: Q09\");\n}\n"}, {"id": "Q10", "starter": "export function circularTotals(values: number[], queries: [number, number][]): number[] {\n  throw new Error(\"TODO: Q10\");\n}\n"}, {"id": "Q11", "starter": "export function minimumHops(n: number, edges: [number, number][], source: number, target: number): number {\n  throw new Error(\"TODO: Q11\");\n}\n"}, {"id": "Q12", "starter": "export function maximumReward(rewards: number[]): number {\n  throw new Error(\"TODO: Q12\");\n}\n"}]}</script>
+<script>
+'use strict';
+const bank=JSON.parse(document.getElementById('bank').textContent);
+const mode=document.getElementById('mode');
+const mockBar=document.getElementById('mock-bar');
+const finish=document.getElementById('finish');
+const status=document.getElementById('status');
+let current='Q01';
+const submitted=new Set();
+function show(id,focus=false){
+  if(mode.value==='mock'&&!['Q09','Q10'].includes(id))return;
+  current=id;
+  document.querySelectorAll('.question').forEach(article=>{
+    article.hidden=article.id!==id;
+    const gated=mode.value==='mock'&&!submitted.has(id);
+    article.querySelector('.help-area').hidden=gated;
+    if(gated)article.querySelectorAll('.help-area details').forEach(d=>d.open=false);
+  });
+  document.querySelectorAll('[data-question]').forEach(button=>{
+    button.setAttribute('aria-current',String(button.dataset.question===id));
+    button.disabled=mode.value==='mock'&&!['Q09','Q10'].includes(button.dataset.question);
+  });
+  document.querySelectorAll('[data-target]').forEach(button=>{
+    button.disabled=mode.value==='mock'&&!['Q09','Q10'].includes(button.dataset.target);
+  });
+  mockBar.hidden=mode.value!=='mock';
+  finish.hidden=submitted.has(id);
+  document.getElementById('mock-message').textContent=submitted.has(id)?'จบ '+id+' แล้ว เปิด hints และเฉลยเพื่อทบทวนได้':'เริ่ม '+id+' แล้ว ตั้งเวลา 30 นาทีภายนอก เมื่อพร้อมทบทวนให้กดจบข้อนี้';
+  const heading=document.querySelector('#'+id+' h2');
+  heading.id='question-heading';
+  document.querySelectorAll('.question h2').forEach(h=>{if(h!==heading)h.removeAttribute('id')});
+  if(focus){heading.focus();heading.scrollIntoView({block:'start',behavior:'instant'})}
+}
+document.querySelectorAll('[data-question]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.question,true)));
+document.querySelectorAll('[data-target]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.target,true)));
+mode.addEventListener('change',()=>{status.textContent='';if(mode.value==='mock'){submitted.clear();document.querySelectorAll('.help-area details').forEach(d=>d.open=false);show('Q09')}else show(current)});
+finish.addEventListener('click',()=>{submitted.add(current);show(current);status.textContent='เปิดทบทวน '+current+' แล้ว เช็กคำตอบใน local runner และใช้ checklist ประเมินตัวเอง'});
+document.querySelectorAll('[data-download]').forEach(button=>button.addEventListener('click',()=>{
+  const q=bank.questions.find(q=>q.id===button.dataset.download);
+  const url=URL.createObjectURL(new Blob([q.starter],{type:'text/plain;charset=utf-8'}));
+  const a=document.createElement('a');a.href=url;a.download=q.id.toLowerCase()+'.ts';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  status.textContent='ดาวน์โหลด starter '+q.id+' แล้ว';
+}));
+show(current);
+</script>
+</body>
+</html>
