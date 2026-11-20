@@ -12,4 +12,5 @@ export interface TestResult {name:string;status:'pass'|'fail'|'skip';error?:stri
 export interface RunResult {tests:TestResult[];logs:string[];error?:string}
 export interface Attempt {at:string;passed:number;total:number;success:boolean}
 export interface Progress {code?:string;solved?:boolean;bookmarked?:boolean;attempts?:Attempt[];updatedAt?:string}
-export interface SavedData {version:1;problems:Record<string,Progress>;read:string[];lastProblem?:string;theme?:'light'|'dark'}
+export type SqlProgress = Pick<Progress,'code'|'solved'>;
+export interface SavedData {version:1;problems:Record<string,Progress>;read:string[];lastProblem?:string;theme?:'light'|'dark';sqlPractice?:Record<string,SqlProgress>}

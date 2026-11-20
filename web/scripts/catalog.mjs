@@ -54,6 +54,7 @@ export const competencyInfo = {
   'System Design': ['system-design','System Design','ออกแบบระบบจาก requirement สู่สถาปัตยกรรม','SYS'],
   'Monitoring and Logging': ['monitoring','Monitoring & Logging','Logs, metrics, traces และ incident response','OBS'],
   'Software Engineering and Development': ['web-mobile','Web & Mobile Development','JavaScript, Frontend, Backend และ Mobile','WEB'],
+  'The JavaScript language.pdf': ['the-javascript-language','The JavaScript language','คู่มือภาษา JavaScript สำหรับอ่านทบทวนเป็นเอกสาร PDF','JS'],
   'Unit & Functional testing (for Developer)': ['testing','Unit & Functional Testing','Test cases, mocking, integration และคุณภาพซอฟต์แวร์','TEST'],
   'AI & Prompt engineer': ['ai-prompt-engineering','AI & Prompt Engineering','LLM, Prompt Engineering, RAG, MLOps และ AI Governance','AI'],
   'Mock Exam': ['mock-exam','Mock Exam ข้อสอบจำลองข้อเขียน','จำลองข้อเขียน Q55–Q57: SQL, Prompt Engineering และ Coding พร้อมเฉลยและเช็กลิสต์','MOCK'],

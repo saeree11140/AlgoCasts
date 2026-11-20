@@ -1634,3 +1634,7 @@ h1, h2, h3 { text-wrap: balance; }
     transition: none;
   }
 }
+
+.competency-views {
+  margin-bottom: 12px;
+}

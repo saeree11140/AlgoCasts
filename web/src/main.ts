@@ -19,6 +19,7 @@ const app=document.querySelector<HTMLDivElement>('#app')!;
 const state=load();
 let manifest:Manifest;
 let editor:EditorView|undefined;
+let disposeSqlPractice:(()=>void)|undefined;
 let routeVersion=0;
 let runVersion=0;
 const cache=new Map<string,Detail>();
@@ -122,15 +123,36 @@ async function workspace(id:string,params:URLSearchParams,version:number){
  document.querySelector('#submit')!.addEventListener('click',()=>execute(false));
  document.querySelector('#stop')!.addEventListener('click',cancelRun);
 }
+const sqlCompetencyId='mysql-hackerrank-sql-cheatsheet';
 function competencies(){
- shell('competency',`${heading('เตรียมสอบ Developer','ทบทวนพื้นฐาน ฝึกลงมือทำ แล้วประเมินความเข้าใจด้วยแนวข้อสอบ')}<div class="competency-intro"><div><h2>บทเรียนและแนวข้อสอบ Developer</h2><p>แต่ละหัวข้อมีบทเรียน ตัวอย่าง และแนวข้อสอบระดับ Beginner ถึง Advance ในหน้าเดียว<br>เลือกเรื่องที่ต้องการทบทวน แล้วเรียนตามจังหวะของตัวเอง</p></div><div class="read-summary"><strong>${state.read.length}<small> / ${manifest.competencies.length}</small></strong><span>หัวข้อที่ทำเครื่องหมายว่าอ่านแล้ว</span></div></div><div class="competency-grid">${manifest.competencies.map((c,i)=>`<a class="competency-card tone-${i%5}" href="#/competency/${c.id}"><div class="competency-card-top"><span class="competency-abbr">${c.abbr}</span>${state.read.includes(c.id)?'<span class="badge green">อ่านแล้ว</span>':`<span class="muted">${c.sourcePath.endsWith('.md')?'ชีตสรุป':'บทเรียน + แนวข้อสอบ'}</span>`}</div><h2>${e(c.title)}</h2><p>${e(c.description)}</p><div class="competency-card-bottom"><span>${c.sections.length} ส่วนเนื้อหา</span><span class="text-link">เริ่มทบทวน ${icon('arrow')}</span></div></a>`).join('')}</div><div class="panel resources"><div><h2>ฝึก Coding Test เพิ่มเติม</h2><p>Linked List, Two Sum, Group Anagrams, Binary Search และ Top K Frequent</p></div><a class="button" href="#/problems?source=practice">ชุดฝึก Coding Practice ${icon('arrow')}</a><a class="button" href="/content/documents/exploring-js.pdf" target="_blank" rel="noopener">เอกสาร JavaScript PDF ${icon('arrow')}</a><a class="button" href="https://team-coding-platform-eight.vercel.app/problems/valid-palindrome" target="_blank" rel="noopener noreferrer">Valid Palindrome · Team Coding ↗</a></div>`);
+ const cards=manifest.competencies.map((c,i)=>{
+  const pdf=c.path.endsWith('.pdf');
+  const label=pdf?'คู่มือ PDF':c.id===sqlCompetencyId?'ชีตสรุป + ฝึก SQL':c.sourcePath.endsWith('.md')?'ชีตสรุป':'บทเรียน + แนวข้อสอบ';
+  const tag=state.read.includes(c.id)?'<span class="badge green">อ่านแล้ว</span>':`<span class="muted">${label}</span>`;
+  return `<a class="competency-card tone-${i%5}" href="#/competency/${c.id}"><div class="competency-card-top"><span class="competency-abbr">${c.abbr}</span>${tag}</div><h2>${e(c.title)}</h2><p>${e(c.description)}</p><div class="competency-card-bottom">${pdf?'':`<span>${c.sections.length} ส่วนเนื้อหา</span>`}<span class="text-link">${pdf?'อ่าน PDF':'เริ่มทบทวน'} ${icon('arrow')}</span></div></a>`;
+ }).join('');
+ shell('competency',`${heading('เตรียมสอบ Developer','ทบทวนพื้นฐาน ฝึกลงมือทำ แล้วประเมินความเข้าใจด้วยแนวข้อสอบ')}<div class="competency-intro"><div><h2>บทเรียนและแนวข้อสอบ Developer</h2><p>เลือกบทเรียน เอกสารอ้างอิง หรือแนวข้อสอบระดับ Beginner ถึง Advanced แล้วทบทวนตามจังหวะของตัวเอง</p></div><div class="read-summary"><strong>${state.read.length}<small> / ${manifest.competencies.length}</small></strong><span>หัวข้อที่ทำเครื่องหมายว่าอ่านแล้ว</span></div></div><div class="competency-grid">${cards}</div><div class="panel resources"><div><h2>ฝึก Coding Test เพิ่มเติม</h2><p>Linked List, Two Sum, Group Anagrams, Binary Search และ Top K Frequent</p></div><a class="button" href="#/problems?source=practice">ชุดฝึก Coding Practice ${icon('arrow')}</a><a class="button" href="/content/documents/exploring-js.pdf" target="_blank" rel="noopener">เอกสาร JavaScript PDF ${icon('arrow')}</a><a class="button" href="https://team-coding-platform-eight.vercel.app/problems/valid-palindrome" target="_blank" rel="noopener noreferrer">Valid Palindrome · Team Coding ↗</a></div>`);
 }
-function competencyReader(id:string){
+async function competencyReader(id:string,params:URLSearchParams,version:number){
  const c=manifest.competencies.find(c=>c.id===id);if(!c)return notFound();
- shell('competency',`<div class="reader-toolbar"><a class="text-link" href="#/competency">← ทุกทักษะ</a><h1>${e(c.title)}</h1><button id="mark-read" class="button ${state.read.includes(id)?'':'primary'}">${state.read.includes(id)?'อ่านแล้ว ✓':'ทำเครื่องหมายว่าอ่านแล้ว'}</button><a class="button" href="/content/${c.path}" target="_blank" rel="noopener">เปิดเต็มหน้า ↗</a></div><iframe class="document-frame" title="${e(c.sourcePath.endsWith('.md')?c.title:c.title+' — บทเรียนและแบบทดสอบ')}" src="/content/${c.path}" sandbox="allow-scripts allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-downloads" allow="clipboard-write"></iframe>`,true);
+ const hasSqlPractice=id===sqlCompetencyId;
+ const pdf=c.path.endsWith('.pdf');
+ const practice=hasSqlPractice&&params.get('view')==='practice';
+ const viewLinks=hasSqlPractice?`<nav class="competency-views button-row" aria-label="MySQL Cheat Sheet"><a class="button ${practice?'':'primary'}" href="#/competency/${c.id}" ${practice?'':'aria-current="page"'}>${icon('book')} อ่านชีตสรุป</a><a class="button ${practice?'primary':''}" href="#/competency/${c.id}?view=practice" ${practice?'aria-current="page"':''}>${icon('code')} ฝึกทำ SQL</a></nav>`:'';
+ const readerTitle=e(pdf||c.sourcePath.endsWith('.md')?c.title:c.title+' — บทเรียนและแบบทดสอบ');
+ const reader=pdf
+  ?`<iframe class="document-frame" title="${readerTitle}" src="/content/${c.path}"></iframe>`
+  :`<iframe class="document-frame" title="${readerTitle}" src="/content/${c.path}" sandbox="allow-scripts allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-downloads" allow="clipboard-write"></iframe>`;
+ shell('competency',`<div class="reader-toolbar"><a class="text-link" href="#/competency">← ทุกทักษะ</a><h1>${e(c.title)}</h1><button id="mark-read" class="button ${state.read.includes(id)?'':'primary'}">${state.read.includes(id)?'อ่านแล้ว ✓':'ทำเครื่องหมายว่าอ่านแล้ว'}</button><a class="button" href="/content/${c.path}" target="_blank" rel="noopener">${pdf?'เปิด PDF':hasSqlPractice?'เปิดชีตเต็มหน้า':'เปิดเต็มหน้า'} ↗</a></div>${viewLinks}${practice?'<div id="sql-practice-slot" aria-busy="true"><p class="loading">กำลังเปิดแบบฝึก SQL…</p></div>':reader}`,true);
  const markRead=document.querySelector<HTMLButtonElement>('#mark-read')!;
  markRead.setAttribute('aria-pressed',String(state.read.includes(id)));
  markRead.addEventListener('click',()=>{state.read=state.read.includes(id)?state.read.filter(x=>x!==id):[...state.read,id];persist();const read=state.read.includes(id);markRead.textContent=read?'อ่านแล้ว ✓':'ทำเครื่องหมายว่าอ่านแล้ว';markRead.classList.toggle('primary',!read);markRead.setAttribute('aria-pressed',String(read));});
+ if(practice){
+  const {mountSqlPractice}=await import('./sql-practice');
+  if(version!==routeVersion)return;
+  const progress=state.sqlPractice??=Object.create(null);
+  disposeSqlPractice=mountSqlPractice(document.querySelector('#sql-practice-slot')!,progress,()=>save(state));
+ }
 }
 function guides(params:URLSearchParams){
  const selected=params.get('group')||'';
@@ -172,6 +194,7 @@ async function reading(id:string,version:number){
 function notFound(){shell('',`<div class="empty-state"><h1>ไม่พบหน้านี้</h1><p>ลิงก์อาจไม่ถูกต้อง หรือเนื้อหาถูกย้าย</p><a class="button primary" href="#/">กลับหน้าหลัก</a></div>`);}
 async function render(){
  const version=++routeVersion;++runVersion;cancelRun();editor?.destroy();editor=undefined;
+ disposeSqlPractice?.();disposeSqlPractice=undefined;
  document.querySelector<HTMLDialogElement>('#diagram-dialog')?.close();
  const [path,query]=(location.hash.slice(1)||'/').split('?');const params=new URLSearchParams(query);const parts=path.split('/').filter(Boolean);
  window.scrollTo(0,0);
@@ -180,7 +203,7 @@ async function render(){
   else if(parts[0]==='problems')problemList(params);
   else if(parts[0]==='solutions')problemList(params,true);
   else if(parts[0]==='problem'&&parts[1])await workspace(parts[1],params,version);
-  else if(parts[0]==='competency')parts[1]?competencyReader(parts[1]):competencies();
+  else if(parts[0]==='competency')parts[1]?await competencyReader(parts[1],params,version):competencies();
   else if(parts[0]==='guides')guides(params);
   else if(parts[0]==='reading')await reading(parts[1],version);
   else notFound();

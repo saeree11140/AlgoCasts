@@ -22,3 +22,13 @@ test('backup validates schema, bounds code and drops unsafe IDs',()=>{
  assert.deepEqual(result.read,['sql']);
  assert.equal(result.theme,'dark');
 });
+
+test('SQL drafts and solved state survive backup validation',()=>{
+ const saved={version:1,problems:{},read:[],sqlPractice:{
+  'active-earners':{code:'SELECT name FROM employees',solved:true},
+  '../unsafe':{code:'SELECT 1',solved:true},
+ }};
+ const result=validateBackup(JSON.parse(JSON.stringify(saved)));
+ assert.deepEqual(Object.keys(result.sqlPractice),['active-earners']);
+ assert.deepEqual(result.sqlPractice['active-earners'],saved.sqlPractice['active-earners']);
+});

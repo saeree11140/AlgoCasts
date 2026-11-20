@@ -1,5 +1,5 @@
 import {EditorView,basicSetup} from 'codemirror';
-import {Prec} from '@codemirror/state';
+import {Prec,type Extension} from '@codemirror/state';
 import {HighlightStyle,syntaxHighlighting} from '@codemirror/language';
 import {tags as t} from '@lezer/highlight';
 import {javascript} from '@codemirror/lang-javascript';
@@ -11,9 +11,9 @@ const readableOneDark=Prec.highest(syntaxHighlighting(HighlightStyle.define([
  {tag:[t.name,t.deleted,t.character,t.propertyName,t.macroName],color:'#e8838b'},
 ])));
 
-export function mountEditor(parent:HTMLElement,code:string,onChange:(code:string)=>void) {
- return new EditorView({parent,doc:code,extensions:[basicSetup,javascript({typescript:true}),oneDark,readableOneDark,
-   EditorView.contentAttributes.of({'aria-label':'TypeScript code editor','spellcheck':'false'}),
+export function mountEditor(parent:HTMLElement,code:string,onChange:(code:string)=>void,options?:{language:Extension;label:string}) {
+ return new EditorView({parent,doc:code,extensions:[basicSetup,options?.language??javascript({typescript:true}),oneDark,readableOneDark,
+   EditorView.contentAttributes.of({'aria-label':options?.label??'TypeScript code editor','spellcheck':'false'}),
    EditorView.lineWrapping,
    EditorView.updateListener.of(update=>{if(update.docChanged)onChange(update.state.doc.toString());}),
    Prec.highest(EditorView.theme({'&':{height:'100%',fontSize:'16px'},'.cm-scroller':{overflow:'auto',fontFamily:'ui-monospace, SFMono-Regular, Menlo, monospace'},'.cm-content':{padding:'18px 14px 18px 0'},'.cm-gutters':{paddingRight:'8px',color:'#9aa3b5'}})),

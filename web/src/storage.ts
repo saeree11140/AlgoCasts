@@ -13,6 +13,14 @@ export function validateBackup(value: unknown): SavedData {
    updatedAt:typeof p.updatedAt==='string'?p.updatedAt:undefined};
  }
  clean.read=v.read.filter(id=>typeof id==='string'&&/^[a-z0-9-]+$/.test(id));
+ if(v.sqlPractice&&typeof v.sqlPractice==='object'&&!Array.isArray(v.sqlPractice)){
+  const progress:NonNullable<SavedData['sqlPractice']>=Object.create(null);
+  for(const [id,p] of Object.entries(v.sqlPractice)){
+   if(!/^[a-z0-9-]+$/.test(id)||!p||typeof p!=='object')continue;
+   progress[id]={code:typeof p.code==='string'?p.code.slice(0,50000):undefined,solved:p.solved===true};
+  }
+  clean.sqlPractice=progress;
+ }
  clean.lastProblem=typeof v.lastProblem==='string'&&/^[a-z0-9-]+$/.test(v.lastProblem)?v.lastProblem:undefined;
  clean.theme=v.theme==='dark'?'dark':'light';return clean;
 }

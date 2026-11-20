@@ -85,9 +85,15 @@ await write('problems/tent-packing.json',tent);problems.push(Object.fromEntries(
 const examSections=(exam,review)=>JSON.parse(exam).competencies??[...new Set(Object.values(review?JSON.parse(review).levels:{}).flat().map(r=>r.competency))];
 const competencies=[];
 for(const [entry,[id,title,description,abbr]] of Object.entries(competencyInfo)) {
- // A key is a folder (first .html inside) or a specific HTML or Markdown document.
- const file=/\.(html|md)$/.test(entry)?entry:path.posix.join(entry,(await fs.readdir(path.join(root,'competency',entry))).find(f=>f.endsWith('.html')));
+ // A key is a folder (first .html inside) or a specific HTML, Markdown or PDF document.
+ const file=/\.(html|md|pdf)$/.test(entry)?entry:path.posix.join(entry,(await fs.readdir(path.join(root,'competency',entry))).find(f=>f.endsWith('.html')));
  const sourcePath=`competency/${file}`;
+ if(file.endsWith('.pdf')){
+  const documentPath=`documents/${id}.pdf`;
+  await fs.copyFile(path.join(root,sourcePath),path.join(out,documentPath));
+  competencies.push({id,title,description,abbr,path:documentPath,sections:[],sourcePath});
+  continue;
+ }
  const source=await read(sourcePath);
  const html=file.endsWith('.md')?renderCompetencyMarkdown(source,title):source;
  await write(`documents/${id}.html`,html);

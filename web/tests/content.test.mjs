@@ -8,7 +8,7 @@ test('all source categories imported without losing files', () => {
   assert.equal(manifest.problems.filter(p=>p.source==='LeetCode').length, 8);
   assert.equal(manifest.problems.filter(p=>p.source==='HackerRank').length, 3);
   assert.equal(manifest.problems.length, 47);
-  assert.equal(manifest.competencies.length, 30);
+  assert.equal(manifest.competencies.length, 31);
   assert.ok(manifest.diagrams.length > 100);
   for (const d of manifest.diagrams) {
     const svg = fs.readFileSync(new URL(d.path, content),'utf8');
@@ -82,6 +82,24 @@ test('MySQL cheat sheet opens as a competency document with SQL examples and tab
   assert.match(html, /<pre><code class="language-sql">SELECT \[DISTINCT\] columns/);
   assert.match(html, /<td><code>a \|\| b<\/code> \/ <code>CONCAT\(a,b\)<\/code><\/td>/);
   assert.match(html, /<h3>Official references<\/h3>/);
+});
+
+test('The JavaScript language is listed and served as a PDF competency', () => {
+  const topic = manifest.competencies.find(item => item.id === 'the-javascript-language');
+  assert.ok(topic);
+  assert.equal(topic.title, 'The JavaScript language');
+  assert.equal(topic.path, 'documents/the-javascript-language.pdf');
+  const published = new URL(topic.path, content);
+  const original = new URL('../../competency/The JavaScript language.pdf', import.meta.url);
+  assert.equal(fs.statSync(published).size, fs.statSync(original).size);
+  const fd = fs.openSync(published, 'r');
+  try {
+    const header = Buffer.alloc(5);
+    fs.readSync(fd, header);
+    assert.equal(header.toString(), '%PDF-');
+  } finally {
+    fs.closeSync(fd);
+  }
 });
 
 test('Coding Skill worker permissions stay confined to an opaque document sandbox', () => {
