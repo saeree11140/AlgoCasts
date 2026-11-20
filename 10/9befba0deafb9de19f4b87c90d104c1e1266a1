@@ -1,0 +1,33 @@
+web/src/main.ts
+  s_23f76d90a45636::t_047e1aa2e38e58 126,130
+web/scripts/render-competency-markdown.mjs
+  s_23f76d90a45636::t_c189cc9ebc2bc0 1-54
+web/tests/content.test.mjs
+  s_23f76d90a45636::t_8b4c2e62c09bc9 11,74-85
+  s_23f76d90a45636::t_e06f178f679326 86
+web/scripts/catalog.mjs
+  s_23f76d90a45636::t_2fd9240816c0de 63
+"competency/Mock Exam Keng Wee/mysql_hackerrank_sql_cheatsheet.md"
+  s_23f76d90a45636::t_c189cc9ebc2bc0 388
+  s_23f76d90a45636::t_30afb6a7069006 385-387
+  s_23f76d90a45636::t_9446894aeb194e 389-391
+  s_23f76d90a45636::t_62aa048afd1436 1-384,392-412
+web/scripts/prepare-content.mjs
+  s_23f76d90a45636::t_c189cc9ebc2bc0 9,87-92,108
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "109befba0deafb9de19f4b87c90d104c1e1266a1",
+  "prompts": {},
+  "sessions": {
+    "s_23f76d90a45636": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6ba-d225-7043-8a77-cea1298bad9e",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
