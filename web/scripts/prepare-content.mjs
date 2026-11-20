@@ -6,6 +6,7 @@ import ts from 'typescript';
 import { catalog, competencyInfo, diagramGroups } from './catalog.mjs';
 import { extraProblems, chocolateSolution } from './practice.mjs';
 import { renderDiagram } from './render-diagram.mjs';
+import { renderCompetencyMarkdown } from './render-competency-markdown.mjs';
 const web = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const root = path.dirname(web);
 const out = path.join(web, 'public/content');
@@ -83,10 +84,12 @@ await write('problems/tent-packing.json',tent);problems.push(Object.fromEntries(
 // Practice sets list their competencies in exam-data; fall back to the ones the review notes cover.
 const examSections=(exam,review)=>JSON.parse(exam).competencies??[...new Set(Object.values(review?JSON.parse(review).levels:{}).flat().map(r=>r.competency))];
 const competencies=[];
-for(const [folder,[id,title,description,abbr]] of Object.entries(competencyInfo)) {
- // A key is either a folder (first .html inside) or a specific "folder/file.html" when a folder holds several documents.
- const [dir,file]=folder.endsWith('.html')?[path.dirname(folder),path.basename(folder)]:[folder,(await fs.readdir(path.join(root,'competency',folder))).find(f=>f.endsWith('.html'))];
- const html=await read(`competency/${dir}/${file}`);
+for(const [entry,[id,title,description,abbr]] of Object.entries(competencyInfo)) {
+ // A key is a folder (first .html inside) or a specific HTML or Markdown document.
+ const file=/\.(html|md)$/.test(entry)?entry:path.posix.join(entry,(await fs.readdir(path.join(root,'competency',entry))).find(f=>f.endsWith('.html')));
+ const sourcePath=`competency/${file}`;
+ const source=await read(sourcePath);
+ const html=file.endsWith('.md')?renderCompetencyMarkdown(source,title):source;
  await write(`documents/${id}.html`,html);
  const text=s=>s.replace(/<[^>]*>/g,'').trim();
  const levels=[...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)].map(m=>text(m[1]));
@@ -102,7 +105,7 @@ for(const [folder,[id,title,description,abbr]] of Object.entries(competencyInfo)
   :meta?(({competencies,coding})=>[...competencies,...coding].map(c=>c.name))(JSON.parse(meta))
   :exam?examSections(exam,review)
   :levels; // plain documents with one <h2> per part
- competencies.push({id,title,description,abbr,path:`documents/${id}.html`,sections,sourcePath:`competency/${dir}/${file}`});
+ competencies.push({id,title,description,abbr,path:`documents/${id}.html`,sections,sourcePath});
 }
 await fs.copyFile(path.join(root,'competency/exploring-js-screen-2024-09-03.pdf'),path.join(out,'documents/exploring-js.pdf'));
 for(const [from,to] of [['competency/CODING/coding_practice_session_01/Coding_Practice_6_Problems_Explained.md','coding-practice.md'],['competency/CODING/hackerrank-chocolate-pagination.md','chocolate-score.md']]) await write(`documents/${to}`,await read(from));

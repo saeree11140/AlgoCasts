@@ -8,7 +8,7 @@ test('all source categories imported without losing files', () => {
   assert.equal(manifest.problems.filter(p=>p.source==='LeetCode').length, 8);
   assert.equal(manifest.problems.filter(p=>p.source==='HackerRank').length, 3);
   assert.equal(manifest.problems.length, 47);
-  assert.equal(manifest.competencies.length, 29);
+  assert.equal(manifest.competencies.length, 30);
   assert.ok(manifest.diagrams.length > 100);
   for (const d of manifest.diagrams) {
     const svg = fs.readFileSync(new URL(d.path, content),'utf8');
@@ -70,6 +70,19 @@ for (const [id, title, source, firstSection, sectionCount] of [
     assert.equal(html, original, 'Preserve all original lesson and quiz content');
   });
 }
+
+test('MySQL cheat sheet opens as a competency document with SQL examples and tables', () => {
+  const topic = manifest.competencies.find(item => item.id === 'mysql-hackerrank-sql-cheatsheet');
+  assert.ok(topic, 'MySQL cheat sheet must appear in the competency manifest');
+  assert.equal(topic.path, 'documents/mysql-hackerrank-sql-cheatsheet.html');
+  assert.equal(topic.sections.length, 14);
+  assert.equal(topic.sections[0], '0. โครง SELECT ที่ควรจำ');
+  const html = fs.readFileSync(new URL(topic.path, content), 'utf8');
+  assert.match(html, /<h1>MySQL SELECT Cheat Sheet — HackerRank SQL Coding<\/h1>/);
+  assert.match(html, /<pre><code class="language-sql">SELECT \[DISTINCT\] columns/);
+  assert.match(html, /<td><code>a \|\| b<\/code> \/ <code>CONCAT\(a,b\)<\/code><\/td>/);
+  assert.match(html, /<h3>Official references<\/h3>/);
+});
 
 test('Coding Skill worker permissions stay confined to an opaque document sandbox', () => {
   const config = fs.readFileSync(new URL('../deploy/nginx.conf', import.meta.url), 'utf8');
