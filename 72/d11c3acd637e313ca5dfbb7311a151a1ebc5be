@@ -1,0 +1,32 @@
+web/content/guides/javascript-algorithms.md
+  s_7858dd3ed99f87::t_f63f18239a00f0 124,128,136,161,185,187,205,247-250,260-262,265,271,297,300,310-321,328,336
+  s_6ccf4f2b08cfe2::t_64a56152d1f8bf 216-229
+  s_6ccf4f2b08cfe2::t_f37918d75d73fe 253,255-256,258-259
+  s_7858dd3ed99f87::t_875349546b8ac3 6,19,21,23-27,29,32-56,67-68
+  s_6ccf4f2b08cfe2::t_70e7dac55d4c8d 28,30-31,57-66,69-95,100-103,106-118,251
+  s_6ccf4f2b08cfe2::t_1f8e5cfa8bd86a 252
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "72d11c3acd637e313ca5dfbb7311a151a1ebc5be",
+  "prompts": {},
+  "sessions": {
+    "s_6ccf4f2b08cfe2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6358e84e-e44f-4024-b508-bf4ac4dacd15",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    },
+    "s_7858dd3ed99f87": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f963-0b54-7ed3-9637-6f9e5dab6422",
+        "model": "gpt-6.2-astra"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
