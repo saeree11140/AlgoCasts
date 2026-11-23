@@ -1,0 +1,19 @@
+competency/SQL/sql-review.html
+  s_4e9fc1b7aeb3f1::t_88d426338fa238 1260,1263-1266
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "82572d731424e82105c2f5591e0b0666044928cd",
+  "prompts": {},
+  "sessions": {
+    "s_4e9fc1b7aeb3f1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ee3dabab-7300-46d8-aed9-7fe508c384d7",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
