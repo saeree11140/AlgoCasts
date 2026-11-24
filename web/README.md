@@ -56,6 +56,8 @@ web/
 
 Build จะอ่าน `../exercises`, `../completed_exercises`, `../chocolatestype`, `../competency` และ `../diagrams` ใหม่ทุกครั้ง โดยไม่แก้ต้นฉบับ ถ้าเพิ่มโจทย์ AlgoCasts ให้เพิ่ม metadata ใน `scripts/catalog.mjs` และมี `completed_exercises/<id>/index.ts` กับ `test.ts` พร้อมกัน Starter สร้างด้วย AST ตัด body และ alternative solution comments ออก Helper modules ใช้เวอร์ชันที่เสร็จแล้ว
 
+โจทย์ SQL อยู่ใน `src/sql-practice/exercises.ts` แต่ละข้อกำหนด `dataset` (schema + ชุดข้อมูลทดสอบหลายชุด โดยชุดแรกคือ Sample) ของตัวเองได้ ถ้าไม่กำหนดจะใช้ตาราง `departments`/`employees` ร่วมกัน ข้อที่มี `listing` จะขึ้นในหน้าแบบฝึกหัด (`#/problem/<id>`) ด้วย
+
 ภาพ SVG ใช้ renderer ภายใน อ่าน geometry/text จาก draw.io พร้อมจัดสี ตัดบรรทัด และรวมขอบเขตเส้นเชื่อม ภาพเปิดขยายและซูมในเว็บได้; รูปทรงพื้นฐานและเส้นเชื่อมแสดงได้ แต่ style/route ซับซ้อนอาจต่างจากต้นฉบับ XML ยังอยู่ใน repo สำหรับแก้หรือ export แบบละเอียดภายหลัง
 
 ## ขอบเขตตัวรัน

@@ -31,13 +31,13 @@ export function cleanStarter(source) {
  return '// เขียนคำตอบ แล้วกดรันทดสอบ\n'+ts.createPrinter({removeComments:true}).printFile(ts.createSourceFile('index.ts',source,ts.ScriptTarget.Latest,true)).replace(/throw new Error\("TODO"\);/g,'// TODO: เขียนคำตอบที่นี่\n    throw new Error("TODO");');
 }
 const problems=[];
-for(const [id, [title,category,difficulty,description,hint,complexity,source='AlgoCasts']] of Object.entries(catalog)) {
+for(const [id, [title,category,difficulty,description,hint,complexity,source='AlgoCasts',sourceUrl]] of Object.entries(catalog)) {
  const solution=await read(`completed_exercises/${id}/index.ts`);
  const original=await read(`exercises/${id}/index.ts`);
  const directions=(original.match(/\/\/ --- Directions([\s\S]*?)(?=\n(?:function|class|import|export|const|let)\b)/)?.[1]||'').replace(/^\/\/ ?/gm,'').trim();
  const modules={};
  for(const f of await fs.readdir(path.join(root,'completed_exercises',id))) if(f.endsWith('.ts')&&f!=='index.ts') modules[`./${f.slice(0,-3)}`]=await read(`completed_exercises/${id}/${f}`);
- const meta={id,title,category,difficulty,description,hint,complexity,source};
+ const meta={id,title,category,difficulty,description,hint,complexity,source,...(sourceUrl&&{sourceUrl})};
  let starter=cleanStarter(solution);
  if(id==='fib') starter='function fib(n: number): number {\n  // TODO: เขียนคำตอบที่นี่\n  throw new Error("TODO");\n}\n\nexport = fib;\n';
  const guideOverrides={chunk:'03',anagrams:'03',capitalize:'03',matrix:'03',fib:'04',midpoint:'07',circular:'07',fromlast:'07'};

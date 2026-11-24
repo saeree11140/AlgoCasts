@@ -1,24 +1,20 @@
 import type {Database, QueryExecResult, SqlJsStatic, SqlValue} from 'sql.js';
-import type {Exercise, Fixture} from './exercises';
+import type {Cell, Dataset, Exercise} from './exercises';
 
 export interface SqlAttempt {
   actual: QueryExecResult;
   expected?: QueryExecResult;
   checks?: boolean[];
+  labels?: string[];
 }
 
-function setup(SQL: SqlJsStatic, fixture: Fixture) {
+function setup(SQL: SqlJsStatic, dataset: Dataset, rows: Record<string, Cell[][]>) {
   const db = new SQL.Database();
   try {
-    db.run(`
-      CREATE TABLE departments (id INTEGER PRIMARY KEY, name TEXT NOT NULL);
-      CREATE TABLE employees (
-        id INTEGER PRIMARY KEY, name TEXT NOT NULL, department_id INTEGER REFERENCES departments(id),
-        salary INTEGER NOT NULL, status TEXT NOT NULL, bonus INTEGER
-      );
-    `);
-    for (const row of fixture.departments) db.run('INSERT INTO departments VALUES (?, ?)', row);
-    for (const row of fixture.employees) db.run('INSERT INTO employees VALUES (?, ?, ?, ?, ?, ?)', row);
+    db.run(dataset.ddl);
+    for (const [table, values] of Object.entries(rows)) {
+      for (const row of values) db.run(`INSERT INTO ${table} VALUES (${row.map(() => '?').join(', ')})`, row);
+    }
     db.run('PRAGMA query_only = ON');
     return db;
   } catch (error) {
@@ -58,21 +54,22 @@ function matches(actual: QueryExecResult, expected: QueryExecResult) {
     && actual.values.every((row, i) => row.every((cell, j) => cell === expected.values[i][j]));
 }
 
-export function judgeSql(SQL: SqlJsStatic, exercise: Exercise, fixtures: [Fixture, Fixture], query: string, check: boolean): SqlAttempt {
-  const sampleDb = setup(SQL, fixtures[0]);
-  try {
-    const actual = select(sampleDb, query);
-    if (!check) return {actual};
-    const expected = select(sampleDb, exercise.solution);
-    const secondDb = setup(SQL, fixtures[1]);
+export function judgeSql(SQL: SqlJsStatic, exercise: Exercise, dataset: Dataset, query: string, check: boolean): SqlAttempt {
+  const runCase = (index: number) => {
+    const db = setup(SQL, dataset, dataset.cases[index].rows);
     try {
-      const secondActual = select(secondDb, query);
-      const secondExpected = select(secondDb, exercise.solution);
-      return {actual, expected, checks: [matches(actual, expected), matches(secondActual, secondExpected)]};
+      const actual = select(db, query);
+      return {actual, expected: check ? select(db, exercise.solution) : undefined};
     } finally {
-      secondDb.close();
+      db.close();
     }
-  } finally {
-    sampleDb.close();
+  };
+  const sample = runCase(0);
+  if (!check) return {actual: sample.actual};
+  const checks = [matches(sample.actual, sample.expected!)];
+  for (let i = 1; i < dataset.cases.length; i++) {
+    const {actual, expected} = runCase(i);
+    checks.push(matches(actual, expected!));
   }
+  return {actual: sample.actual, expected: sample.expected, checks, labels: dataset.cases.map(item => item.label)};
 }

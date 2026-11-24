@@ -2,11 +2,14 @@ import {MySQL, sql} from '@codemirror/lang-sql';
 import type {SqlValue} from 'sql.js';
 import {mountEditor} from '../editor';
 import type {SqlProgress} from '../types';
-import {exercises, fixtures, sqlMaxLength, tables} from './exercises';
+import {datasetFor, exercises as allExercises, sqlMaxLength, type Dataset} from './exercises';
 import type {SqlReply, SqlRequest} from './sql-worker';
 import './practice.css';
 
-const language = sql({dialect: MySQL, schema: tables});
+const languageFor = (dataset: Dataset) => sql({
+  dialect: MySQL,
+  schema: Object.fromEntries(Object.entries(dataset.tables).map(([table, columns]) => [table, columns.map(column => column.name)])),
+});
 const starter = '-- เขียนคำตอบ SQL ตรงนี้\n';
 
 function resultTable(title: string, columns: readonly string[], rows: readonly SqlValue[][]) {
@@ -45,10 +48,14 @@ function resultTable(title: string, columns: readonly string[], rows: readonly S
   return group;
 }
 
-export function mountSqlPractice(root: HTMLElement, progress: Record<string, SqlProgress>, save: () => boolean) {
+export function mountSqlPractice(root: HTMLElement, progress: Record<string, SqlProgress>, save: () => boolean, options: {exerciseId?: string} = {}) {
+  // Single mode shows one exercise as a standalone problem (used by #/problem/<id>).
+  const single = options.exerciseId !== undefined;
+  const exercises = single ? allExercises.filter(exercise => exercise.id === options.exerciseId) : allExercises;
+  if (!exercises.length) throw new Error('ไม่พบโจทย์ SQL นี้');
   root.innerHTML = `
-    <section class="sql-practice" aria-labelledby="sql-practice-title">
-      <header class="sql-practice-heading">
+    <section class="sql-practice${single ? ' sql-single' : ''}" aria-labelledby="sql-practice-title">
+      <header class="sql-practice-heading" ${single ? 'hidden' : ''}>
         <div>
           <h2 id="sql-practice-title">แบบฝึกเขียน SQL</h2>
           <p class="muted">ใช้ข้อมูลจำลองและ SQLite ในเบราว์เซอร์ โจทย์ใช้ไวยากรณ์ที่ใช้ร่วมกับ MySQL 8</p>
@@ -57,17 +64,21 @@ export function mountSqlPractice(root: HTMLElement, progress: Record<string, Sql
       </header>
       <div class="sql-workspace">
         <div class="sql-question">
-          <label for="sql-question-picker">เลือกโจทย์</label>
-          <select id="sql-question-picker"></select>
+          <label for="sql-question-picker" ${single ? 'hidden' : ''}>เลือกโจทย์</label>
+          <select id="sql-question-picker" ${single ? 'hidden' : ''}></select>
           <div class="sql-prompt" data-sql-prompt></div>
           <details class="sql-disclosure" data-sql-hint>
             <summary>ดูคำใบ้</summary>
             <p></p>
           </details>
-          <details class="sql-disclosure">
+          <details class="sql-disclosure" data-sql-schema-box ${single ? 'open' : ''}>
             <summary>ดูตารางและข้อมูลตัวอย่าง</summary>
             <div class="sql-schema" data-sql-schema></div>
           </details>
+          ${single ? `<details class="sql-disclosure" data-sql-solution>
+            <summary>ดูเฉลย</summary>
+            <pre><code></code></pre>
+          </details>` : ''}
         </div>
         <div class="sql-answer">
           <div class="sql-editor-head">
@@ -101,11 +112,21 @@ export function mountSqlPractice(root: HTMLElement, progress: Record<string, Sql
   const stopButton = root.querySelector<HTMLButtonElement>('[data-sql-stop]')!;
   const status = root.querySelector<HTMLElement>('[data-sql-status]')!;
   const output = root.querySelector<HTMLElement>('[data-sql-output]')!;
-  const sample = fixtures[0];
-  for (const name of ['departments', 'employees'] as const) {
-    schema.append(resultTable(name, tables[name], sample[name]));
-  }
+  const solution = root.querySelector<HTMLDetailsElement>('[data-sql-solution]');
   picker.replaceChildren(...exercises.map(exercise => new Option('', exercise.id)));
+
+  function showSchema(dataset: Dataset, sampleOutput?: SqlValue[][], columns: string[] = []) {
+    schema.replaceChildren();
+    const sample = dataset.cases[0].rows;
+    for (const [name, tableColumns] of Object.entries(dataset.tables)) {
+      if (tableColumns.some(column => column.note)) {
+        schema.append(resultTable(`Table: ${name}`, ['Column', 'Type', 'Description'],
+          tableColumns.map(column => [column.name, column.type, column.note ?? ''])));
+      }
+      schema.append(resultTable(single ? `Sample Input · ${name}` : name, tableColumns.map(column => column.name), sample[name] ?? []));
+    }
+    if (sampleOutput) schema.append(resultTable('Expected Output', columns, sampleOutput));
+  }
 
   let editor: ReturnType<typeof mountEditor>;
   let activeWorker: Worker | undefined;
@@ -134,26 +155,34 @@ export function mountSqlPractice(root: HTMLElement, progress: Record<string, Sql
 
   function clearResults() {
     output.replaceChildren();
-    showStatus('รันตัวอย่างเพื่อดูผลลัพธ์ หรือตรวจคำตอบกับชุดทดสอบ 2 ชุด');
+    const cases = datasetFor(exercises[picker.selectedIndex]).cases.length;
+    showStatus(`รันตัวอย่างเพื่อดูผลลัพธ์ หรือตรวจคำตอบกับชุดทดสอบ ${cases} ชุด`);
   }
 
   function showQuestion() {
     endRun();
     editor?.destroy();
     const exercise = exercises[picker.selectedIndex];
+    const dataset = datasetFor(exercise);
     prompt.innerHTML = `
       <p class="sql-topic">${exercise.topic}</p>
-      <h3>${exercise.title}</h3>
+      ${single ? '' : `<h3>${exercise.title}</h3>`}
       <p>${exercise.prompt}</p>
+      ${exercise.requirements ? `<ul class="sql-requirements">${exercise.requirements.map(item => `<li>${item}</li>`).join('')}</ul>` : ''}
       <p class="sql-expected-columns">คืนคอลัมน์ตามลำดับ ${exercise.columns.map(name => `<code>${name}</code>`).join(' ')}</p>`;
     hint.open = false;
     hint.querySelector('p')!.textContent = exercise.hint;
+    if (solution) {
+      solution.open = false;
+      solution.querySelector('code')!.textContent = exercise.solution;
+    }
+    showSchema(dataset, exercise.sampleOutput, exercise.columns);
     editor = mountEditor(editorHost, progress[exercise.id]?.code ?? starter, code => {
       endRun();
       clearResults();
       (progress[exercise.id] ??= {}).code = code.slice(0, sqlMaxLength);
       saveStatus.textContent = save() ? '' : 'บันทึกในเบราว์เซอร์ไม่ได้';
-    }, {language, label: 'ตัวแก้ไขคำตอบ SQL'});
+    }, {language: languageFor(dataset), label: 'ตัวแก้ไขคำตอบ SQL'});
     clearResults();
   }
 
@@ -190,6 +219,17 @@ export function mountSqlPractice(root: HTMLElement, progress: Record<string, Sql
         output.append(resultTable('ผลลัพธ์ของคุณ · ข้อมูลตัวอย่าง', data.actual.columns, data.actual.values));
         if (data.expected && data.checks) {
           const passed = data.checks.filter(Boolean).length;
+          if (data.labels && data.checks.length > 2) {
+            const list = document.createElement('ul');
+            list.className = 'sql-case-results';
+            data.checks.forEach((ok, i) => {
+              const item = document.createElement('li');
+              item.className = ok ? 'green-text' : 'red-text';
+              item.textContent = `${ok ? '✓' : '×'} ชุดที่ ${i + 1}: ${data.labels![i]}`;
+              list.append(item);
+            });
+            output.prepend(list);
+          }
           if (passed === data.checks.length) {
             (progress[exercise.id] ??= {}).solved = true;
             saveStatus.textContent = save() ? '' : 'บันทึกในเบราว์เซอร์ไม่ได้';

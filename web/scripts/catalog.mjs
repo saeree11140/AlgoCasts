@@ -39,6 +39,8 @@ export const catalog = {
   icecreamparlor: ['Ice Cream Parlor','Searching','Easy','เลือกไอศกรีม 2 รสที่ราคารวมเท่ากับเงินที่มีพอดี คืนเลขรสแบบนับจาก 1','เก็บราคาที่เห็นแล้วใน Map แล้วถามหา money - cost[i]','O(n) time · O(n) space','HackerRank'],
   pairs: ['Pairs','Searching','Medium','นับจำนวนคู่ใน array ที่ผลต่างเท่ากับ k พอดี','เรียงก่อนแล้ว binary search หา value + k หรือใช้ Set','O(n log n) time · O(n) space (sort + binary search)','HackerRank'],
   leaderboard: ['Climbing the Leaderboard','Searching','Medium','หาอันดับของผู้เล่นหลังแต่ละเกม บน leaderboard ที่จัดอันดับแบบ dense ranking','ตัดคะแนนซ้ำออก แล้ว binary search หาจำนวนคะแนนที่มากกว่าคะแนนผู้เล่น','O((n + m) log n) time · O(n) space','HackerRank'],
+  // The optional 8th field links back to the original problem page.
+  urlhashing: ['URL Hashing (TikTok OA)','String & Array','Easy','แบ่ง URL เป็นบล็อกละ k ตัว รวมค่าตัวอักษรในแต่ละบล็อก แล้วแทนด้วยตัวอักษรของ hashString ตำแหน่ง hash % m','เดิน index ทีละ k ตัว รวมค่า a-z = 0-25, : = 26, / = 27, . = 28 แล้วใช้ sum % hashString.length เลือกตัวอักษร','O(n) time · O(n / k) space (ผลลัพธ์)','FastPrep','https://www.fastprep.io/problems/tiktok-url-hashing'],
 };
 export const competencyInfo = {
   'Database Design': ['database-design','Database Design','ออกแบบข้อมูล ตั้งแต่ ER Diagram ถึง Sharding','DB'],

@@ -1,6 +1,6 @@
 import initSqlJs from 'sql.js';
 import wasmUrl from 'sql.js/dist/sql-wasm.wasm?url';
-import {exercises, fixtures, sqlMaxLength} from './exercises';
+import {datasetFor, exercises, sqlMaxLength} from './exercises';
 import {judgeSql, type SqlAttempt} from './judge';
 
 export interface SqlRequest {
@@ -17,7 +17,7 @@ self.onmessage = async ({data}: MessageEvent<SqlRequest>) => {
     const exercise = exercises.find(item => item.id === data.id);
     if (!exercise || data.query.length > sqlMaxLength) throw new Error('โจทย์หรือความยาว SQL ไม่ถูกต้อง');
     const SQL = await initSqlJs({locateFile: () => wasmUrl, useOldExtensionFunctions: false});
-    self.postMessage(judgeSql(SQL, exercise, fixtures, data.query, data.check) satisfies SqlReply);
+    self.postMessage(judgeSql(SQL, exercise, datasetFor(exercise), data.query, data.check) satisfies SqlReply);
   } catch (error) {
     self.postMessage({error: error instanceof Error ? error.message : String(error)} satisfies SqlReply);
   }

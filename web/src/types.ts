@@ -1,5 +1,5 @@
 export interface Problem {
- id: string; title: string; category: string; difficulty: string; description: string; source: string;
+ id: string; title: string; category: string; difficulty: string; description: string; source: string; sourceUrl?: string;
 }
 export interface Detail extends Problem {
  starter: string; solution: string; modules: Record<string,string>; directions: string;

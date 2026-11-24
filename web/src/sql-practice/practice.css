@@ -122,6 +122,13 @@
 }
 .sql-table-wrap th { color: var(--ink); background: var(--surface-2); }
 .sql-null { color: var(--muted); font-style: italic; }
+.sql-requirements { margin: 8px 0 12px; padding-left: 20px; color: var(--ink-2); }
+.sql-requirements li + li { margin-top: 4px; }
+.sql-case-results { grid-column: 1 / -1; margin: 0; padding-left: 0; list-style: none; font-size: 14px; }
+.sql-case-results li + li { margin-top: 2px; }
+.sql-disclosure pre { margin: 8px 0 0; overflow-x: auto; }
+.sql-single .sql-prompt { margin-top: 0; }
+.sql-single .sql-editor { height: 280px; }
 
 @media (max-width: 760px) {
   .sql-workspace { grid-template-columns: minmax(0, 1fr); }

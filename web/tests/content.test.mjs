@@ -7,7 +7,9 @@ test('all source categories imported without losing files', () => {
   assert.equal(manifest.problems.filter(p=>p.source==='AlgoCasts').length, 28);
   assert.equal(manifest.problems.filter(p=>p.source==='LeetCode').length, 8);
   assert.equal(manifest.problems.filter(p=>p.source==='HackerRank').length, 3);
-  assert.equal(manifest.problems.length, 47);
+  assert.equal(manifest.problems.filter(p=>p.source==='FastPrep').length, 1);
+  assert.equal(manifest.problems.find(p=>p.id==='urlhashing').sourceUrl, 'https://www.fastprep.io/problems/tiktok-url-hashing');
+  assert.equal(manifest.problems.length, 48);
   assert.equal(manifest.competencies.length, 31);
   assert.ok(manifest.diagrams.length > 100);
   for (const d of manifest.diagrams) {
