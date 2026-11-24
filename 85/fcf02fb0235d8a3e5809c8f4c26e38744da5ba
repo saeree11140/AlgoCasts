@@ -1,0 +1,73 @@
+web/tests/content.test.mjs
+  s_4706b4e2d8decc::t_ec38a471b2d42a 11
+  s_4706b4e2d8decc::t_adb9538163ecd6 10,12
+web/src/sql-practice/sql-worker.ts
+  s_4706b4e2d8decc::t_19ff234625f1ab 20
+  s_4706b4e2d8decc::t_dec12ae5c69c72 3
+exercises/urlhashing/test.ts
+  s_4706b4e2d8decc::t_003291770b78b1 1-28
+web/tests/sql-practice.test.mjs
+  s_4706b4e2d8decc::t_a083a2f15ffdd4 23,33,35-37,41,46,48,52-56
+  s_4706b4e2d8decc::t_426a5c4d8c739a 16,18,21,24,57-73
+web/src/sql-practice/judge.ts
+  s_4706b4e2d8decc::t_542daa986c95d9 8,11,14-17
+  s_4706b4e2d8decc::t_9c07fa716656dd 57
+  s_4706b4e2d8decc::t_2533649b1ba216 58-59,61-62,64,66-72,74
+  s_4706b4e2d8decc::t_e5cf0c92840db5 2
+web/scripts/prepare-content.mjs
+  s_4706b4e2d8decc::t_56c32fcf774f03 40
+  s_4706b4e2d8decc::t_1658b894bbab3d 34
+web/src/types.ts
+  s_4706b4e2d8decc::t_57c64a52118641 2
+web/scripts/catalog.mjs
+  s_4706b4e2d8decc::t_31c69e6afffc3a 42-43
+web/src/main.ts
+  s_4706b4e2d8decc::t_542f29908c67b5 101
+  s_4706b4e2d8decc::t_04fd9316c9126a 32
+  s_4706b4e2d8decc::t_fb104fbb628225 15
+  s_4706b4e2d8decc::t_0d23a5945aa7d5 86-95
+  s_4706b4e2d8decc::t_f0631b174433e3 239
+  s_4706b4e2d8decc::t_c8d03eabca3687 106
+  s_4706b4e2d8decc::t_b1b2b389143687 33,35,59,61-62,77
+  s_4706b4e2d8decc::t_3c1882d4a6c8fa 65
+  s_4706b4e2d8decc::t_0e107c122f002b 108
+  s_4706b4e2d8decc::t_37c8b6aa878a3a 97
+exercises/urlhashing/index.ts
+  s_4706b4e2d8decc::t_333da5b88996ed 1-20
+web/src/sql-practice/index.ts
+  s_4706b4e2d8decc::t_a8c403de0c7bf2 158-159,166,171,175-179,185
+  s_4706b4e2d8decc::t_94be24f178b8a1 115,118-129
+  s_4706b4e2d8decc::t_951423cbc9eb3c 51-55,57-58,67-68,74,78-81
+  s_4706b4e2d8decc::t_b09c4f264f6b01 222-232
+  s_4706b4e2d8decc::t_75e5fac2fc36f9 169
+  s_4706b4e2d8decc::t_2b4f06a2ebfccc 5,9-12
+  s_4706b4e2d8decc::t_30fa21e8989d78 130
+web/README.md
+  s_4706b4e2d8decc::t_d12df7f55e1f0d 59-60
+completed_exercises/urlhashing/index.ts
+  s_4706b4e2d8decc::t_53633b882da6d4 1-36
+completed_exercises/urlhashing/test.ts
+  s_4706b4e2d8decc::t_26b5744848794c 1-28
+web/src/sql-practice/practice.css
+  s_4706b4e2d8decc::t_afb04636b9f094 125-131
+web/src/sql-practice/exercises.ts
+  s_4706b4e2d8decc::t_5abe4c944d0132 3,5-8,11-21,23-24,27-67,74,78-83,86
+  s_4706b4e2d8decc::t_f8d27bc00c55be 167-252
+  s_4706b4e2d8decc::t_2b666b2e3126a4 87
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "85fcf02fb0235d8a3e5809c8f4c26e38744da5ba",
+  "prompts": {},
+  "sessions": {
+    "s_4706b4e2d8decc": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "47c348c4-58ee-4b29-bf38-920d0e4ae2e2",
+        "model": "unknown"
+      },
+      "human_author": "saeree tukarunkun <saeree.tuk@axonstech.com>"
+    }
+  }
+}
